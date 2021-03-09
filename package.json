@@ -1,0 +1,45 @@
+{
+  "name": "paid-care",
+  "version": "1.0.0",
+  "description": "PAID is library for care billing with payers in Germany according to § 105 SGB XI and § 302 SGB V. The project name is an acronym and stands for \"Pflegeabrechnung in Deutschland\".",
+  "main": "lib/index.js",
+  "types": "lib",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc -p .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "lib",
+    "package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coop-care/paid.git"
+  },
+  "keywords": [
+    "Pflege",
+    "Abrechnung",
+    "SGB XI",
+    "SGB V",
+    "Pflegeversicherung",
+    "Krankenversicherung",
+    "GKV",
+    "Kostenträger",
+    "Datenübermittlung"
+  ],
+  "author": "CoopCare Project <paid@coopcare.de>",
+  "contributors": [
+    "Michael Kamphausen",
+    "Tobias Zwick",
+    "Alexander Schmidtpeter"
+  ],
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/coop-care/paid/issues"
+  },
+  "homepage": "https://github.com/coop-care/paid#readme",
+  "devDependencies": {
+    "typescript": "^4.2.3"
+  }
+}
