@@ -3,6 +3,7 @@
 
 node_modules
 lib
+coverage
 
 # Log files
 npm-debug.log*
