@@ -44,5 +44,22 @@ quantity
 distanceKilometers
 pointValue
 pointScore
-
+–
+additionTypeCode "Zuschlagsart" Anlage 3, Abschnitt 2.14.2
+additionCode "Zuschlag" Anlage 3, Abschnitt 2.14.3
+additionTitle
+additionAssignmentCode
+additionCalculationCode "Zuschlagsberechnung"; Anlage 3, Abschnitt 2.16
+isDeduction
+additionValue
+–
+vatCode "Mehrwertsteuer" Anlage 3, Abschnitt 2.9
+vatAmount
+coPaymentAmount
+approvalIdentifier
+approvalDate
+assistiveTechnologyCode "Kennzeichen Pflegehilfsmittel", Anlage 3, Abschnitt 2.8
+assistiveTechnologyTitle 
+assistiveTechnologyFeatureCode "Positionsnummer für Produktbesonderheiten von Pflegehilfsmitteln" Anlage 3, Abschnitt 2.12
+inventoryNumber
 */

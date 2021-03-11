@@ -1,6 +1,7 @@
 /*
 TODO validation errors:
 
+all required values are filled
 every IK has 9 numeric digits
 filename.length == 9
 invoiceNumber.length <= 14 && /^[a-zA-Z0-9][a-zA-Z0-9/-]*[a-zA-Z0-9]$/.test(invoiceNumber)
@@ -21,5 +22,9 @@ street.length <= 46
 houseNumber.length <= 9
 postalCode.length <= 10
 city.length <= 40
+additionTitle.length <= 50
+approvalIdentifier.length <= 15
+assistiveTechnologyTitle.length <= 30
+inventoryNumber.length <= 15
 
 */

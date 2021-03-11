@@ -225,18 +225,50 @@ export const ELS = (
     )
 };
 
-export const ZUS = ( // TODO
-
+export const ZUS = (
+    isLast: boolean,
+    payScaleCode: string, // TODO: custom type?
+    additionTypeCode: string, // TODO: custom type?
+    additionCode: string, // TODO: custom type?
+    additionAssignmentCode: "0" | "1", // TODO: custom type?
+    additionCalculationCode: string, // TODO: custom type?
+    isDeduction: boolean,
+    additionValue: number,
+    cumulativeAmount: number,
+    additionTitle?: string,
 ) => segment(
     "ZUS",
-
+    [payScaleCode, additionTypeCode, additionCode].join(":"),
+    mask(additionTitle?.substr(0, 50) || ""),
+    additionAssignmentCode,
+    additionCalculationCode,
+    isDeduction ? "0" : "1",
+    number(additionValue, 5),
+    price(cumulativeAmount),
+    isLast? "1" : "0"
 );
 
-export const HIL = ( // TODO
-
+export const HIL = (
+    vatCode = "", // TODO: custom type?
+    vatAmount?: number,
+    coPaymentAmount?: number,
+    approvalIdentifier = "",
+    approvalDate?: Date,
+    assistiveTechnologyCode = "", // TODO: custom type?
+    assistiveTechnologyTitle = "",
+    assistiveTechnologyFeatureCode = "",
+    inventoryNumber = "",
 ) => segment(
     "HIL",
-
+    vatCode,
+    price(vatAmount),
+    price(coPaymentAmount),
+    mask(approvalIdentifier.substr(0, 15)),
+    approvalDate ? date(approvalDate) : "",
+    assistiveTechnologyCode,
+    mask(assistiveTechnologyTitle.substr(0, 30)),
+    mask(assistiveTechnologyFeatureCode.substr(0, 10)),
+    mask(inventoryNumber.substr(0, 20)),
 );
 
 export const IAF = (
