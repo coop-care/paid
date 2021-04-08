@@ -1,4 +1,21 @@
 import { FileType } from "../types";
+import { 
+    AdditionAssignmentCode, 
+    AdditionCalculationCode, 
+    AdditionCode, 
+    AdditionTypeCode, 
+    AssistiveTechnologyCode, 
+    BillingCode, 
+    CareLevelCode, 
+    InvoiceCode, 
+    PayScaleRegionCode, 
+    ProcessingCode, 
+    QualificationRemunerationCode, 
+    RemunerationCode, 
+    TypeOfServiceCode, 
+    VatCode, 
+    VatExemptionCode, 
+} from "./codes";
 import { mask, number, price, day, month, date, time, datetime, segment } from "../formatter";
 
 const Syntax_Version = "UNOC:3";
@@ -20,7 +37,7 @@ export const UNB = (
     datetime(new Date()),
     transmissionIndex.toString(),
     filename,
-    fileType.toString()
+    fileType
 );
 
 export const UNZ = (
@@ -51,7 +68,7 @@ export const UNT = (
 );
 
 export const FKT = (
-    processingCode: string, // TODO: custom type?
+    processingCode: ProcessingCode, // always "01"
     providerID: string, // the party who gets the money
     payerID: string, // party who pays the money
     insuranceID: string,
@@ -75,7 +92,7 @@ export const REC = (
     invoiceNumber: string,
     singleInvoiceNumber = "0",
     invoiceDate: Date,
-    invoiceCode: string, // TODO: custom type?
+    invoiceCode: InvoiceCode,
     currency = DefaultCurrency
 ) => segment(
     "REC",
@@ -86,18 +103,18 @@ export const REC = (
 );
 
 export const SRD = (
-    billingCode: string, // TODO: custom type?
-    payScaleCode: string, // TODO: custom type?
-    typeOfServiceCode: string, // TODO: custom type?
+    billingCode: BillingCode,
+    payScaleRegionCode: PayScaleRegionCode,
+    typeOfServiceCode: TypeOfServiceCode,
 ) => segment(
     "SRD",
-    billingCode + ":" + payScaleCode,
+    billingCode + ":" + payScaleRegionCode,
     typeOfServiceCode
 );
 
 export const UST = (
     taxOrdinalNumber = "",
-    vatExemptionCode = "", // TODO: custom type?
+    vatExemptionCode: VatExemptionCode = "",
 ) => segment(
     "UST",
     mask(taxOrdinalNumber),
@@ -163,7 +180,7 @@ export const NAD = (
 
 export const MAN = (
     monthOfService: Date,
-    careLevelCode: string // TODO: custom type?
+    careLevelCode: CareLevelCode,
 ) => segment(
     "MAN",
     monthOfService.getFullYear() + month(monthOfService),
@@ -174,23 +191,24 @@ export const MAN = (
 
 export const ESK = (
     serviceStartDate: Date,
-    remunerationCode: string, // TODO: custom type?
+    remunerationCode: RemunerationCode,
 ) => segment(
     "ESK",
     day(serviceStartDate),
     ["01", "02", "03", "06"].includes(remunerationCode) ? time(serviceStartDate) : ""
 );
 
+// ELS is insanely complex: serviceCode and several parameters depend on renumerationCode
 export const ELS = (
-    typeOfServiceCode: string, // TODO: custom type?
-    remunerationCode: string, // TODO: custom type?
-    qualificationDependentRemunerationCode: string, // TODO: custom type?
-    serviceCode: string, // TODO: custom types?
+    typeOfServiceCode: TypeOfServiceCode,
+    remunerationCode: RemunerationCode,
+    qualificationRemunerationCode: QualificationRemunerationCode,
+    serviceCode: string,
     unitPrice: number,
     quantity: number,
-    serviceStartDate?: Date, // for typeOfServiceCode 04
-    serviceEndDate?: Date, // for typeOfServiceCode 01, 02, 03, 04
-    distanceKilometers?: number, // for typeOfServiceCode 06 with
+    serviceStartDate?: Date, // for remunerationCode 04
+    serviceEndDate?: Date, // for remunerationCode 01, 02, 03, 04
+    distanceKilometers?: number, // for remunerationCode 06 with serviceCode 04
     pointValue?: number,
     pointScore?: number,
 ) => {
@@ -214,7 +232,7 @@ export const ELS = (
         [
             typeOfServiceCode,
             remunerationCode,
-            qualificationDependentRemunerationCode,
+            qualificationRemunerationCode,
             serviceCode
         ].join(":"),
         price(unitPrice),
@@ -227,18 +245,18 @@ export const ELS = (
 
 export const ZUS = (
     isLast: boolean,
-    payScaleCode: string, // TODO: custom type?
-    additionTypeCode: string, // TODO: custom type?
-    additionCode: string, // TODO: custom type?
-    additionAssignmentCode: "0" | "1", // TODO: custom type?
-    additionCalculationCode: string, // TODO: custom type?
+    payScaleRegionCode: PayScaleRegionCode,
+    additionTypeCode: AdditionTypeCode, 
+    additionCode: AdditionCode, 
+    additionAssignmentCode: AdditionAssignmentCode,
+    additionCalculationCode: AdditionCalculationCode,
     isDeduction: boolean,
     additionValue: number,
     cumulativeAmount: number,
     additionTitle?: string,
 ) => segment(
     "ZUS",
-    [payScaleCode, additionTypeCode, additionCode].join(":"),
+    [payScaleRegionCode, additionTypeCode, additionCode].join(":"),
     mask(additionTitle?.substr(0, 50) || ""),
     additionAssignmentCode,
     additionCalculationCode,
@@ -249,12 +267,12 @@ export const ZUS = (
 );
 
 export const HIL = (
-    vatCode = "", // TODO: custom type?
+    vatCode: VatCode = "",
     vatAmount?: number,
     coPaymentAmount?: number,
     approvalIdentifier = "",
     approvalDate?: Date,
-    assistiveTechnologyCode = "", // TODO: custom type?
+    assistiveTechnologyCode: AssistiveTechnologyCode = "",
     assistiveTechnologyTitle = "",
     assistiveTechnologyFeatureCode = "",
     inventoryNumber = "",
