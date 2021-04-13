@@ -27,7 +27,9 @@ export default function parse(str: string): Interchange {
         // line feeds between segments should be ignored according to the docs
         const segment = segments[i].replace(/^(\r\n|\n|\r)|(\r\n|\n|\r)$/g,"")
         // we already took care of the service string advice...
-        if (i == 0 && segment.startsWith("UNA")) continue
+        if (i == 0 && segment.startsWith("UNA")) { 
+            continue
+        }
 
         // array of elements which in turn each contain an array of components
         const elements: Element[] = split(segment, ssa.elementSeparator, ssa.releaseCharacter).map(
