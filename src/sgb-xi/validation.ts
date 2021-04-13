@@ -4,10 +4,10 @@ TODO validation errors:
 all required values are filled
 every IK has 9 numeric digits
 filename.length == 9
-invoiceNumber.length <= 14 && /^[a-zA-Z0-9][a-zA-Z0-9/-]*[a-zA-Z0-9]$/.test(invoiceNumber)
-singleInvoiceNumber.length <= 6
-insuranceNumber.length <= 20
-documentNumber.length <= 10 && /^[a-zA-Z0-9][a-zA-Z0-9/-]*[a-zA-Z0-9]$/.test(documentNumber)
+rechnungsnummer.length <= 14 && /^[a-zA-Z0-9][a-zA-Z0-9/-]*[a-zA-Z0-9]$/.test(rechnungsnummer)
+einzelrechnungsnummer.length <= 6
+versichertennummer.length <= 20
+eindeutigeBelegnummer.length <= 10 && /^[a-zA-Z0-9][a-zA-Z0-9/-]*[a-zA-Z0-9]$/.test(eindeutigeBelegnummer)
 required parameters depending on other parameters to fill ELS segment details field
 
 */
@@ -22,9 +22,9 @@ street.length <= 46
 houseNumber.length <= 9
 postalCode.length <= 10
 city.length <= 40
-additionTitle.length <= 50
-approvalIdentifier.length <= 15
-assistiveTechnologyTitle.length <= 30
-inventoryNumber.length <= 15
+beschreibungZuschlagsart.length <= 50
+genehmigungskennzeichen.length <= 15
+bezeichnungPflegehilfsmittel.length <= 30
+inventarnummerPflegehilfsmittel.length <= 15
 
 */

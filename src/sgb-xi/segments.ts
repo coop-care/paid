@@ -1,140 +1,138 @@
-import { FileType } from "../types";
+import { FileType, MessageIdentifiers } from "../types";
 import { 
-    AdditionAssignmentCode, 
-    AdditionCalculationCode, 
-    AdditionCode, 
-    AdditionTypeCode, 
-    AssistiveTechnologyCode, 
-    BillingCode, 
-    CareLevelCode, 
-    InvoiceCode, 
-    PayScaleRegionCode, 
-    ProcessingCode, 
-    QualificationRemunerationCode, 
-    RemunerationCode, 
-    TypeOfServiceCode, 
-    VatCode, 
-    VatExemptionCode, 
+    ZuschlagszuordnungSchluessel, 
+    ZuschlagsberechnungSchluessel, 
+    ZuschlagSchluessel, 
+    ZuschlagsartSchluessel, 
+    PflegehilfsmittelSchluessel, 
+    AbrechnungscodeSchluessel, 
+    PflegegradSchluessel, 
+    RechnungsartSchluessel, 
+    TarifbereichSchluessel, 
+    VerarbeitungskennzeichenSchluessel, 
+    QualifikationsabhaengigeVerguetungSchluessel, 
+    VerguetungsartSchluessel, 
+    LeistungsartSchluessel, 
+    MehrwertsteuerSchluessel, 
+    UmsatzsteuerBefreiungSchluessel, 
 } from "./codes";
 import { mask, number, price, day, month, date, time, datetime, segment } from "../formatter";
 
 const Syntax_Version = "UNOC:3";
-const PLGA_Version = "PLGA:2"; // Pflegeleistungserbringer Gesamtaufstellung der Abrechnung
-const PLAA_Version = "PLAA:3"; // Pflegeleistungserbringer Abrechnungsdaten je Abrechnungsfall
 const DefaultCurrency = "EUR";
 
 export const UNB = (
-    senderID: string,
-    receiverID: string,
-    transmissionIndex: number, 
+    sender: string, // Absender IK
+    receiver: string, // Empfänger IK
+    interchangeControlReference: number, // Datenaustauschreferenz
     filename: string,
     fileType: FileType
 ) => segment(
     "UNB", 
     Syntax_Version,
-    senderID,
-    receiverID,
+    sender,
+    receiver,
     datetime(new Date()),
-    transmissionIndex.toString(),
+    interchangeControlReference.toString(),
     filename,
     fileType
 );
 
 export const UNZ = (
-    numberOfUNH: number,
-    transmissionIndex: number, 
+    interchangeControlCount: number, // = number of messages (starting with UNH)
+    interchangeControlReference: number,
 ) => segment(
     "UNZ",
-    numberOfUNH.toString(),
-    transmissionIndex.toString()
+    interchangeControlCount.toString(),
+    interchangeControlReference.toString()
 );
 
 export const UNH = (
-    indexOfUNH: number,
-    isPLGA = false,
+    messageReferenceNumber: number, // = index of message (starting with UNH)
+    messageIdentifier: MessageIdentifiers,
 ) => segment(
     "UNH",
-    indexOfUNH.toString(),
-    isPLGA ? PLGA_Version : PLAA_Version
+    messageReferenceNumber.toString(),
+    messageIdentifier
 );
 
 export const UNT = (
-    numberOfSegments: number, // including UNH and UNT
-    indexOfUNH: number
+    numberOfSegments: number, // Control count including UNH and UNT
+    messageReferenceNumber: number // = index of message
 ) => segment(
     "UNT",
     numberOfSegments.toString(),
-    indexOfUNH.toString()
+    messageReferenceNumber.toString()
 );
 
 export const FKT = (
-    processingCode: ProcessingCode, // always "01"
-    providerID: string, // the party who gets the money
-    payerID: string, // party who pays the money
-    insuranceID: string,
-    senderID: string,
-    combinedBilling?: boolean, // only for PLGA, undefined for PLAA
+    verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel, // always "01"
+    rechnungsstellerIK: string, // the party who gets the money
+    kostentraegerIK: string, // party who pays the money
+    pflegekasseIK: string,
+    absenderIK: string,
+    sammelrechnung?: boolean, // only for PLGA, undefined for PLAA
 ) => segment(
     "FKT",
-    processingCode,
-    combinedBilling === undefined
+    verarbeitungskennzeichen,
+    sammelrechnung === undefined
         ? undefined
-        : combinedBilling
+        : sammelrechnung
         ? "J"
         : "",
-    providerID,
-    payerID,
-    combinedBilling !== true ? insuranceID : "",
-    senderID
+    rechnungsstellerIK,
+    kostentraegerIK,
+    sammelrechnung !== true ? pflegekasseIK : "",
+    absenderIK
 );
 
 export const REC = (
-    invoiceNumber: string,
-    singleInvoiceNumber = "0",
-    invoiceDate: Date,
-    invoiceCode: InvoiceCode,
+    rechnungsnummer: string,
+    einzelrechnungsnummer = "0",
+    rechnungsdatum: Date,
+    rechnungsart: RechnungsartSchluessel,
     currency = DefaultCurrency
 ) => segment(
     "REC",
-    mask(invoiceNumber) + ":" + mask(singleInvoiceNumber),
-    date(invoiceDate),
-    invoiceCode,
+    mask(rechnungsnummer) + ":" + mask(einzelrechnungsnummer),
+    date(rechnungsdatum),
+    rechnungsart,
     currency
 );
 
 export const SRD = (
-    billingCode: BillingCode,
-    payScaleRegionCode: PayScaleRegionCode,
-    typeOfServiceCode: TypeOfServiceCode,
+    abrechnungscode: AbrechnungscodeSchluessel,
+    tarifbereich: TarifbereichSchluessel,
+    leistungsart: LeistungsartSchluessel,
 ) => segment(
     "SRD",
-    billingCode + ":" + payScaleRegionCode,
-    typeOfServiceCode
+    abrechnungscode + ":" + tarifbereich,
+    leistungsart
 );
 
 export const UST = (
-    taxOrdinalNumber = "",
-    vatExemptionCode: VatExemptionCode = "",
+    ordnungsnummer = "",
+    umsatzsteuerbefreiung: UmsatzsteuerBefreiungSchluessel = "",
 ) => segment(
     "UST",
-    mask(taxOrdinalNumber),
-    vatExemptionCode.length ? "J" : "",
-    vatExemptionCode
+    mask(ordnungsnummer),
+    umsatzsteuerbefreiung.length ? "J" : "",
+    umsatzsteuerbefreiung
 );
 
 export const GES = (
-    totalGrossAmounts: number, // = totalInvoiceAmount + totalCoPaymentAmounts + totalAidAmounts + vatAmount
-    totalInvoiceAmount: number,
-    totalCoPaymentAmounts?: number,
-    totalAidAmounts?: number,
-    vatAmount?: number,
+    summeGesamtbruttobetraege: number, // = gesamtrechnungsbetrag + summeZuzahlungsbetraege + summeBeihilfebetraege + mehrwertsteuerbetrag
+    gesamtrechnungsbetrag: number,
+    summeZuzahlungsbetraege?: number,
+    summeBeihilfebetraege?: number,
+    mehrwertsteuerbetrag?: number,
 ) => segment(
     "GES",
-    price(totalGrossAmounts),
-    price(totalCoPaymentAmounts),
-    price(totalAidAmounts),
-    price(totalInvoiceAmount),
-    price(vatAmount)
+    price(summeGesamtbruttobetraege),
+    price(summeZuzahlungsbetraege),
+    price(summeBeihilfebetraege),
+    price(gesamtrechnungsbetrag),
+    price(mehrwertsteuerbetrag)
 );
 
 export const NAM = (
@@ -151,12 +149,12 @@ export const NAM = (
 );
 
 export const INV = (
-    insuranceNumber: string,
-    documentNumber: string
+    versichertennummer: string,
+    eindeutigeBelegnummer: string
 ) => segment(
     "INV",
-    mask(insuranceNumber),
-    mask(documentNumber)
+    mask(versichertennummer),
+    mask(eindeutigeBelegnummer)
 );
 
 export const NAD = (
@@ -179,125 +177,125 @@ export const NAD = (
 );
 
 export const MAN = (
-    monthOfService: Date,
-    careLevelCode: CareLevelCode,
+    monatLeistungserbringung: Date,
+    pflegegrad: PflegegradSchluessel,
 ) => segment(
     "MAN",
-    monthOfService.getFullYear() + month(monthOfService),
+    monatLeistungserbringung.getFullYear() + month(monatLeistungserbringung),
     "", // "Pflegestufe", obsolete
     "", // "Pflegeklasse", obsolete
-    careLevelCode
+    pflegegrad
 );
 
 export const ESK = (
-    serviceStartDate: Date,
-    remunerationCode: RemunerationCode,
+    leistungsBeginn: Date,
+    verguetungsart: VerguetungsartSchluessel,
 ) => segment(
     "ESK",
-    day(serviceStartDate),
-    ["01", "02", "03", "06"].includes(remunerationCode) ? time(serviceStartDate) : ""
+    day(leistungsBeginn),
+    ["01", "02", "03", "06"].includes(verguetungsart) ? time(leistungsBeginn) : ""
 );
 
-// ELS is insanely complex: serviceCode and several parameters depend on renumerationCode
+// ELS is insanely complex: leistung and several parameters depend on verguetungsart
 export const ELS = (
-    typeOfServiceCode: TypeOfServiceCode,
-    remunerationCode: RemunerationCode,
-    qualificationRemunerationCode: QualificationRemunerationCode,
-    serviceCode: string,
-    unitPrice: number,
-    quantity: number,
-    serviceStartDate?: Date, // for remunerationCode 04
-    serviceEndDate?: Date, // for remunerationCode 01, 02, 03, 04
-    distanceKilometers?: number, // for remunerationCode 06 with serviceCode 04
-    pointValue?: number,
-    pointScore?: number,
+    leistungsart: LeistungsartSchluessel,
+    verguetungsart: VerguetungsartSchluessel,
+    qualifikationsabhaengigeVerguetung: QualifikationsabhaengigeVerguetungSchluessel,
+    leistung: string,
+    einzelpreis: number,
+    anzahl: number,
+    leistungsBeginn?: Date, // for verguetungsart 04
+    leistungsEnde?: Date, // for verguetungsart 01, 02, 03, 04
+    gefahreneKilometer?: number, // for verguetungsart 06 with leistung 04
+    punktwert?: number,
+    punktzahl?: number,
 ) => {
     let details = "00";
 
-    if (remunerationCode == "01") {
-        details = serviceEndDate ? time(serviceEndDate) : "00";
-    } else if (remunerationCode == "02" && serviceEndDate) {
-        details = time(serviceEndDate);
-    } else if (remunerationCode == "03" && serviceEndDate) {
-        details = time(serviceEndDate);
-    } else if (remunerationCode == "04" && serviceStartDate && serviceEndDate) {
-        details = day(serviceStartDate) + day(serviceEndDate);
-    } else if (remunerationCode == "06" && serviceCode == "04" 
-            && distanceKilometers != undefined) {
-        details = number(distanceKilometers, 0)
+    if (verguetungsart == "01") {
+        details = leistungsEnde ? time(leistungsEnde) : "00";
+    } else if (verguetungsart == "02" && leistungsEnde) {
+        details = time(leistungsEnde);
+    } else if (verguetungsart == "03" && leistungsEnde) {
+        details = time(leistungsEnde);
+    } else if (verguetungsart == "04" && leistungsBeginn && leistungsEnde) {
+        details = day(leistungsBeginn) + day(leistungsEnde);
+    } else if (verguetungsart == "06" && leistung == "04"
+            && gefahreneKilometer != undefined) {
+        details = number(gefahreneKilometer, 0)
     }
 
     return segment(
         "ELS",
         [
-            typeOfServiceCode,
-            remunerationCode,
-            qualificationRemunerationCode,
-            serviceCode
+            leistungsart,
+            verguetungsart,
+            qualifikationsabhaengigeVerguetung,
+            leistung
         ].join(":"),
-        price(unitPrice),
-        number(pointValue, 5),
-        number(pointScore, 0),
+        price(einzelpreis),
+        number(punktwert, 5),
+        number(punktzahl, 0),
         details,
-        number(quantity, 2)
+        number(anzahl, 2)
     )
 };
 
 export const ZUS = (
     isLast: boolean,
-    payScaleRegionCode: PayScaleRegionCode,
-    additionTypeCode: AdditionTypeCode, 
-    additionCode: AdditionCode, 
-    additionAssignmentCode: AdditionAssignmentCode,
-    additionCalculationCode: AdditionCalculationCode,
-    isDeduction: boolean,
-    additionValue: number,
-    cumulativeAmount: number,
-    additionTitle?: string,
+    tarifbereich: TarifbereichSchluessel,
+    zuschlagsart: ZuschlagsartSchluessel, 
+    zuschlag: ZuschlagSchluessel, 
+    zuschlagszuordnung: ZuschlagszuordnungSchluessel,
+    zuschlagsberechnung: ZuschlagsberechnungSchluessel,
+    istAbzugStattZuschlag: boolean,
+    wert: number,
+    ergebnis: number,
+    beschreibungZuschlagsart?: string,
 ) => segment(
     "ZUS",
-    [payScaleRegionCode, additionTypeCode, additionCode].join(":"),
-    mask(additionTitle?.substr(0, 50) || ""),
-    additionAssignmentCode,
-    additionCalculationCode,
-    isDeduction ? "0" : "1",
-    number(additionValue, 5),
-    price(cumulativeAmount),
+    [tarifbereich, zuschlagsart, zuschlag].join(":"),
+    mask(beschreibungZuschlagsart?.substr(0, 50) || ""),
+    zuschlagszuordnung,
+    zuschlagsberechnung,
+    istAbzugStattZuschlag ? "0" : "1",
+    number(wert, 5),
+    price(ergebnis),
     isLast? "1" : "0"
 );
 
 export const HIL = (
-    vatCode: VatCode = "",
-    vatAmount?: number,
-    coPaymentAmount?: number,
-    approvalIdentifier = "",
-    approvalDate?: Date,
-    assistiveTechnologyCode: AssistiveTechnologyCode = "",
-    assistiveTechnologyTitle = "",
-    assistiveTechnologyFeatureCode = "",
-    inventoryNumber = "",
+    mehrwertsteuerart: MehrwertsteuerSchluessel = "",
+    mehrwertsteuerbetrag?: number,
+    zuzahlungsbetrag?: number,
+    genehmigungskennzeichen = "",
+    genehmigungsdatum?: Date,
+    kennzeichenPflegehilfsmittel: PflegehilfsmittelSchluessel = "",
+    bezeichnungPflegehilfsmittel = "",
+    produktbesonderheitenPflegehilfsmittel = "",
+    inventarnummerPflegehilfsmittel = "",
 ) => segment(
     "HIL",
-    vatCode,
-    price(vatAmount),
-    price(coPaymentAmount),
-    mask(approvalIdentifier.substr(0, 15)),
-    approvalDate ? date(approvalDate) : "",
-    assistiveTechnologyCode,
-    mask(assistiveTechnologyTitle.substr(0, 30)),
-    mask(assistiveTechnologyFeatureCode.substr(0, 10)),
-    mask(inventoryNumber.substr(0, 20)),
+    mehrwertsteuerart,
+    price(mehrwertsteuerbetrag),
+    price(zuzahlungsbetrag),
+    mask(genehmigungskennzeichen.substr(0, 15)),
+    genehmigungsdatum ? date(genehmigungsdatum) : "",
+    kennzeichenPflegehilfsmittel,
+    mask(bezeichnungPflegehilfsmittel.substr(0, 30)),
+    mask(produktbesonderheitenPflegehilfsmittel.substr(0, 10)),
+    mask(inventarnummerPflegehilfsmittel.substr(0, 20)),
 );
 
-export const IAF = (
-    grossAmount: number, // = invoiceAmount + coPaymentAmount + aidAmount + vatAmount
-    invoiceAmount: number,
-    coPaymentAmount?: number,
-    aidAmount?: number,
+export const IAF = ( // is calculcated from all ELS / ZUS / HIL segments for one INV segment
+    gesamtbruttobetrag: number, // = rechnungsbetrag + zuzahlungsbetrag + beihilfebetrag
+    rechnungsbetrag: number,
+    zuzahlungsbetrag?: number,
+    beihilfebetrag?: number,
 ) => segment(
     "IAF",
-    price(grossAmount),
-    price(coPaymentAmount),
-    price(aidAmount),
-    price(invoiceAmount),
+    price(gesamtbruttobetrag),
+    price(zuzahlungsbetrag),
+    price(beihilfebetrag),
+    price(rechnungsbetrag),
 );

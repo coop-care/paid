@@ -1,14 +1,14 @@
 
 // 2.1 Schlüssel Rechnungsart
-export const invoiceCodes =  {
+export const rechnungsartSchluessel =  {
     "1": "Abrechnung von Leistungserbringer und Zahlung an IK Leistungserbringer",
     "2": "Abrechnung über Abrechnungsstelle (ohne Inkassovollmacht) und Zahlung an IK Leistungserbringer",
     "3": "Abrechnung über Abrechnungsstelle (mit Inkassovollmacht) und Zahlung an IK Abrechnungsstelle",
 }
-export type InvoiceCode = keyof typeof invoiceCodes;
+export type RechnungsartSchluessel = keyof typeof rechnungsartSchluessel;
 
 // 2.2.1 Schlüssel Abrechnungscode
-export const billingCodes = {
+export const abrechnungscodeSchluessel = {
     // Abrechnungsstelle
     "00": "Kennzeichen zur Identifizierung einer Abrechnungsstelle als Rechnungssteller",
     // Leistungserbringer Pflegehilfsmittel
@@ -43,10 +43,10 @@ export const billingCodes = {
     "98": "vollstationäre Pflege: öffentlicher Anbieter",
     "99": "vollstationäre Pflege: sonstige Pflegeeinrichtung",
 }
-export type BillingCode = keyof typeof billingCodes;
+export type AbrechnungscodeSchluessel = keyof typeof abrechnungscodeSchluessel;
 
 // 2.2.2 Schlüssel Tarifkennzeichen: Tarifbereich
-export const payScaleRegionCodes = {
+export const tarifbereichSchluessel = {
     "00": "Bundeseinheitlicher Tarif (Ost und West)",
     "01": "Baden-Württemberg",
     "02": "Bayern",
@@ -65,16 +65,16 @@ export const payScaleRegionCodes = {
     "16": "Thüringen",
     "23": "Berlin (gesamt)",
 }
-export type PayScaleRegionCode = keyof typeof payScaleRegionCodes;
+export type TarifbereichSchluessel = keyof typeof tarifbereichSchluessel;
 
 // 2.3 Schlüssel Verarbeitungskennzeichen
-export const processingCodes = {
+export const verarbeitungskennzeichenSchluessel = {
     "01": "Abrechnung ohne Besonderheiten",
 }
-export type ProcessingCode = keyof typeof processingCodes;
+export type VerarbeitungskennzeichenSchluessel = keyof typeof verarbeitungskennzeichenSchluessel;
 
 // 2.4 Schlüssel Art der abgegebenen Leistung
-export const typeOfServiceCodes = {
+export const leistungsartSchluessel = {
     "01": "ambulante Pflege (einschl. pflegerische Betreuungsmaßnahmen) (ohne Beratungsbesuch)",
     "02": "Tagespflege",
     "03": "Nachtpflege",
@@ -90,10 +90,10 @@ export const typeOfServiceCodes = {
     "13": "Pflegekurse nach § 45 SGB XI (z. B. Schulung in der Häuslichkeit)",
     "14": "Leistungen nach § 43b SGB XI (Vergütungszuschlag für zusätzliche Betreuung und Aktivierung)",
 }
-export type TypeOfServiceCode = keyof typeof typeOfServiceCodes;
+export type LeistungsartSchluessel = keyof typeof leistungsartSchluessel;
 
 // 2.5 Schlüssel Vergütungsart
-export const remunerationCodes = {
+export const verguetungsartSchluessel = {
     "01": "Leistungskomplexvergütung",
     "02": "Zeitvergütung",
     "03": "teilstationär",
@@ -103,10 +103,10 @@ export const remunerationCodes = {
     "08": "Pauschale (Beratungsbesuch) (sofern nicht Leistungskomplex)",
     "99": "keine Vetragspreisregelung",
 }
-export type RemunerationCode = keyof typeof remunerationCodes;
+export type VerguetungsartSchluessel = keyof typeof verguetungsartSchluessel;
 
 // 2.6 Schlüssel Qualifikationsabhängige Vergütung
-export const qualificationRemunerationCodes = {
+export const qualifikationsabhaengigeVerguetungSchluessel = {
     "0": "datentechn. nicht relevant",
     "1": "Pflegefachkraft",
     "2": "hauswirtschaftliche Fachkraft",
@@ -117,20 +117,20 @@ export const qualificationRemunerationCodes = {
     "7": "ISB Individuelle Schwerbehindertenbetreuung/-assistenz",
     "8": "Fachkraft für Betreuung",
 }
-export type QualificationRemunerationCode = keyof typeof qualificationRemunerationCodes;
+export type QualifikationsabhaengigeVerguetungSchluessel = keyof typeof qualifikationsabhaengigeVerguetungSchluessel;
 
 // 2.7.2.1 Schlüsselkennzeichen Zeiteinheit
-export const timeUnitServiceCodes = {
+export const zeiteinheitSchluessel = {
     "1": "Minute",
     "2": "5 Minuten",
     "3": "15 Minuten",
     "4": "Stunde",
     "5": "Tag",
 }
-export type TimeUnitServiceCode = keyof typeof timeUnitServiceCodes;
+export type ZeiteinheitSchluessel = keyof typeof zeiteinheitSchluessel;
 
 // 2.7.2.2 Schlüsselkennzeichen Zeitart
-export const timeActivityServiceCodes = {
+export const zeitartSchluessel = {
     "1": "Begleitung zum Arztbesuch",
     "2": "Begleitung zum Behördenbesuch",
     "3": "Körperbezogene Pflegemaßnahmen (Grundpflege)",
@@ -141,39 +141,39 @@ export const timeActivityServiceCodes = {
     "8": "Folgebesuch",
     "9": "Kombination unterschiedlicher Leistungsinhalte (nur bei landesspezifischer Regelung)",
 }
-export type TimeActivityServiceCode = keyof typeof timeActivityServiceCodes;
+export type ZeitartSchluessel = keyof typeof zeitartSchluessel;
 
 // 2.7.3 Schlüssel Kennzeichen Pflegesatz
-export const perDiemChargeServiceCodes = {
+export const pflegesatzSchluessel = {
     "00": "ganztags (teilstationär, vollstationär/Kurzzeitpflege)",
     "01": "halbtags (teilstationär/Tages- oder Nachtpflege)",
     "02": "Abwesenheit",
 }
-export type PerDiemChargeServiceCode = keyof typeof perDiemChargeServiceCodes;
+export type PflegesatzSchluessel = keyof typeof pflegesatzSchluessel;
 
 // 2.7.5 Schlüssel Wegegebühren/Beförderungsentgelt-Art
-export const fareServiceCodes = {
+export const wegegebuehrenSchluessel = {
     "01": "Tagespauschale",
     "02": "Monatspauschale",
     "03": "Einsatz- / Fahrtkostenpauschale",
     "04": "gefahrene Kilometer",
 }
-export type FareServiceCode = keyof typeof fareServiceCodes;
+export type WegegebuehrenSchluessel = keyof typeof wegegebuehrenSchluessel;
 
 // 2.7.7 Schlüssel Leistung: Pauschale (Beratungsbesuch nach § 37 Abs. 3)
-export const lumpSumServiceCodes = {
+export const pauschaleLeistungSchluessel = {
     "1": "Einsatzpauschale"
 }
-export type LumpSumServiceCode = keyof typeof lumpSumServiceCodes;
+export type PauschaleLeistungSchluessel = keyof typeof pauschaleLeistungSchluessel;
 
 // 2.7.8 Schlüssel Leistung: Sonstige
-export const otherServiceCodes = {
+export const sonstigeLeistungSchluessel = {
     "99": "Sonstiges"
 }
-export type OtherServiceCode = keyof typeof otherServiceCodes;
+export type SonstigeLeistungSchluessel = keyof typeof sonstigeLeistungSchluessel;
 
 // 2.8 Schlüssel Kennzeichen Pflegehilfsmittel
-export const assistiveTechnologyCodes = {
+export const pflegehilfsmittelSchluessel = {
     "": "nicht zutreffend",
     "00": "Neulieferung",
     "01": "Reparatur",
@@ -198,33 +198,33 @@ export const assistiveTechnologyCodes = {
     "21": "Miete (Quartal)",
     "22": "Miete (Tag)",
 }
-export type AssistiveTechnologyCode = keyof typeof assistiveTechnologyCodes;
+export type PflegehilfsmittelSchluessel = keyof typeof pflegehilfsmittelSchluessel;
 
 // 2.9 Schlüssel Mehrwertsteuer
-export const vatCodes = {
+export const mehrwertsteuerSchluessel = {
     "": "keine Mehrwertsteuer",
     "1": "voller Mehrwertsteuersatz, dem Einzelbetrag zuzurechnen",
     "2": "ermäßigter Mehrwertsteuersatz, dem Einzelbetrag zuzurechnen",
 }
-export type VatCode = keyof typeof vatCodes;
+export type MehrwertsteuerSchluessel = keyof typeof mehrwertsteuerSchluessel;
 
 // 2.13 Schlüssel Grund UST-Befreiung
-export const vatExemptionCodes = {
+export const umsatzsteuerBefreiungSchluessel = {
     "": "keine Umsatzsteuerbefreiung",
     "01": "Umsatzsteuerbefreiung nach § 4 Nr. 16",
 }
-export type VatExemptionCode = keyof typeof vatExemptionCodes;
+export type UmsatzsteuerBefreiungSchluessel = keyof typeof umsatzsteuerBefreiungSchluessel;
 
 // 2.14.2 Schlüssel Zuschlagsart
-export const additionTypeCodes = {
+export const zuschlagsartSchluessel = {
     "1": "ambulant",
     "2": "stationär (teil-/vollstationär)",
     "3": "Kurzzeitpflege",
 }
-export type AdditionTypeCode = keyof typeof additionTypeCodes;
+export type ZuschlagsartSchluessel = keyof typeof zuschlagsartSchluessel;
 
 // 2.14.3 Schlüssel Zuschlag
-export const additionCodes = {
+export const zuschlagSchluessel = {
     "00": "wenn kein Schlüssel vorhanden, (dann aber Klartext angeben)",
     "02": "Prozentuale anteilige Wegegebühren wegen gleichzeitiger LE SGB V und SGB XI",
     "03": "Anteilige Wegegebühren bei betreutes Wohnen",
@@ -247,27 +247,27 @@ export const additionCodes = {
     "21": "Ungünstige Zeiten",
     "22": "Ungünstige Tage",
 }
-export type AdditionCode = keyof typeof additionCodes;
+export type ZuschlagSchluessel = keyof typeof zuschlagSchluessel;
 
-// Kennzeichen Zuschlag/Abzug
-export const additionAssignmentCodes = {
-    "0": "Abzug",
-    "1": "Zuschlag",
+// n.a. Schlüssel Zuschlagszuordnung
+export const zuschlagszuordnungSchluessel = {
+    "1": "Leistung",
+    "2": "Wegegebühr",
 }
-export type AdditionAssignmentCode = keyof typeof additionAssignmentCodes;
+export type ZuschlagszuordnungSchluessel = keyof typeof zuschlagszuordnungSchluessel;
 
 // 2.15 Schlüssel Pflegegrad
-export const careLevelCodes = {
+export const pflegegradSchluessel = {
     "1": "Pflegegrad 1",
     "2": "Pflegegrad 2",
     "3": "Pflegegrad 3",
     "4": "Pflegegrad 4",
     "5": "Pflegegrad 5",
 }
-export type CareLevelCode = keyof typeof careLevelCodes;
+export type PflegegradSchluessel = keyof typeof pflegegradSchluessel;
 
 // 2.16 Schlüssel Zuschlagsberechnung
-export const additionCalculationCodes = {
+export const zuschlagsberechnungSchluessel = {
     "01": "Punktzahl absolut",
     "02": "Prozentsatz zur Punktzahl",
     "03": "Punktwert absolut",
@@ -286,4 +286,4 @@ export const additionCalculationCodes = {
     "16": "Prozentsatz zum Punktwert-Ersatzwert alles ZUS",
     "17": "Basiswert + Prozentsatz absolut bzw. Ersatzwert",
 }
-export type AdditionCalculationCode = keyof typeof additionCalculationCodes;
+export type ZuschlagsberechnungSchluessel = keyof typeof zuschlagsberechnungSchluessel;

@@ -1,65 +1,107 @@
+import { 
+    AbrechnungscodeSchluessel,
+    PflegegradSchluessel, 
+    RechnungsartSchluessel, 
+    TarifbereichSchluessel, 
+    LeistungsartSchluessel, 
+    UmsatzsteuerBefreiungSchluessel,
+    QualifikationsabhaengigeVerguetungSchluessel,
+    VerguetungsartSchluessel,
+    ZuschlagsartSchluessel,
+    ZuschlagsberechnungSchluessel,
+    ZuschlagSchluessel,
+    ZuschlagszuordnungSchluessel,
+    MehrwertsteuerSchluessel,
+    PflegehilfsmittelSchluessel,
+} from "./sgb-xi/codes";
 
-export declare enum FileType {
-    Test = 0, // "Testdatei"
-    Trial = 1, // "Erprobungsdatei"
-    Real = 2, // "Echtdatei"
+export const messageIdentifiers = {
+    "PLGA:2": "Pflegeleistungserbringer Gesamtaufstellung der Abrechnung",
+    "PLAA:3": "Pflegeleistungserbringer Abrechnungsdaten je Abrechnungsfall"
+}
+export type MessageIdentifiers = keyof typeof messageIdentifiers;
+
+export const fileTypes = {
+    "0": "Testdatei",
+    "1": "Erprobungsdatei",
+    "2": "Echtdatei",
+}
+export type FileType = keyof typeof fileTypes;
+
+export type Transmission = {
+    senderID: string; // "IK Absender" // Question: = rechnungsstellerIK = absenderIK?
+    receiverID: string; // "IK Empfänger" // Question: = kostentraegerIK = insuranceID?
+    interchangeControlReference: number; // Datenaustauschreferenz
+    filename: string;
+    fileType: FileType;
+    messages: Message[];
 }
 
-/*
-External parameters:
+export type Message = {
+    invoice: {
+        referenceNumber: string;
+        kostentraegerIK: string; // "IK Kostenträger" // Question: = receiverID = pflegekasseIK?
+        leistungsart: LeistungsartSchluessel;
+    },
+    careProvider: {
+        rechnungsstellerIK: string; // "IK Leistungserbringer (oder Abrechnungsstelle mit Inkassovollmacht)"
+        rechnungsart: RechnungsartSchluessel;
+        abrechnungscode: AbrechnungscodeSchluessel;
+        tarifbereich: TarifbereichSchluessel;
+        umsatzsteuerbefreiung: UmsatzsteuerBefreiungSchluessel;
+    },
+    clients: Versicherter[]
+};
 
-# Transmission:
-senderID "IK Absender"
-receiverID "IK Empfänger"
-transmissionIndex
-filename
-fileType
-processingCode "Verarbeitungskennzeichen", Anlage 3, Abschnitt 2.3
+export type Versicherter = {
+    pflegekasseIK: string;
+    versichertennummer: string;
+    pflegegrad: PflegegradSchluessel;
+    eindeutigeBelegnummer: string;
+    abrechnungsMonate: Abrechnungsmonat[];
+};
 
-# Invoice:
-payerID "IK Kostenträger"
-insuranceID "IK Pflegekasse"
-invoiceNumber
-invoiceCode "Rechnungsart", Anlage 3, Abschnitt 2.1
-billingCode "Abrechnungscode", Anlage 3, Abschnitt 2.2.1
-payScaleCode "Tarifkennzeichen" Anlage 3, Abschnitt 2.2.2
-typeOfServiceCode "Art der abgegebenen Leistung" Anlage 3, Abschnitt 2.4
+export type Abrechnungsmonat = {
+    monat: Date;
+    einsaetze: Einsatz[];
+};
 
-# Provider:
-providerID "IK Leistungserbringer (oder Abrechnungsstelle mit Inkassovollmacht)"
-vatExemptionCode "Grund UST-Befreiung" Anlage 3, Abschnitt 2.13
+export type Einsatz = {
+    leistungsBeginn: Date;
+    verguetungsart: VerguetungsartSchluessel;
+    leistungen: Leistung[];
+};
 
-# Client:
-insuranceNumber
-careLevelCode "Pflegegrad" Anlage 3, Abschnitt 2.15
+export type Leistung = {
+    qualifikationsabhaengigeVerguetung: QualifikationsabhaengigeVerguetungSchluessel,
+    leistung: string,
+    einzelpreis: number,
+    anzahl: number,
+    leistungsBeginn?: Date,
+    leistungsEnde?: Date, // for verguetungsart 01, 02, 03, 04
+    gefahreneKilometer?: number, // for verguetungsart 06 with leistung 04
+    punktwert?: number,
+    punktzahl?: number,
+    zusaetze: Zusatz[];
+    hilfsmittel?: {
+        mehrwertsteuerart: MehrwertsteuerSchluessel;
+        mehrwertsteuerbetrag?: number;
+        zuzahlungsbetrag?: number;
+        genehmigungskennzeichen: string;
+        genehmigungsdatum?: Date;
+        kennzeichenPflegehilfsmittel: PflegehilfsmittelSchluessel;
+        bezeichnungPflegehilfsmittel: string;
+        produktbesonderheitenPflegehilfsmittel: string;
+        inventarnummerPflegehilfsmittel: string;
+    }
+};
 
-# Service:
-serviceStartDate
-serviceEndDate
-remunerationCode "Vergütungsart" Anlage 3, Abschnitt 2.5
-qualificationDependentRemunerationCode "Qualifikationsabhängige Vergütung" Anlage 3, Abschnitt 2.6
-serviceCode "Leistung" Anlage 3, Abschnitt 2.7, Untergruppen je nach Vergütungsart
-unitPrice
-quantity
-distanceKilometers
-pointValue
-pointScore
-–
-additionTypeCode "Zuschlagsart" Anlage 3, Abschnitt 2.14.2
-additionCode "Zuschlag" Anlage 3, Abschnitt 2.14.3
-additionTitle
-additionAssignmentCode
-additionCalculationCode "Zuschlagsberechnung"; Anlage 3, Abschnitt 2.16
-isDeduction
-additionValue
-–
-vatCode "Mehrwertsteuer" Anlage 3, Abschnitt 2.9
-vatAmount
-coPaymentAmount
-approvalIdentifier
-approvalDate
-assistiveTechnologyCode "Kennzeichen Pflegehilfsmittel", Anlage 3, Abschnitt 2.8
-assistiveTechnologyTitle 
-assistiveTechnologyFeatureCode "Positionsnummer für Produktbesonderheiten von Pflegehilfsmitteln" Anlage 3, Abschnitt 2.12
-inventoryNumber
-*/
+export type Zusatz = {
+    zuschlagsart: ZuschlagsartSchluessel;
+    beschreibungZuschlagsart?: string;
+    zuschlag: ZuschlagSchluessel;
+    zuschlagszuordnung: ZuschlagszuordnungSchluessel;
+    zuschlagsberechnung: ZuschlagsberechnungSchluessel;
+    istAbzugStattZuschlag: boolean;
+    wert: number;
+};
