@@ -1,4 +1,4 @@
-import parse, { parseDate, parseDecimal } from "../../src/edifact/parser"
+import parse from "../../src/edifact/parser"
 
 describe("EDIFACT parser", () => {
 
@@ -111,24 +111,6 @@ describe("EDIFACT parser", () => {
         ).map((v) => v.tag)).toEqual(
             ["AAA","BBB","CC\nC","DDD","EEE"]
         )
-    })
-})
-
-describe("EDIFACT parsing utilities", () => {
-    
-    describe("parseDate", () => {
-        
-        it("parses date correctly", () => {
-            expect(parseDate("20120806","1215")).toEqual(new Date("2012-08-06 12:15"))
-        })
-    })
-
-    describe("parseDecimal", () => {
-
-        it("parses decimal correctly", () => {
-            expect(parseDecimal("123.456",".")).toEqual(123.456)
-            expect(parseDecimal("123,456",",")).toEqual(123.456)
-        })
     })
 })
 

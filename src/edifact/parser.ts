@@ -48,8 +48,8 @@ export default function parse(str: string): Interchange {
             // Interchange header
             case "UNB": 
                 const syntaxIdentifier = elements[0][0]
-                const syntaxVersionNumber = elements[0][1]
-                if (syntaxIdentifier != "UNOC" || syntaxVersionNumber != "3") {
+                const syntaxVersionNumber = parseInt(elements[0][1])
+                if (syntaxIdentifier != "UNOC" || syntaxVersionNumber != 3) {
                     throw new Error("Only syntax identifier UNOC version 3 is supported by this parser")
                 }
                 header = elements
@@ -150,25 +150,4 @@ function unescape(str: string, escapeChar: string): string {
         }
     }
     return result
-}
-
-
-/** Parse date in YYYYMMDD and HHMM format */
-export function parseDate(date: string, time: string): Date {
-    if (date.length != 8) throw new Error(`Expected date in the format YYYYMMDD but got "${date}"`)
-    if (time.length != 4) throw new Error(`Expected time in format HHMM but got "${time}"`)
-    const result = new Date(
-        parseInt(date.substring(0, 4)),
-        parseInt(date.substring(4, 6)) - 1, // Date constructor expects an index
-        parseInt(date.substring(6, 8)),
-        parseInt(time.substring(0, 2)),
-        parseInt(time.substring(2, 4))
-    )
-    if (isNaN(result.getTime())) throw new Error(`Invalid date-time "${date}:${time}"`)
-    return result
-}
-
-/** Parse a decimal with given decimal separator  */
-export function parseDecimal(str: string, decimalNotation: string): number {
-    return parseFloat(str.replace(decimalNotation, "."))
 }
