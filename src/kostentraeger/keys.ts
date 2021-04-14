@@ -1,22 +1,5 @@
 /* 
- *  These types are based on the documentation
- *  
- *  Anhang 5 zur Anlage 1 - Kostenträgerdatei,
- *  Regelung der Datenübermittlung nach § 105 Abs. 2 SGB XI Technische Anlage (Anlage 1),
- *  Version 3.3, Effective starting 01.10.2021
- *  
- *  https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_ANH5_20170907_105_oA.pdf
- * 
- *  and
- * 
- *  Anhang 3 zur Anlage 1 - Kapitel 10 "Kostenträgerdatei",
- *  zu den Richtlinien der Spitzenverbände der Krankenkassen nach § 302 Abs. 2 SGB V über Form und 
- *  Inhalt des Abrechnungsverfahrens mit "Sonstigen Leistungserbringern" sowie mit Hebammen und 
- *  Entbindungspflegern (§ 301a SGB V)
- *  Version 07, Effective starting 01.10.2021
- * 
- *  https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anhang_03_Anlage_1_TP5_20200616.pdf
- * 
+ *  These keys are based on the documentation mentioned in ./parser.ts
  */
 
 /** Art der Anschrift */

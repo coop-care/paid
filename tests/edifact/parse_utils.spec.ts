@@ -5,7 +5,7 @@ describe("EDIFACT parsing utilities", () => {
     describe("parseDate", () => {
         
         it("parses date and time correctly", () => {
-            expect(parseDate("20120806","1215")).toEqual(new Date("2012-08-06 12:15"))
+            expect(parseDate("20120806","1215")).toEqual(new Date("2012-08-06T12:15Z"))
         })
 
         it("parses date only correctly", () => {
