@@ -1,7 +1,7 @@
 import {
     kassenartSchluessel, KassenartSchluessel,
     verfahrenSchluessel, VerfahrenSchluessel
-} from './filename_keys'
+} from './keys'
 
 /** Elements with metadata of a "Kostenträger" filename */
 export type KostentraegerFilenameElements = {

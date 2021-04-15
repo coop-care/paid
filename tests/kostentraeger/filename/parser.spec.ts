@@ -1,4 +1,4 @@
-import parse from "../../src/kostentraeger/filename_parser"
+import parse from "../../../src/kostentraeger/filename/parser"
 import MockDate from 'mockdate'
 
 const parseDate = (str: string): Date => parse(`AO06${str}.ke0`).validityStartDate
