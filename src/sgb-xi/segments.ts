@@ -1,20 +1,17 @@
-import { FileType, MessageIdentifiers } from "../types";
+import { Amounts, BillingData, CareProvider, Leistung, MessageIdentifiers, Versicherter } from "../types";
 import { 
     ZuschlagszuordnungSchluessel, 
     ZuschlagsberechnungSchluessel, 
     ZuschlagSchluessel, 
     ZuschlagsartSchluessel, 
-    PflegehilfsmittelSchluessel, 
-    AbrechnungscodeSchluessel, 
+    PflegehilfsmittelSchluessel,
     PflegegradSchluessel, 
     RechnungsartSchluessel, 
     TarifbereichSchluessel, 
-    VerarbeitungskennzeichenSchluessel, 
-    QualifikationsabhaengigeVerguetungSchluessel, 
+    VerarbeitungskennzeichenSchluessel,
     VerguetungsartSchluessel, 
     LeistungsartSchluessel, 
-    MehrwertsteuerSchluessel, 
-    UmsatzsteuerBefreiungSchluessel, 
+    MehrwertsteuerSchluessel,
 } from "./codes";
 import { mask, number, price, day, month, date, time, datetime, segment } from "../formatter";
 
@@ -22,29 +19,25 @@ const Syntax_Version = "UNOC:3";
 const DefaultCurrency = "EUR";
 
 export const UNB = (
-    sender: string, // Absender IK
-    receiver: string, // Empfänger IK
-    interchangeControlReference: number, // Datenaustauschreferenz
-    filename: string,
-    fileType: FileType
+    { senderID, receiverID, controlReference, filename, fileType }: BillingData
 ) => segment(
     "UNB", 
     Syntax_Version,
-    sender,
-    receiver,
+    senderID,
+    receiverID,
     datetime(new Date()),
-    interchangeControlReference.toString(),
+    controlReference.toString(),
     filename,
     fileType
 );
 
 export const UNZ = (
-    interchangeControlCount: number, // = number of messages (starting with UNH)
-    interchangeControlReference: number,
+    controlCount: number, // = number of messages (starting with UNH)
+    controlReference: number,
 ) => segment(
     "UNZ",
-    interchangeControlCount.toString(),
-    interchangeControlReference.toString()
+    controlCount.toString(),
+    controlReference.toString()
 );
 
 export const UNH = (
@@ -67,10 +60,14 @@ export const UNT = (
 
 export const FKT = (
     verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel, // always "01"
-    rechnungsstellerIK: string, // the party who gets the money
-    kostentraegerIK: string, // party who pays the money
-    pflegekasseIK: string,
-    absenderIK: string,
+    {
+        absenderIK, // PLGA: Absender der Datei, identisch zu Absender in UNB; PLAA: wie RechnungsstellerIK (?)
+        rechnungsstellerIK, // Leistungserbringer oder Abrechnungsstelle mit Inkassovollmacht bei Sammelrechnung; PLAA == PLGA
+    }: CareProvider,
+    {
+        kostentraegerIK, // Institution die die Rechnung begleicht laut Kostenträgerdatei; PLAA == PLGA
+        pflegekasseIK, // Pflegekasse des Leistungs- bzw. Bewilligungsbescheids; falls angegeben gilt: PLAA == PLGA
+    }: Versicherter,
     sammelrechnung?: boolean, // only for PLGA, undefined for PLAA
 ) => segment(
     "FKT",
@@ -83,26 +80,29 @@ export const FKT = (
     rechnungsstellerIK,
     kostentraegerIK,
     sammelrechnung !== true ? pflegekasseIK : "",
-    absenderIK
+    sammelrechnung !== undefined ? absenderIK : rechnungsstellerIK
 );
 
 export const REC = (
     rechnungsnummer: string,
-    einzelrechnungsnummer = "0",
-    rechnungsdatum: Date,
+    leistungserbringerIndex: number,
+    sammelrechnung: boolean,
+    rechnungsdatum = new Date(),
     rechnungsart: RechnungsartSchluessel,
     currency = DefaultCurrency
 ) => segment(
     "REC",
-    mask(rechnungsnummer) + ":" + mask(einzelrechnungsnummer),
+    mask(rechnungsnummer) + ":" + (sammelrechnung || rechnungsart == "1" ? 0 : (leistungserbringerIndex + 1)),
     date(rechnungsdatum),
     rechnungsart,
     currency
 );
 
 export const SRD = (
-    abrechnungscode: AbrechnungscodeSchluessel,
-    tarifbereich: TarifbereichSchluessel,
+    {
+        abrechnungscode,
+        tarifbereich,
+    }: CareProvider,
     leistungsart: LeistungsartSchluessel,
 ) => segment(
     "SRD",
@@ -110,42 +110,40 @@ export const SRD = (
     leistungsart
 );
 
-export const UST = (
-    ordnungsnummer = "",
-    umsatzsteuerbefreiung: UmsatzsteuerBefreiungSchluessel = "",
-) => segment(
+export const UST = ({
+    umsatzsteuerOrdnungsnummer = "",
+    umsatzsteuerBefreiung = "",
+}: CareProvider) => segment(
     "UST",
-    mask(ordnungsnummer),
-    umsatzsteuerbefreiung.length ? "J" : "",
-    umsatzsteuerbefreiung
+    mask(umsatzsteuerOrdnungsnummer),
+    umsatzsteuerBefreiung.length ? "J" : "",
+    umsatzsteuerBefreiung
 );
 
-export const GES = (
-    summeGesamtbruttobetraege: number, // = gesamtrechnungsbetrag + summeZuzahlungsbetraege + summeBeihilfebetraege + mehrwertsteuerbetrag
-    gesamtrechnungsbetrag: number,
-    summeZuzahlungsbetraege?: number,
-    summeBeihilfebetraege?: number,
-    mehrwertsteuerbetrag?: number,
-) => segment(
+export const GES = ({
+    gesamtbruttobetrag,
+    rechnungsbetrag,
+    zuzahlungsbetrag,
+    beihilfebetrag,
+    mehrwertsteuerbetrag,
+}: Amounts) => segment(
     "GES",
-    price(summeGesamtbruttobetraege),
-    price(summeZuzahlungsbetraege),
-    price(summeBeihilfebetraege),
-    price(gesamtrechnungsbetrag),
-    price(mehrwertsteuerbetrag)
+    price(gesamtbruttobetrag),
+    price(zuzahlungsbetrag || undefined),
+    price(beihilfebetrag || undefined),
+    price(rechnungsbetrag),
+    price(mehrwertsteuerbetrag || undefined)
 );
 
-export const NAM = (
-    name1: string,
-    name2 = "",
-    name3 = "",
-    name4 = ""
-) => segment(
+export const NAM = ({
+    name,
+    ansprechpartner
+}: CareProvider) => segment(
     "NAM",
-    mask(name1.substr(0, 30)),
-    mask(name2.substr(0, 30)),
-    mask(name3.substr(0, 30)),
-    mask(name4.substr(0, 30)),
+    mask(name.substr(0, 30)),
+    ...ansprechpartner.slice(0, 3).map(ansprechpartner =>
+        Object.values(ansprechpartner).filter(Boolean).join(", ").substr(0, 30)
+    )
 );
 
 export const INV = (
@@ -157,15 +155,15 @@ export const INV = (
     mask(eindeutigeBelegnummer)
 );
 
-export const NAD = (
-    firstName: string,
-    lastName: string,
-    birthday: Date,
+export const NAD = ({
+    firstName,
+    lastName,
+    birthday,
     street = "",
     houseNumber = "",
     postalCode = "",
     city = ""
-) => segment(
+}: Versicherter) => segment(
     "NAD",
     mask(firstName.substr(0, 45)),
     mask(lastName.substr(0, 45)),
@@ -197,19 +195,19 @@ export const ESK = (
 );
 
 // ELS is insanely complex: leistung and several parameters depend on verguetungsart
-export const ELS = (
-    leistungsart: LeistungsartSchluessel,
-    verguetungsart: VerguetungsartSchluessel,
-    qualifikationsabhaengigeVerguetung: QualifikationsabhaengigeVerguetungSchluessel,
-    leistung: string,
-    einzelpreis: number,
-    anzahl: number,
-    leistungsBeginn?: Date, // for verguetungsart 04
-    leistungsEnde?: Date, // for verguetungsart 01, 02, 03, 04
-    gefahreneKilometer?: number, // for verguetungsart 06 with leistung 04
-    punktwert?: number,
-    punktzahl?: number,
-) => {
+export const ELS = ({
+    leistungsart,
+    verguetungsart,
+    qualifikationsabhaengigeVerguetung,
+    leistung,
+    einzelpreis,
+    anzahl,
+    leistungsBeginn, // for verguetungsart 04
+    leistungsEnde, // for verguetungsart 01, 02, 03, 04
+    gefahreneKilometer, // for verguetungsart 06 with leistung 04
+    punktwert,
+    punktzahl,
+}: Leistung) => {
     let details = "00";
 
     if (verguetungsart == "01") {
@@ -287,15 +285,15 @@ export const HIL = (
     mask(inventarnummerPflegehilfsmittel.substr(0, 20)),
 );
 
-export const IAF = ( // is calculcated from all ELS / ZUS / HIL segments for one INV segment
-    gesamtbruttobetrag: number, // = rechnungsbetrag + zuzahlungsbetrag + beihilfebetrag
-    rechnungsbetrag: number,
-    zuzahlungsbetrag?: number,
-    beihilfebetrag?: number,
-) => segment(
+export const IAF = ({ // is calculcated from all ELS / ZUS / HIL segments for one INV segment
+    gesamtbruttobetrag,
+    rechnungsbetrag,
+    zuzahlungsbetrag,
+    beihilfebetrag
+}: Amounts) => segment(
     "IAF",
     price(gesamtbruttobetrag),
-    price(zuzahlungsbetrag),
-    price(beihilfebetrag),
+    price(zuzahlungsbetrag || undefined),
+    price(beihilfebetrag || undefined),
     price(rechnungsbetrag),
 );

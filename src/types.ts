@@ -28,51 +28,71 @@ export const fileTypes = {
 }
 export type FileType = keyof typeof fileTypes;
 
-export type Transmission = {
-    senderID: string; // "IK Absender" // Question: = rechnungsstellerIK = absenderIK?
-    receiverID: string; // "IK Empfänger" // Question: = kostentraegerIK = insuranceID?
-    interchangeControlReference: number; // Datenaustauschreferenz
+export type BillingData = {
+    senderID: string;
+    receiverID: string;
+    controlReference: number; // Datenaustauschreferenz
     filename: string;
     fileType: FileType;
-    messages: Message[];
+    rechnungsart: RechnungsartSchluessel;
+    invoices: Invoice[];
 }
 
-export type Message = {
-    invoice: {
-        referenceNumber: string;
-        kostentraegerIK: string; // "IK Kostenträger" // Question: = receiverID = pflegekasseIK?
-        leistungsart: LeistungsartSchluessel;
-    },
-    careProvider: {
-        rechnungsstellerIK: string; // "IK Leistungserbringer (oder Abrechnungsstelle mit Inkassovollmacht)"
-        rechnungsart: RechnungsartSchluessel;
-        abrechnungscode: AbrechnungscodeSchluessel;
-        tarifbereich: TarifbereichSchluessel;
-        umsatzsteuerbefreiung: UmsatzsteuerBefreiungSchluessel;
-    },
-    clients: Versicherter[]
+export type Invoice = {
+    referencePrefix: string;
+    referenceNumber: number;
+    date?: Date;
+    careProvider: CareProvider;
+    lineItems: Abrechnungsfall[];
 };
+
+export type CareProvider = {
+    name: string;
+    ansprechpartner: {
+        name?: string;
+        phone?: string;
+    }[];
+    // Leistungserbringer, der selbst abrechnet (Rechnungsart 1), 
+    // oder Abrechnungsstelle (Rechnungsart 2 + 3):
+    absenderIK: string;
+    // Leistungserbringer (Rechnungsart 1 + 2),
+    // oder Abrechnungsstelle mit Inkasssovollmacht (Rechnungsart 3).
+    // Hinweis: absenderIK und rechnungsstellerIK sind bei Rechnungsart 1 + 3 identisch.
+    rechnungsstellerIK: string;
+    abrechnungscode: AbrechnungscodeSchluessel;
+    tarifbereich: TarifbereichSchluessel;
+    umsatzsteuerBefreiung: UmsatzsteuerBefreiungSchluessel;
+    umsatzsteuerOrdnungsnummer?: string;
+};
+
+export type Abrechnungsfall = {
+    versicherter: Versicherter;
+    eindeutigeBelegnummer: string;
+    einsaetze: Einsatz[];
+}
 
 export type Versicherter = {
     pflegekasseIK: string;
+    kostentraegerIK: string;
     versichertennummer: string;
     pflegegrad: PflegegradSchluessel;
-    eindeutigeBelegnummer: string;
-    abrechnungsMonate: Abrechnungsmonat[];
-};
-
-export type Abrechnungsmonat = {
-    monat: Date;
-    einsaetze: Einsatz[];
+    firstName: string;
+    lastName: string;
+    birthday: Date;
+    street?: string;
+    houseNumber?: string;
+    postalCode?: string;
+    city?: string;
 };
 
 export type Einsatz = {
     leistungsBeginn: Date;
-    verguetungsart: VerguetungsartSchluessel;
     leistungen: Leistung[];
 };
 
 export type Leistung = {
+    leistungsart: LeistungsartSchluessel;
+    verguetungsart: VerguetungsartSchluessel;
     qualifikationsabhaengigeVerguetung: QualifikationsabhaengigeVerguetungSchluessel,
     leistung: string,
     einzelpreis: number,
@@ -83,17 +103,7 @@ export type Leistung = {
     punktwert?: number,
     punktzahl?: number,
     zusaetze: Zusatz[];
-    hilfsmittel?: {
-        mehrwertsteuerart: MehrwertsteuerSchluessel;
-        mehrwertsteuerbetrag?: number;
-        zuzahlungsbetrag?: number;
-        genehmigungskennzeichen: string;
-        genehmigungsdatum?: Date;
-        kennzeichenPflegehilfsmittel: PflegehilfsmittelSchluessel;
-        bezeichnungPflegehilfsmittel: string;
-        produktbesonderheitenPflegehilfsmittel: string;
-        inventarnummerPflegehilfsmittel: string;
-    }
+    hilfsmittel?: Hilfsmittel;
 };
 
 export type Zusatz = {
@@ -104,4 +114,24 @@ export type Zusatz = {
     zuschlagsberechnung: ZuschlagsberechnungSchluessel;
     istAbzugStattZuschlag: boolean;
     wert: number;
+};
+
+export type Hilfsmittel = {
+    mehrwertsteuerart: MehrwertsteuerSchluessel;
+    mehrwertsteuerbetrag?: number;
+    zuzahlungsbetrag?: number;
+    genehmigungskennzeichen: string;
+    genehmigungsdatum?: Date;
+    kennzeichenPflegehilfsmittel: PflegehilfsmittelSchluessel;
+    bezeichnungPflegehilfsmittel: string;
+    produktbesonderheitenPflegehilfsmittel: string;
+    inventarnummerPflegehilfsmittel: string;
+};
+
+export type Amounts = {
+    gesamtbruttobetrag: number, // = rechnungsbetrag + zuzahlungsbetrag + beihilfebetrag + mwst
+    rechnungsbetrag: number, // max. bis zum Höchstleistungsanspruch
+    zuzahlungsbetrag: number, // bei Pflegehilfsmitteln oder wenn Bruttobetrag über Höchstleistungsanspruch liegt
+    beihilfebetrag: number, // gem. §28 Abs. 2 SGB XI
+    mehrwertsteuerbetrag: number,
 };
