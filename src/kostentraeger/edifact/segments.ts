@@ -32,6 +32,7 @@ export type KTORInterchange = {
 
 /** All the segments of one KTOR (=Kostenträger) message */
 export type KTORMessage = {
+    id: number, 
     idk: IDK,
     vdt: VDT,
     fkt: FKT,

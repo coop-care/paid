@@ -1,6 +1,5 @@
-import parseEdifact from "../../edifact/parser"
 import { parseDate, parseTimeOfDay } from "../../edifact/parse_utils"
-import { Message } from "../../edifact/types"
+import { Interchange, Message } from "../../edifact/types"
 import { 
     abrechnungscodeSchluessel, AbrechnungscodeSchluessel,
     anschriftartSchluessel, AnschriftartSchluessel,
@@ -49,8 +48,7 @@ import { KTORInterchange, KTORMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, V
  *  serialized form but does not divorce the data structure from (the limitations of) the
  *  EDIFACT message format yet.
 */
-export default function parse(edifact: string): KTORInterchange {
-    const interchange = parseEdifact(edifact)
+export default function parse(interchange: Interchange): KTORInterchange {
     const header = interchange.header
     return {
         spitzenverbandIK: parseInt(header[1][0]),
@@ -62,7 +60,8 @@ export default function parse(edifact: string): KTORInterchange {
 
 /** Parse only one message of the interchange */
 function parseMessage(message: Message): KTORMessage {
-    const messageTxt = `Message ${parseInt(message.header[0][0])} -`
+    const messageId = parseInt(message.header[0][0])
+    const messageTxt = `Message ${messageId} -`
     const messageType = message.header[1][0]
     if (messageType != "KOTR") {
         throw new Error(`${messageTxt} Unknown message type ${messageType}`)
@@ -157,6 +156,7 @@ function parseMessage(message: Message): KTORMessage {
     dfuList.sort((a, b) => a.index - b.index)
 
     return {
+        id: messageId,
         idk: idk,
         vdt: vdt,
         fkt: fkt,
