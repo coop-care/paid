@@ -44,10 +44,9 @@ import { KTORInterchange, KTORMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, V
  *  (miscellaneous providers of health care services)
  */
 
-/** Parse a Kostenträger EDIFACT interchange. It only parses the interchange into a legible non-
- *  serialized form but does not divorce the data structure from (the limitations of) the
- *  EDIFACT message format yet.
-*/
+/* Transforms the serial data (array of arrays) from a Kostenträger EDIFACT-interchange into legible
+ * messages with labelled typesafe segments. It does however not divorce the data structure from 
+ * (the limitations of) the EDIFACT message format yet. */
 export default function parse(interchange: Interchange): KTORInterchange {
     const header = interchange.header
     return {

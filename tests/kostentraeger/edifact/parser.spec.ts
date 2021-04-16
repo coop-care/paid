@@ -1,5 +1,4 @@
-import parseEdifact from "../../../src/edifact/parser"
-import { parseTimeOfDay } from "../../../src/edifact/parse_utils"
+import tokenize from "../../../src/edifact/tokenizer"
 import parseKostentraeger from "../../../src/kostentraeger/edifact/parser"
 
 import { KTORInterchange, KTORMessage } from "../../../src/kostentraeger/edifact/segments"
@@ -374,6 +373,6 @@ const ans = "ANS+1+42285+Wuppertal+Lichtscheiderstraße 89'"
 
 const msg = (str: string, i: number = 1): string => `UNH+${i}+KOTR:01'${str}UNT+000007+${i}'`
 
-const parse = (str: string): KTORInterchange => parseKostentraeger(parseEdifact(str))
+const parse = (str: string): KTORInterchange => parseKostentraeger(tokenize(str))
 
 const parseMessages = (str: string): KTORMessage[] => parse(unb+str+unz).kostentraeger
