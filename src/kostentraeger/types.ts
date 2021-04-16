@@ -8,7 +8,7 @@ import { VerarbeitungskennzeichenSchluessel } from "./edifact/keys"
 export type KostentraegerList = {
     /** Institutionskennzeichen (=Institution code) of the umbrella organization that issued this
      *  list */
-    spitzenverbandIK: number,
+    spitzenverbandIK: string,
     /** Date this list was created. This is not the validity start date. */
     creationDate: Date,
     /** All the Kostentraeger for this umbrella organization */
@@ -23,7 +23,7 @@ export type KostentraegerList = {
 export type Kostentraeger = {
     /** Institutionskennzeichen (=Institution code). 
      *  Nine-digit unique identifier for this institution */
-    ik: number,
+    ik: string,
     /** Full name of the institution (max. 123 characters) */
     name: string,
     /** Abbreviated name of the institution (max. 30 characters) */

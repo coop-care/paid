@@ -23,7 +23,7 @@ import {
 /** Contains all the KTOR messages of one EDIFACT interchange and information from the header */
 export type KTORInterchange = {
     /** Institutionskennzeichen (=Institution code) of the umbrella organization that issued this */
-    spitzenverbandIK: number
+    spitzenverbandIK: string
     /** Date this list was created. This is not the validity start date. */
     creationDate: Date,
     /** All the Kostentraeger for this umbrella organization */
@@ -48,10 +48,10 @@ export type KTORMessage = {
 /** Identifikation */
 export type IDK = {
     /** Institutionskennzeichen. Institution code. */
-    ik: number,
+    ik: string,
     /* Type of institution. 99 = dummy. Apparently always 99 for TP5 and TP6,
        because all information for the IK must be derived from the VKG segment */
-    institutionsart: number,
+    institutionsart: string,
     /** Abbreviated name, max 30 characters */
     abbreviatedName: string,
     /* optional field. Apparently is missing always */
@@ -91,11 +91,11 @@ export type VKG = {
     /** What is linked */
     ikVerknuepfungsartSchluessel: IKVerknuepfungsartSchluessel,
     /** IK of the linked partner */
-    verknuepfungspartnerIK: number,
+    verknuepfungspartnerIK: string,
     /** health care provider group, a.k.a LE-Gruppe */
     leistungserbringergruppeSchluessel?: LeistungserbringergruppeSchluessel,
     /** IK of the clearing office. If undefined, the link is valid for all offices */
-    abrechnungsstelleIK?: number,
+    abrechnungsstelleIK?: string,
     /** How the data should be conveyed */
     datenlieferungsartSchluessel?: DatenlieferungsartSchluessel,
     /** On what kind of medium the data should be conveyed */

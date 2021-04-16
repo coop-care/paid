@@ -11,7 +11,7 @@ describe("kostentraeger edifact parser", () => {
             "UNB+UNOC:3+109910000+999999999+20210401:1510+00178++AO06Q221ke1'"+
             "UNZ+000188+00178'"
         )).toEqual({
-            spitzenverbandIK: 109910000,
+            spitzenverbandIK: "109910000",
             creationDate: new Date(Date.UTC(2021, 4-1, 1, 15, 10)),
             kostentraeger: [],
         })
@@ -52,8 +52,8 @@ describe("kostentraeger edifact parser", () => {
         ))).toEqual([{
             id: 1,
             idk: {
-                ik: 100295017,
-                institutionsart: 99,
+                ik: "100295017",
+                institutionsart: "99",
                 abbreviatedName: "gkv informatik",
                 vertragskassennummer: undefined
             },
@@ -294,9 +294,9 @@ describe("kostentraeger edifact parser", () => {
         ))[0].vkgList).toEqual([
             {
                 ikVerknuepfungsartSchluessel: "01",
-                verknuepfungspartnerIK: 123456789,
+                verknuepfungspartnerIK: "123456789",
                 leistungserbringergruppeSchluessel: "6",
-                abrechnungsstelleIK: 888888888,
+                abrechnungsstelleIK: "888888888",
                 datenlieferungsartSchluessel: "07",
                 uebermittlungsmediumSchluessel: "7",
                 standortLeistungserbringerBundeslandSchluessel: "01",
@@ -306,7 +306,7 @@ describe("kostentraeger edifact parser", () => {
                 tarifkennzeichen: undefined
             }, {
                 ikVerknuepfungsartSchluessel: "00",
-                verknuepfungspartnerIK: 987654321,
+                verknuepfungspartnerIK: "987654321",
                 leistungserbringergruppeSchluessel: "5",
                 abrechnungsstelleIK: undefined,
                 datenlieferungsartSchluessel: "21",
@@ -318,7 +318,7 @@ describe("kostentraeger edifact parser", () => {
                 tarifkennzeichen: "12345"
             }, {
                 ikVerknuepfungsartSchluessel: "09",
-                verknuepfungspartnerIK: 50505050,
+                verknuepfungspartnerIK: "50505050",
                 leistungserbringergruppeSchluessel: undefined,
                 abrechnungsstelleIK: undefined,
                 datenlieferungsartSchluessel: undefined,

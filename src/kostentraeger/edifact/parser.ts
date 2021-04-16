@@ -51,7 +51,7 @@ import { KTORInterchange, KTORMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, V
 export default function parse(interchange: Interchange): KTORInterchange {
     const header = interchange.header
     return {
-        spitzenverbandIK: parseInt(header[1][0]),
+        spitzenverbandIK: header[1][0],
         creationDate: parseDate(header[3][0], header[3][1]),
         kostentraeger: interchange.messages.map((message) => parseMessage(message))
         // header[6] would contain the file name. Though there is probably no meaning in parsing that
@@ -175,8 +175,8 @@ function parseMessage(message: Message): KTORMessage {
 }
 
 const readIDK = (e: string[]): IDK => ({
-    ik: parseInt(e[0]),
-    institutionsart: parseInt(e[1]), 
+    ik: e[0],
+    institutionsart: e[1], 
     abbreviatedName: e[2],
     vertragskassennummer: e.length > 3 ? parseInt(e[3]) : undefined
 })
@@ -265,9 +265,9 @@ const readVKG = (e: string[]): VKG => {
 
     return {
         ikVerknuepfungsartSchluessel: e0 as IKVerknuepfungsartSchluessel,
-        verknuepfungspartnerIK: parseInt(e[1]),
+        verknuepfungspartnerIK: e[1],
         leistungserbringergruppeSchluessel: e2 ? e2 as LeistungserbringergruppeSchluessel : undefined,
-        abrechnungsstelleIK: e[3] ? parseInt(e[3]) : undefined,
+        abrechnungsstelleIK: e[3] ? e[3] : undefined,
         datenlieferungsartSchluessel: e4 ? e4 as DatenlieferungsartSchluessel : undefined,
         uebermittlungsmediumSchluessel: e5 ? e5 as UebermittlungsmediumSchluessel : undefined,
         standortLeistungserbringerBundeslandSchluessel: e6 ? e6 as BundeslandSchluessel : undefined,
