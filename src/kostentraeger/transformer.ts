@@ -62,8 +62,8 @@ function transformMessage(msg: KTORMessage): Kostentraeger {
         
         bankAccountDetails: msg.kto ? createBankAccountDetails(msg.kto, msg.idk.abbreviatedName) : undefined,
 
-        validityDateFrom: msg.vdt.from,
-        validityDateTo: msg.vdt.to,
+        validityDateFrom: msg.vdt.validityFrom,
+        validityDateTo: msg.vdt.validityTo,
         verarbeitungskennzeichenSchluessel: msg.fkt.verarbeitungskennzeichenSchluessel,
 
         contacts: msg.aspList.map((asp) => createContact(asp)),

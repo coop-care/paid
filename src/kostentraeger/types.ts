@@ -98,8 +98,8 @@ export type BankAccountConnection =
     InternationalBankAccountConnection
 
 export type NationalBankAccountConnection = {
-    accountNumber: number,
-    bankCode: number
+    accountNumber: string,
+    bankCode: string
 }
 
 export type InternationalBankAccountConnection = {

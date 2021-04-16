@@ -1,8 +1,6 @@
 import parse from "../../../src/kostentraeger/filename/parser"
 import MockDate from 'mockdate'
 
-const parseDate = (str: string): Date => parse(`AO06${str}.ke0`).validityStartDate
-
 describe("filename parser", () => {
 
     it("parses filename", () => {
@@ -50,3 +48,5 @@ describe("filename parser", () => {
         MockDate.reset()
     })
 })
+
+const parseDate = (str: string): Date => parse(`AO06${str}.ke0`).validityStartDate

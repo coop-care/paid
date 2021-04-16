@@ -61,9 +61,9 @@ export type IDK = {
 /** Validity */
 export type VDT = { 
     /** Validity of this information start date */
-    from: Date, 
+    validityFrom: Date, 
     /** Validity of this information end date */
-    to?: Date
+    validityTo?: Date
 }
 
 /** Funktion */
@@ -78,9 +78,9 @@ export type KTO = {
     /** undefined if same as IDK.abbreviatedName */
     accountOwner?: string, 
     /** National bank account number */
-    accountNumber?: number,
+    accountNumber?: string,
     /** National bank code */
-    bankCode?: number,
+    bankCode?: string,
     /** International bank account number */
     iban?: string,
     /** International bank code */
@@ -153,9 +153,9 @@ export type ASP = {
     /** serial number of the contact */
     index: number,
     /** Phone number. The dialing code and phone number usually separated with "/" or "-" */
-    phone?: string | undefined,
+    phone?: string,
     /** Fax number. The dialing code and phone number usually separated with "/" or "-" */
-    fax?: string | undefined,
+    fax?: string,
     /** Name of the contact. Max. 30 characters */
     name?: string,
     /** Description of the field of work of the contact. Max. 30 characters */

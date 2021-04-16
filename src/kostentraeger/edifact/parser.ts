@@ -26,7 +26,7 @@ import { KTORInterchange, KTORMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, V
  *  
  *  Anhang 5 zur Anlage 1 - Kostenträgerdatei,
  *  Regelung der Datenübermittlung nach § 105 Abs. 2 SGB XI Technische Anlage (Anlage 1),
- *  Version 3.3, Effective starting 01.10.2021
+ *  Version 02, Effective starting 01.01.2018
  *  
  *  https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_ANH5_20170907_105_oA.pdf
  * 
@@ -66,9 +66,8 @@ function parseMessage(message: Message): KTORMessage {
     if (messageType != "KOTR") {
         throw new Error(`${messageTxt} Unknown message type ${messageType}`)
     }
-    // ASK documentation is not inconsistent! Sometimes mentions version 1, sometimes version 2!
     const messageTypeVersion = parseInt(message.header[1][1])
-    if (messageTypeVersion != 2) {
+    if (messageTypeVersion > 2) {
         throw new Error(`${messageTxt} Unsupported message type version ${messageTypeVersion}`)
     }
 
@@ -151,6 +150,11 @@ function parseMessage(message: Message): KTORMessage {
     if (ansList.length == 0) {
         throw new Error(`${messageTxt} At least one "ANS" element is required`)
     }
+    uemList.forEach((uem) => {
+        if (uem.uebermittlungsmediumSchluessel == "1" && dfuList.length == 0) {
+            throw new Error(`${messageTxt} Data inconsistency: At least one "DFU" element is required if UEM.uebermittlungsmediumSchluessel = 1`)
+        }
+    })
 
     aspList.sort((a, b) => a.index - b.index)
     dfuList.sort((a, b) => a.index - b.index)
@@ -178,8 +182,8 @@ const readIDK = (e: string[]): IDK => ({
 })
 
 const readVDT = (e: string[]): VDT => ({
-    from: parseDate(e[0]),
-    to: e[1] ? parseDate(e[1]) : undefined
+    validityFrom: parseDate(e[0]),
+    validityTo: e[1] ? parseDate(e[1]) : undefined
 })
 
 const readFKT = (e: string[]): FKT => {
@@ -191,10 +195,10 @@ const readFKT = (e: string[]): FKT => {
 }
 
 const readKTO = (e: string[]): KTO => {
-    const accountNumber = e[0] ? parseInt(e[0]) : undefined
-    const bankCode = e[1] ? parseInt(e[1]) : undefined
-    const iban = e[4] ?? undefined
-    const bic = e[5] ?? undefined
+    const accountNumber = e[0] ? e[0] : undefined
+    const bankCode = e[1] ? e[1] : undefined
+    const iban = e[4] ? e[4] : undefined
+    const bic = e[5] ? e[5] : undefined
 
     if (!(accountNumber && bankCode || iban && bic)) {
         throw new Error("Bank account information is incomplete")
@@ -202,7 +206,7 @@ const readKTO = (e: string[]): KTO => {
 
     return {
         bankName: e[2],
-        accountOwner: e[3] ?? undefined,
+        accountOwner: e[3] ? e[3] : undefined,
         accountNumber: accountNumber,
         bankCode: bankCode,
         iban: iban,
@@ -270,7 +274,7 @@ const readVKG = (e: string[]): VKG => {
         standortLeistungserbringerKVBezirkSchluessel: e7 ? e7 as KVBezirkSchluessel : undefined,
         pflegeLeistungsartSchluessel: pflegeLeistungsart,
         abrechnungscodeSchluessel: abrechnungscode,
-        tarifkennzeichen: e[9] ?? undefined
+        tarifkennzeichen: e[9] ? e[9] : undefined
     }
 }
 
@@ -290,16 +294,16 @@ const readANS = (e: string[]): ANS => {
         anschriftartSchluessel: e0 as AnschriftartSchluessel,
         postcode: parseInt(e[1]),
         place: e[2],
-        address: e[3] ?? undefined
+        address: e[3] ? e[3] : undefined
     }
 }
 
 const readASP = (e: string[]): ASP => ({
     index: parseInt(e[0]),
-    phone: e[1] ?? undefined,
-    fax: e[2] ?? undefined,
-    name: e[3] ?? undefined,
-    fieldOfWork: e[4] ?? undefined
+    phone: e[1] ? e[1] : undefined,
+    fax: e[2] ? e[2] : undefined,
+    name: e[3] ? e[3] : undefined,
+    fieldOfWork: e[4] ? e[4] : undefined
 })
 
 const readUEM = (e: string[]): UEM => {
@@ -336,7 +340,7 @@ const readDFU = (e: string[]): DFU => {
     return {
         index: parseInt(e[0]),
         dfuProtokollSchluessel: e1 as DFUProtokollSchluessel,
-        benutzerkennung: e[2] ?? undefined,
+        benutzerkennung: e[2] ? e[2] : undefined,
         // What is this?! Are the German health insurances located on Mars?
         allowedTransmissionTimeStart: e[3] ? parseTimeOfDay(e[3]) : undefined,
         allowedTransmissionTimeEnd: e[4] ? parseTimeOfDay(e[4]) : undefined,
@@ -345,5 +349,3 @@ const readDFU = (e: string[]): DFU => {
         address: e[6]
     }
 }
-
-// TODO tests
