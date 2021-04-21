@@ -1,3 +1,7 @@
+/** based on document: Pflege, Technische Anlage 1 für Abrechnung auf maschinell verwertbaren Datenträgern
+  * see docs/documents.md for more info
+  */
+
 import { 
     AbrechnungscodeSchluessel,
     PflegegradSchluessel, 
@@ -16,8 +20,12 @@ import {
 } from "./sgb-xi/codes";
 
 export const messageIdentifiers = {
-    "PLGA:2": "Pflegeleistungserbringer Gesamtaufstellung der Abrechnung",
-    "PLAA:3": "Pflegeleistungserbringer Abrechnungsdaten je Abrechnungsfall"
+    "PLGA": "Pflegeleistungserbringer Gesamtaufstellung der Abrechnung",
+    "PLAA": "Pflegeleistungserbringer Abrechnungsdaten je Abrechnungsfall",
+}
+export const messageIdentifierVersions = {
+    "PLGA": "PLGA:2",
+    "PLAA": "PLAA:3",
 }
 export type MessageIdentifiers = keyof typeof messageIdentifiers;
 
@@ -29,24 +37,33 @@ export const fileTypes = {
 export type FileType = keyof typeof fileTypes;
 
 export type BillingData = {
-    senderID: string;
-    receiverID: string;
-    controlReference: number; // Datenaustauschreferenz
-    filename: string;
-    fileType: FileType;
+    datenaustauschreferenzJeEmpfaengerIK: Record<string, number>;
+    dateiindikator: FileType;
     rechnungsart: RechnungsartSchluessel;
-    invoices: Invoice[];
+    rechnungsnummerprefix: string; // must be unique for each billing
+    rechnungsdatum?: Date;
+    abrechnungsmonat: Date;
+    korrekturlieferung?: number;
+    laufendeDatenannahmeImJahrJeEmpfaengerIK: Record<string, number>;
+}
+
+export type BillingFile = {
+    dateiname: string;
+    absenderIK: string;
+    empfaengerIK: string;
+    datenaustauschreferenz: number;
+    anwendungsreferenz: string;
+    dateiindikator: string;
+    nutzdaten: string;
+    rechnungsbetrag: number;
 }
 
 export type Invoice = {
-    referencePrefix: string;
-    referenceNumber: number;
-    date?: Date;
-    careProvider: CareProvider;
-    lineItems: Abrechnungsfall[];
+    leistungserbringer: Leistungserbringer;
+    faelle: Abrechnungsfall[];
 };
 
-export type CareProvider = {
+export type Leistungserbringer = {
     name: string;
     ansprechpartner: {
         name?: string;
@@ -102,11 +119,11 @@ export type Leistung = {
     gefahreneKilometer?: number, // for verguetungsart 06 with leistung 04
     punktwert?: number,
     punktzahl?: number,
-    zusaetze: Zusatz[];
+    zuschlaege: Zuschlag[];
     hilfsmittel?: Hilfsmittel;
 };
 
-export type Zusatz = {
+export type Zuschlag = {
     zuschlagsart: ZuschlagsartSchluessel;
     beschreibungZuschlagsart?: string;
     zuschlag: ZuschlagSchluessel;
@@ -117,15 +134,14 @@ export type Zusatz = {
 };
 
 export type Hilfsmittel = {
-    mehrwertsteuerart: MehrwertsteuerSchluessel;
-    mehrwertsteuerbetrag?: number;
-    zuzahlungsbetrag?: number;
-    genehmigungskennzeichen: string;
+    mehrwertsteuerart?: MehrwertsteuerSchluessel;
+    zuzahlungsbetrag?: number; // gem. § 40 SGB XI
+    genehmigungskennzeichen?: string;
     genehmigungsdatum?: Date;
-    kennzeichenPflegehilfsmittel: PflegehilfsmittelSchluessel;
-    bezeichnungPflegehilfsmittel: string;
-    produktbesonderheitenPflegehilfsmittel: string;
-    inventarnummerPflegehilfsmittel: string;
+    kennzeichenPflegehilfsmittel?: PflegehilfsmittelSchluessel;
+    bezeichnungPflegehilfsmittel?: string;
+    produktbesonderheitenPflegehilfsmittel?: string; // siehe Schlüssel Positionsnummer für Produktbesonderheiten von Pflegehilfsmitteln Anlage 3, Abschnitt 2.12
+    inventarnummerPflegehilfsmittel?: string;
 };
 
 export type Amounts = {

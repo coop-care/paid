@@ -1,3 +1,7 @@
+/** based on document: Pflege, Technische Anlage 1 für Abrechnung auf maschinell verwertbaren Datenträgern
+  * see docs/documents.md for more info
+  */
+
 /*
 TODO validation errors:
 
@@ -12,6 +16,7 @@ einzelrechnungsnummer.length <= 6
 versichertennummer.length <= 20
 eindeutigeBelegnummer.length <= 10 && /^[a-zA-Z0-9][a-zA-Z0-9/-]*[a-zA-Z0-9]$/.test(eindeutigeBelegnummer)
 required parameters depending on other parameters to fill ELS segment details field
+leistung.leistungsart == "06" && !!leistung.hilfsmittel
 
 */
 

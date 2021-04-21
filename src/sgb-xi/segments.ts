@@ -1,17 +1,24 @@
-import { Amounts, BillingData, CareProvider, Leistung, MessageIdentifiers, Versicherter } from "../types";
+/** based on document: Pflege, Technische Anlage 1 für Abrechnung auf maschinell verwertbaren Datenträgern
+  * see docs/documents.md for more info
+  */
+
 import { 
-    ZuschlagszuordnungSchluessel, 
-    ZuschlagsberechnungSchluessel, 
-    ZuschlagSchluessel, 
-    ZuschlagsartSchluessel, 
-    PflegehilfsmittelSchluessel,
-    PflegegradSchluessel, 
-    RechnungsartSchluessel, 
+    Amounts, 
+    BillingData, 
+    Leistungserbringer, 
+    Leistung, 
+    MessageIdentifiers, 
+    messageIdentifierVersions, 
+    Versicherter,
+    Hilfsmittel,
+    Zuschlag
+} from "../types";
+import {
+    PflegegradSchluessel,
     TarifbereichSchluessel, 
     VerarbeitungskennzeichenSchluessel,
     VerguetungsartSchluessel, 
     LeistungsartSchluessel, 
-    MehrwertsteuerSchluessel,
 } from "./codes";
 import { mask, number, price, day, month, date, time, datetime, segment } from "../formatter";
 
@@ -19,25 +26,29 @@ const Syntax_Version = "UNOC:3";
 const DefaultCurrency = "EUR";
 
 export const UNB = (
-    { senderID, receiverID, controlReference, filename, fileType }: BillingData
+    absenderIK: string, 
+    empfaengerIK: string, 
+    datenaustauschreferenz: number,
+    anwendungsreferenz: string, 
+    dateiindikator: string
 ) => segment(
     "UNB", 
     Syntax_Version,
-    senderID,
-    receiverID,
+    absenderIK,
+    empfaengerIK,
     datetime(new Date()),
-    controlReference.toString(),
-    filename,
-    fileType
+    datenaustauschreferenz.toString(),
+    anwendungsreferenz,
+    dateiindikator
 );
 
 export const UNZ = (
     controlCount: number, // = number of messages (starting with UNH)
-    controlReference: number,
+    datenaustauschreferenz: number,
 ) => segment(
     "UNZ",
     controlCount.toString(),
-    controlReference.toString()
+    datenaustauschreferenz.toString()
 );
 
 export const UNH = (
@@ -46,7 +57,7 @@ export const UNH = (
 ) => segment(
     "UNH",
     messageReferenceNumber.toString(),
-    messageIdentifier
+    messageIdentifierVersions[messageIdentifier]
 );
 
 export const UNT = (
@@ -63,7 +74,7 @@ export const FKT = (
     {
         absenderIK, // PLGA: Absender der Datei, identisch zu Absender in UNB; PLAA: wie RechnungsstellerIK (?)
         rechnungsstellerIK, // Leistungserbringer oder Abrechnungsstelle mit Inkassovollmacht bei Sammelrechnung; PLAA == PLGA
-    }: CareProvider,
+    }: Leistungserbringer,
     {
         kostentraegerIK, // Institution die die Rechnung begleicht laut Kostenträgerdatei; PLAA == PLGA
         pflegekasseIK, // Pflegekasse des Leistungs- bzw. Bewilligungsbescheids; falls angegeben gilt: PLAA == PLGA
@@ -84,15 +95,19 @@ export const FKT = (
 );
 
 export const REC = (
-    rechnungsnummer: string,
+    {
+        rechnungsdatum = new Date(),
+        rechnungsart,
+        rechnungsnummerprefix
+    }: BillingData,
+    invoiceIndex: number,
     leistungserbringerIndex: number,
     sammelrechnung: boolean,
-    rechnungsdatum = new Date(),
-    rechnungsart: RechnungsartSchluessel,
     currency = DefaultCurrency
 ) => segment(
     "REC",
-    mask(rechnungsnummer) + ":" + (sammelrechnung || rechnungsart == "1" ? 0 : (leistungserbringerIndex + 1)),
+    mask(rechnungsnummerprefix + "-" + invoiceIndex + 1) + ":" +
+        (sammelrechnung || rechnungsart == "1" ? 0 : (leistungserbringerIndex + 1)),
     date(rechnungsdatum),
     rechnungsart,
     currency
@@ -102,7 +117,7 @@ export const SRD = (
     {
         abrechnungscode,
         tarifbereich,
-    }: CareProvider,
+    }: Leistungserbringer,
     leistungsart: LeistungsartSchluessel,
 ) => segment(
     "SRD",
@@ -113,7 +128,7 @@ export const SRD = (
 export const UST = ({
     umsatzsteuerOrdnungsnummer = "",
     umsatzsteuerBefreiung = "",
-}: CareProvider) => segment(
+}: Leistungserbringer) => segment(
     "UST",
     mask(umsatzsteuerOrdnungsnummer),
     umsatzsteuerBefreiung.length ? "J" : "",
@@ -138,7 +153,7 @@ export const GES = ({
 export const NAM = ({
     name,
     ansprechpartner
-}: CareProvider) => segment(
+}: Leistungserbringer) => segment(
     "NAM",
     mask(name.substr(0, 30)),
     ...ansprechpartner.slice(0, 3).map(ansprechpartner =>
@@ -242,14 +257,16 @@ export const ELS = ({
 export const ZUS = (
     isLast: boolean,
     tarifbereich: TarifbereichSchluessel,
-    zuschlagsart: ZuschlagsartSchluessel, 
-    zuschlag: ZuschlagSchluessel, 
-    zuschlagszuordnung: ZuschlagszuordnungSchluessel,
-    zuschlagsberechnung: ZuschlagsberechnungSchluessel,
-    istAbzugStattZuschlag: boolean,
-    wert: number,
+    {
+        zuschlagsart, 
+        zuschlag, 
+        zuschlagszuordnung,
+        zuschlagsberechnung,
+        istAbzugStattZuschlag,
+        wert,
+        beschreibungZuschlagsart,
+    }: Zuschlag,
     ergebnis: number,
-    beschreibungZuschlagsart?: string,
 ) => segment(
     "ZUS",
     [tarifbereich, zuschlagsart, zuschlag].join(":"),
@@ -262,16 +279,17 @@ export const ZUS = (
     isLast? "1" : "0"
 );
 
-export const HIL = (
-    mehrwertsteuerart: MehrwertsteuerSchluessel = "",
-    mehrwertsteuerbetrag?: number,
-    zuzahlungsbetrag?: number,
+export const HIL = ({
+    mehrwertsteuerart = "",
+    zuzahlungsbetrag,
     genehmigungskennzeichen = "",
-    genehmigungsdatum?: Date,
-    kennzeichenPflegehilfsmittel: PflegehilfsmittelSchluessel = "",
+    genehmigungsdatum,
+    kennzeichenPflegehilfsmittel = "",
     bezeichnungPflegehilfsmittel = "",
     produktbesonderheitenPflegehilfsmittel = "",
     inventarnummerPflegehilfsmittel = "",
+}: Hilfsmittel,
+    mehrwertsteuerbetrag?: number
 ) => segment(
     "HIL",
     mehrwertsteuerart,

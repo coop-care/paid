@@ -1,71 +1,181 @@
-import { BillingData, Abrechnungsfall, Einsatz, Invoice } from "../types";
-import { RechnungsartSchluessel } from "./codes";
-import { ELS, ESK, FKT, GES, IAF, INV, MAN, NAD, NAM, REC, SRD, UNB, UNH, UNT, UNZ, UST } from "./segments";
+/** based on document: Pflege, Technische Anlage 1 für Abrechnung auf maschinell verwertbaren Datenträgern
+  * see docs/documents.md for more info
+  */
 
-// const linebreak = "\n";
+import { BillingData, Abrechnungsfall, Einsatz, Invoice, MessageIdentifiers, BillingFile, Hilfsmittel, Leistung } from "../types";
+import { entriesGroupedBy, valuesGroupedBy } from "../utils";
+import { MehrwertsteuerSchluessel, RechnungsartSchluessel } from "./codes";
+import { makeAnwendungsreferenz, makeDateiname } from "./filenames";
+import { ELS, ESK, FKT, GES, HIL, IAF, INV, MAN, NAD, NAM, REC, SRD, UNB, UNH, UNT, UNZ, UST, ZUS } from "./segments";
 
-// export const makePayloadFile = (interchange: BillingData) => [
-//     UNB(interchange),
-//     ...interchange.invoices.flatMap((message, index) => [
-//         UNH(index + 1, ""),
-//         UNT(message.lineItems.length, index + 1),
-//     ]),
-//     UNZ(interchange.invoices.length, interchange.controlReference),
-// ].join(linebreak);
+const linebreak = "\n";
+const mehrwertsteuersaetze: Record<MehrwertsteuerSchluessel, number> = {
+    "": 0,
+    "1": 0.19,
+    "2": 0.07
+};
 
-// const sort = (interchange: BillingData) => {
-//     return interchange.invoices.map(invoice => ({
-//         ...invoice,
-//         lineItemsByKostentraegerAndLeistungsart: 
-//             valuesGroupedBy(invoice.lineItems, item => item.versicherter.kostentraegerIK)
-//             .flatMap(items => groupByLeistungsart(items))
-//     }))
-// };
+const makeBillingFile = (
+    empfaengerIK: string, 
+    kassenart: string,
+    invoices: Invoice[], 
+    billing: BillingData
+) => {
+    const {
+        datenaustauschreferenzJeEmpfaengerIK,
+        laufendeDatenannahmeImJahrJeEmpfaengerIK,
+        dateiindikator,
+        rechnungsart
+    } = billing;
+    const absenderIK = invoices[0].leistungserbringer.absenderIK;
+    const datenaustauschreferenz = datenaustauschreferenzJeEmpfaengerIK[empfaengerIK] || 1;
+    const laufendeDatenannahmeImJahr = laufendeDatenannahmeImJahrJeEmpfaengerIK[empfaengerIK] || 1;
+    const anwendungsreferenz = makeAnwendungsreferenz(kassenart, laufendeDatenannahmeImJahr, billing);
+    const dateiname = makeDateiname(dateiindikator, datenaustauschreferenz - 1); // todo: resaearch „verfahrensversion”, maybe in Auftragsdatei documentation?
+    let messageNumber = 0;
 
-// const groupByLeistungsart = (items: Abrechnungsfall[]) =>
-//     items.reduce((result, item) => {
-//         const key = getKey(item)
-//         result[key] = (result[key] || []).concat(item);
-//         return result;
-//     }, {} as Record<string, Abrechnungsfall[]>);
-
-const makePLGA = (
-    invoice: Invoice,
-    rechnungsart: RechnungsartSchluessel,
-    rechnungsnummer: string,
-    leistungserbringerIndex: number,
-    sammelrechnung: boolean
-) => [
-    FKT("01", invoice.careProvider, invoice.lineItems[0].versicherter, sammelrechnung),
-    REC(rechnungsnummer, leistungserbringerIndex, sammelrechnung, invoice.date, rechnungsart),
-    SRD(invoice.careProvider, invoice.lineItems[0].einsaetze[0].leistungen[0].leistungsart),
-    UST(invoice.careProvider),
-    GES(calculateGES(invoice)),
-    NAM(invoice.careProvider)
-];
-
-const makePLAA = (
-    invoice: Invoice,
-    rechnungsart: RechnungsartSchluessel,
-    rechnungsnummer: string,
-    leistungserbringerIndex: number,
-) => [
-    FKT("01", invoice.careProvider, invoice.lineItems[0].versicherter),
-    REC(rechnungsnummer, leistungserbringerIndex, false, invoice.date, rechnungsart),
-    ...invoice.lineItems.flatMap(abrechnungsfall => [
-        INV(abrechnungsfall.versicherter.versichertennummer, abrechnungsfall.eindeutigeBelegnummer),
-        NAD(abrechnungsfall.versicherter),
-        ...forEachMonat(abrechnungsfall.einsaetze).flatMap(einsaetze => [
-            MAN(einsaetze[0].leistungsBeginn, abrechnungsfall.versicherter.pflegegrad),
-            ...forEachVerguetungsart(einsaetze).flatMap(einsatz => [
-                ESK(einsatz.leistungsBeginn, einsatz.verguetungsart),
-                ...einsatz.leistungen.flatMap(leistung => [
-                    ELS(leistung)
+    // according to section 4.2 Struktur der Datei, grouped for all three Rechnungsarten
+    const nutzdaten = [
+        UNB(absenderIK, empfaengerIK, datenaustauschreferenz, anwendungsreferenz, dateiindikator),
+        ...forEachKostentraeger(invoices, rechnungsart).flatMap((invoices, invoiceIndex) => [
+            ...forEachLeistungserbringerAndPflegekasse(invoices).flatMap((invoicesByPflegekasse, index) => [
+                ...(invoicesByPflegekasse.length > 1 || rechnungsart == "3"
+                    ? makeMessage("PLGA", true, mergeInvoices(invoices), billing, ++messageNumber, invoiceIndex, index)
+                    : []),
+                ...invoicesByPflegekasse.flatMap(invoice => [
+                    ...makeMessage("PLGA", false, invoice, billing, ++messageNumber, invoiceIndex, index),
+                    ...makeMessage("PLAA", false, invoice, billing, ++messageNumber, invoiceIndex, index)
                 ])
             ])
         ]),
-        IAF(calculateIAF(abrechnungsfall))
-    ])
+        UNZ(messageNumber, datenaustauschreferenz)
+    ].join(linebreak);
+
+    return {
+        dateiname,
+        absenderIK,
+        empfaengerIK,
+        datenaustauschreferenz,
+        anwendungsreferenz,
+        dateiindikator,
+        nutzdaten
+    } as BillingFile;
+};
+
+const forEachKostentraeger = (invoices: Invoice[], rechnungsart: RechnungsartSchluessel) => 
+    structureForRechnungsart(
+        invoices.flatMap(invoice => 
+            groupFaelleByKostentraeger(invoice.faelle)
+                .flatMap(faelle => groupByLeistungsart(faelle))
+                .map(faelle => ({
+                    ...invoice,
+                    faelle 
+                } as Invoice))
+        ), rechnungsart
+    );
+
+const groupFaelleByKostentraeger = (faelle: Abrechnungsfall[]) =>
+    valuesGroupedBy(faelle, fall => fall.versicherter.kostentraegerIK);
+
+const groupByLeistungsart = (faelle: Abrechnungsfall[]) => faelle
+    .map(fall => {
+        return fall.einsaetze.map(einsatz =>
+            valuesGroupedBy(einsatz.leistungen, leistung => leistung.leistungsart)
+                .map(leistungen => ({ ...einsatz, leistungen } as Einsatz))
+        ).map(einsaetze => ({ ...fall, einsaetze } as Abrechnungsfall))
+    });
+
+const structureForRechnungsart = (invoices: Invoice[], rechnungsart: RechnungsartSchluessel) =>
+    rechnungsart != "3"
+        ? [invoices]
+        : groupInvoicesByKostentraeger(invoices);
+
+const groupInvoicesByKostentraeger = (invoices: Invoice[]) => 
+    valuesGroupedBy(invoices, invoice => invoice.faelle[0].versicherter.kostentraegerIK);
+
+const forEachLeistungserbringerAndPflegekasse = (invoices: Invoice[]) => invoices.map(invoice =>
+    valuesGroupedBy(invoice.faelle, fall => fall.versicherter.pflegekasseIK)
+        .map(faelle => ({ ...invoice, faelle } as Invoice))
+);
+
+const mergeInvoices = (invoices: Invoice[]) => ({
+    leistungserbringer: {...invoices[0].leistungserbringer},
+    faelle: invoices.flatMap(invoice => invoice.faelle)
+} as Invoice)
+
+
+const makeMessage = (
+    messageIdentifier: MessageIdentifiers,
+    sammelrechnung: boolean,
+    invoice: Invoice,
+    billing: BillingData,
+    messageNumber: number,
+    invoiceIndex: number,
+    leistungserbringerIndex: number,
+) => {
+    const segments = messageIdentifier == "PLGA"
+        ? makePLGA(invoice, billing, invoiceIndex, leistungserbringerIndex, sammelrechnung)
+        : makePLAA(invoice, billing, invoiceIndex, leistungserbringerIndex);
+
+    return [
+        UNH(messageNumber, messageIdentifier),
+        ...segments,
+        UNT(segments.length, messageNumber)
+    ]
+}
+
+// see 4.4.1 Nachrichtentyp Gesamtaufstellung der Abrechnung (PLGA)
+const makePLGA = (
+    invoice: Invoice,
+    billing: BillingData,
+    invoiceIndex: number,
+    leistungserbringerIndex: number,
+    sammelrechnung: boolean
+) => [
+    FKT("01", invoice.leistungserbringer, invoice.faelle[0].versicherter, sammelrechnung),
+    REC(billing, invoiceIndex, leistungserbringerIndex, sammelrechnung),
+    SRD(invoice.leistungserbringer, invoice.faelle[0].einsaetze[0].leistungen[0].leistungsart),
+    UST(invoice.leistungserbringer),
+    GES(calculateInvoice(invoice)),
+    NAM(invoice.leistungserbringer)
+];
+
+// see 4.4.2 Nachrichtentyp Abrechnungsdaten (PLAA)
+const makePLAA = (
+    invoice: Invoice,
+    billing: BillingData,
+    invoiceIndex: number,
+    leistungserbringerIndex: number,
+) => [
+    FKT("01", invoice.leistungserbringer, invoice.faelle[0].versicherter),
+    REC(billing, invoiceIndex, leistungserbringerIndex, false),
+    ...invoice.faelle.flatMap(fall => [
+        INV(fall.versicherter.versichertennummer, fall.eindeutigeBelegnummer),
+        NAD(fall.versicherter),
+        ...forEachMonat(fall.einsaetze).flatMap(einsaetze => [
+            MAN(einsaetze[0].leistungsBeginn, fall.versicherter.pflegegrad),
+            ...forEachVerguetungsart(einsaetze).flatMap(einsatz => [
+                ESK(einsatz.leistungsBeginn, einsatz.verguetungsart),
+                ...einsatz.leistungen.flatMap(leistung => [
+                    ELS(leistung),
+                    ...leistung.zuschlaege.map((zuschlag, index) =>
+                        ZUS(
+                            index == leistung.zuschlaege.length - 1,
+                            invoice.leistungserbringer.tarifbereich, 
+                            zuschlag,
+                            0 // todo: calculate ergebis
+                        )
+                    ),
+                    ...leistung.hilfsmittel 
+                        ? [HIL(
+                            leistung.hilfsmittel, 
+                            calculateHilfsmittel(leistung.einzelpreis, leistung.hilfsmittel)
+                        )] : []
+                ])
+            ])
+        ]),
+        IAF(calculateFall(fall))
+    ]),
 ];
 
 const forEachMonat = (einsaetze: Einsatz[]) => 
@@ -80,9 +190,9 @@ const forEachVerguetungsart = (einsaetze: Einsatz[]) => einsaetze.flatMap(einsat
     }))
 );
 
-const calculateGES = (invoice: Invoice) => invoice.lineItems
-    .reduce((result, item) => {
-        const amounts = calculateIAF(item);
+export const calculateInvoice = (invoice: Invoice) => invoice.faelle
+    .reduce((result, fall) => {
+        const amounts = calculateFall(fall);
         result.gesamtbruttobetrag += amounts.gesamtbruttobetrag;
         result.rechnungsbetrag += amounts.rechnungsbetrag;
         result.zuzahlungsbetrag += amounts.zuzahlungsbetrag;
@@ -91,14 +201,20 @@ const calculateGES = (invoice: Invoice) => invoice.lineItems
         return result;
     }, makeAmounts());
 
-const calculateIAF = (abrechnungsfall: Abrechnungsfall) => abrechnungsfall.einsaetze
+export const calculateFall = (fall: Abrechnungsfall) => fall.einsaetze
     .flatMap(einsatz => einsatz.leistungen)
-    .reduce((result, leistung) => {
-        const value = leistung.einzelpreis * leistung.anzahl;
+    .reduce((result, {einzelpreis, anzahl, hilfsmittel}) => {
+        const value = einzelpreis * anzahl;
         result.rechnungsbetrag += value;
-        result.gesamtbruttobetrag += value;
+        result.zuzahlungsbetrag += (hilfsmittel?.zuzahlungsbetrag || 0);
+        result.gesamtbruttobetrag += value + calculateHilfsmittel(einzelpreis, hilfsmittel);
         return result;
     }, makeAmounts());
+
+const calculateHilfsmittel = (
+    einzelpreis: number,
+    hilfsmittel?: Hilfsmittel
+) => einzelpreis * mehrwertsteuersaetze[hilfsmittel?.mehrwertsteuerart || ""];
 
 const makeAmounts = () => ({
     gesamtbruttobetrag: 0,
@@ -107,22 +223,3 @@ const makeAmounts = () => ({
     beihilfebetrag: 0,
     mehrwertsteuerbetrag: 0,
 });
-
-const groupBy = <T, K extends string | number>(items: T[], getKey: (item: T) => K) =>
-    items.reduce((result, item) => {
-        const key = getKey(item)
-        result[key] = (result[key] || []).concat(item);
-        return result;
-    }, {} as Record<K, T[]>);
-
-const valuesGroupedBy = <T, K extends string>(items: T[], getKey: (item: T) => K) =>
-    Object.values(groupBy(items, getKey)) as T[][];
-
-const entriesGroupedBy = <T, K extends string>(items: T[], getKey: (item: T) => K) =>
-    Object.entries(groupBy(items, getKey)) as [K, T[]][];
-
-// ToDo:
-// sort outer: rechnungsart 1 & 2
-// sort outer: rechnungsart 3
-// add HIL incl. calculation
-// add ZUS incl. calculation

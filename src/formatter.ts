@@ -1,3 +1,7 @@
+/** based on document: Pflege, Technische Anlage 1 für Abrechnung auf maschinell verwertbaren Datenträgern
+  * see docs/documents.md for more info
+  */
+
 export const mask = (value: string) => value.replace(/([:+,?'])/g, "?$1");
 
 export const number = (value?: number, fractionDigits?: number) => value?.toLocaleString("de-DE", {

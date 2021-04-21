@@ -1,3 +1,6 @@
+/** based on document: Pflege, Technische Anlage 3, Schlüsselverzeichnisse
+  * see docs/documents.md for more info
+  */
 
 // 2.1 Schlüssel Rechnungsart
 export const rechnungsartSchluessel =  {
