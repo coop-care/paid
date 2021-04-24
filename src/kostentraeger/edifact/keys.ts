@@ -5,6 +5,9 @@
  * (see /docs/documents.md for more info)
  */
 
+import { AbrechnungscodeSchluessel as SonstigeAbrechnungscodeSchluessel } from "../../sgb-v/codes"
+import { LeistungsartSchluessel as PflegeLeistungsartSchluessel } from "../../sgb-xi/codes"
+
 /** Art der Anschrift */
 export const anschriftartSchluessel = {
     "1": "Hausanschrift",
@@ -226,96 +229,26 @@ export const verarbeitungskennzeichenSchluessel = {
 } 
 export type VerarbeitungskennzeichenSchluessel = keyof typeof verarbeitungskennzeichenSchluessel
 
-
-// TODO already defined in src/sgb-xi/codes.ts!!
-// BUT Sonderschlüssel 99 and Sammelschlüssel 00 and is missing!
-
-
-/** Schlüssel Leistungsart für Pflegedienstleistungen nach § 105 Abs. 2 SGB XI */
-export const pflegeLeistungsartSchluessel = {
+/** Sonderschlüssel für Leistungsart für Pflegedienstleistungen nach § 105 Abs. 2 SGB XI */
+export const pflegeLeistungsartSonderschluessel = {
     "00": "Sammelschlüssel für alle Leistungsarten",
     "99": "Sonderschlüssel, gilt für alle in der Kostenträgerdatei nicht aufgeführten Gruppen-und Einzelschlüssel",
-    "01": "ambulante Pflege",
-    "02": "Tagespflege",
-    "03": "Nachtpflege",
-    "04": "Kurzzeitpflege",
-    "05": "vollstationäre Pflege",
-    "06": "Pflegehilfsmittel",
-    "07": "Verhinderungspflege",
-    "08": "Zuschuss nach § 43 Abs.3 SGB XI",
-    "09": "Beratungsbesuch (sofern nicht im Rahmen der ambulante Pflege (Schlüssel 01 abrechenbar)",
-    "10": "Entlastungsleistung nach § 45b SGB XI",
-    "11": "Beratungsgutschein nach § 7b SGB XI",
-    "12": "Wohngruppenzuschlag nach § 38a SGB XI"
 }
-export type PflegeLeistungsartSchluessel = keyof typeof pflegeLeistungsartSchluessel
+export type PflegeLeistungsartSonderschluessel = keyof typeof pflegeLeistungsartSonderschluessel
 
-/** Schlüssel Abrechnungscode für Leistungen nach § 302 Abs. 2 SGB V */
-export const abrechnungscodeSchluessel = {
+export type KostentraegerPflegeLeistungsartSchluessel = 
+    PflegeLeistungsartSonderschluessel | PflegeLeistungsartSchluessel
+
+export const abrechnungscodeSonderschluessel = {
     "00": "Sammelschlüssel für alle Leistungsarten",
-    "99": "Sonderschlüssel, gilt für alle in der Kostenträgerdatei nicht aufgeführten Gruppen-und Einzelschlüssel",
-    "10": "Gruppenschlüssel Hilfsmittellieferant (Schlüssel 11-19)",
-    "11": "Apotheke (mit gesonderter Zulassung nach § 126 SGB V)",
-        "12": "Augenoptiker",
-        "13": "Augenarzt",
-        "14": "Hörgeräteakustiker",
-        "15": "Orthopädiemechaniker, Bandagist, Sanitätshaus",
-        "16": "Orthopädieschuhmacher",
-        "17": "Orthopäde",
-        // deprecated and removed on 31.12.2005 -> "18": Sanitätshaus 
-        "19": "Sonstiger Hilfsmittellieferant",
-    "20": "Gruppenschlüssel Heilmittelerbringer (Schlüssel 21-29)",
-        "21": "Masseur / Medizinischer Badebetrieb",
-        "22": "Krankengymnast/Physiotherapeut",
-        "23": "Logopäde/Atem-, Sprech- und Stimmlehrer / staatl. Anerkannter Sprachtherapeut",
-        "24": "Sprachheilpädagoge / Dipl. Pädagoge",
-        "25": "Sonstiger Sprachtherapeut",
-        "26": "Ergotherapeut",
-        "27": "Krankenhaus",
-        "28": "Kurbetrieb",
-        "29": "Sonstige therapeutische Heilperson",
-    "30": "Gruppenschlüssel Häusliche Krankenpflege (Schlüssel 31-34)",
-        "31": "freigemeinnützige Anbieter (Sozialstation)",
-        "32": "privatgewerbliche Anbieter",
-        "33": "öffentliche Anbieter",
-        "34": "sonstige Pflegedienste",
-    "40": "Gruppenschlüssel Krankentransportleistungen (Schlüssel 41-49)",
-        "41": "Öffentlicher Träger (z.B. Feuerwehr)",
-        "42": "Deutsches Rotes Kreuz (DRK)",
-        "43": "Arbeiter-Samariter-Bund (ASB)",
-        "44": "Johanniter-Unfall-Hilfe (JUH)",
-        "45": "Malteser-Hilfsdienst (MHD)",
-        "46": "Sonstiger Leistungserbringer von bodengebundenen Transportleistungen (Taxi / Mietwagen)",
-        "47": "Leistungserbringer von Flugrettungs-und Transportleistungen",
-        "49": "Sonstiger Leistungserbringer von Krankentransportleistungen (z.B. Bergwacht, Wasserwacht, usw.)",
-    "50": "Hebamme / Entbindungspfleger",
-    "55": "Sonstiger Leistungserbringer von nichtärztlichen Dialysesachleistungen",
-    "56": "Kuratorium für Heimdialyse (KfH)",
-    "57": "Patienten-Heimversorgung (PHV)",
-    "60": "Betriebshilfe",
-    "61": "Leistungserbringer von Rehabilitationssport",
-    "62": "Leistungserbringer von Funktionstraining",
-    "63": "Leistungserbringer für ergänzende Rehabilitationsmaßnahmen",
-    "65": "Sonstige Leistungserbringer",
-    "66": "Leistungserbringer von Präventions- und Gesundheitsförderungsmaßnahmen im Rahmen von ambulanten Vorsorgeleistungen",
-    "67": "Ambulantes Rehazentrum",
-    "68": "Sozialpädiatrische Zentren/Frühförderstellen",
-    "69": "Soziotherapeutische Leistungserbringer",
-    "71": "Podologen",
-    "73": "Leistungserbringer von Ernährungstherapie für seltene angeborene Stoffwechselerkrankungen",
-    "74": "Leistungserbringer von Ernährungstherapie für Mukoviszidose",
-    "72": "Med. Fußpfleger (gemäß § 10 Abs. 4 bis 6 PodG)",
-    "75": "Spezialisierte ambulante Palliativversorgung (SAPV)",
-    "76": "Leistungserbringer nach § 132g SGB V",
-    "90": "Gruppenschlüssel Kurzzeitpflege (Schlüssel 91-94)",
-        "91": "Kurzzeitpflege, privat gewerblicher Anbieter",
-        "92": "Kurzzeitpflege, frei gemeinnütziger Anbieter (gemeinnützige private Anbieter)",
-        "93": "Kurzzeitpflege, öffentlicher Anbieter",
-        "94": "Kurzzeitpflege, sonstige Pflegeeinrichtung"
+    "99": "Sonderschlüssel, gilt für alle in der Kostenträgerdatei nicht aufgeführten Gruppen-und Einzelschlüssel"
 }
-export type AbrechnungscodeSchluessel = keyof typeof abrechnungscodeSchluessel
+export type AbrechnungscodeSonderschluessel = keyof typeof abrechnungscodeSonderschluessel
 
-// ASK: Why the duplicates? Relevant for us?
+export type KostentraegerAbrechnungscodeSchluessel = 
+    AbrechnungscodeSonderschluessel | SonstigeAbrechnungscodeSchluessel
+
+// ASK/TODO: Why the duplicates? Relevant for us?
 /** Tarifkennzeichen: Tarifbereich (1-2 Stelle des Tarifkennzeichens) */
 export const tarifbereichSchluessel = {
     "00": "Bundeseinheitlicher Tarif (gültig für Ost und West)",

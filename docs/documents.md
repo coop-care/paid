@@ -60,7 +60,7 @@ Version **1.0** from 2020-11-26, to be applied from: **10/2003**
 
 ### Sonstige Leistungserbringer
 
-#### zu den Richtlinien der Spitzenverbände der Krankenkassen nach § 302 Abs. 2 SGB V über Form und Inhalt des Abrechnungsverfahrens mit "Sonstigen Leistungserbringern" sowie mit Hebammen und Entbindungspflegern (§ 301a SGB V)*
+#### zu den Richtlinien der Spitzenverbände der Krankenkassen nach § 302 Abs. 2 SGB V über Form und Inhalt des Abrechnungsverfahrens mit "Sonstigen Leistungserbringern" sowie mit Hebammen und Entbindungspflegern (§ 301a SGB V)
 
 - Sonstige Leistungserbringer, Anlage 1, Anhang 3, Kapitel 10:
 [Kostenträgerdatei](https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anhang_03_Anlage_1_TP5_20200616.pdf)

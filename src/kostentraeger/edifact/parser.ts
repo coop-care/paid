@@ -8,7 +8,7 @@
 import { parseDate } from "../../edifact/parse_utils"
 import { Interchange, Message } from "../../edifact/types"
 import { 
-    abrechnungscodeSchluessel, AbrechnungscodeSchluessel,
+    abrechnungscodeSonderschluessel, KostentraegerAbrechnungscodeSchluessel,
     anschriftartSchluessel, AnschriftartSchluessel,
     bundeslandSchluessel, BundeslandSchluessel,
     datenlieferungsArtSchluessel, DatenlieferungsartSchluessel,
@@ -16,13 +16,19 @@ import {
     ikVerknuepfungsartSchluessel, IKVerknuepfungsartSchluessel, 
     kvBezirkSchluessel, KVBezirkSchluessel, 
     leistungserbringergruppeSchluessel, LeistungserbringergruppeSchluessel, 
-    pflegeLeistungsartSchluessel, PflegeLeistungsartSchluessel, 
+    pflegeLeistungsartSonderschluessel, KostentraegerPflegeLeistungsartSchluessel, 
     uebermittlungsmediumParameterSchluessel, UebermittlungsmediumParameterSchluessel, 
     uebermittlungsmediumSchluessel, UebermittlungsmediumSchluessel,
     uebermittlungszeichensatzSchluessel, UebermittlungszeichensatzSchluessel,
     uebertragungstageSchluessel, UebertragungstageSchluessel,
     verarbeitungskennzeichenSchluessel, VerarbeitungskennzeichenSchluessel
 } from "./keys"
+import {
+    abrechnungscodeSchluessel
+} from "../../sgb-v/codes"
+import {
+    leistungsartSchluessel as pflegeLeistungsartSchluessel
+} from "../../sgb-xi/codes"
 import { KTORInterchange, KTORMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, VDT, VKG } from "./segments"
 
 /** 
@@ -231,20 +237,22 @@ const readVKG = (e: string[]): VKG => {
         throw new Error(`Unknown KVBezirkSchluessel "${e7}"`)
     }
     const e8 = e[8]
-    let pflegeLeistungsart: PflegeLeistungsartSchluessel | undefined
-    let abrechnungscode: AbrechnungscodeSchluessel | undefined
+    let pflegeLeistungsart: KostentraegerPflegeLeistungsartSchluessel | undefined
+    let abrechnungscode: KostentraegerAbrechnungscodeSchluessel | undefined
     if (e8) {
         if (e2 == "6") { // Pflege 
-            if (!pflegeLeistungsartSchluessel.hasOwnProperty(e8)) {
-                throw new Error(`Unknown PflegeLeistungsartSchluessel "${e8}"`)
+            if (!pflegeLeistungsartSchluessel.hasOwnProperty(e8) && 
+                !pflegeLeistungsartSonderschluessel.hasOwnProperty(e8)) {
+                throw new Error(`Unknown KostentraegerPflegeLeistungsartSchluessel "${e8}"`)
             }
-            pflegeLeistungsart = e8 as PflegeLeistungsartSchluessel
+            pflegeLeistungsart = e8 as KostentraegerPflegeLeistungsartSchluessel
         }
         else if (e2 == "5") { // Sonstige
-            if (!abrechnungscodeSchluessel.hasOwnProperty(e8)) {
-                throw new Error(`Unknown AbrechnungscodeSchluessel "${e8}"`)
+            if (!abrechnungscodeSchluessel.hasOwnProperty(e8) && 
+                !abrechnungscodeSonderschluessel.hasOwnProperty(e8)) {
+                throw new Error(`Unknown KostentraegerAbrechnungscodeSchluessel "${e8}"`)
             }
-            abrechnungscode = e8 as AbrechnungscodeSchluessel
+            abrechnungscode = e8 as KostentraegerAbrechnungscodeSchluessel
         }
         else {
             throw new Error(`Unexpected value for leistungserbringergruppeSchluessel: "${e2}"`)

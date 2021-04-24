@@ -6,7 +6,7 @@
  */
 
 import { 
-    AbrechnungscodeSchluessel,
+    KostentraegerAbrechnungscodeSchluessel,
     AnschriftartSchluessel, 
     BundeslandSchluessel, 
     DatenlieferungsartSchluessel, 
@@ -14,7 +14,7 @@ import {
     IKVerknuepfungsartSchluessel, 
     KVBezirkSchluessel, 
     LeistungserbringergruppeSchluessel, 
-    PflegeLeistungsartSchluessel, 
+    KostentraegerPflegeLeistungsartSchluessel, 
     UebermittlungsmediumParameterSchluessel, 
     UebermittlungsmediumSchluessel, 
     UebermittlungszeichensatzSchluessel, 
@@ -111,7 +111,7 @@ export type VKG = {
      * 
      *  A value of 00 (Sammelschlüssel) means that this link is valid for all health care services 
      *  provided. */
-    pflegeLeistungsartSchluessel?: PflegeLeistungsartSchluessel,
+    pflegeLeistungsartSchluessel?: KostentraegerPflegeLeistungsartSchluessel,
     /** A.k.a Leistungserbringerart. Only defined if leistungserbringergruppeSchluessel = 5 (Sonstige)
      *  
      *  The group/kind of health care service provided. Some of the possible values are groups. For
@@ -119,7 +119,7 @@ export type VKG = {
      *  
      *  A value of 00 (Sammelschlüssel) means that this link is valid for all health care services 
      *  provided. */
-    abrechnungscodeSchluessel?: AbrechnungscodeSchluessel,
+    abrechnungscodeSchluessel?: KostentraegerAbrechnungscodeSchluessel,
     /** Only defined if leistungserbringergruppeSchluessel = 5 (Sonstige)
      *  
      *  A 5-digit numeral whose first 2 digits form the TarifbereichSchluessel and its last 3 digits
