@@ -239,6 +239,7 @@ export type PflegeLeistungsartSonderschluessel = keyof typeof pflegeLeistungsart
 export type KostentraegerPflegeLeistungsartSchluessel = 
     PflegeLeistungsartSonderschluessel | PflegeLeistungsartSchluessel
 
+/** Sonderschlüssel Abrechnungscode für Leistungen nach § 302 Abs. 2 SGB V */
 export const abrechnungscodeSonderschluessel = {
     "00": "Sammelschlüssel für alle Leistungsarten",
     "99": "Sonderschlüssel, gilt für alle in der Kostenträgerdatei nicht aufgeführten Gruppen-und Einzelschlüssel"
