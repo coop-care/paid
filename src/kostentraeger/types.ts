@@ -1,4 +1,4 @@
-import { UebermittlungszeichensatzSchluessel } from "./edifact/keys"
+import { UebermittlungszeichensatzSchluessel } from "./edifact/codes"
 import { VKG } from "./edifact/segments"
 
 /**

@@ -22,7 +22,7 @@ import {
     uebermittlungszeichensatzSchluessel, UebermittlungszeichensatzSchluessel,
     uebertragungstageSchluessel, UebertragungstageSchluessel,
     verarbeitungskennzeichenSchluessel, VerarbeitungskennzeichenSchluessel
-} from "./keys"
+} from "./codes"
 import {
     abrechnungscodeSchluessel
 } from "../../sgb-v/codes"

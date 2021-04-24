@@ -20,7 +20,7 @@ import {
     UebermittlungszeichensatzSchluessel, 
     UebertragungstageSchluessel, 
     VerarbeitungskennzeichenSchluessel 
-} from "./keys"
+} from "./codes"
 
 /** Contains all the KTOR messages of one EDIFACT interchange and information from the header */
 export type KTORInterchange = {

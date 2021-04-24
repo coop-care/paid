@@ -8,7 +8,7 @@
 import {
     kassenartSchluessel, KassenartSchluessel,
     verfahrenSchluessel, VerfahrenSchluessel
-} from './keys'
+} from './codes'
 
 /** Elements with metadata of a "Kostenträger" filename */
 export type KostentraegerFilenameElements = {
