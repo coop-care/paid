@@ -1,4 +1,3 @@
-import { TimeOfDay } from "../../edifact/types"
 import { 
     AbrechnungscodeSchluessel,
     AnschriftartSchluessel, 
@@ -27,7 +26,7 @@ export type KTORInterchange = {
     /** Date this list was created. This is not the validity start date. */
     creationDate: Date,
     /** All the Kostentraeger for this umbrella organization */
-    kostentraeger: KTORMessage[]
+    institutions: KTORMessage[]
 }
 
 /** All the segments of one KTOR (=Kostenträger) message */
@@ -90,7 +89,7 @@ export type KTO = {
 export type VKG = {
     /** What is linked */
     ikVerknuepfungsartSchluessel: IKVerknuepfungsartSchluessel,
-    /** IK of the linked partner */
+    /** IK of the linked partner. */
     verknuepfungspartnerIK: string,
     /** health care provider group, a.k.a LE-Gruppe */
     leistungserbringergruppeSchluessel?: LeistungserbringergruppeSchluessel,
@@ -180,10 +179,10 @@ export type DFU = {
     dfuProtokollSchluessel: DFUProtokollSchluessel,
     /** User id. Only specified if different from the IK */
     benutzerkennung?: string,
-    /** Start of the time window in which transmission of invoices is allowed */
-    allowedTransmissionTimeStart?: TimeOfDay,
-    /** End of the time window in which transmission of invoices is allowed */
-    allowedTransmissionTimeEnd?: TimeOfDay,
+    /** Start of the time window in which transmission of invoices is allowed in format "hhmm" */
+    allowedTransmissionTimeStart?: string,
+    /** End of the time window in which transmission of invoices is allowed in format "hhmm" */
+    allowedTransmissionTimeEnd?: string,
     /* Days at which the transmission of invoices is allowed */
     allowedTransmissionDays?: UebertragungstageSchluessel,
     /* Address to which the data should be sent (with port behind ":"). Valid values are for example:

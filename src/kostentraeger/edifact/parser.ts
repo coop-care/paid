@@ -1,4 +1,4 @@
-import { parseDate, parseTimeOfDay } from "../../edifact/parse_utils"
+import { parseDate } from "../../edifact/parse_utils"
 import { Interchange, Message } from "../../edifact/types"
 import { 
     abrechnungscodeSchluessel, AbrechnungscodeSchluessel,
@@ -52,7 +52,7 @@ export default function parse(interchange: Interchange): KTORInterchange {
     return {
         spitzenverbandIK: header[1][0],
         creationDate: parseDate(header[3][0], header[3][1]),
-        kostentraeger: interchange.messages.map((message) => parseMessage(message))
+        institutions: interchange.messages.map((message) => parseMessage(message))
         // header[6] would contain the file name. Though there is probably no meaning in parsing that
     }
 }
@@ -341,8 +341,8 @@ const readDFU = (e: string[]): DFU => {
         dfuProtokollSchluessel: e1 as DFUProtokollSchluessel,
         benutzerkennung: e[2] ? e[2] : undefined,
         // What is this?! Are the German health insurances located on Mars?
-        allowedTransmissionTimeStart: e[3] ? parseTimeOfDay(e[3]) : undefined,
-        allowedTransmissionTimeEnd: e[4] ? parseTimeOfDay(e[4]) : undefined,
+        allowedTransmissionTimeStart: e[3] ? e[3] : undefined,
+        allowedTransmissionTimeEnd: e[4] ? e[4] : undefined,
         // ... or does the server not work on Sunday? Equal rights for robots! ✊
         allowedTransmissionDays: e5 ? e5 as UebertragungstageSchluessel : undefined,
         address: e[6]

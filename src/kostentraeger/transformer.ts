@@ -1,32 +1,33 @@
-import { dfuProtokollSchluessel } from "./edifact/keys"
-import { KTORInterchange, KTORMessage, ANS, ASP, DFU, KTO } from "./edifact/segments"
+import { KTORInterchange, KTORMessage, ANS, ASP, DFU, KTO, UEM } from "./edifact/segments"
 import { 
     Address, 
     BankAccountDetails, 
     Contact, 
-    Kostentraeger, 
-    KostentraegerList, 
-    TransmissionDetails, 
-    TransmissionProtocol 
+    Institution, 
+    InstitutionList, 
+    ReceiptTransmissionMethods
 } from "./types"
 
-export function transform(interchange: KTORInterchange): KostentraegerList {
+export default function transform(interchange: KTORInterchange): InstitutionList {
     return {
         spitzenverbandIK: interchange.spitzenverbandIK,
         creationDate: interchange.creationDate,
-        kostentraeger: interchange.kostentraeger.map((msg) => transformMessage(msg))
+        institutions: interchange.institutions.map((msg) => {
+            requirePreconditions(msg)
+            return transformMessage(msg)
+        }).filter((msg): msg is Institution => !!msg)
     }
 }
 
-function transformMessage(msg: KTORMessage): Kostentraeger {
-    const messageTxt = `Message ${msg.id} -`
-
+function requirePreconditions(msg: KTORMessage) {
     /* Simplification: Certain data is documented that it could be different, but de-facto it's not.
        Let's assert that it is never a value so that our data model and application logic can be 
        simpler
      */
 
-    if (msg.idk.institutionsart != 99) {
+    const messageTxt = `Message ${msg.id} -`
+
+    if (msg.idk.institutionsart != "99") {
         throw new Error(`${messageTxt} Expected that "institutionsart" is always 99`)
     }
     if (msg.idk.vertragskassennummer) {
@@ -35,16 +36,15 @@ function transformMessage(msg: KTORMessage): Kostentraeger {
 
     msg.dfuList.forEach((dfu) => {
         if (dfu.allowedTransmissionDays && dfu.allowedTransmissionDays != "1") {
-            throw new Error(`${messageTxt} Expected that transmission is allowed on any day`)
+            throw new Error(`${messageTxt} Expected that transmission is allowed on any day but was "${dfu.allowedTransmissionDays}"`)
         }
         if (
-            dfu.allowedTransmissionTimeStart && 
-            dfu.allowedTransmissionTimeStart != { hours: 0, minutes: 0 }
-            ||
-            dfu.allowedTransmissionTimeEnd && 
-            dfu.allowedTransmissionTimeEnd != { hours: 24, minutes: 0 }
+            dfu.allowedTransmissionTimeStart && dfu.allowedTransmissionTimeStart != "0000"
+            || dfu.allowedTransmissionTimeEnd && dfu.allowedTransmissionTimeEnd != "2400"
         ) {
-            throw new Error(`${messageTxt} Expected that transmission is allowed at any time`)
+            const start = dfu.allowedTransmissionTimeStart
+            const end = dfu.allowedTransmissionTimeEnd
+            throw new Error(`${messageTxt} Expected that transmission is allowed at any time but was ${start}-${end}`)
         }
 
         if (dfu.benutzerkennung) {
@@ -52,8 +52,25 @@ function transformMessage(msg: KTORMessage): Kostentraeger {
         }
     })
 
-    // TODO map uemList
-    // TODO map vkgList
+    if (msg.uemList.length > 0) {
+        const acceptsInternetOrPaperReceipts = msg.uemList.some((uem) => ["1","5","6"].includes(uem.uebermittlungsmediumSchluessel))
+        if (!acceptsInternetOrPaperReceipts) {
+            throw new Error(`${messageTxt} Expected that institution at least accepts either paper receipts or receipts sent over internet`)
+        }
+    }
+
+    if (msg.kto) {
+        if (!msg.kto.iban || !msg.kto.bic) {
+            throw new Error(`${messageTxt} Expected IBAN and BIC`)
+        }
+    }
+}
+
+function transformMessage(msg: KTORMessage): Institution | null {
+    /* in practice, this doesn't seem to be used and usage of this field is inconsistent for the
+       different umbrella organizations that issue the Kostenträger-file. "03" however seems to mean
+       "delete this entry" */
+    if (msg.fkt.verarbeitungskennzeichenSchluessel == "03") return null
 
     return {
         ik: msg.idk.ik,
@@ -62,20 +79,35 @@ function transformMessage(msg: KTORMessage): Kostentraeger {
         
         bankAccountDetails: msg.kto ? createBankAccountDetails(msg.kto, msg.idk.abbreviatedName) : undefined,
 
-        validityDateFrom: msg.vdt.validityFrom,
-        validityDateTo: msg.vdt.validityTo,
-        verarbeitungskennzeichenSchluessel: msg.fkt.verarbeitungskennzeichenSchluessel,
+        validityFrom: msg.vdt.validityFrom,
+        validityTo: msg.vdt.validityTo,
 
         contacts: msg.aspList.map((asp) => createContact(asp)),
         addresses: msg.ansList.map((ans) => createAddress(ans)),
-        transmissionDetails: msg.dfuList.map((dfu) => createTransmissionDetails(dfu))
+        transmissionMethods: createReceiptTransmissionMethods(msg.uemList, msg.dfuList),
+        links: msg.vkgList
     }
 }
 
-function createTransmissionDetails(dfu: DFU): TransmissionDetails {
+function createReceiptTransmissionMethods(uemList: UEM[], dfuList: DFU[]): ReceiptTransmissionMethods | undefined {
+    if (uemList.length == 0) return undefined
+
+    const machineReadablePaperReceipt = uemList.some((uem) => uem.uebermittlungsmediumSchluessel == "5")
+    const paperReceipt = uemList.some((uem) => uem.uebermittlungsmediumSchluessel == "6")
+
+    let zeichensatzSchluessel, email, ftam
+    if (dfuList.length > 0) {
+        zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
+        email = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
+        ftam = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "016")?.address
+    }
+
     return {
-        protocol: dfuProtokollSchluessel[dfu.dfuProtokollSchluessel] as TransmissionProtocol,
-        address: dfu.address
+        paperReceipt: paperReceipt,
+        machineReadablePaperReceipt: machineReadablePaperReceipt,
+        email: email,
+        ftam: ftam,
+        zeichensatzSchluessel: zeichensatzSchluessel
     }
 }
 
@@ -88,18 +120,12 @@ function createContact(asp: ASP): Contact {
     }
 }
 
-// TODO: or - check if KTO is used at all, it looks as if it isnt...
 function createBankAccountDetails(kto: KTO, abbreviatedName: string): BankAccountDetails {
     return {
         bankName: kto.bankName,
         accountOwner: kto.accountOwner ?? abbreviatedName,
-        accountConnection: kto.accountNumber ? {
-            accountNumber: kto.accountNumber!,
-            bankCode: kto.bankCode!
-        } : {
-            iban: kto.iban!,
-            bic: kto.bic!
-        }
+        iban: kto.iban!,
+        bic: kto.bic!
     }
 }
 
@@ -114,5 +140,3 @@ function createAddress(ans: ANS): Address {
         case "3": return { place: place, postcode: postcode }
     }
 }
-
-// TODO test

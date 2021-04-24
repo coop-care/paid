@@ -1,4 +1,4 @@
-import { parseDate, parseDecimal, parseTimeOfDay } from "../../src/edifact/parse_utils"
+import { parseDate, parseDecimal } from "../../src/edifact/parse_utils"
 
 describe("EDIFACT parsing utilities", () => {
     
@@ -21,12 +21,4 @@ describe("EDIFACT parsing utilities", () => {
         })
     })
 
-    describe("parseTimeOfDay", () => {
-
-        it("parses time correctly", () => {
-            expect(parseTimeOfDay("0000")).toEqual({ hours: 0, minutes: 0 })
-            expect(parseTimeOfDay("1259")).toEqual({ hours: 12, minutes: 59 })
-            expect(parseTimeOfDay("2400")).toEqual({ hours: 24, minutes: 0 })
-        })
-    })
 })

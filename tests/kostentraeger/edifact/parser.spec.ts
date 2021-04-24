@@ -12,7 +12,7 @@ describe("kostentraeger edifact parser", () => {
         )).toEqual({
             spitzenverbandIK: "109910000",
             creationDate: new Date(Date.UTC(2021, 4-1, 1, 15, 10)),
-            kostentraeger: [],
+            institutions: [],
         })
     })
 
@@ -233,8 +233,8 @@ describe("kostentraeger edifact parser", () => {
                 index: 2,
                 dfuProtokollSchluessel: "070",
                 benutzerkennung: undefined,
-                allowedTransmissionTimeStart: { hours: 0, minutes: 0},
-                allowedTransmissionTimeEnd: { hours: 24, minutes: 0},
+                allowedTransmissionTimeStart: "0000",
+                allowedTransmissionTimeEnd: "2400",
                 allowedTransmissionDays: "1",
                 address: "da@dta.aok.de"
             }
@@ -375,4 +375,4 @@ const msg = (str: string, i: number = 1): string => `UNH+${i}+KOTR:01'${str}UNT+
 
 const parse = (str: string): KTORInterchange => parseKostentraeger(tokenize(str))
 
-const parseMessages = (str: string): KTORMessage[] => parse(unb+str+unz).kostentraeger
+const parseMessages = (str: string): KTORMessage[] => parse(unb+str+unz).institutions

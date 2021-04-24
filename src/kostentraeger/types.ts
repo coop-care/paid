@@ -1,26 +1,27 @@
-import { VerarbeitungskennzeichenSchluessel } from "./edifact/keys"
+import { UebermittlungszeichensatzSchluessel, VerarbeitungskennzeichenSchluessel } from "./edifact/keys"
+import { VKG } from "./edifact/segments"
 
 /**
  * These types represent the data from Kostentraeger file(s) cast into a (more) accesible data model
  */
 
 /** A list of Kostentraeger informations for one umbrella organization */
-export type KostentraegerList = {
+export type InstitutionList = {
     /** Institutionskennzeichen (=Institution code) of the umbrella organization that issued this
      *  list */
     spitzenverbandIK: string,
     /** Date this list was created. This is not the validity start date. */
     creationDate: Date,
     /** All the Kostentraeger for this umbrella organization */
-    kostentraeger: Kostentraeger[]
+    institutions: Institution[]
 }
 
-/** Information for one Kostentraeger.
+/** Information for one Institution.
  * 
  *  Note that the max. characters that are specified in the comment for strings are not enforced by
  *  the parser.
  */
-export type Kostentraeger = {
+export type Institution = {
     /** Institutionskennzeichen (=Institution code). 
      *  Nine-digit unique identifier for this institution */
     ik: string,
@@ -29,31 +30,51 @@ export type Kostentraeger = {
     /** Abbreviated name of the institution (max. 30 characters) */
     abbreviatedName: string,
 
-    /** Optional bank account details for this institution */
+    /** Optional bank account details of this institution */
     bankAccountDetails?: BankAccountDetails,
 
-    /** Validity start date for this Kostentraeger information. */
-    validityDateFrom: Date,
-    /** Validity end date for this Kostentraeger information. May be undefined. */
-    validityDateTo?: Date,
-    /** Verarbeitungskennzeichen. ASK/TODO how is this used? Is this for us? I.e. if it is "03", that entry should be deleted? */
-    verarbeitungskennzeichenSchluessel: VerarbeitungskennzeichenSchluessel
+    /** Validity start date for this institution information. */
+    validityFrom: Date,
+    /** Validity end date for this institution information. May be undefined. */
+    validityTo?: Date,
 
     /** Contacts. This list may be empty */
     contacts: Contact[],
-    /** Address(es). Contains 1 to three addresses, (max) one for each type */
+    /** Address(es). Contains one to three addresses, (max) one for each type */
     addresses: Address[],
-    /** Details on where and with which protocol to send invoices. May be several if there are
-     *  several options. */
-    transmissionDetails: TransmissionDetails[]
+    /** Details on where and with which protocol to send receipts. Undefined if this institution
+     *  does not accept any receipts directly */
+    transmissionMethods: ReceiptTransmissionMethods | undefined,
+    /** Links to the Kostenträger (=institution that pays the receipts), to Datenannahmestellen
+     *  (=receipt data acceptance office) or to a Papierannahmestellen (=paper acceptance office).
+     *  
+     *  The institution with the IK as printed on the health-insurance card does only in the fewest
+     *  cases also manage the processing of the receipt data and manage the paying of receipts.
+     *  Usually such things are done by a central office. 
+     * 
+     *  The rules defined in the link define to which institution the receipts should be sent: It
+     *  can depend on the place the health care provider is located, what kind of health care 
+     *  service was provided, to which health care provider group it belongs and more. 
+     * */
+    links: InstitutionLink[]
 }
 
-export type TransmissionDetails = {
-    protocol: TransmissionProtocol,
-    address: string
-}
+/* Same as VKG from Kostenträger file */
+export type InstitutionLink = VKG
 
-export type TransmissionProtocol = "FTAM" | "FTP" | "SMTP"
+/** Simplified data model of UEM+DFU from the Kostenträger file with legacy stuff removed */
+export type ReceiptTransmissionMethods = {
+    /** Whether it accepts paper receipts that are not machine readable */
+    paperReceipt: boolean,
+    /** Whether it accepts paper receipts that are machine readable */
+    machineReadablePaperReceipt: boolean,
+    /** Email address + charset to use to send receipts. Undefined if email is not accepted. */
+    email?: string | undefined,
+    /** FTAM address + charset to use to send receipts. Undefined if FTAM is not accepted. */
+    ftam?: string | undefined,
+    /** Charset in which the data must be transmitted (for email / FTAM) */
+    zeichensatzSchluessel?: UebermittlungszeichensatzSchluessel
+}
 
 export type Contact = {
     /** Phone number. The dialing code and phone number usually separated with "/" or "-" */
@@ -90,20 +111,6 @@ type BasicAddress = {
 export type BankAccountDetails = {
     bankName: string,
     accountOwner: string,
-    accountConnection: BankAccountConnection
-}
-
-export type BankAccountConnection = 
-    NationalBankAccountConnection | 
-    InternationalBankAccountConnection
-
-export type NationalBankAccountConnection = {
-    accountNumber: string,
-    bankCode: string
-}
-
-export type InternationalBankAccountConnection = {
     iban: string,
     bic: string
 }
-
