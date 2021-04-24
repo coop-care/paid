@@ -1,3 +1,10 @@
+/** based on documents: 
+ *  - Pflege, Technische Anlage 1, Anhang 5: Kostenträgerdatei
+ *  - Sonstige Leistungserbringer, Anlage 1, Anhang 3, Kapitel 10: Kostenträgerdatei
+ * 
+ * (see /docs/documents.md for more info)
+ */
+
 import { parseDate } from "../../edifact/parse_utils"
 import { Interchange, Message } from "../../edifact/types"
 import { 
@@ -22,25 +29,7 @@ import { KTORInterchange, KTORMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, V
  *  Parses a Kostenträgerdatei (payer file) which provides information how to send invoices to the
  *  statutory health insurance as a health care service provider.
  * 
- *  The implementation is based on ....
- *  
- *  Anhang 5 zur Anlage 1 - Kostenträgerdatei,
- *  Regelung der Datenübermittlung nach § 105 Abs. 2 SGB XI Technische Anlage (Anlage 1),
- *  Version 02, Effective starting 01.01.2018
- *  
- *  https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_ANH5_20170907_105_oA.pdf
- * 
- *  and
- * 
- *  Anhang 3 zur Anlage 1 - Kapitel 10 "Kostenträgerdatei",
- *  zu den Richtlinien der Spitzenverbände der Krankenkassen nach § 302 Abs. 2 SGB V über Form und 
- *  Inhalt des Abrechnungsverfahrens mit "Sonstigen Leistungserbringern" sowie mit Hebammen und 
- *  Entbindungspflegern (§ 301a SGB V)
- *  Version 07, Effective starting 01.10.2021
- * 
- *  https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anhang_03_Anlage_1_TP5_20200616.pdf
- * 
- *  ...and thus only covers Pflegedienstleistungen (care providers) and Sonstige Leistungserbringer
+ *  The implementation only covers Pflegedienstleistungen (care providers) and Sonstige Leistungserbringer
  *  (miscellaneous providers of health care services)
  */
 

@@ -1,8 +1,8 @@
-import { UebermittlungszeichensatzSchluessel, VerarbeitungskennzeichenSchluessel } from "./edifact/keys"
+import { UebermittlungszeichensatzSchluessel } from "./edifact/keys"
 import { VKG } from "./edifact/segments"
 
 /**
- * These types represent the data from Kostentraeger file(s) cast into a (more) accesible data model
+ * These types represent the data from Kostentraeger file(s) cast into a (more) accessible data model
  */
 
 /** A list of Kostentraeger informations for one umbrella organization */

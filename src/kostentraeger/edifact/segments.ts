@@ -1,3 +1,10 @@
+/** based on documents: 
+ *  - Pflege, Technische Anlage 1, Anhang 5: Kostenträgerdatei
+ *  - Sonstige Leistungserbringer, Anlage 1, Anhang 3, Kapitel 10: Kostenträgerdatei
+ * 
+ * (see /docs/documents.md for more info)
+ */
+
 import { 
     AbrechnungscodeSchluessel,
     AnschriftartSchluessel, 
@@ -14,10 +21,6 @@ import {
     UebertragungstageSchluessel, 
     VerarbeitungskennzeichenSchluessel 
 } from "./keys"
-
-/* 
- *  These segments are based on the documentation mentioned in ./parser.ts
- */
 
 /** Contains all the KTOR messages of one EDIFACT interchange and information from the header */
 export type KTORInterchange = {

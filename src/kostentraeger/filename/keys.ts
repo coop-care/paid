@@ -1,5 +1,8 @@
-/* 
- * These keys are based on the documentation mentioned in ./parser.ts
+/** based on documents: 
+ *  - Pflege, Technische Anlage 1, Anhang 5: Kostenträgerdatei
+ *  - Sonstige Leistungserbringer, Anlage 1, Anhang 3, Kapitel 10: Kostenträgerdatei
+ * 
+ * (see /docs/documents.md for more info)
  */
 
 /** Indicates the group of statutory health insurance. Each group has its own set of contact 

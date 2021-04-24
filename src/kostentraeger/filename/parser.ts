@@ -1,3 +1,10 @@
+/** based on documents: 
+ *  - Pflege, Technische Anlage 1, Anhang 5: Kostenträgerdatei
+ *  - Sonstige Leistungserbringer, Anlage 1, Anhang 3, Kapitel 10: Kostenträgerdatei
+ * 
+ * (see /docs/documents.md for more info)
+ */
+
 import {
     kassenartSchluessel, KassenartSchluessel,
     verfahrenSchluessel, VerfahrenSchluessel
