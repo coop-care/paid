@@ -130,9 +130,7 @@ function createBankAccountDetails(kto: KTO, abbreviatedName: string): BankAccoun
 }
 
 function createAddress(ans: ANS): Address {
-    const place = ans.place
-    const postcode = ans.postcode
-    const addr = ans.address
+    const { place, postcode, address: addr } = ans
 
     switch(ans.anschriftartSchluessel) {
         case "1": return { place: place, postcode: postcode, streetAndHousenumber: addr }
