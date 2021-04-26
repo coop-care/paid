@@ -189,10 +189,10 @@ const readFKT = (e: string[]): FKT => {
 }
 
 const readKTO = (e: string[]): KTO => {
-    const accountNumber = e[0] ? e[0] : undefined
-    const bankCode = e[1] ? e[1] : undefined
-    const iban = e[4] ? e[4] : undefined
-    const bic = e[5] ? e[5] : undefined
+    const accountNumber = e[0] || undefined
+    const bankCode = e[1] || undefined
+    const iban = e[4] || undefined
+    const bic = e[5] || undefined
 
     if (!(accountNumber && bankCode || iban && bic)) {
         throw new Error("Bank account information is incomplete")
@@ -200,7 +200,7 @@ const readKTO = (e: string[]): KTO => {
 
     return {
         bankName: e[2],
-        accountOwner: e[3] ? e[3] : undefined,
+        accountOwner: e[3] || undefined,
         accountNumber: accountNumber,
         bankCode: bankCode,
         iban: iban,
@@ -263,14 +263,14 @@ const readVKG = (e: string[]): VKG => {
         ikVerknuepfungsartSchluessel: e0 as IKVerknuepfungsartSchluessel,
         verknuepfungspartnerIK: e[1],
         leistungserbringergruppeSchluessel: e2 ? e2 as LeistungserbringergruppeSchluessel : undefined,
-        abrechnungsstelleIK: e[3] ? e[3] : undefined,
+        abrechnungsstelleIK: e[3] || undefined,
         datenlieferungsartSchluessel: e4 ? e4 as DatenlieferungsartSchluessel : undefined,
         uebermittlungsmediumSchluessel: e5 ? e5 as UebermittlungsmediumSchluessel : undefined,
         standortLeistungserbringerBundeslandSchluessel: e6 ? e6 as BundeslandSchluessel : undefined,
         standortLeistungserbringerKVBezirkSchluessel: e7 ? e7 as KVBezirkSchluessel : undefined,
         pflegeLeistungsartSchluessel: pflegeLeistungsart,
         abrechnungscodeSchluessel: abrechnungscode,
-        tarifkennzeichen: e[9] ? e[9] : undefined
+        tarifkennzeichen: e[9] || undefined
     }
 }
 
@@ -290,16 +290,16 @@ const readANS = (e: string[]): ANS => {
         anschriftartSchluessel: e0 as AnschriftartSchluessel,
         postcode: parseInt(e[1]),
         place: e[2],
-        address: e[3] ? e[3] : undefined
+        address: e[3] || undefined
     }
 }
 
 const readASP = (e: string[]): ASP => ({
     index: parseInt(e[0]),
-    phone: e[1] ? e[1] : undefined,
-    fax: e[2] ? e[2] : undefined,
-    name: e[3] ? e[3] : undefined,
-    fieldOfWork: e[4] ? e[4] : undefined
+    phone: e[1] || undefined,
+    fax: e[2] || undefined,
+    name: e[3] || undefined,
+    fieldOfWork: e[4] || undefined
 })
 
 const readUEM = (e: string[]): UEM => {
@@ -336,10 +336,10 @@ const readDFU = (e: string[]): DFU => {
     return {
         index: parseInt(e[0]),
         dfuProtokollSchluessel: e1 as DFUProtokollSchluessel,
-        benutzerkennung: e[2] ? e[2] : undefined,
+        benutzerkennung: e[2] || undefined,
         // What is this?! Are the German health insurances located on Mars?
-        allowedTransmissionTimeStart: e[3] ? e[3] : undefined,
-        allowedTransmissionTimeEnd: e[4] ? e[4] : undefined,
+        allowedTransmissionTimeStart: e[3] || undefined,
+        allowedTransmissionTimeEnd: e[4] || undefined,
         // ... or does the server not work on Sunday? Equal rights for robots! ✊
         allowedTransmissionDays: e5 ? e5 as UebertragungstageSchluessel : undefined,
         address: e[6]
