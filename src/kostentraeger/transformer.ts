@@ -1,4 +1,4 @@
-import { KTORInterchange, KTORMessage, ANS, ASP, DFU, KTO, UEM } from "./edifact/segments"
+import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, KTO, UEM } from "./edifact/segments"
 import { 
     Address, 
     BankAccountDetails, 
@@ -8,7 +8,7 @@ import {
     ReceiptTransmissionMethods
 } from "./types"
 
-export default function transform(interchange: KTORInterchange): InstitutionList {
+export default function transform(interchange: KOTRInterchange): InstitutionList {
     return {
         spitzenverbandIK: interchange.spitzenverbandIK,
         creationDate: interchange.creationDate,
@@ -19,7 +19,7 @@ export default function transform(interchange: KTORInterchange): InstitutionList
     }
 }
 
-function requirePreconditions(msg: KTORMessage) {
+function requirePreconditions(msg: KOTRMessage) {
     /* Simplification: Certain data is documented that it could be different, but de-facto it's not.
        Let's assert that it is never a value so that our data model and application logic can be 
        simpler
@@ -66,7 +66,7 @@ function requirePreconditions(msg: KTORMessage) {
     }
 }
 
-function transformMessage(msg: KTORMessage): Institution | null {
+function transformMessage(msg: KOTRMessage): Institution | null {
     /* in practice, this doesn't seem to be used and usage of this field is inconsistent for the
        different umbrella organizations that issue the Kostenträger-file. "03" however seems to mean
        "delete this entry" */

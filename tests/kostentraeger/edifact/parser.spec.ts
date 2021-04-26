@@ -1,7 +1,7 @@
 import tokenize from "../../../src/edifact/tokenizer"
 import parseKostentraeger from "../../../src/kostentraeger/edifact/parser"
 
-import { KTORInterchange, KTORMessage } from "../../../src/kostentraeger/edifact/segments"
+import { KOTRInterchange, KOTRMessage } from "../../../src/kostentraeger/edifact/segments"
 
 describe("kostentraeger edifact parser", () => {
 
@@ -16,7 +16,7 @@ describe("kostentraeger edifact parser", () => {
         })
     })
 
-    it("non-KTOR message throws error", () => {
+    it("non-KOTR message throws error", () => {
         expect(() => parse(
             unb+
             "UNH+00001+ROFL:01'"+
@@ -25,7 +25,7 @@ describe("kostentraeger edifact parser", () => {
         )).toThrowError()
     })
 
-    it("KTOR message of version higher than 2 throws error", () => {
+    it("KOTR message of version higher than 2 throws error", () => {
         expect(() => parseMessages(
             "UNH+00001+KOTR:03'"+
             idk+vdt+fkt+nam+ans+ // but otherwise it's ok
@@ -373,6 +373,6 @@ const ans = "ANS+1+42285+Wuppertal+Lichtscheiderstraße 89'"
 
 const msg = (str: string, i: number = 1): string => `UNH+${i}+KOTR:01'${str}UNT+000007+${i}'`
 
-const parse = (str: string): KTORInterchange => parseKostentraeger(tokenize(str))
+const parse = (str: string): KOTRInterchange => parseKostentraeger(tokenize(str))
 
-const parseMessages = (str: string): KTORMessage[] => parse(unb+str+unz).institutions
+const parseMessages = (str: string): KOTRMessage[] => parse(unb+str+unz).institutions

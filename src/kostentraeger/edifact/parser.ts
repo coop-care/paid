@@ -29,7 +29,7 @@ import {
 import {
     leistungsartSchluessel as pflegeLeistungsartSchluessel
 } from "../../sgb-xi/codes"
-import { KTORInterchange, KTORMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, VDT, VKG } from "./segments"
+import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, VDT, VKG } from "./segments"
 
 /** 
  *  Parses a Kostenträgerdatei (payer file) which provides information how to send invoices to the
@@ -42,7 +42,7 @@ import { KTORInterchange, KTORMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, V
 /* Transforms the serial data (array of arrays) from a Kostenträger EDIFACT-interchange into legible
  * messages with labelled typesafe segments. It does however not divorce the data structure from 
  * (the limitations of) the EDIFACT message format yet. */
-export default function parse(interchange: Interchange): KTORInterchange {
+export default function parse(interchange: Interchange): KOTRInterchange {
     const header = interchange.header
     return {
         spitzenverbandIK: header[1][0],
@@ -53,7 +53,7 @@ export default function parse(interchange: Interchange): KTORInterchange {
 }
 
 /** Parse only one message of the interchange */
-function parseMessage(message: Message): KTORMessage {
+function parseMessage(message: Message): KOTRMessage {
     const messageId = parseInt(message.header[0][0])
     const messageTxt = `Message ${messageId} -`
     const messageType = message.header[1][0]

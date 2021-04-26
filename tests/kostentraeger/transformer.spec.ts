@@ -1,4 +1,4 @@
-import { KTORInterchange } from "../../src/kostentraeger/edifact/segments"
+import { KOTRInterchange } from "../../src/kostentraeger/edifact/segments"
 import transform from "../../src/kostentraeger/transformer"
 import { InstitutionList } from "../../src/kostentraeger/types"
 
@@ -6,7 +6,7 @@ import { InstitutionList } from "../../src/kostentraeger/types"
 describe("kostentraeger transformer", () => {
 
     it("transform one message", () => {
-        const interchange: KTORInterchange = {
+        const interchange: KOTRInterchange = {
             spitzenverbandIK: "123456789",
             creationDate: new Date("2020-20-20"),
             institutions: [{
