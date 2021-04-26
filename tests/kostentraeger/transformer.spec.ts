@@ -14,7 +14,8 @@ describe("kostentraeger transformer", () => {
                 idk: {
                     ik: "999999999",
                     institutionsart: "99",
-                    abbreviatedName: "short name"
+                    abbreviatedName: "short name",
+                    vertragskassennummer: 12345
                 },
                 vdt: {
                     validityFrom: new Date("2020-20-20"),
@@ -133,6 +134,7 @@ describe("kostentraeger transformer", () => {
                 name: "very long name",
                 validityFrom: new Date("2020-20-20"),
                 validityTo: new Date("2088-10-10"),
+                vertragskassennummer: 12345,
                 bankAccountDetails: {
                     bankName: "Sparbank",
                     accountOwner: "short name",

@@ -30,9 +30,6 @@ function requirePreconditions(msg: KTORMessage) {
     if (msg.idk.institutionsart != "99") {
         throw new Error(`${messageTxt} Expected that "institutionsart" is always 99`)
     }
-    if (msg.idk.vertragskassennummer) {
-        throw new Error(`${messageTxt} Expected that "vertragskassennummer" is never set`)
-    }
 
     msg.dfuList.forEach((dfu) => {
         if (dfu.allowedTransmissionDays && dfu.allowedTransmissionDays != "1") {
@@ -77,6 +74,7 @@ function transformMessage(msg: KTORMessage): Institution | null {
         name: msg.nam.names.join(" "),
         abbreviatedName: msg.idk.abbreviatedName,
         
+        vertragskassennummer: msg.idk.vertragskassennummer,
         bankAccountDetails: msg.kto ? createBankAccountDetails(msg.kto, msg.idk.abbreviatedName) : undefined,
 
         validityFrom: msg.vdt.validityFrom,

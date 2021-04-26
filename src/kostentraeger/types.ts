@@ -30,6 +30,7 @@ export type Institution = {
     /** Abbreviated name of the institution (max. 30 characters) */
     abbreviatedName: string,
 
+    vertragskassennummer?: number,
     /** Optional bank account details of this institution */
     bankAccountDetails?: BankAccountDetails,
 
