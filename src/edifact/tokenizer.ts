@@ -12,7 +12,7 @@ import { Interchange, Message, Segment, Element, ServiceStringAdvice } from "./t
  *
  *  https://www.gs1.org/docs/EDI/eancom/2012/ean02s3/part1/part1_05.htm
  */
-export default function parse(str: string): Interchange {
+export default function tokenize(str: string): Interchange {
     // first line decides which separators are to be used in the rest of the interchange
     const ssa = parseServiceStringAdvice(str)
     const segments = split(str, ssa.segmentTerminator, ssa.releaseCharacter)

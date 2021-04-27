@@ -1,9 +1,9 @@
-import parse from "../../src/edifact/parser"
+import tokenize from "../../src/edifact/tokenizer"
 
 describe("EDIFACT parser", () => {
 
     it("parses empty interchange", () => {
-        expect(parse(
+        expect(tokenize(
             "UNB+UNOC:3+1+2+20211011:1030+123'"+
             "UNZ+0+123'"
         )).toEqual({
@@ -14,7 +14,7 @@ describe("EDIFACT parser", () => {
     })
 
     it("parses empty interchange with custom separators", () => {
-        expect(parse(
+        expect(tokenize(
             "UNA,|_\\ ;"+
             "UNB|UNOC,3|1|2|20211011,1030|123;"+
             "UNZ|0|123;"
@@ -26,7 +26,7 @@ describe("EDIFACT parser", () => {
     })
 
     it("interprets escaped characters correctly", () => {
-        expect(parse(
+        expect(tokenize(
             "UNB+UNOC:3+???:?+?,?'+2+20211011:1030+123'"+
             "UNZ+0+123'"
         )).toEqual({
@@ -37,7 +37,7 @@ describe("EDIFACT parser", () => {
     })
 
     it("interprets escaped characters correctly with custom separators", () => {
-        expect(parse(
+        expect(tokenize(
             "UNA,|_\\ ;"+
             "UNB|UNOC,3|\\,\\|\\_\\\\\\;|2|20211011,1030|123;"+
             "UNZ|0|123;"
@@ -50,23 +50,23 @@ describe("EDIFACT parser", () => {
 
     it("parses a an empty message", () => {
         expect(parseMessages(
-            "UNH+0001+KTOR:01'"+
+            "UNH+0001+KOTR:01'"+
             "UNT+3+0001'"
         )).toEqual([{
-            header: [["0001"],["KTOR", "01"]],
+            header: [["0001"],["KOTR", "01"]],
             segments: []
         }])
     })
 
     it("parses a message multiple segments", () => {
         expect(parseMessages(
-            "UNH+0001+KTOR:01'"+
+            "UNH+0001+KOTR:01'"+
             "LOL+123'"+
             "RFL'"+
             "YAY+1:2'"+
             "UNT+3+0001'"
         )).toEqual([{
-            header: [["0001"],["KTOR", "01"]],
+            header: [["0001"],["KOTR", "01"]],
             segments: [
                 { tag: "LOL", elements: [["123"]] },
                 { tag: "RFL", elements: [] },
@@ -114,14 +114,14 @@ describe("EDIFACT parser", () => {
     })
 })
 
-const parseMessages = (messages: string) => parse(
+const parseMessages = (messages: string) => tokenize(
     "UNB+UNOC:3+1+2+20211011:1030+123'"+
     messages+
     "UNZ+0+123'"
 ).messages
 
 const parseSegments = (segments: string) => parseMessages(
-    "UNH+0001+KTOR:01'"+
+    "UNH+0001+KOTR:01'"+
     segments+
     "UNT+3+0001'"
 )[0].segments

@@ -29,8 +29,3 @@ export type ServiceStringAdvice = {
     releaseCharacter: string,
     segmentTerminator: string
 }
-
-export type TimeOfDay = {
-    hours: number,
-    minutes: number
-}
