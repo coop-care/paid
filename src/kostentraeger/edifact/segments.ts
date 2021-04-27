@@ -22,18 +22,18 @@ import {
     VerarbeitungskennzeichenSchluessel 
 } from "./codes"
 
-/** Contains all the KTOR messages of one EDIFACT interchange and information from the header */
-export type KTORInterchange = {
+/** Contains all the KOTR messages of one EDIFACT interchange and information from the header */
+export type KOTRInterchange = {
     /** Institutionskennzeichen (=Institution code) of the umbrella organization that issued this */
     spitzenverbandIK: string
     /** Date this list was created. This is not the validity start date. */
     creationDate: Date,
     /** All the Kostentraeger for this umbrella organization */
-    institutions: KTORMessage[]
+    institutions: KOTRMessage[]
 }
 
-/** All the segments of one KTOR (=Kostenträger) message */
-export type KTORMessage = {
+/** All the segments of one KOTR (=Kostenträger) message */
+export type KOTRMessage = {
     id: number, 
     idk: IDK,
     vdt: VDT,

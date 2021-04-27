@@ -50,23 +50,23 @@ describe("EDIFACT parser", () => {
 
     it("parses a an empty message", () => {
         expect(parseMessages(
-            "UNH+0001+KTOR:01'"+
+            "UNH+0001+KOTR:01'"+
             "UNT+3+0001'"
         )).toEqual([{
-            header: [["0001"],["KTOR", "01"]],
+            header: [["0001"],["KOTR", "01"]],
             segments: []
         }])
     })
 
     it("parses a message multiple segments", () => {
         expect(parseMessages(
-            "UNH+0001+KTOR:01'"+
+            "UNH+0001+KOTR:01'"+
             "LOL+123'"+
             "RFL'"+
             "YAY+1:2'"+
             "UNT+3+0001'"
         )).toEqual([{
-            header: [["0001"],["KTOR", "01"]],
+            header: [["0001"],["KOTR", "01"]],
             segments: [
                 { tag: "LOL", elements: [["123"]] },
                 { tag: "RFL", elements: [] },
@@ -121,7 +121,7 @@ const parseMessages = (messages: string) => tokenize(
 ).messages
 
 const parseSegments = (segments: string) => parseMessages(
-    "UNH+0001+KTOR:01'"+
+    "UNH+0001+KOTR:01'"+
     segments+
     "UNT+3+0001'"
 )[0].segments
