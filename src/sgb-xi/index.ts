@@ -2,20 +2,19 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, Abrechnungsfall, Einsatz, Invoice, MessageIdentifiers, BillingFile, Hilfsmittel, Leistung } from "../types";
+import { BillingData, Abrechnungsfall, Einsatz, Invoice, MessageIdentifiers, BillingFile, Hilfsmittel } from "../types";
 import { entriesGroupedBy, valuesGroupedBy } from "../utils";
 import { MehrwertsteuerSchluessel, RechnungsartSchluessel } from "./codes";
 import { makeAnwendungsreferenz, makeDateiname } from "./filenames";
 import { ELS, ESK, FKT, GES, HIL, IAF, INV, MAN, NAD, NAM, REC, SRD, UNB, UNH, UNT, UNZ, UST, ZUS } from "./segments";
 
-const linebreak = "\n";
 const mehrwertsteuersaetze: Record<MehrwertsteuerSchluessel, number> = {
     "": 0,
     "1": 0.19,
     "2": 0.07
 };
 
-const makeBillingFile = (
+export const makeBillingFile = (
     empfaengerIK: string, 
     kassenart: string,
     invoices: Invoice[], 
@@ -49,7 +48,7 @@ const makeBillingFile = (
             ])
         ]),
         UNZ(messageNumber, datenaustauschreferenz)
-    ].join(linebreak);
+    ].join("");
 
     return {
         dateiname,

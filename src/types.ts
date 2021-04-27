@@ -125,8 +125,8 @@ export type Leistung = {
 
 export type Zuschlag = {
     zuschlagsart: ZuschlagsartSchluessel;
-    beschreibungZuschlagsart?: string;
     zuschlag: ZuschlagSchluessel;
+    beschreibungZuschlagsart?: string;
     zuschlagszuordnung: ZuschlagszuordnungSchluessel;
     zuschlagsberechnung: ZuschlagsberechnungSchluessel;
     istAbzugStattZuschlag: boolean;

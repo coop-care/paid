@@ -127,7 +127,7 @@ export const SRD = (
 
 export const UST = ({
     umsatzsteuerOrdnungsnummer = "",
-    umsatzsteuerBefreiung = "",
+    umsatzsteuerBefreiung,
 }: Leistungserbringer) => segment(
     "UST",
     mask(umsatzsteuerOrdnungsnummer),

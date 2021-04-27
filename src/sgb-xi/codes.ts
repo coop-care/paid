@@ -32,12 +32,12 @@ export const abrechnungscodeSchluessel = {
     "84": "Tagespflege: sonstige Pflegeeinrichtung",
     // Leistungserbringer Nachtpflege
     "86": "Nachtpflege: privat gewerblicher Anbieter",
-    "87": "Nachtpflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter) ",
+    "87": "Nachtpflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter)",
     "88": "Nachtpflege: öffentlicher Anbieter",
     "89": "Nachtpflege: sonstige Pflegeeinrichtung",
     // Leistungserbringer Kurzzeitpflege
     "91": "Kurzzeitpflege: privat gewerblicher Anbieter",
-    "92": "Kurzzeitpflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter) ",
+    "92": "Kurzzeitpflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter)",
     "93": "Kurzzeitpflege: öffentlicher Anbieter",
     "94": "Kurzzeitpflege: sonstige Pflegeeinrichtung",
     // Leistungserbringer vollstationäre Pflege
