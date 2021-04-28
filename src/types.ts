@@ -78,6 +78,7 @@ export type Leistungserbringer = {
     rechnungsstellerIK: string;
     abrechnungscode: AbrechnungscodeSchluessel;
     tarifbereich: TarifbereichSchluessel;
+    sondertarifJeKostentraegerIK: Record<string, string>;
     umsatzsteuerBefreiung: UmsatzsteuerBefreiungSchluessel;
     umsatzsteuerOrdnungsnummer?: string;
 };

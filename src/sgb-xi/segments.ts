@@ -11,7 +11,8 @@ import {
     messageIdentifierVersions, 
     Versicherter,
     Hilfsmittel,
-    Zuschlag
+    Zuschlag,
+    Abrechnungsfall
 } from "../types";
 import {
     PflegegradSchluessel,
@@ -117,12 +118,17 @@ export const SRD = (
     {
         abrechnungscode,
         tarifbereich,
+        sondertarifJeKostentraegerIK,
     }: Leistungserbringer,
-    leistungsart: LeistungsartSchluessel,
+    {
+        versicherter,
+        einsaetze,
+    }: Abrechnungsfall
 ) => segment(
     "SRD",
-    abrechnungscode + ":" + tarifbereich,
-    leistungsart
+    abrechnungscode + ":" + tarifbereich 
+        + (sondertarifJeKostentraegerIK[versicherter.kostentraegerIK] || "000"),
+    einsaetze[0].leistungen[0].leistungsart
 );
 
 export const UST = ({

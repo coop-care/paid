@@ -48,7 +48,7 @@ export const abrechnungscodeSchluessel = {
 }
 export type AbrechnungscodeSchluessel = keyof typeof abrechnungscodeSchluessel;
 
-// 2.2.2 Schlüssel Tarifkennzeichen: Tarifbereich
+// 2.2.2 & 2.14.1 Schlüssel Tarifkennzeichen: Tarifbereich
 export const tarifbereichSchluessel = {
     "00": "Bundeseinheitlicher Tarif (Ost und West)",
     "01": "Baden-Württemberg",

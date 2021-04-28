@@ -133,7 +133,7 @@ const makePLGA = (
 ) => [
     FKT("01", invoice.leistungserbringer, invoice.faelle[0].versicherter, sammelrechnung),
     REC(billing, invoiceIndex, leistungserbringerIndex, sammelrechnung),
-    SRD(invoice.leistungserbringer, invoice.faelle[0].einsaetze[0].leistungen[0].leistungsart),
+    SRD(invoice.leistungserbringer, invoice.faelle[0]),
     UST(invoice.leistungserbringer),
     GES(calculateInvoice(invoice)),
     NAM(invoice.leistungserbringer)

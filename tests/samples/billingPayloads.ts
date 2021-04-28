@@ -17,6 +17,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     abrechnungscode: "36",
     tarifbereich: "00",
     umsatzsteuerBefreiung: "01",
+    sondertarifJeKostentraegerIK: {},
 }, {
     name: "Nachbarschaftspflege in Wilhelmsburg gGmbH",
     ansprechpartner: [{
@@ -28,6 +29,9 @@ const leistungserbringer: Leistungserbringer[] = [{
     abrechnungscode: "35",
     tarifbereich: "05",
     umsatzsteuerBefreiung: "01",
+    sondertarifJeKostentraegerIK: {
+        "0000000010": "011"
+    },
 }, {
     name: "Quartierspflege Neuhausen GmbH",
     ansprechpartner: [{
@@ -39,6 +43,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     abrechnungscode: "36",
     tarifbereich: "02",
     umsatzsteuerBefreiung: "",
+    sondertarifJeKostentraegerIK: {},
 }, {
     name: "Von Mensch zu Mensch gGmbH",
     ansprechpartner: [{
@@ -50,6 +55,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     abrechnungscode: "35",
     tarifbereich: "01",
     umsatzsteuerBefreiung: "01",
+    sondertarifJeKostentraegerIK: {},
 }, {
     name: "Pflegedienst Neukölln GmbH",
     ansprechpartner: [{
@@ -62,6 +68,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     tarifbereich: "23",
     umsatzsteuerOrdnungsnummer: "012/345/67890",
     umsatzsteuerBefreiung: "",
+    sondertarifJeKostentraegerIK: {},
 }]
 
 const versicherte: Versicherter[] = [{
@@ -141,8 +148,8 @@ const versicherte: Versicherter[] = [{
     kostentraegerIK: "0000000050",
     versichertennummer: "0123456789",
     pflegegrad: "2",
-    firstName: "Sonja",
-    lastName: "Wolf",
+    firstName: "Małgorzata",
+    lastName: "Dąbrowski",
     birthday: new Date("1946-08-07"),
 }]
 
@@ -309,7 +316,7 @@ export const payload1 = {
                 ]
             }]
         }, {
-            versicherter: {...versicherte[1]},
+            versicherter: {...versicherte[2]},
             eindeutigeBelegnummer: "2021-1235",
             einsaetze: [{
                 leistungsBeginn: new Date("2021-04-03"),
@@ -339,7 +346,7 @@ export const payload2 = {
     invoices: [{
         leistungserbringer: { ...leistungserbringer[1] },
         faelle: [{
-            versicherter: { ...versicherte[2] },
+            versicherter: { ...versicherte[1] },
             eindeutigeBelegnummer: "2021-2893",
             einsaetze: [{
                 leistungsBeginn: new Date("2021-04-05"),

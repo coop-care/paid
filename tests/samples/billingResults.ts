@@ -10,7 +10,7 @@ export const result1 = {
         "UNH+1+PLGA:2'\n" +
             "FKT+01++0000000110+0000000010+0000000010+0000000110'\n" +
             "REC+2021-0087--01:0+20210503+1+EUR'\n" +
-            "SRD+36:00+01'\n" +
+            "SRD+36:00000+01'\n" +
             "UST++J+01'\n" +
             "GES+331,35+10,12++307,89'\n" +
             "NAM+Pflegedienst Musterstadt GmbH+Sven Bauer, 012 34567-8'\n" +
@@ -62,27 +62,27 @@ export const result1 = {
             "IAF+32,00+++32,00'\n" +
         "UNT+44+2'\n" +
         "UNH+3+PLGA:2'\n" +
-            "FKT+01++0000000110+0000000010+0000000010+0000000110'\n" +
+            "FKT+01++0000000110+0000000021+0000000020+0000000110'\n" +
             "REC+2021-0087--01:0+20210503+1+EUR'\n" +
-            "SRD+36:00+06'\n" +
+            "SRD+36:00000+06'\n" +
             "UST++J+01'\n" +
             "GES+79,45+++79,45'\n" +
             "NAM+Pflegedienst Musterstadt GmbH+Sven Bauer, 012 34567-8'\n" +
         "UNT+6+3'\n" +
         "UNH+4+PLAA:3'\n" +
-            "FKT+01+0000000110+0000000010+0000000010+0000000110'\n" +
+            "FKT+01+0000000110+0000000021+0000000020+0000000110'\n" +
             "REC+2021-0087--01:0+20210503+1+EUR'\n" +
             "INV+0123456789+2021-1235'\n" +
-                "NAD+Jürgen+Weber+19410902+Musterstraße+2+12345+Musterstadt'\n" +
-                "MAN+202104+++2'\n" +
+                "NAD+Paul+Hofmann+19321103+Musterstraße+3+12345+Musterstadt'\n" +
+                "MAN+202104+++4'\n" +
                 "ESK+03+0200'\n" +
                 "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
                 "ESK+03+0200'\n" +
                 "ELS+06:06:1:03+2,00+++00+1,00'\n" +
             "IAF+47,45+++47,45'\n" +
             "INV+0123456789+2021-1235'\n" +
-                "NAD+Jürgen+Weber+19410902+Musterstraße+2+12345+Musterstadt'\n" +
-                "MAN+202104+++2'\n" +
+                "NAD+Paul+Hofmann+19321103+Musterstraße+3+12345+Musterstadt'\n" +
+                "MAN+202104+++4'\n" +
                 "ESK+07'\n" +
                 "ELS+09:08:1:1+32,00+++00+1,00'\n" +
             "IAF+32,00+++32,00'\n" +
@@ -100,19 +100,19 @@ export const result2 = {
     nutzdaten:
         "UNB+UNOC:3+0000000210+0000000011+20210427:2159+1+PL041001AAO+0'\n" +
         "UNH+1+PLGA:2'\n" +
-            "FKT+01++0000000120+0000000021+0000000020+0000000210'\n" +
+            "FKT+01++0000000120+0000000010+0000000010+0000000210'\n" +
             "REC+2021-00267--01:1+20210427+2+EUR'\n" +
-            "SRD+35:05+06'\n" +
+            "SRD+35:05011+06'\n" +
             "UST++J+01'\n" +
             "GES+237,81+10,12++214,35'\n" +
             "NAM+Nachbarschaftspflege in Wilhel+Laila Neumann, 012 34567'\n" +
         "UNT+6+1'\n" +
         "UNH+2+PLAA:3'\n" +
-            "FKT+01+0000000120+0000000021+0000000020+0000000120'\n" +
+            "FKT+01+0000000120+0000000010+0000000010+0000000120'\n" +
             "REC+2021-00267--01:1+20210427+2+EUR'\n" +
             "INV+0123456789+2021-2893'\n" +
-                "NAD+Paul+Hofmann+19321103+Musterstraße+3+12345+Musterstadt'\n" +
-                "MAN+202104+++4'\n" +
+                "NAD+Jürgen+Weber+19410902+Musterstraße+2+12345+Musterstadt'\n" +
+                "MAN+202104+++2'\n" +
                 "ESK+05+0200'\n" +
                 "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
                 "ESK+05'\n" +
@@ -120,8 +120,8 @@ export const result2 = {
                 "HIL+1+23,46+10,12+genehmigt_123+20210301+00+Rollator'\n" +
             "IAF+192,36+10,12++168,90'\n" +
             "INV+0123456789+2021-2893'\n" +
-                "NAD+Paul+Hofmann+19321103+Musterstraße+3+12345+Musterstadt'\n" +
-                "MAN+202104+++4'\n" +
+                "NAD+Jürgen+Weber+19410902+Musterstraße+2+12345+Musterstadt'\n" +
+                "MAN+202104+++2'\n" +
                 "ESK+08+0200'\n" +
                 "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
             "IAF+45,45+++45,45'\n" +
@@ -129,7 +129,7 @@ export const result2 = {
         "UNH+3+PLGA:2'\n" +
             "FKT+01++0000000120+0000000031+0000000030+0000000210'\n" +
             "REC+2021-00267--01:2+20210427+2+EUR'\n" +
-            "SRD+35:05+06'\n" +
+            "SRD+35:05000+06'\n" +
             "UST++J+01'\n" +
             "GES+237,81+10,12++214,35'\n" +
             "NAM+Nachbarschaftspflege in Wilhel+Laila Neumann, 012 34567'\n" +
@@ -156,7 +156,7 @@ export const result2 = {
         "UNH+5+PLGA:2'\n" +
             "FKT+01++0000000130+0000000040+0000000040+0000000210'\n" +
             "REC+2021-00267--01:3+20210427+2+EUR'\n" +
-            "SRD+36:02+06'\n" +
+            "SRD+36:02000+06'\n" +
             "UST'\n" +
             "GES+73,82+++73,82'\n" +
             "NAM+Quartierspflege Neuhausen GmbH+Ben Peters, 012 3456789'\n" +
@@ -180,7 +180,7 @@ export const result2 = {
         "UNH+7+PLGA:2'\n" +
             "FKT+01++0000000130+0000000031+0000000030+0000000210'\n" +
             "REC+2021-00267--01:4+20210427+2+EUR'\n" +
-            "SRD+36:02+06'\n" +
+            "SRD+36:02000+06'\n" +
             "UST'\n" +
             "GES+77,45+++77,45'\n" +
             "NAM+Quartierspflege Neuhausen GmbH+Ben Peters, 012 3456789'\n" +
@@ -216,7 +216,7 @@ export const result3 = {
         "UNH+1+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000050++0000000310'\n" +
             "REC+2021-00398--01:0+20210503+3+EUR'\n" +
-            "SRD+35:01+06'\n" +
+            "SRD+35:01000+06'\n" +
             "UST++J+01'\n" +
             "GES+90,90+++90,90'\n" +
             "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
@@ -224,7 +224,7 @@ export const result3 = {
         "UNH+2+PLGA:2'\n" +
             "FKT+01++0000000310+0000000050+0000000050+0000000310'\n" +
             "REC+2021-00398--01:1+20210503+3+EUR'\n" +
-            "SRD+35:01+06'\n" +
+            "SRD+35:01000+06'\n" +
             "UST++J+01'\n" +
             "GES+90,90+++90,90'\n" +
             "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
@@ -233,13 +233,13 @@ export const result3 = {
             "FKT+01+0000000310+0000000050+0000000050+0000000310'\n" +
             "REC+2021-00398--01:1+20210503+3+EUR'\n" +
             "INV+0123456789+2021-0413'\n" +
-                "NAD+Sonja+Wolf+19460807'\n" +
+                "NAD+Małgorzata+Dąbrowski+19460807'\n" +
                 "MAN+202104+++2'\n" +
                 "ESK+03+0200'\n" +
                 "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
             "IAF+45,45+++45,45'\n" +
             "INV+0123456789+2021-0413'\n" +
-                "NAD+Sonja+Wolf+19460807'\n" +
+                "NAD+Małgorzata+Dąbrowski+19460807'\n" +
                 "MAN+202104+++2'\n" +
                 "ESK+10+0200'\n" +
                 "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
@@ -248,7 +248,7 @@ export const result3 = {
         "UNH+4+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000010++0000000310'\n" +
             "REC+2021-00398--11:0+20210503+3+EUR'\n" +
-            "SRD+35:01+06'\n" +
+            "SRD+35:01000+06'\n" +
             "UST++J+01'\n" +
             "GES+138,19+++138,19'\n" +
             "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
@@ -256,7 +256,7 @@ export const result3 = {
         "UNH+5+PLGA:2'\n" +
             "FKT+01++0000000310+0000000010+0000000010+0000000310'\n" +
             "REC+2021-00398--11:1+20210503+3+EUR'\n" +
-            "SRD+35:01+06'\n" +
+            "SRD+35:01000+06'\n" +
             "UST++J+01'\n" +
             "GES+77,45+++77,45'\n" +
             "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
@@ -280,7 +280,7 @@ export const result3 = {
         "UNH+7+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000010++0000000310'\n" +
             "REC+2021-00398--11:0+20210503+3+EUR'\n" +
-            "SRD+35:01+06'\n" +
+            "SRD+35:01000+06'\n" +
             "UST++J+01'\n" +
             "GES+138,19+++138,19'\n" +
             "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
@@ -288,7 +288,7 @@ export const result3 = {
         "UNH+8+PLGA:2'\n" +
             "FKT+01++0000000310+0000000010+0000000010+0000000310'\n" +
             "REC+2021-00398--11:2+20210503+3+EUR'\n" +
-            "SRD+36:23+01'\n" +
+            "SRD+36:23000+01'\n" +
             "UST+012/345/67890'\n" +
             "GES+60,74+++60,74'\n" +
             "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
@@ -316,7 +316,7 @@ export const result3 = {
         "UNH+10+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000021++0000000310'\n" +
             "REC+2021-00398--21:0+20210503+3+EUR'\n" +
-            "SRD+36:23+01'\n" +
+            "SRD+36:23000+01'\n" +
             "UST+012/345/67890'\n" +
             "GES+105,21+++105,21'\n" +
             "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
@@ -324,7 +324,7 @@ export const result3 = {
         "UNH+11+PLGA:2'\n" +
             "FKT+01++0000000310+0000000021+0000000020+0000000310'\n" +
             "REC+2021-00398--21:1+20210503+3+EUR'\n" +
-            "SRD+36:23+01'\n" +
+            "SRD+36:23000+01'\n" +
             "UST+012/345/67890'\n" +
             "GES+62,37+++62,37'\n" +
             "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
@@ -350,7 +350,7 @@ export const result3 = {
         "UNH+13+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000021++0000000310'\n" +
             "REC+2021-00398--21:0+20210503+3+EUR'\n" +
-            "SRD+36:23+01'\n" +
+            "SRD+36:23000+01'\n" +
             "UST+012/345/67890'\n" +
             "GES+105,21+++105,21'\n" +
             "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
@@ -358,7 +358,7 @@ export const result3 = {
         "UNH+14+PLGA:2'\n" +
             "FKT+01++0000000310+0000000021+0000000020+0000000310'\n" +
             "REC+2021-00398--21:2+20210503+3+EUR'\n" +
-            "SRD+35:01+02'\n" +
+            "SRD+35:01000+02'\n" +
             "UST++J+01'\n" +
             "GES+42,84+++42,84'\n" +
             "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
@@ -376,7 +376,7 @@ export const result3 = {
         "UNH+16+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000031++0000000310'\n" +
             "REC+2021-00398--31:0+20210503+3+EUR'\n" +
-            "SRD+36:23+04'\n" +
+            "SRD+36:23000+04'\n" +
             "UST+012/345/67890'\n" +
             "GES+1876,48+++1876,48'\n" +
             "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
@@ -384,7 +384,7 @@ export const result3 = {
         "UNH+17+PLGA:2'\n" +
             "FKT+01++0000000310+0000000031+0000000030+0000000310'\n" +
             "REC+2021-00398--31:1+20210503+3+EUR'\n" +
-            "SRD+36:23+04'\n" +
+            "SRD+36:23000+04'\n" +
             "UST+012/345/67890'\n" +
             "GES+1876,48+++1876,48'\n" +
             "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
