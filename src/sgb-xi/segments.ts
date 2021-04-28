@@ -12,7 +12,8 @@ import {
     Versicherter,
     Hilfsmittel,
     Zuschlag,
-    Abrechnungsfall
+    Abrechnungsfall,
+    Institution
 } from "../types";
 import {
     PflegegradSchluessel,
@@ -107,7 +108,7 @@ export const REC = (
     currency = DefaultCurrency
 ) => segment(
     "REC",
-    mask(rechnungsnummerprefix + "-" + invoiceIndex + 1) + ":" +
+    mask(rechnungsnummerprefix + "-" + (invoiceIndex + 1)) + ":" +
         (sammelrechnung || rechnungsart == "1" ? 0 : (leistungserbringerIndex + 1)),
     date(rechnungsdatum),
     rechnungsart,
@@ -159,7 +160,7 @@ export const GES = ({
 export const NAM = ({
     name,
     ansprechpartner
-}: Leistungserbringer) => segment(
+}: Institution) => segment(
     "NAM",
     mask(name.substr(0, 30)),
     ...ansprechpartner.slice(0, 3).map(ansprechpartner =>

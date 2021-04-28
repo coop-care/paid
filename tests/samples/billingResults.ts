@@ -9,7 +9,7 @@ export const result1 = {
         "UNB+UNOC:3+0000000110+0000000011+20210427:2159+1+PL041001SAO+0'\n" +
         "UNH+1+PLGA:2'\n" +
             "FKT+01++0000000110+0000000010+0000000010+0000000110'\n" +
-            "REC+2021-0087--01:0+20210503+1+EUR'\n" +
+            "REC+2021-0087-1:0+20210503+1+EUR'\n" +
             "SRD+36:00000+01'\n" +
             "UST++J+01'\n" +
             "GES+331,35+10,12++307,89'\n" +
@@ -17,7 +17,7 @@ export const result1 = {
         "UNT+6+1'\n" +
         "UNH+2+PLAA:3'\n" +
             "FKT+01+0000000110+0000000010+0000000010+0000000110'\n" +
-            "REC+2021-0087--01:0+20210503+1+EUR'\n" +
+            "REC+2021-0087-1:0+20210503+1+EUR'\n" +
             "INV+0123456789+2021-1234'\n" +
                 "NAD+Gertrud+Fischer+19380301+Musterstraße+1+12345+Musterstadt'\n" +
                 "MAN+202103+++3'\n" +
@@ -63,7 +63,7 @@ export const result1 = {
         "UNT+44+2'\n" +
         "UNH+3+PLGA:2'\n" +
             "FKT+01++0000000110+0000000021+0000000020+0000000110'\n" +
-            "REC+2021-0087--01:0+20210503+1+EUR'\n" +
+            "REC+2021-0087-1:0+20210503+1+EUR'\n" +
             "SRD+36:00000+06'\n" +
             "UST++J+01'\n" +
             "GES+79,45+++79,45'\n" +
@@ -71,7 +71,7 @@ export const result1 = {
         "UNT+6+3'\n" +
         "UNH+4+PLAA:3'\n" +
             "FKT+01+0000000110+0000000021+0000000020+0000000110'\n" +
-            "REC+2021-0087--01:0+20210503+1+EUR'\n" +
+            "REC+2021-0087-1:0+20210503+1+EUR'\n" +
             "INV+0123456789+2021-1235'\n" +
                 "NAD+Paul+Hofmann+19321103+Musterstraße+3+12345+Musterstadt'\n" +
                 "MAN+202104+++4'\n" +
@@ -101,7 +101,7 @@ export const result2 = {
         "UNB+UNOC:3+0000000210+0000000011+20210427:2159+1+PL041001AAO+0'\n" +
         "UNH+1+PLGA:2'\n" +
             "FKT+01++0000000120+0000000010+0000000010+0000000210'\n" +
-            "REC+2021-00267--01:1+20210427+2+EUR'\n" +
+            "REC+2021-00267-1:1+20210427+2+EUR'\n" +
             "SRD+35:05011+06'\n" +
             "UST++J+01'\n" +
             "GES+237,81+10,12++214,35'\n" +
@@ -109,7 +109,7 @@ export const result2 = {
         "UNT+6+1'\n" +
         "UNH+2+PLAA:3'\n" +
             "FKT+01+0000000120+0000000010+0000000010+0000000120'\n" +
-            "REC+2021-00267--01:1+20210427+2+EUR'\n" +
+            "REC+2021-00267-1:1+20210427+2+EUR'\n" +
             "INV+0123456789+2021-2893'\n" +
                 "NAD+Jürgen+Weber+19410902+Musterstraße+2+12345+Musterstadt'\n" +
                 "MAN+202104+++2'\n" +
@@ -128,7 +128,7 @@ export const result2 = {
         "UNT+17+2'\n" +
         "UNH+3+PLGA:2'\n" +
             "FKT+01++0000000120+0000000031+0000000030+0000000210'\n" +
-            "REC+2021-00267--01:2+20210427+2+EUR'\n" +
+            "REC+2021-00267-1:2+20210427+2+EUR'\n" +
             "SRD+35:05000+06'\n" +
             "UST++J+01'\n" +
             "GES+237,81+10,12++214,35'\n" +
@@ -136,7 +136,7 @@ export const result2 = {
         "UNT+6+3'\n" +
         "UNH+4+PLAA:3'\n" +
             "FKT+01+0000000120+0000000031+0000000030+0000000120'\n" +
-            "REC+2021-00267--01:2+20210427+2+EUR'\n" +
+            "REC+2021-00267-1:2+20210427+2+EUR'\n" +
             "INV+0123456789+2021-2894'\n" +
                 "NAD+Sabine+Schwarz+19421004+Musterstraße+4+12345+Musterstadt'\n" +
                 "MAN+202104+++4'\n" +
@@ -155,7 +155,7 @@ export const result2 = {
         "UNT+17+4'\n" +
         "UNH+5+PLGA:2'\n" +
             "FKT+01++0000000130+0000000040+0000000040+0000000210'\n" +
-            "REC+2021-00267--01:3+20210427+2+EUR'\n" +
+            "REC+2021-00267-1:3+20210427+2+EUR'\n" +
             "SRD+36:02000+06'\n" +
             "UST'\n" +
             "GES+73,82+++73,82'\n" +
@@ -163,7 +163,7 @@ export const result2 = {
         "UNT+6+5'\n" +
         "UNH+6+PLAA:3'\n" +
             "FKT+01+0000000130+0000000040+0000000040+0000000130'\n" +
-            "REC+2021-00267--01:3+20210427+2+EUR'\n" +
+            "REC+2021-00267-1:3+20210427+2+EUR'\n" +
             "INV+0123456789+2021-354'\n" +
                 "NAD+Ingeborg+Wagner+19360205+Musterstraße+5+12345+Musterstadt'\n" +
                 "MAN+202104+++1'\n" +
@@ -179,7 +179,7 @@ export const result2 = {
         "UNT+14+6'\n" +
         "UNH+7+PLGA:2'\n" +
             "FKT+01++0000000130+0000000031+0000000030+0000000210'\n" +
-            "REC+2021-00267--01:4+20210427+2+EUR'\n" +
+            "REC+2021-00267-1:4+20210427+2+EUR'\n" +
             "SRD+36:02000+06'\n" +
             "UST'\n" +
             "GES+77,45+++77,45'\n" +
@@ -187,7 +187,7 @@ export const result2 = {
         "UNT+6+7'\n" +
         "UNH+8+PLAA:3'\n" +
             "FKT+01+0000000130+0000000031+0000000030+0000000130'\n" +
-            "REC+2021-00267--01:4+20210427+2+EUR'\n" +
+            "REC+2021-00267-1:4+20210427+2+EUR'\n" +
             "INV+0123456789+2021-355'\n" +
                 "NAD+Robert+Schäfer+19370606+Musterstraße+6+12345+Musterstadt'\n" +
                 "MAN+202104+++2'\n" +
@@ -215,23 +215,23 @@ export const result3 = {
         "UNB+UNOC:3+0000000310+0000000011+20210427:2159+1+PL041001AAO+0'\n" +
         "UNH+1+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000050++0000000310'\n" +
-            "REC+2021-00398--01:0+20210503+3+EUR'\n" +
+            "REC+2021-00398-1:0+20210503+3+EUR'\n" +
             "SRD+35:01000+06'\n" +
             "UST++J+01'\n" +
             "GES+90,90+++90,90'\n" +
-            "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+1'\n" +
         "UNH+2+PLGA:2'\n" +
             "FKT+01++0000000310+0000000050+0000000050+0000000310'\n" +
-            "REC+2021-00398--01:1+20210503+3+EUR'\n" +
+            "REC+2021-00398-1:1+20210503+3+EUR'\n" +
             "SRD+35:01000+06'\n" +
             "UST++J+01'\n" +
             "GES+90,90+++90,90'\n" +
-            "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+2'\n" +
         "UNH+3+PLAA:3'\n" +
             "FKT+01+0000000310+0000000050+0000000050+0000000310'\n" +
-            "REC+2021-00398--01:1+20210503+3+EUR'\n" +
+            "REC+2021-00398-1:1+20210503+3+EUR'\n" +
             "INV+0123456789+2021-0413'\n" +
                 "NAD+Małgorzata+Dąbrowski+19460807'\n" +
                 "MAN+202104+++2'\n" +
@@ -247,23 +247,23 @@ export const result3 = {
         "UNT+14+3'\n" +
         "UNH+4+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000010++0000000310'\n" +
-            "REC+2021-00398--11:0+20210503+3+EUR'\n" +
+            "REC+2021-00398-2:0+20210503+3+EUR'\n" +
             "SRD+35:01000+06'\n" +
             "UST++J+01'\n" +
             "GES+138,19+++138,19'\n" +
-            "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+4'\n" +
         "UNH+5+PLGA:2'\n" +
             "FKT+01++0000000310+0000000010+0000000010+0000000310'\n" +
-            "REC+2021-00398--11:1+20210503+3+EUR'\n" +
+            "REC+2021-00398-2:1+20210503+3+EUR'\n" +
             "SRD+35:01000+06'\n" +
             "UST++J+01'\n" +
             "GES+77,45+++77,45'\n" +
-            "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+5'\n" +
         "UNH+6+PLAA:3'\n" +
             "FKT+01+0000000310+0000000010+0000000010+0000000310'\n" +
-            "REC+2021-00398--11:1+20210503+3+EUR'\n" +
+            "REC+2021-00398-2:1+20210503+3+EUR'\n" +
             "INV+0123456789+2021-0414'\n" +
                 "NAD+Gertrud+Fischer+19380301+Musterstraße+1+12345+Musterstadt'\n" +
                 "MAN+202104+++3'\n" +
@@ -279,23 +279,23 @@ export const result3 = {
         "UNT+14+6'\n" +
         "UNH+7+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000010++0000000310'\n" +
-            "REC+2021-00398--11:0+20210503+3+EUR'\n" +
+            "REC+2021-00398-2:0+20210503+3+EUR'\n" +
             "SRD+35:01000+06'\n" +
             "UST++J+01'\n" +
             "GES+138,19+++138,19'\n" +
-            "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+7'\n" +
         "UNH+8+PLGA:2'\n" +
             "FKT+01++0000000310+0000000010+0000000010+0000000310'\n" +
-            "REC+2021-00398--11:2+20210503+3+EUR'\n" +
+            "REC+2021-00398-2:2+20210503+3+EUR'\n" +
             "SRD+36:23000+01'\n" +
             "UST+012/345/67890'\n" +
             "GES+60,74+++60,74'\n" +
-            "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+8'\n" +
             "UNH+9+PLAA:3'\n" +
             "FKT+01+0000000310+0000000010+0000000010+0000000310'\n" +
-            "REC+2021-00398--11:2+20210503+3+EUR'\n" +
+            "REC+2021-00398-2:2+20210503+3+EUR'\n" +
             "INV+0123456789+2021-0313'\n" +
                 "NAD+Jürgen+Weber+19410902+Musterstraße+2+12345+Musterstadt'\n" +
                 "MAN+202104+++2'\n" +
@@ -315,23 +315,23 @@ export const result3 = {
         "UNT+18+9'\n" +
         "UNH+10+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000021++0000000310'\n" +
-            "REC+2021-00398--21:0+20210503+3+EUR'\n" +
+            "REC+2021-00398-3:0+20210503+3+EUR'\n" +
             "SRD+36:23000+01'\n" +
             "UST+012/345/67890'\n" +
             "GES+105,21+++105,21'\n" +
-            "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+10'\n" +
         "UNH+11+PLGA:2'\n" +
             "FKT+01++0000000310+0000000021+0000000020+0000000310'\n" +
-            "REC+2021-00398--21:1+20210503+3+EUR'\n" +
+            "REC+2021-00398-3:1+20210503+3+EUR'\n" +
             "SRD+36:23000+01'\n" +
             "UST+012/345/67890'\n" +
             "GES+62,37+++62,37'\n" +
-            "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+11'\n" +
         "UNH+12+PLAA:3'\n" +
             "FKT+01+0000000310+0000000021+0000000020+0000000310'\n" +
-            "REC+2021-00398--21:1+20210503+3+EUR'\n" +
+            "REC+2021-00398-3:1+20210503+3+EUR'\n" +
             "INV+0123456789+2021-0314'\n" +
                 "NAD+Paul+Hofmann+19321103+Musterstraße+3+12345+Musterstadt'\n" +
                 "MAN+202104+++4'\n" +
@@ -349,23 +349,23 @@ export const result3 = {
         "UNT+16+12'\n" +
         "UNH+13+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000021++0000000310'\n" +
-            "REC+2021-00398--21:0+20210503+3+EUR'\n" +
+            "REC+2021-00398-3:0+20210503+3+EUR'\n" +
             "SRD+36:23000+01'\n" +
             "UST+012/345/67890'\n" +
             "GES+105,21+++105,21'\n" +
-            "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+13'\n" +
         "UNH+14+PLGA:2'\n" +
             "FKT+01++0000000310+0000000021+0000000020+0000000310'\n" +
-            "REC+2021-00398--21:2+20210503+3+EUR'\n" +
+            "REC+2021-00398-3:2+20210503+3+EUR'\n" +
             "SRD+35:01000+02'\n" +
             "UST++J+01'\n" +
             "GES+42,84+++42,84'\n" +
-            "NAM+Von Mensch zu Mensch gGmbH+Lena Wolf, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+14'\n" +
         "UNH+15+PLAA:3'\n" +
             "FKT+01+0000000310+0000000021+0000000020+0000000310'\n" +
-            "REC+2021-00398--21:2+20210503+3+EUR'\n" +
+            "REC+2021-00398-3:2+20210503+3+EUR'\n" +
             "INV+0123456789+2021-4321'\n" +
                 "NAD+Paul+Hofmann+19321103+Musterstraße+3+12345+Musterstadt'\n" +
                 "MAN+202104+++4'\n" +
@@ -375,23 +375,23 @@ export const result3 = {
         "UNT+8+15'\n" +
         "UNH+16+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000031++0000000310'\n" +
-            "REC+2021-00398--31:0+20210503+3+EUR'\n" +
+            "REC+2021-00398-4:0+20210503+3+EUR'\n" +
             "SRD+36:23000+04'\n" +
             "UST+012/345/67890'\n" +
             "GES+1876,48+++1876,48'\n" +
-            "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+16'\n" +
         "UNH+17+PLGA:2'\n" +
             "FKT+01++0000000310+0000000031+0000000030+0000000310'\n" +
-            "REC+2021-00398--31:1+20210503+3+EUR'\n" +
+            "REC+2021-00398-4:1+20210503+3+EUR'\n" +
             "SRD+36:23000+04'\n" +
             "UST+012/345/67890'\n" +
             "GES+1876,48+++1876,48'\n" +
-            "NAM+Pflegedienst Neukölln GmbH+Yvonne Zimmermann, 0123 456789'\n" +
+            "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+17'\n" +
         "UNH+18+PLAA:3'\n" +
             "FKT+01+0000000310+0000000031+0000000030+0000000310'\n" +
-            "REC+2021-00398--31:1+20210503+3+EUR'\n" +
+            "REC+2021-00398-4:1+20210503+3+EUR'\n" +
             "INV+0123456789+2021-0234'\n" +
                 "NAD+Sabine+Schwarz+19421004+Musterstraße+4+12345+Musterstadt'\n" +
                 "MAN+202104+++4'\n" +

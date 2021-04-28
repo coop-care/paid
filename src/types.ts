@@ -44,6 +44,7 @@ export type BillingData = {
     rechnungsdatum?: Date;
     abrechnungsmonat: Date;
     korrekturlieferung?: number;
+    abrechnungsstelle?: Institution;
     laufendeDatenannahmeImJahrJeEmpfaengerIK: Record<string, number>;
 }
 
@@ -63,12 +64,16 @@ export type Invoice = {
     faelle: Abrechnungsfall[];
 };
 
-export type Leistungserbringer = {
+export type Institution = {
     name: string;
+    ik: string;
     ansprechpartner: {
-        name?: string;
-        phone?: string;
+        name: string;
+        phone: string;
     }[];
+};
+
+export type Leistungserbringer = Institution & {
     // Leistungserbringer, der selbst abrechnet (Rechnungsart 1), 
     // oder Abrechnungsstelle (Rechnungsart 2 + 3):
     absenderIK: string;

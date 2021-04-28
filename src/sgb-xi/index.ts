@@ -136,7 +136,7 @@ const makePLGA = (
     SRD(invoice.leistungserbringer, invoice.faelle[0]),
     UST(invoice.leistungserbringer),
     GES(calculateInvoice(invoice)),
-    NAM(invoice.leistungserbringer)
+    NAM(billing.rechnungsart != "3" || !billing.abrechnungsstelle ? invoice.leistungserbringer : billing.abrechnungsstelle)
 ];
 
 // see 4.4.2 Nachrichtentyp Abrechnungsdaten (PLAA)

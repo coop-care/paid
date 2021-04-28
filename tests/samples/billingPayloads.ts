@@ -8,6 +8,7 @@ import {
 
 const leistungserbringer: Leistungserbringer[] = [{
     name: "Pflegedienst Musterstadt GmbH",
+    ik: "0000000110",
     ansprechpartner: [{
         name: "Sven Bauer",
         phone: "012 34567-8",
@@ -20,6 +21,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Nachbarschaftspflege in Wilhelmsburg gGmbH",
+    ik: "0000000120",
     ansprechpartner: [{
         name: "Laila Neumann",
         phone: "012 34567",
@@ -34,6 +36,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     },
 }, {
     name: "Quartierspflege Neuhausen GmbH",
+    ik: "0000000130",
     ansprechpartner: [{
         name: "Ben Peters",
         phone: "012 3456789",
@@ -46,6 +49,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Von Mensch zu Mensch gGmbH",
+    ik: "0000000140",
     ansprechpartner: [{
         name: "Lena Wolf",
         phone: "0123 456789",
@@ -58,6 +62,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Pflegedienst Neukölln GmbH",
+    ik: "0000000150",
     ansprechpartner: [{
         name: "Yvonne Zimmermann",
         phone: "0123 456789",
@@ -273,7 +278,7 @@ export const payload1 = {
     billingData: {
         dateiindikator: "0",
         rechnungsart: "1",
-        rechnungsnummerprefix: "2021-0087-",
+        rechnungsnummerprefix: "2021-0087",
         rechnungsdatum: new Date("2021-05-03"),
         abrechnungsmonat: new Date("2021-04-01"),
         datenaustauschreferenzJeEmpfaengerIK: {},
@@ -338,7 +343,7 @@ export const payload2 = {
     billingData: {
         dateiindikator: "0",
         rechnungsart: "2",
-        rechnungsnummerprefix: "2021-00267-",
+        rechnungsnummerprefix: "2021-00267",
         abrechnungsmonat: new Date("2021-04-01"),
         datenaustauschreferenzJeEmpfaengerIK: {},
         laufendeDatenannahmeImJahrJeEmpfaengerIK: {}
@@ -414,9 +419,19 @@ export const payload3 = {
     billingData: {
         dateiindikator: "0",
         rechnungsart: "3",
-        rechnungsnummerprefix: "2021-00398-",
+        rechnungsnummerprefix: "2021-00398",
         rechnungsdatum: new Date("2021-05-03"),
         abrechnungsmonat: new Date("2021-04-01"),
+        abrechnungsstelle: {
+            name: "PAID Abrechnungszentrum eG",
+            ik: "00000310",
+            ansprechpartner: [{
+                name: "Sonja Braun",
+                phone: "01234 5678-9",
+            }, {
+                name: "Josef Klein"
+            }]
+        },
         datenaustauschreferenzJeEmpfaengerIK: {},
         laufendeDatenannahmeImJahrJeEmpfaengerIK: {}
     } as BillingData,

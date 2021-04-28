@@ -18,6 +18,7 @@ eindeutigeBelegnummer.length <= 10 && /^[a-zA-Z0-9][a-zA-Z0-9/-]*[a-zA-Z0-9]$/.t
 required parameters depending on other parameters to fill ELS segment details field
 leistung.leistungsart == "06" && !!leistung.hilfsmittel
 Object.values(sondertarifJeKostentraegerIK).each.length == 3
+rechnungsart != 1 && !!billingData.abrechnungsstelle
 
 */
 
