@@ -32,6 +32,7 @@ export const makeBillingFile = (
     const anwendungsreferenz = makeAnwendungsreferenz(kassenart, laufendeDatenannahmeImJahr, billing);
     const dateiname = makeDateiname(dateiindikator, datenaustauschreferenz - 1); // todo: resaearch „verfahrensversion”, maybe in Auftragsdatei documentation?
     let messageNumber = 0;
+    let invoiceIndex = 0;
 
     // sort leistungen und einsätze by start date
     invoices.map(invoice => ({
@@ -54,14 +55,14 @@ export const makeBillingFile = (
     // according to section 4.2 Struktur der Datei, grouped for all three Rechnungsarten
     const nutzdaten = [
         UNB(absenderIK, empfaengerIK, datenaustauschreferenz, anwendungsreferenz, dateiindikator),
-        ...forEachKostentraeger(invoices, rechnungsart).flatMap((invoices, invoiceIndex) => [
+        ...forEachKostentraeger(invoices, rechnungsart).flatMap(invoices => [
             ...forEachLeistungserbringerAndPflegekasse(invoices).flatMap((invoicesByPflegekasse, index) => [
                 ...(invoicesByPflegekasse.length > 1 || rechnungsart == "3"
                     ? makeMessage("PLGA", true, mergeInvoices(invoices), billing, ++messageNumber, invoiceIndex, index)
                     : []),
                 ...invoicesByPflegekasse.flatMap(invoice => [
                     ...makeMessage("PLGA", false, invoice, billing, ++messageNumber, invoiceIndex, index),
-                    ...makeMessage("PLAA", false, invoice, billing, ++messageNumber, invoiceIndex, index)
+                    ...makeMessage("PLAA", false, invoice, billing, ++messageNumber, invoiceIndex++, index)
                 ])
             ])
         ]),
