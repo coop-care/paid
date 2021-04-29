@@ -81,9 +81,6 @@ function transformMessage(msg: KOTRMessage): Institution | null {
             throw new Error(`${messageTxt} Expected IBAN and BIC`)
         }
     }
-    const contacts = msg.aspList.map((asp) => createContact(asp))
-    const addresses = msg.ansList.map((ans) => createAddress(ans))
-    const links = msg.vkgList
 
     return {
         ik: msg.idk.ik,
@@ -96,10 +93,10 @@ function transformMessage(msg: KOTRMessage): Institution | null {
         validityFrom: msg.vdt.validityFrom,
         validityTo: msg.vdt.validityTo,
 
-        contacts: contacts.length > 0 ? contacts : undefined,
-        addresses: addresses.length > 0 ? addresses : undefined,
+        contacts: msg.aspList.map((asp) => createContact(asp)),
+        addresses: msg.ansList.map((ans) => createAddress(ans)),
         transmissionMethods: createReceiptTransmissionMethods(msg.uemList, msg.dfuList),
-        links: links.length > 0 ? links : undefined
+        links: msg.vkgList
     }
 }
 
