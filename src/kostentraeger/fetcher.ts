@@ -24,7 +24,7 @@ async function fetchKostentraegerUrls(kostentraegerRssUrls: string[]): Promise<s
         for (let i = 0; i < items.length; i++) {
             const item = items.item(i)
             const kostentraegerFileUrl = item?.getElementsByTagName("link")?.item(0)?.childNodes[0]?.nodeValue
-            if (kostentraegerFileUrl != null) {
+            if (kostentraegerFileUrl) {
                 urls.push(kostentraegerFileUrl)
             }
         }

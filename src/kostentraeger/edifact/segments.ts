@@ -22,12 +22,15 @@ import {
     VerarbeitungskennzeichenSchluessel 
 } from "./codes"
 
+export type KOTRInterchangeParsingResult = {
+    interchange: KOTRInterchange,
+    warnings: string[]
+}
+
 /** Contains all the KOTR messages of one EDIFACT interchange and information from the header */
 export type KOTRInterchange = {
     /** Institutionskennzeichen (=Institution code) of the umbrella organization that issued this */
     spitzenverbandIK: string
-    /** Date this list was created. This is not the validity start date. */
-    creationDate: Date,
     /** All the Kostentraeger for this umbrella organization */
     institutions: KOTRMessage[]
 }

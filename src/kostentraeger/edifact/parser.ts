@@ -29,7 +29,7 @@ import {
 import {
     leistungsartSchluessel as pflegeLeistungsartSchluessel
 } from "../../sgb-xi/codes"
-import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, VDT, VKG } from "./segments"
+import { KOTRInterchangeParsingResult, KOTRMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, VDT, VKG } from "./segments"
 
 /** 
  *  Parses a Kostenträgerdatei (payer file) which provides information how to send invoices to the
@@ -42,13 +42,30 @@ import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, V
 /* Transforms the serial data (array of arrays) from a Kostenträger EDIFACT-interchange into legible
  * messages with labelled typesafe segments. It does however not divorce the data structure from 
  * (the limitations of) the EDIFACT message format yet. */
-export default function parse(interchange: Interchange): KOTRInterchange {
+export default function parse(interchange: Interchange): KOTRInterchangeParsingResult {
     const header = interchange.header
+
+    const warnings: string[] = []
+    const institutions = interchange.messages
+        .map((message) => { 
+            try {
+                return parseMessage(message)
+            } catch(e) {
+                warnings.push(e.message)
+            }
+         })
+        .filter((msg): msg is KOTRMessage => !!msg)
+
     return {
-        spitzenverbandIK: header[1][0],
-        creationDate: parseDate(header[3][0], header[3][1]),
-        institutions: interchange.messages.map((message) => parseMessage(message))
-        // header[6] would contain the file name. Though there is probably no meaning in parsing that
+        interchange: {
+            spitzenverbandIK: header[1][0],
+            /* creation date and time would be in header[3][0] and header[3][1], but date format is 
+               sometimes YYYYMMDD, sometimes YYMMDD and the info is not really needed anyway. So
+               no need to parse it, it only increases the complexity of this parser */
+            institutions: institutions
+            // header[6] would contain the file name. Though there is probably no meaning in parsing that
+        },
+        warnings: warnings
     }
 }
 

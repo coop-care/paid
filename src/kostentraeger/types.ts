@@ -5,13 +5,19 @@ import { VKG } from "./edifact/segments"
  * These types represent the data from Kostentraeger file(s) cast into a (more) accessible data model
  */
 
-/** A list of Kostentraeger informations for one umbrella organization */
+/** A parse result of a list of Kostentraeger information for one umbrella organization. Includes
+ *  all warnings that occured when parsing the information
+ */
+export type InstitutionListParsingResult = {
+    institutionList: InstitutionList,
+    warnings: string[]
+}
+
+/** A list of Kostentraeger information for one umbrella organization */
 export type InstitutionList = {
     /** Institutionskennzeichen (=Institution code) of the umbrella organization that issued this
      *  list */
     spitzenverbandIK: string,
-    /** Date this list was created. This is not the validity start date. */
-    creationDate: Date,
     /** All the Kostentraeger for this umbrella organization */
     institutions: Institution[]
 }

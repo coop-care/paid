@@ -5,17 +5,29 @@ import {
     Contact, 
     Institution, 
     InstitutionList, 
+    InstitutionListParsingResult,
     ReceiptTransmissionMethods
 } from "./types"
 
-export default function transform(interchange: KOTRInterchange): InstitutionList {
-    return {
-        spitzenverbandIK: interchange.spitzenverbandIK,
-        creationDate: interchange.creationDate,
-        institutions: interchange.institutions.map((msg) => {
+export default function transform(interchange: KOTRInterchange): InstitutionListParsingResult {
+
+    const warnings: string[] = []
+    const institutions = interchange.institutions.map((msg) => {
+        try {
             requirePreconditions(msg)
             return transformMessage(msg)
-        }).filter((msg): msg is Institution => !!msg)
+        } catch(e) {
+            warnings.push(e.message)
+        }
+    }).filter((msg): msg is Institution => !!msg)
+
+    return {
+        institutionList: {
+            spitzenverbandIK: interchange.spitzenverbandIK,
+            //creationDate: interchange.creationDate,
+            institutions: institutions
+        },
+        warnings: warnings
     }
 }
 
@@ -34,6 +46,10 @@ function requirePreconditions(msg: KOTRMessage) {
     msg.dfuList.forEach((dfu) => {
         if (dfu.allowedTransmissionDays && dfu.allowedTransmissionDays != "1") {
             throw new Error(`${messageTxt} Expected that transmission is allowed on any day but was "${dfu.allowedTransmissionDays}"`)
+        }
+        // some health insurances specify "0000" as end time, means supposedly the same as "2400"
+        if (dfu.allowedTransmissionTimeEnd == "0000") {
+            dfu.allowedTransmissionTimeEnd = "2400"
         }
         if (
             dfu.allowedTransmissionTimeStart && dfu.allowedTransmissionTimeStart != "0000"
