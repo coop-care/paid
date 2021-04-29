@@ -24,7 +24,7 @@ export const result1 = {
                 "ESK+31+0200'\n" +
                 "ELS+01:01:1:001+28,37+0,06114+464+1130+1,00'\n" +
                 "ESK+31+0200'\n" +
-                "ELS+06:06:1:04+0,40+++5+1,00'\n" +
+                "ELS+01:06:1:04+0,40+++5+1,00'\n" +
             "IAF+28,77+++28,77'\n" +
             "INV+0123456789+2021-1234'\n" +
                 "NAD+Gertrud+Fischer+19380301+Musterstraße+1+12345+Musterstadt'\n" +
@@ -32,27 +32,27 @@ export const result1 = {
                 "ESK+02+0200'\n" +
                 "ELS+01:01:1:001+28,37+0,06114+464+1130+1,00'\n" +
                 "ESK+02+0200'\n" +
-                "ELS+06:06:1:04+0,40+++5+1,00'\n" +
+                "ELS+01:06:1:04+0,40+++5+1,00'\n" +
             "IAF+28,77+++28,77'\n" +
             "INV+0123456789+2021-1234'\n" +
                 "NAD+Gertrud+Fischer+19380301+Musterstraße+1+12345+Musterstadt'\n" +
                 "MAN+202104+++3'\n" +
                 "ESK+04+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
                 "ESK+04+0200'\n" +
-                "ELS+06:06:1:03+2,00+++00+1,00'\n" +
+                "ELS+01:06:1:03+2,00+++00+1,00'\n" +
             "IAF+47,45+++47,45'\n" +
             "INV+0123456789+2021-1234'\n" +
                 "NAD+Gertrud+Fischer+19380301+Musterstraße+1+12345+Musterstadt'\n" +
                 "MAN+202104+++3'\n" +
                 "ESK+04+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
                 "ZUS+00:1:21++1+11+1+10,00000+0,00+1'\n" +
+                "ESK+04+0200'\n" +
+                "ELS+01:06:1:03+2,00+++00+1,00'\n" +
                 "ESK+04'\n" +
                 "ELS+06:05:0:0000000000+123,45+++00+1,00'\n" +
                 "HIL+1+23,46+10,12+genehmigt_123+20210301+00+Rollator'\n" +
-                "ESK+04+0200'\n" +
-                "ELS+06:06:1:03+2,00+++00+1,00'\n" +
             "IAF+194,36+10,12++170,90'\n" +
             "INV+0123456789+2021-1234'\n" +
                 "NAD+Gertrud+Fischer+19380301+Musterstraße+1+12345+Musterstadt'\n" +
@@ -64,7 +64,7 @@ export const result1 = {
         "UNH+3+PLGA:2'\n" +
             "FKT+01++0000000110+0000000021+0000000020+0000000110'\n" +
             "REC+2021-0087-1:0+20210503+1+EUR'\n" +
-            "SRD+36:00000+06'\n" +
+            "SRD+36:00000+01'\n" +
             "UST++J+01'\n" +
             "GES+79,45+++79,45'\n" +
             "NAM+Pflegedienst Musterstadt GmbH+Sven Bauer, 012 34567-8'\n" +
@@ -76,9 +76,9 @@ export const result1 = {
                 "NAD+Paul+Hofmann+19321103+Musterstraße+3+12345+Musterstadt'\n" +
                 "MAN+202104+++4'\n" +
                 "ESK+03+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
                 "ESK+03+0200'\n" +
-                "ELS+06:06:1:03+2,00+++00+1,00'\n" +
+                "ELS+01:06:1:03+2,00+++00+1,00'\n" +
             "IAF+47,45+++47,45'\n" +
             "INV+0123456789+2021-1235'\n" +
                 "NAD+Paul+Hofmann+19321103+Musterstraße+3+12345+Musterstadt'\n" +
@@ -102,7 +102,7 @@ export const result2 = {
         "UNH+1+PLGA:2'\n" +
             "FKT+01++0000000120+0000000010+0000000010+0000000210'\n" +
             "REC+2021-00267-1:1+20210427+2+EUR'\n" +
-            "SRD+35:05011+06'\n" +
+            "SRD+35:05011+01'\n" +
             "UST++J+01'\n" +
             "GES+237,81+10,12++214,35'\n" +
             "NAM+Nachbarschaftspflege in Wilhel+Laila Neumann, 012 34567'\n" +
@@ -114,7 +114,7 @@ export const result2 = {
                 "NAD+Jürgen+Weber+19410902+Musterstraße+2+12345+Musterstadt'\n" +
                 "MAN+202104+++2'\n" +
                 "ESK+05+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
                 "ESK+05'\n" +
                 "ELS+06:05:0:0000000000+123,45+++00+1,00'\n" +
                 "HIL+1+23,46+10,12+genehmigt_123+20210301+00+Rollator'\n" +
@@ -123,13 +123,13 @@ export const result2 = {
                 "NAD+Jürgen+Weber+19410902+Musterstraße+2+12345+Musterstadt'\n" +
                 "MAN+202104+++2'\n" +
                 "ESK+08+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
             "IAF+45,45+++45,45'\n" +
         "UNT+17+2'\n" +
         "UNH+3+PLGA:2'\n" +
             "FKT+01++0000000120+0000000031+0000000030+0000000210'\n" +
             "REC+2021-00267-1:2+20210427+2+EUR'\n" +
-            "SRD+35:05000+06'\n" +
+            "SRD+35:05000+01'\n" +
             "UST++J+01'\n" +
             "GES+237,81+10,12++214,35'\n" +
             "NAM+Nachbarschaftspflege in Wilhel+Laila Neumann, 012 34567'\n" +
@@ -141,7 +141,7 @@ export const result2 = {
                 "NAD+Sabine+Schwarz+19421004+Musterstraße+4+12345+Musterstadt'\n" +
                 "MAN+202104+++4'\n" +
                 "ESK+05+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
                 "ESK+05'\n" +
                 "ELS+06:05:0:0000000000+123,45+++00+1,00'\n" +
                 "HIL+1+23,46+10,12+genehmigt_123+20210301+00+Rollator'\n" +
@@ -150,13 +150,13 @@ export const result2 = {
                 "NAD+Sabine+Schwarz+19421004+Musterstraße+4+12345+Musterstadt'\n" +
                 "MAN+202104+++4'\n" +
                 "ESK+08+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
             "IAF+45,45+++45,45'\n" +
         "UNT+17+4'\n" +
         "UNH+5+PLGA:2'\n" +
             "FKT+01++0000000130+0000000040+0000000040+0000000210'\n" +
             "REC+2021-00267-1:3+20210427+2+EUR'\n" +
-            "SRD+36:02000+06'\n" +
+            "SRD+36:02000+01'\n" +
             "UST'\n" +
             "GES+73,82+++73,82'\n" +
             "NAM+Quartierspflege Neuhausen GmbH+Ben Peters, 012 3456789'\n" +
@@ -168,7 +168,7 @@ export const result2 = {
                 "NAD+Ingeborg+Wagner+19360205+Musterstraße+5+12345+Musterstadt'\n" +
                 "MAN+202104+++1'\n" +
                 "ESK+05+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
             "IAF+45,45+++45,45'\n" +
             "INV+0123456789+2021-354'\n" +
                 "NAD+Ingeborg+Wagner+19360205+Musterstraße+5+12345+Musterstadt'\n" +
@@ -180,7 +180,7 @@ export const result2 = {
         "UNH+7+PLGA:2'\n" +
             "FKT+01++0000000130+0000000031+0000000030+0000000210'\n" +
             "REC+2021-00267-1:4+20210427+2+EUR'\n" +
-            "SRD+36:02000+06'\n" +
+            "SRD+36:02000+01'\n" +
             "UST'\n" +
             "GES+77,45+++77,45'\n" +
             "NAM+Quartierspflege Neuhausen GmbH+Ben Peters, 012 3456789'\n" +
@@ -192,7 +192,7 @@ export const result2 = {
                 "NAD+Robert+Schäfer+19370606+Musterstraße+6+12345+Musterstadt'\n" +
                 "MAN+202104+++2'\n" +
                 "ESK+05+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
             "IAF+45,45+++45,45'\n" +
             "INV+0123456789+2021-355'\n" +
                 "NAD+Robert+Schäfer+19370606+Musterstraße+6+12345+Musterstadt'\n" +
@@ -216,7 +216,7 @@ export const result3 = {
         "UNH+1+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000050++0000000310'\n" +
             "REC+2021-00398-1:0+20210503+3+EUR'\n" +
-            "SRD+35:01000+06'\n" +
+            "SRD+35:01000+01'\n" +
             "UST++J+01'\n" +
             "GES+90,90+++90,90'\n" +
             "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
@@ -224,7 +224,7 @@ export const result3 = {
         "UNH+2+PLGA:2'\n" +
             "FKT+01++0000000310+0000000050+0000000050+0000000310'\n" +
             "REC+2021-00398-1:1+20210503+3+EUR'\n" +
-            "SRD+35:01000+06'\n" +
+            "SRD+35:01000+01'\n" +
             "UST++J+01'\n" +
             "GES+90,90+++90,90'\n" +
             "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
@@ -236,19 +236,19 @@ export const result3 = {
                 "NAD+Małgorzata+Dąbrowski+19460807'\n" +
                 "MAN+202104+++2'\n" +
                 "ESK+03+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
             "IAF+45,45+++45,45'\n" +
             "INV+0123456789+2021-0413'\n" +
                 "NAD+Małgorzata+Dąbrowski+19460807'\n" +
                 "MAN+202104+++2'\n" +
                 "ESK+10+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
             "IAF+45,45+++45,45'\n" +
         "UNT+14+3'\n" +
         "UNH+4+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000010++0000000310'\n" +
             "REC+2021-00398-2:0+20210503+3+EUR'\n" +
-            "SRD+35:01000+06'\n" +
+            "SRD+35:01000+01'\n" +
             "UST++J+01'\n" +
             "GES+138,19+++138,19'\n" +
             "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
@@ -256,7 +256,7 @@ export const result3 = {
         "UNH+5+PLGA:2'\n" +
             "FKT+01++0000000310+0000000010+0000000010+0000000310'\n" +
             "REC+2021-00398-2:1+20210503+3+EUR'\n" +
-            "SRD+35:01000+06'\n" +
+            "SRD+35:01000+01'\n" +
             "UST++J+01'\n" +
             "GES+77,45+++77,45'\n" +
             "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
@@ -268,7 +268,7 @@ export const result3 = {
                 "NAD+Gertrud+Fischer+19380301+Musterstraße+1+12345+Musterstadt'\n" +
                 "MAN+202104+++3'\n" +
                 "ESK+03+0200'\n" +
-                "ELS+06:02:1:13+45,45+++1100+1,00'\n" +
+                "ELS+01:02:1:13+45,45+++1100+1,00'\n" +
             "IAF+45,45+++45,45'\n" +
             "INV+0123456789+2021-0414'\n" +
                 "NAD+Gertrud+Fischer+19380301+Musterstraße+1+12345+Musterstadt'\n" +
@@ -280,7 +280,7 @@ export const result3 = {
         "UNH+7+PLGA:2'\n" +
             "FKT+01+J+0000000310+0000000010++0000000310'\n" +
             "REC+2021-00398-2:0+20210503+3+EUR'\n" +
-            "SRD+35:01000+06'\n" +
+            "SRD+35:01000+01'\n" +
             "UST++J+01'\n" +
             "GES+138,19+++138,19'\n" +
             "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
@@ -293,7 +293,7 @@ export const result3 = {
             "GES+60,74+++60,74'\n" +
             "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+6+8'\n" +
-            "UNH+9+PLAA:3'\n" +
+        "UNH+9+PLAA:3'\n" +
             "FKT+01+0000000310+0000000010+0000000010+0000000310'\n" +
             "REC+2021-00398-2:2+20210503+3+EUR'\n" +
             "INV+0123456789+2021-0313'\n" +
@@ -302,7 +302,7 @@ export const result3 = {
                 "ESK+03+0200'\n" +
                 "ELS+01:01:1:001+28,37+0,06114+464+1130+1,00'\n" +
                 "ESK+03+0200'\n" +
-                "ELS+06:06:1:03+2,00+++00+1,00'\n" +
+                "ELS+01:06:1:03+2,00+++00+1,00'\n" +
             "IAF+30,37+++30,37'\n" +
             "INV+0123456789+2021-0313'\n" +
                 "NAD+Jürgen+Weber+19410902+Musterstraße+2+12345+Musterstadt'\n" +
@@ -310,7 +310,7 @@ export const result3 = {
                 "ESK+10+0200'\n" +
                 "ELS+01:01:1:001+28,37+0,06114+464+1130+1,00'\n" +
                 "ESK+10+0200'\n" +
-                "ELS+06:06:1:03+2,00+++00+1,00'\n" +
+                "ELS+01:06:1:03+2,00+++00+1,00'\n" +
             "IAF+30,37+++30,37'\n" +
         "UNT+18+9'\n" +
         "UNH+10+PLGA:2'\n" +
@@ -364,7 +364,7 @@ export const result3 = {
                 "ESK+03+0200'\n" +
                 "ELS+01:01:1:001+28,37+0,06114+464+1130+1,00'\n" +
                 "ESK+03+0200'\n" +
-                "ELS+06:06:1:03+2,00+++00+1,00'\n" +
+                "ELS+01:06:1:03+2,00+++00+1,00'\n" +
             "IAF+30,37+++30,37'\n" +
             "INV+0123456789+2021-0314'\n" +
                 "NAD+Paul+Hofmann+19321103+Musterstraße+3+12345+Musterstadt'\n" +

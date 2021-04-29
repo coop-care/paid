@@ -174,7 +174,7 @@ const leistungskomplex: Leistung = {
     zuschlaege: [],
 };
 const zeitverguetung: Leistung = {
-    leistungsart: "06",
+    leistungsart: "01",
     verguetungsart: "02",
     qualifikationsabhaengigeVerguetung: "1",
     leistung: "13",
@@ -185,7 +185,7 @@ const zeitverguetung: Leistung = {
     zuschlaege: [],
 };
 const zeitMitZuschlag: Leistung = {
-    leistungsart: "06",
+    leistungsart: "01",
     verguetungsart: "02",
     qualifikationsabhaengigeVerguetung: "1",
     leistung: "13",
@@ -203,7 +203,7 @@ const zeitMitZuschlag: Leistung = {
     }],
 };
 const wegegebuehrenEinsatzpauschale: Leistung = {
-    leistungsart: "06",
+    leistungsart: "01",
     verguetungsart: "06",
     qualifikationsabhaengigeVerguetung: "1",
     leistung: "03",
@@ -212,7 +212,7 @@ const wegegebuehrenEinsatzpauschale: Leistung = {
     zuschlaege: [],
 };
 const wegegebuehrenKilometer: Leistung = {
-    leistungsart: "06",
+    leistungsart: "01",
     verguetungsart: "06",
     qualifikationsabhaengigeVerguetung: "1",
     leistung: "04",
@@ -484,7 +484,7 @@ export const payload3 = {
                 leistungsBeginn: new Date("2021-04-03"),
                 leistungen: [
                     { ...leistungskomplex },
-                    {... wegegebuehrenEinsatzpauschale},
+                    { ...wegegebuehrenEinsatzpauschale },
                 ]
             }, {
                 leistungsBeginn: new Date("2021-04-10"),
