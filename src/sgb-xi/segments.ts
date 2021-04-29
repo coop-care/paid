@@ -169,11 +169,11 @@ export const NAM = ({
 
 export const INV = (
     versichertennummer: string,
-    eindeutigeBelegnummer: string
+    belegNummer: number
 ) => segment(
     "INV",
     mask(versichertennummer),
-    mask(eindeutigeBelegnummer)
+    (belegNummer + 1).toString()
 );
 
 export const NAD = ({

@@ -170,8 +170,8 @@ const makePLAA = (
 ) => [
     FKT("01", invoice.leistungserbringer, invoice.faelle[0].versicherter),
     REC(billing, invoiceIndex, leistungserbringerIndex, false),
-    ...invoice.faelle.flatMap(fall => [
-        INV(fall.versicherter.versichertennummer, fall.eindeutigeBelegnummer),
+    ...invoice.faelle.flatMap((fall, belegNummer) => [
+        INV(fall.versicherter.versichertennummer, belegNummer),
         NAD(fall.versicherter),
         ...forEachMonat(fall.einsaetze).flatMap(einsaetze => [
             MAN(einsaetze[0].leistungsBeginn || billing.abrechnungsmonat, fall.versicherter.pflegegrad),

@@ -90,7 +90,6 @@ export type Leistungserbringer = Institution & {
 
 export type Abrechnungsfall = {
     versicherter: Versicherter;
-    eindeutigeBelegnummer: string;
     einsaetze: Einsatz[];
 }
 
