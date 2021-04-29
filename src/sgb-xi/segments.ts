@@ -19,8 +19,7 @@ import {
     PflegegradSchluessel,
     TarifbereichSchluessel, 
     VerarbeitungskennzeichenSchluessel,
-    VerguetungsartSchluessel, 
-    LeistungsartSchluessel, 
+    VerguetungsartSchluessel,
 } from "./codes";
 import { mask, number, price, day, month, date, time, datetime, segment } from "../formatter";
 
@@ -208,12 +207,12 @@ export const MAN = (
 );
 
 export const ESK = (
-    leistungsBeginn: Date,
     verguetungsart: VerguetungsartSchluessel,
+    leistungsBeginn?: Date,
 ) => segment(
     "ESK",
-    day(leistungsBeginn),
-    ["01", "02", "03", "06"].includes(verguetungsart) ? time(leistungsBeginn) : ""
+    leistungsBeginn ? day(leistungsBeginn) : "99",
+    leistungsBeginn && ["01", "02", "03", "06"].includes(verguetungsart) ? time(leistungsBeginn) : ""
 );
 
 // ELS is insanely complex: leistung and several parameters depend on verguetungsart

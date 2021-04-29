@@ -33,6 +33,24 @@ export const makeBillingFile = (
     const dateiname = makeDateiname(dateiindikator, datenaustauschreferenz - 1); // todo: resaearch „verfahrensversion”, maybe in Auftragsdatei documentation?
     let messageNumber = 0;
 
+    // sort leistungen und einsätze by start date
+    invoices.map(invoice => ({
+        ...invoice,
+        faelle: invoice.faelle.map(fall => ({
+            ...fall,
+            einsaetze: fall.einsaetze.map(einsatz => ({
+                ...einsatz,
+                leistungen: einsatz.leistungen.sort((a, b) =>
+                    (a?.leistungsBeginn?.getTime() || Number.MAX_VALUE)
+                    - (b?.leistungsBeginn?.getTime() || Number.MAX_VALUE)
+                )
+            })).sort((a, b) =>
+                (a?.leistungsBeginn?.getTime() || Number.MAX_VALUE)
+                - (b?.leistungsBeginn?.getTime() || Number.MAX_VALUE)
+            )
+        }))
+    }))
+
     // according to section 4.2 Struktur der Datei, grouped for all three Rechnungsarten
     const nutzdaten = [
         UNB(absenderIK, empfaengerIK, datenaustauschreferenz, anwendungsreferenz, dateiindikator),
@@ -152,9 +170,9 @@ const makePLAA = (
         INV(fall.versicherter.versichertennummer, fall.eindeutigeBelegnummer),
         NAD(fall.versicherter),
         ...forEachMonat(fall.einsaetze).flatMap(einsaetze => [
-            MAN(einsaetze[0].leistungsBeginn, fall.versicherter.pflegegrad),
+            MAN(einsaetze[0].leistungsBeginn || billing.abrechnungsmonat, fall.versicherter.pflegegrad),
             ...forEachVerguetungsart(einsaetze).flatMap(einsatz => [
-                ESK(einsatz.leistungsBeginn, einsatz.verguetungsart),
+                ESK(einsatz.verguetungsart, einsatz.leistungsBeginn),
                 ...einsatz.leistungen.flatMap(leistung => [
                     ELS(leistung),
                     ...leistung.zuschlaege.map((zuschlag, index) =>
@@ -178,7 +196,7 @@ const makePLAA = (
 ];
 
 const forEachMonat = (einsaetze: Einsatz[]) => 
-    valuesGroupedBy(einsaetze, einsatz => einsatz.leistungsBeginn.getMonth().toString());
+    valuesGroupedBy(einsaetze, einsatz => einsatz.leistungsBeginn?.getMonth().toString() || "");
 
 const forEachVerguetungsart = (einsaetze: Einsatz[]) => einsaetze.flatMap(einsatz =>
     entriesGroupedBy(einsatz.leistungen, leistung => leistung.verguetungsart)

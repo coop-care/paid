@@ -290,49 +290,82 @@ export const payload1 = {
             versicherter: {...versicherte[0]},
             eindeutigeBelegnummer: "2021-1234",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-03-31"),
+                leistungsBeginn: new Date("2021-03-31T10:30"),
                 leistungen: [
-                    { ...leistungskomplex },
+                    { 
+                        ...leistungskomplex, 
+                        leistungsBeginn: new Date("2021-03-31T11:00"), 
+                        leistungsEnde: new Date("2021-03-31T11:30")
+                    },
+                    {
+                        ...leistungskomplex,
+                        leistungsBeginn: new Date("2021-03-31T10:30"),
+                        leistungsEnde: new Date("2021-03-31T11:00")
+                    },
                     { ...wegegebuehrenKilometer },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-02"),
+                leistungsBeginn: new Date("2021-04-02T11:00"),
                 leistungen: [
-                    { ...leistungskomplex },
+                    {
+                        ...leistungskomplex,
+                        leistungsBeginn: new Date("2021-04-02T11:00"),
+                        leistungsEnde: new Date("2021-04-02T11:30")
+                    },
                     { ...wegegebuehrenKilometer },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-04"),
+                leistungsBeginn: new Date("2021-04-04T11:00"),
                 leistungen: [
-                    { ...zeitverguetung },
+                    {
+                        ...zeitverguetung,
+                        leistungsBeginn: new Date("2021-04-04T11:00"),
+                        leistungsEnde: new Date("2021-04-04T11:30")
+                    },
                     { ...wegegebuehrenEinsatzpauschale },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-04"),
+                leistungsBeginn: new Date("2021-04-04T18:00"),
                 leistungen: [
-                    { ...zeitMitZuschlag },
+                    {
+                        ...zeitMitZuschlag,
+                        leistungsBeginn: new Date("2021-04-04T18:00"),
+                        leistungsEnde: new Date("2021-04-04T18:30")
+                    },
                     { ...pflegehilfsmittel },
                     { ...wegegebuehrenEinsatzpauschale },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-06"),
+                leistungsBeginn: new Date("2021-04-06T13:00"),
                 leistungen: [
-                    { ...beratungsbesuch },
+                    {
+                        ...beratungsbesuch,
+                        leistungsBeginn: new Date("2021-04-06T13:00"),
+                        leistungsEnde: new Date("2021-04-06T13:30")
+                    },
                 ]
             }]
         }, {
             versicherter: {...versicherte[2]},
             eindeutigeBelegnummer: "2021-1235",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-04-03"),
+                leistungsBeginn: new Date("2021-04-03T11:00"),
                 leistungen: [
-                    { ...zeitverguetung },
+                    {
+                        ...zeitverguetung,
+                        leistungsBeginn: new Date("2021-04-03T11:00"),
+                        leistungsEnde: new Date("2021-04-03T11:30")
+                    },
                     { ...wegegebuehrenEinsatzpauschale }
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-07"),
+                leistungsBeginn: new Date("2021-04-07T13:00"),
                 leistungen: [
-                    { ...beratungsbesuch }
+                    {
+                        ...beratungsbesuch,
+                        leistungsBeginn: new Date("2021-04-07T13:00"),
+                        leistungsEnde: new Date("2021-04-07T13:30")
+                    },
                 ]
             }]
         }]
@@ -354,30 +387,46 @@ export const payload2 = {
             versicherter: { ...versicherte[1] },
             eindeutigeBelegnummer: "2021-2893",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-04-05"),
+                leistungsBeginn: new Date("2021-04-05T11:00"),
                 leistungen: [
-                    { ...zeitverguetung },
+                    {
+                        ...zeitverguetung,
+                        leistungsBeginn: new Date("2021-04-05T11:00"),
+                        leistungsEnde: new Date("2021-04-05T11:30")
+                    },
                     { ...pflegehilfsmittel },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-08"),
+                leistungsBeginn: new Date("2021-04-08T11:00"),
                 leistungen: [
-                    { ...zeitverguetung },
+                    {
+                        ...zeitverguetung,
+                        leistungsBeginn: new Date("2021-04-08T11:00"),
+                        leistungsEnde: new Date("2021-04-08T11:30")
+                    },
                 ]
             }]
         }, {
             versicherter: { ...versicherte[3] },
             eindeutigeBelegnummer: "2021-2894",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-04-05"),
+                leistungsBeginn: new Date("2021-04-05T11:00"),
                 leistungen: [
-                    { ...zeitverguetung },
+                    {
+                        ...zeitverguetung,
+                        leistungsBeginn: new Date("2021-04-05T11:00"),
+                        leistungsEnde: new Date("2021-04-05T11:30")
+                    },
                     { ...pflegehilfsmittel },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-08"),
+                leistungsBeginn: new Date("2021-04-08T11:00"),
                 leistungen: [
-                    { ...zeitverguetung },
+                    {
+                        ...zeitverguetung,
+                        leistungsBeginn: new Date("2021-04-08T11:00"),
+                        leistungsEnde: new Date("2021-04-08T11:30")
+                    },
                 ]
             }]
         }]
@@ -387,28 +436,44 @@ export const payload2 = {
             versicherter: { ...versicherte[4] },
             eindeutigeBelegnummer: "2021-354",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-04-05"),
+                leistungsBeginn: new Date("2021-04-05T11:00"),
                 leistungen: [
-                    { ...zeitverguetung },
+                    {
+                        ...zeitverguetung,
+                        leistungsBeginn: new Date("2021-04-05T11:00"),
+                        leistungsEnde: new Date("2021-04-05T11:30")
+                    },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-08"),
+                leistungsBeginn: new Date("2021-04-08T11:00"),
                 leistungen: [
-                    { ...leistungskomplex },
+                    {
+                        ...leistungskomplex,
+                        leistungsBeginn: new Date("2021-04-08T11:00"),
+                        leistungsEnde: new Date("2021-04-08T11:30")
+                    },
                 ]
             }]
         }, {
             versicherter: { ...versicherte[5] },
             eindeutigeBelegnummer: "2021-355",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-04-05"),
+                leistungsBeginn: new Date("2021-04-05T11:00"),
                 leistungen: [
-                    { ...zeitverguetung },
+                    {
+                        ...zeitverguetung,
+                        leistungsBeginn: new Date("2021-04-05T11:00"),
+                        leistungsEnde: new Date("2021-04-05T11:30")
+                    },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-08"),
+                leistungsBeginn: new Date("2021-04-08T11:00"),
                 leistungen: [
-                    { ...beratungsbesuch },
+                    {
+                        ...beratungsbesuch,
+                        leistungsBeginn: new Date("2021-04-08T11:00"),
+                        leistungsEnde: new Date("2021-04-08T11:30")
+                    },
                 ]
             }]
         }]
@@ -441,37 +506,57 @@ export const payload3 = {
             versicherter: { ...versicherte[6] },
             eindeutigeBelegnummer: "2021-0413",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-04-03"),
+                leistungsBeginn: new Date("2021-04-03T11:00"),
                 leistungen: [
-                    { ...zeitverguetung}
+                    {
+                        ...zeitverguetung,
+                        leistungsBeginn: new Date("2021-04-03T11:00"),
+                        leistungsEnde: new Date("2021-04-03T11:30")
+                    },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-10"),
+                leistungsBeginn: new Date("2021-04-10T11:00"),
                 leistungen: [
-                    { ...zeitverguetung }
+                    {
+                        ...zeitverguetung,
+                        leistungsBeginn: new Date("2021-04-10T11:00"),
+                        leistungsEnde: new Date("2021-04-10T11:30")
+                    },
                 ]
             }]
         }, {
             versicherter: { ...versicherte[0] },
             eindeutigeBelegnummer: "2021-0414",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-04-03"),
+                leistungsBeginn: new Date("2021-04-03T11:00"),
                 leistungen: [
-                    { ...zeitverguetung }
+                    {
+                        ...zeitverguetung,
+                        leistungsBeginn: new Date("2021-04-03T11:00"),
+                        leistungsEnde: new Date("2021-04-03T11:30")
+                    },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-10"),
+                leistungsBeginn: new Date("2021-04-10T11:00"),
                 leistungen: [
-                    { ...beratungsbesuch }
+                    {
+                        ...beratungsbesuch,
+                        leistungsBeginn: new Date("2021-04-10T11:00"),
+                        leistungsEnde: new Date("2021-04-10T11:30")
+                    },
                 ]
             }]
         }, {
             versicherter: { ...versicherte[2] },
             eindeutigeBelegnummer: "2021-4321",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-04-02"),
+                leistungsBeginn: new Date("2021-04-02T10:00"),
                 leistungen: [
-                    { ...teilstationaer },
+                    {
+                        ...teilstationaer,
+                        leistungsBeginn: new Date("2021-04-02T10:00"),
+                        leistungsEnde: new Date("2021-04-02T18:00")
+                    },
                 ]
             }]
         }]
@@ -481,15 +566,23 @@ export const payload3 = {
             versicherter: { ...versicherte[1] },
             eindeutigeBelegnummer: "2021-0313",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-04-03"),
+                leistungsBeginn: new Date("2021-04-03T11:00"),
                 leistungen: [
-                    { ...leistungskomplex },
+                    {
+                        ...leistungskomplex,
+                        leistungsBeginn: new Date("2021-04-03T11:00"),
+                        leistungsEnde: new Date("2021-04-03T11:30")
+                    },
                     { ...wegegebuehrenEinsatzpauschale },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-10"),
+                leistungsBeginn: new Date("2021-04-10T11:00"),
                 leistungen: [
-                    { ...leistungskomplex },
+                    {
+                        ...leistungskomplex,
+                        leistungsBeginn: new Date("2021-04-10T11:00"),
+                        leistungsEnde: new Date("2021-04-10T11:30")
+                    },
                     { ...wegegebuehrenEinsatzpauschale },
                 ]
             }]
@@ -497,24 +590,36 @@ export const payload3 = {
             versicherter: { ...versicherte[2] },
             eindeutigeBelegnummer: "2021-0314",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-04-03"),
+                leistungsBeginn: new Date("2021-04-03T11:00"),
                 leistungen: [
-                    { ...leistungskomplex },
+                    {
+                        ...leistungskomplex,
+                        leistungsBeginn: new Date("2021-04-03T11:00"),
+                        leistungsEnde: new Date("2021-04-03T11:30")
+                    },
                     { ...wegegebuehrenEinsatzpauschale },
                 ]
             }, {
-                leistungsBeginn: new Date("2021-04-10"),
+                leistungsBeginn: new Date("2021-04-10T11:00"),
                 leistungen: [
-                    { ...beratungsbesuch }
+                    {
+                        ...beratungsbesuch,
+                        leistungsBeginn: new Date("2021-04-10T11:00"),
+                        leistungsEnde: new Date("2021-04-10T11:30")
+                    },
                 ]
             }]
         }, {
             versicherter: { ...versicherte[3] },
             eindeutigeBelegnummer: "2021-0234",
             einsaetze: [{
-                leistungsBeginn: new Date("2021-04-03"),
+                leistungsBeginn: new Date("2021-04-03T12:00"),
                 leistungen: [
-                    { ...kurzzeitpflege },
+                    {
+                        ...kurzzeitpflege,
+                        leistungsBeginn: new Date("2021-04-03T12:00"),
+                        leistungsEnde: new Date("2021-04-11T12:00")
+                    },
                 ]
             }]
         }]
