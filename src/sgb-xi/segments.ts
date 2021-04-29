@@ -207,12 +207,11 @@ export const MAN = (
 );
 
 export const ESK = (
-    verguetungsart: VerguetungsartSchluessel,
     leistungsBeginn?: Date,
 ) => segment(
     "ESK",
     leistungsBeginn ? day(leistungsBeginn) : "99",
-    leistungsBeginn && ["01", "02", "03", "06"].includes(verguetungsart) ? time(leistungsBeginn) : ""
+    leistungsBeginn ? time(leistungsBeginn) : ""
 );
 
 // ELS is insanely complex: leistung and several parameters depend on verguetungsart

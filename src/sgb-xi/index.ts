@@ -171,8 +171,8 @@ const makePLAA = (
         NAD(fall.versicherter),
         ...forEachMonat(fall.einsaetze).flatMap(einsaetze => [
             MAN(einsaetze[0].leistungsBeginn || billing.abrechnungsmonat, fall.versicherter.pflegegrad),
-            ...forEachVerguetungsart(einsaetze).flatMap(einsatz => [
-                ESK(einsatz.verguetungsart, einsatz.leistungsBeginn),
+            ...einsaetze.flatMap(einsatz => [
+                ESK(einsatz.leistungsBeginn),
                 ...einsatz.leistungen.flatMap(leistung => [
                     ELS(leistung),
                     ...leistung.zuschlaege.map((zuschlag, index) =>
@@ -197,15 +197,6 @@ const makePLAA = (
 
 const forEachMonat = (einsaetze: Einsatz[]) => 
     valuesGroupedBy(einsaetze, einsatz => einsatz.leistungsBeginn?.getMonth().toString() || "");
-
-const forEachVerguetungsart = (einsaetze: Einsatz[]) => einsaetze.flatMap(einsatz =>
-    entriesGroupedBy(einsatz.leistungen, leistung => leistung.verguetungsart)
-    .map(([verguetungsart, leistungen]) => ({
-        verguetungsart,
-        leistungen,
-        leistungsBeginn: einsatz.leistungsBeginn
-    }))
-);
 
 export const calculateInvoice = (invoice: Invoice) => invoice.faelle
     .reduce((result, fall) => {

@@ -19,6 +19,7 @@ required parameters depending on other parameters to fill ELS segment details fi
 leistung.leistungsart == "06" && !!leistung.hilfsmittel
 Object.values(sondertarifJeKostentraegerIK).each.length == 3
 rechnungsart != 1 && !!billingData.abrechnungsstelle
+!!Einsatz.leistungsbeginn &6 ["01", "02", "03", "06"].contains(verguetungsart)
 
 */
 
