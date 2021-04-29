@@ -109,7 +109,7 @@ export type Versicherter = {
 };
 
 export type Einsatz = {
-    leistungsBeginn: Date;
+    leistungsBeginn?: Date;
     leistungen: Leistung[];
 };
 
