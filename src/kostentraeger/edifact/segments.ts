@@ -172,7 +172,7 @@ export type UEM = {
     /** Over which medium the invoices should be transmitted (internet, CD-ROM, floppy, ...) */
     uebermittlungsmediumSchluessel: UebermittlungsmediumSchluessel,
     /** Parameter for the medium */
-    uebermittlungsmediumParameterSchluessel: UebermittlungsmediumParameterSchluessel,
+    uebermittlungsmediumParameterSchluessel?: UebermittlungsmediumParameterSchluessel,
     /** In which character set the invoices should be transmitted */
     uebermittlungszeichensatzSchluessel: UebermittlungszeichensatzSchluessel
 }

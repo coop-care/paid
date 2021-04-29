@@ -325,7 +325,8 @@ const readUEM = (e: string[]): UEM => {
         throw new Error(`UEM - Unknown UebermittlungsmediumSchluessel "${e0}"`)
     }
     const e1 = e[1]
-    if (!uebermittlungsmediumParameterSchluessel.hasOwnProperty(e1)) {
+    // is documented to be mandatory, but not all health insurances specify this
+    if (e1 && !uebermittlungsmediumParameterSchluessel.hasOwnProperty(e1)) {
         throw new Error(`UEM - Unknown UebermittlungsmediumParameterSchluessel "${e1}"`)
     }
     const e2 = e[2]
@@ -334,7 +335,7 @@ const readUEM = (e: string[]): UEM => {
     }
     return {
         uebermittlungsmediumSchluessel: e0 as UebermittlungsmediumSchluessel,
-        uebermittlungsmediumParameterSchluessel: e1 as UebermittlungsmediumParameterSchluessel,
+        uebermittlungsmediumParameterSchluessel: e1 ? e1 as UebermittlungsmediumParameterSchluessel : undefined,
         uebermittlungszeichensatzSchluessel: e2 as UebermittlungszeichensatzSchluessel,
         // e[3] is type of compression - not used
     }
