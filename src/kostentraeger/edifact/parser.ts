@@ -183,7 +183,7 @@ const readVDT = (e: string[]): VDT => ({
 const readFKT = (e: string[]): FKT => {
     const k = e[0]
     if (!verarbeitungskennzeichenSchluessel.hasOwnProperty(k)) {
-        throw new Error(`Unknown VerarbeitungskennzeichenSchluessel "${k}"`)
+        throw new Error(`FKT - Unknown VerarbeitungskennzeichenSchluessel "${k}"`)
     }
     return { verarbeitungskennzeichenSchluessel: k as VerarbeitungskennzeichenSchluessel }
 }
@@ -195,7 +195,7 @@ const readKTO = (e: string[]): KTO => {
     const bic = e[5] || undefined
 
     if (!(accountNumber && bankCode || iban && bic)) {
-        throw new Error("Bank account information is incomplete")
+        throw new Error("KTO - Bank account information is incomplete")
     }
 
     return {
@@ -211,30 +211,30 @@ const readKTO = (e: string[]): KTO => {
 const readVKG = (e: string[]): VKG => {
     const e0 = e[0]
     if (!ikVerknuepfungsartSchluessel.hasOwnProperty(e0)) {
-        throw new Error(`Unknown IKVerknuepfungsartSchluessel "${e0}"`)
+        throw new Error(`VKG - Unknown IKVerknuepfungsartSchluessel "${e0}"`)
     }
     const e2 = e[2]
     if (e2 && !leistungserbringergruppeSchluessel.hasOwnProperty(e2)) {
-        throw new Error(`Unknown LeistungserbringergruppeSchluessel "${e2}"`)
+        throw new Error(`VKG - Unknown LeistungserbringergruppeSchluessel "${e2}"`)
     }
     const e4 = e[4]
     if (e4 && !datenlieferungsArtSchluessel.hasOwnProperty(e4)) {
-        throw new Error(`Unknown DatenlieferungsartSchluessel "${e4}"`)
+        throw new Error(`VKG - Unknown DatenlieferungsartSchluessel "${e4}"`)
     }
     if ((e0 == "02" || e0 == "03") && e4 != "07") {
-        throw new Error(`Data inconsistency: Link links to data acceptance office but that office does not accept data`)
+        throw new Error(`VKG - Data inconsistency: Link links to data acceptance office but that office does not accept data`)
     }
     const e5 = e[5]
     if (e5 && !uebermittlungsmediumSchluessel.hasOwnProperty(e5)) {
-        throw new Error(`Unknown UebermittlungsmediumSchluessel "${e5}"`)
+        throw new Error(`VKG - Unknown UebermittlungsmediumSchluessel "${e5}"`)
     }
     const e6 = e[6]
     if (e6 && !bundeslandSchluessel.hasOwnProperty(e6)) {
-        throw new Error(`Unknown BundeslandSchluessel "${e6}"`)
+        throw new Error(`VKG - Unknown BundeslandSchluessel "${e6}"`)
     }
     const e7 = e[7]
     if (e7 && !kvBezirkSchluessel.hasOwnProperty(e7)) {
-        throw new Error(`Unknown KVBezirkSchluessel "${e7}"`)
+        throw new Error(`VKG - Unknown KVBezirkSchluessel "${e7}"`)
     }
     const e8 = e[8]
     let pflegeLeistungsart: KostentraegerPflegeLeistungsartSchluessel | undefined
@@ -243,19 +243,19 @@ const readVKG = (e: string[]): VKG => {
         if (e2 == "6") { // Pflege 
             if (!pflegeLeistungsartSchluessel.hasOwnProperty(e8) && 
                 !pflegeLeistungsartSonderschluessel.hasOwnProperty(e8)) {
-                throw new Error(`Unknown KostentraegerPflegeLeistungsartSchluessel "${e8}"`)
+                throw new Error(`VKG - Unknown KostentraegerPflegeLeistungsartSchluessel "${e8}"`)
             }
             pflegeLeistungsart = e8 as KostentraegerPflegeLeistungsartSchluessel
         }
         else if (e2 == "5") { // Sonstige
             if (!abrechnungscodeSchluessel.hasOwnProperty(e8) && 
                 !abrechnungscodeSonderschluessel.hasOwnProperty(e8)) {
-                throw new Error(`Unknown KostentraegerAbrechnungscodeSchluessel "${e8}"`)
+                throw new Error(`VKG - Unknown KostentraegerAbrechnungscodeSchluessel "${e8}"`)
             }
             abrechnungscode = e8 as KostentraegerAbrechnungscodeSchluessel
         }
         else {
-            throw new Error(`Unexpected value for leistungserbringergruppeSchluessel: "${e2}"`)
+            throw new Error(`VKG - Unexpected value "${e2}" for leistungserbringergruppeSchluessel`)
         }
     }
 
@@ -284,7 +284,7 @@ const readNAM = (e: string[]): NAM => ({
 const readANS = (e: string[]): ANS => {
     const e0 = e[0]
     if (!anschriftartSchluessel.hasOwnProperty(e0)) {
-        throw new Error(`Unknown AnschriftartSchluessel "${e0}"`)
+        throw new Error(`ANS - Unknown AnschriftartSchluessel "${e0}"`)
     }
     return {
         anschriftartSchluessel: e0 as AnschriftartSchluessel,
@@ -305,15 +305,15 @@ const readASP = (e: string[]): ASP => ({
 const readUEM = (e: string[]): UEM => {
     const e0 = e[0]
     if (!uebermittlungsmediumSchluessel.hasOwnProperty(e0)) {
-        throw new Error(`Unknown UebermittlungsmediumSchluessel "${e0}"`)
+        throw new Error(`UEM - Unknown UebermittlungsmediumSchluessel "${e0}"`)
     }
     const e1 = e[1]
     if (!uebermittlungsmediumParameterSchluessel.hasOwnProperty(e1)) {
-        throw new Error(`Unknown UebermittlungsmediumParameterSchluessel "${e1}"`)
+        throw new Error(`UEM - Unknown UebermittlungsmediumParameterSchluessel "${e1}"`)
     }
     const e2 = e[2]
     if (!uebermittlungszeichensatzSchluessel.hasOwnProperty(e2)) {
-        throw new Error(`Unknown UebermittlungszeichensatzSchluessel "${e2}"`)
+        throw new Error(`UEM - Unknown UebermittlungszeichensatzSchluessel "${e2}"`)
     }
     return {
         uebermittlungsmediumSchluessel: e0 as UebermittlungsmediumSchluessel,
@@ -326,11 +326,11 @@ const readUEM = (e: string[]): UEM => {
 const readDFU = (e: string[]): DFU => {
     const e1 = e[1]
     if (!dfuProtokollSchluessel.hasOwnProperty(e1)) {
-        throw new Error(`Unknown DFUProtokollSchluessel "${e1}"`)
+        throw new Error(`DFU - Unknown DFUProtokollSchluessel "${e1}"`)
     }
     const e5 = e[5]
     if (e5 && !uebertragungstageSchluessel.hasOwnProperty(e5)) {
-        throw new Error(`Unknown UebertragungstageSchluessel "${e5}"`)
+        throw new Error(`DFU - Unknown UebertragungstageSchluessel "${e5}"`)
     }
 
     return {
