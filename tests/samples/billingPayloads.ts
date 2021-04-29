@@ -288,7 +288,6 @@ export const payload1 = {
         leistungserbringer: {...leistungserbringer[0]},
         faelle: [{
             versicherter: {...versicherte[0]},
-            eindeutigeBelegnummer: "2021-1234",
             einsaetze: [{
                 leistungsBeginn: new Date("2021-03-31T10:30"),
                 leistungen: [
@@ -385,7 +384,6 @@ export const payload2 = {
         leistungserbringer: { ...leistungserbringer[1] },
         faelle: [{
             versicherter: { ...versicherte[1] },
-            eindeutigeBelegnummer: "2021-2893",
             einsaetze: [{
                 leistungsBeginn: new Date("2021-04-05T11:00"),
                 leistungen: [
@@ -564,7 +562,6 @@ export const payload3 = {
         leistungserbringer: { ...leistungserbringer[4] },
         faelle: [{
             versicherter: { ...versicherte[1] },
-            eindeutigeBelegnummer: "2021-0313",
             einsaetze: [{
                 leistungsBeginn: new Date("2021-04-03T11:00"),
                 leistungen: [
