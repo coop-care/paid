@@ -218,9 +218,15 @@ export const calculateFall = (fall: Abrechnungsfall) => fall.einsaetze
     .flatMap(einsatz => einsatz.leistungen)
     .reduce((result, {einzelpreis, anzahl, hilfsmittel}) => {
         const value = einzelpreis * anzahl;
-        result.rechnungsbetrag += value;
-        result.zuzahlungsbetrag += (hilfsmittel?.zuzahlungsbetrag || 0);
-        result.gesamtbruttobetrag += value + calculateHilfsmittel(einzelpreis, hilfsmittel);
+        const zuzahlungsbetrag = (hilfsmittel?.zuzahlungsbetrag || 0);
+        const beihilfebetrag = 0;
+        const mehrwertsteuer = calculateHilfsmittel(einzelpreis, hilfsmittel);
+        const gesamtbruttobetrag = value + mehrwertsteuer;
+        result.gesamtbruttobetrag += gesamtbruttobetrag;
+        result.rechnungsbetrag += gesamtbruttobetrag - zuzahlungsbetrag - beihilfebetrag;
+        result.zuzahlungsbetrag += zuzahlungsbetrag;
+        result.beihilfebetrag += beihilfebetrag;
+        result.mehrwertsteuerbetrag += mehrwertsteuer;
         return result;
     }, makeAmounts());
 
