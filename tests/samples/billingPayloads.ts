@@ -465,6 +465,15 @@ export const payload3 = {
                     { ...beratungsbesuch }
                 ]
             }]
+        }, {
+            versicherter: { ...versicherte[2] },
+            eindeutigeBelegnummer: "2021-4321",
+            einsaetze: [{
+                leistungsBeginn: new Date("2021-04-02"),
+                leistungen: [
+                    { ...teilstationaer },
+                ]
+            }]
         }]
     }, {
         leistungserbringer: { ...leistungserbringer[4] },
@@ -499,22 +508,7 @@ export const payload3 = {
                     { ...beratungsbesuch }
                 ]
             }]
-        }]
-    }, {
-        leistungserbringer: { ...leistungserbringer[3] },
-        faelle: [{
-            versicherter: { ...versicherte[2] },
-            eindeutigeBelegnummer: "2021-4321",
-            einsaetze: [{
-                leistungsBeginn: new Date("2021-04-02"),
-                leistungen: [
-                    { ...teilstationaer },
-                ]
-            }]
-        }]
-    }, {
-        leistungserbringer: { ...leistungserbringer[4] },
-        faelle: [{
+        }, {
             versicherter: { ...versicherte[3] },
             eindeutigeBelegnummer: "2021-0234",
             einsaetze: [{
