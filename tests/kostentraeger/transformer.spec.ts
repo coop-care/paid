@@ -8,7 +8,6 @@ describe("kostentraeger transformer", () => {
     it("transform one message", () => {
         const interchange: KOTRInterchange = {
             spitzenverbandIK: "123456789",
-            creationDate: new Date("2020-20-20"),
             institutions: [{
                 id: 1, 
                 idk: {
@@ -127,7 +126,6 @@ describe("kostentraeger transformer", () => {
 
         const expectedInstitutionList: InstitutionList = {
             spitzenverbandIK: "123456789",
-            creationDate: new Date("2020-20-20"),
             institutions: [{
                 ik: "999999999",
                 abbreviatedName: "short name",
@@ -192,7 +190,7 @@ describe("kostentraeger transformer", () => {
 
         /* need to compare the stringified and then parsed result because Javascript Date objects 
            are compared using identity, not equality :-( */
-        const actual = JSON.parse(JSON.stringify(transform(interchange)))
+        const actual = JSON.parse(JSON.stringify(transform(interchange).institutionList))
         const expected = JSON.parse(JSON.stringify(expectedInstitutionList))
 
         expect(actual).toEqual(expected)

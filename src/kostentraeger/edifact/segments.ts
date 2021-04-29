@@ -22,7 +22,7 @@ import {
     VerarbeitungskennzeichenSchluessel 
 } from "./codes"
 
-export type KOTRInterchangeParsingResult = {
+export type KOTRInterchangeParseResult = {
     interchange: KOTRInterchange,
     warnings: string[]
 }
@@ -33,6 +33,11 @@ export type KOTRInterchange = {
     spitzenverbandIK: string
     /** All the Kostentraeger for this umbrella organization */
     institutions: KOTRMessage[]
+}
+
+export type KOTRMessageParseResult = {
+    message: KOTRMessage,
+    warnings: string[]
 }
 
 /** All the segments of one KOTR (=Kostenträger) message */

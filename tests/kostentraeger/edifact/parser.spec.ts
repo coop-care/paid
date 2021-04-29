@@ -11,34 +11,33 @@ describe("kostentraeger edifact parser", () => {
             "UNZ+000188+00178'"
         )).toEqual({
             spitzenverbandIK: "109910000",
-            creationDate: new Date(Date.UTC(2021, 4-1, 1, 15, 10)),
             institutions: [],
         })
     })
 
-    it("non-KOTR message throws error", () => {
-        expect(() => parse(
+    it("non-KOTR message is skipped", () => {
+        expect(parse(
             unb+
             "UNH+00001+ROFL:01'"+
             "UNT+00002+00001'"+
             unz
-        )).toThrowError()
+        ).institutions).toHaveLength(0)
     })
 
-    it("KOTR message of version higher than 2 throws error", () => {
-        expect(() => parseMessages(
+    it("KOTR message of version higher than 2 is skipped", () => {
+        expect(parseMessages(
             "UNH+00001+KOTR:03'"+
             idk+vdt+fkt+nam+ans+ // but otherwise it's ok
             "UNT+00002+00001'"
-        )).toThrowError()
+        )).toHaveLength(0)
     })
 
-    it("missing mandatory segments throw error", () => {
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam    ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+    ans))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+    nam+ans))).toThrowError()
-        expect(() => parseMessages(msg(idk+    fkt+nam+ans))).toThrowError()
-        expect(() => parseMessages(msg(    vdt+fkt+nam+ans))).toThrowError()
+    it("missing mandatory segments skips message", () => {
+        expect(parseMessages(msg(idk+vdt+fkt+nam    ))).toHaveLength(0)
+        expect(parseMessages(msg(idk+vdt+fkt+    ans))).toHaveLength(0)
+        expect(parseMessages(msg(idk+vdt+    nam+ans))).toHaveLength(0)
+        expect(parseMessages(msg(idk+    fkt+nam+ans))).toHaveLength(0)
+        expect(parseMessages(msg(    vdt+fkt+nam+ans))).toHaveLength(0)
     })
 
     it("parses a minimal message", () => {
@@ -99,12 +98,12 @@ describe("kostentraeger edifact parser", () => {
         })
     })
 
-    it("parsing unknown VerarbeitungskennzeichenSchluessel throws error", () => {
-        expect(() => parseMessages(msg(
+    it("parsing unknown VerarbeitungskennzeichenSchluessel skips message", () => {
+        expect(parseMessages(msg(
             idk+vdt+
             "FKT+09'"+
             nam+ans
-        ))).toThrowError()
+        ))).toHaveLength(0)
     })
 
     it("parses all the name elements", () => {
@@ -115,11 +114,11 @@ describe("kostentraeger edifact parser", () => {
         ))[0].nam.names).toEqual(["This text","is very","long","etc"])
     })
 
-    it("parsing unknown AnschriftartSchluessel throws error", () => {
-        expect(() => parseMessages(msg(
+    it("parsing unknown AnschriftartSchluessel skips message", () => {
+        expect(parseMessages(msg(
             idk+vdt+fkt+nam+
             "ANS+9+42285+Wuppertal+Lichtscheiderstraße 89'"
-        ))).toThrowError()
+        ))).toHaveLength(0)
     })
 
     it("parses all three possible address types", () => {
@@ -170,20 +169,20 @@ describe("kostentraeger edifact parser", () => {
         })
     })
 
-    it("parsing incomplete bank account information throws error", () => {
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+    it("parsing incomplete bank account information skips message", () => {
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "KTO+123456++Super Bank'"
-        ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        ))).toHaveLength(0)
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "KTO++123456+Super Bank'"
-        ))).toThrowError()
+        ))).toHaveLength(0)
 
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "KTO+++Super Bank+ibanibaniban'"
-        ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        ))).toHaveLength(0)
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "KTO+++Super Bank++bicbicbic'"
-        ))).toThrowError()
+        ))).toHaveLength(0)
     })
 
     it("parse contact persons", () => {
@@ -207,13 +206,13 @@ describe("kostentraeger edifact parser", () => {
         ])
     })
 
-    it("parsing transmission details with unknown keys throws error", () => {
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+    it("parsing transmission details with unknown keys skips that segment", () => {
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "DFU+01+123+++++ftam.arge.aok.de?:5000'"
-        ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        ))[0].dfuList).toHaveLength(0)
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "DFU+01+016++++5+ftam.arge.aok.de?:5000'"
-        ))).toThrowError()
+        ))[0].dfuList).toHaveLength(0)
     })
 
 
@@ -266,23 +265,23 @@ describe("kostentraeger edifact parser", () => {
         ])
     })
 
-    it("parsing transmission mediums with invalid keys throws error", () => {
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+    it("parsing transmission mediums with invalid keys skips that segment", () => {
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "UEM+0+00+I8'"
-        ))).toThrowError()
+        ))[0].uemList).toHaveLength(0)
 
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "UEM+1+55+I8'"
-        ))).toThrowError()
+            ))[0].uemList).toHaveLength(0)
 
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "UEM+1+00+XX'"
-        ))).toThrowError()
+            ))[0].uemList).toHaveLength(0)
 
         // valid, but a DFU is missing
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "UEM+1+00+I8'"
-        ))).toThrowError()
+            ))[0].uemList).toHaveLength(0)
     })
 
     it("parse links", () => {
@@ -331,34 +330,42 @@ describe("kostentraeger edifact parser", () => {
         ])
     })
 
-    it("parsing links with invalid keys throws error", () => {
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+    it("parsing links with invalid keys skips these segments", () => {
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "VKG+50+000000000'"
-        ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        ))[0].vkgList).toHaveLength(0)
+
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "VKG+02+000000000+++21'"
-        ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+            ))[0].vkgList).toHaveLength(0)
+        
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "VKG+09+000000000+9'"
-        ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        ))[0].vkgList).toHaveLength(0)
+        
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "VKG+09+000000000+++50'"
-        ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        ))[0].vkgList).toHaveLength(0)
+        
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "VKG+09+000000000++++0'"
-        ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        ))[0].vkgList).toHaveLength(0)
+        
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "VKG+09+000000000+++++50'"
-        ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        ))[0].vkgList).toHaveLength(0)
+        
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "VKG+09+000000000++++++04'"
-        ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        ))[0].vkgList).toHaveLength(0)
+        
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "VKG+09+000000000+6++++++50'"
-        ))).toThrowError()
-        expect(() => parseMessages(msg(idk+vdt+fkt+nam+ans+
+        ))[0].vkgList).toHaveLength(0)
+        
+        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "VKG+09+000000000+5++++++98'"
-        ))).toThrowError()
+        ))[0].vkgList).toHaveLength(0)
     })
 })
 
@@ -373,6 +380,6 @@ const ans = "ANS+1+42285+Wuppertal+Lichtscheiderstraße 89'"
 
 const msg = (str: string, i: number = 1): string => `UNH+${i}+KOTR:01'${str}UNT+000007+${i}'`
 
-const parse = (str: string): KOTRInterchange => parseKostentraeger(tokenize(str))
+const parse = (str: string): KOTRInterchange => parseKostentraeger(tokenize(str)).interchange
 
 const parseMessages = (str: string): KOTRMessage[] => parse(unb+str+unz).institutions

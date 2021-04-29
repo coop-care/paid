@@ -4,17 +4,15 @@ import {
     BankAccountDetails, 
     Contact, 
     Institution, 
-    InstitutionList, 
-    InstitutionListParsingResult,
+    InstitutionListParseResult,
     ReceiptTransmissionMethods
 } from "./types"
 
-export default function transform(interchange: KOTRInterchange): InstitutionListParsingResult {
+export default function transform(interchange: KOTRInterchange): InstitutionListParseResult {
 
     const warnings: string[] = []
     const institutions = interchange.institutions.map((msg) => {
         try {
-            requirePreconditions(msg)
             return transformMessage(msg)
         } catch(e) {
             warnings.push(e.message)
@@ -31,7 +29,13 @@ export default function transform(interchange: KOTRInterchange): InstitutionList
     }
 }
 
-function requirePreconditions(msg: KOTRMessage) {
+function transformMessage(msg: KOTRMessage): Institution | null {
+    /* in practice, this doesn't really seem to be used and usage of this field is inconsistent for the
+       different umbrella organizations that issue the Kostenträger-file. "03" however seems to mean
+       "delete this entry" */
+
+    if (msg.fkt.verarbeitungskennzeichenSchluessel == "03") return null
+
     /* Simplification: Certain data is documented that it could be different, but de-facto it's not.
        Let's assert that it is never a value so that our data model and application logic can be 
        simpler
@@ -77,13 +81,9 @@ function requirePreconditions(msg: KOTRMessage) {
             throw new Error(`${messageTxt} Expected IBAN and BIC`)
         }
     }
-}
-
-function transformMessage(msg: KOTRMessage): Institution | null {
-    /* in practice, this doesn't seem to be used and usage of this field is inconsistent for the
-       different umbrella organizations that issue the Kostenträger-file. "03" however seems to mean
-       "delete this entry" */
-    if (msg.fkt.verarbeitungskennzeichenSchluessel == "03") return null
+    const contacts = msg.aspList.map((asp) => createContact(asp))
+    const addresses = msg.ansList.map((ans) => createAddress(ans))
+    const links = msg.vkgList
 
     return {
         ik: msg.idk.ik,
@@ -96,10 +96,10 @@ function transformMessage(msg: KOTRMessage): Institution | null {
         validityFrom: msg.vdt.validityFrom,
         validityTo: msg.vdt.validityTo,
 
-        contacts: msg.aspList.map((asp) => createContact(asp)),
-        addresses: msg.ansList.map((ans) => createAddress(ans)),
+        contacts: contacts.length > 0 ? contacts : undefined,
+        addresses: addresses.length > 0 ? addresses : undefined,
         transmissionMethods: createReceiptTransmissionMethods(msg.uemList, msg.dfuList),
-        links: msg.vkgList
+        links: links.length > 0 ? links : undefined
     }
 }
 

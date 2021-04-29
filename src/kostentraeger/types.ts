@@ -8,7 +8,7 @@ import { VKG } from "./edifact/segments"
 /** A parse result of a list of Kostentraeger information for one umbrella organization. Includes
  *  all warnings that occured when parsing the information
  */
-export type InstitutionListParsingResult = {
+export type InstitutionListParseResult = {
     institutionList: InstitutionList,
     warnings: string[]
 }
@@ -46,9 +46,9 @@ export type Institution = {
     validityTo?: Date,
 
     /** Contacts. This list may be empty */
-    contacts: Contact[],
+    contacts?: Contact[],
     /** Address(es). Contains one to three addresses, (max) one for each type */
-    addresses: Address[],
+    addresses?: Address[],
     /** Details on where and with which protocol to send receipts. Undefined if this institution
      *  does not accept any receipts directly */
     transmissionMethods: ReceiptTransmissionMethods | undefined,
@@ -63,7 +63,7 @@ export type Institution = {
      *  can depend on the place the health care provider is located, what kind of health care 
      *  service was provided, to which health care provider group it belongs and more. 
      * */
-    links: InstitutionLink[]
+    links?: InstitutionLink[]
 }
 
 /* Same as VKG from Kostenträger file */

@@ -29,7 +29,10 @@ import {
 import {
     leistungsartSchluessel as pflegeLeistungsartSchluessel
 } from "../../sgb-xi/codes"
-import { KOTRInterchangeParsingResult, KOTRMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, VDT, VKG } from "./segments"
+import { 
+    KOTRInterchangeParseResult, KOTRMessageParseResult, KOTRMessage, 
+    ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, VDT, VKG
+} from "./segments"
 
 /** 
  *  Parses a Kostenträgerdatei (payer file) which provides information how to send invoices to the
@@ -42,16 +45,18 @@ import { KOTRInterchangeParsingResult, KOTRMessage, ANS, ASP, DFU, FKT, IDK, KTO
 /* Transforms the serial data (array of arrays) from a Kostenträger EDIFACT-interchange into legible
  * messages with labelled typesafe segments. It does however not divorce the data structure from 
  * (the limitations of) the EDIFACT message format yet. */
-export default function parse(interchange: Interchange): KOTRInterchangeParsingResult {
+export default function parse(interchange: Interchange): KOTRInterchangeParseResult {
     const header = interchange.header
 
     const warnings: string[] = []
     const institutions = interchange.messages
         .map((message) => { 
             try {
-                return parseMessage(message)
+                const parseResult = parseMessage(message)
+                warnings.push(...parseResult.warnings)
+                return parseResult.message
             } catch(e) {
-                warnings.push(e.message)
+                warnings.push("skipped invalid " + e.message)
             }
          })
         .filter((msg): msg is KOTRMessage => !!msg)
@@ -70,9 +75,9 @@ export default function parse(interchange: Interchange): KOTRInterchangeParsingR
 }
 
 /** Parse only one message of the interchange */
-function parseMessage(message: Message): KOTRMessage {
+function parseMessage(message: Message): KOTRMessageParseResult {
     const messageId = parseInt(message.header[0][0])
-    const messageTxt = `Message ${messageId} -`
+    const messageTxt = `message ${messageId} -`
     const messageType = message.header[1][0]
     if (messageType != "KOTR") {
         throw new Error(`${messageTxt} Unknown message type ${messageType}`)
@@ -90,8 +95,14 @@ function parseMessage(message: Message): KOTRMessage {
     const ansList = new Array<ANS>()
     const aspList = new Array<ASP>()
     const dfuList = new Array<DFU>()
-    const uemList = new Array<UEM>() 
+    let uemList = new Array<UEM>() 
     const vkgList = new Array<VKG>()
+
+    const warnings: string[] = []
+
+    let vkgCount = 0
+    let uemCount = 0
+    let ansCount = 0
 
     message.segments.forEach((segment) => {
         const tag = segment.tag
@@ -122,22 +133,42 @@ function parseMessage(message: Message): KOTRMessage {
                     kto = readKTO(elements)
                     break
                 case "VKG": // Verknüpfung
-                    vkgList.push(readVKG(elements))
+                    try {
+                        ++vkgCount
+                        vkgList.push(readVKG(elements))
+                    } catch(e) {
+                        warnings.push(messageTxt + " skipped invalid VKG " + vkgCount + ": " + e.message)
+                    }
                     break
                 case "NAM": // Name
                     nam = readNAM(elements)
                     break
                 case "ANS": // Anschrift
-                    ansList.push(readANS(elements))
+                    try {
+                        ++ansCount
+                        ansList.push(readANS(elements))
+                    } catch(e) {
+                        warnings.push(messageTxt + " skipped invalid ANS " + ansCount + ": " + e.message)
+                    }
                     break
                 case "ASP": // Ansprechpartner
                     aspList.push(readASP(elements))
                     break
                 case "UEM": // Übermittlungsmedium
-                    uemList.push(readUEM(elements))
+                    try {
+                        ++uemCount
+                        uemList.push(readUEM(elements))
+                    } catch(e) {
+                        warnings.push(messageTxt + " skipped invalid UEM " + uemCount + ": " + e.message)
+                    }
                     break
                 case "DFU": // Datenfernübertragung
-                    dfuList.push(readDFU(elements))
+                    try {
+                        dfuList.push(readDFU(elements))
+                    } catch(e) {
+                        const index = parseInt(elements[0])
+                        warnings.push(messageTxt + " skipped invalid DFU " + index + ": " + e.message)
+                    }
                     break
             }
         } catch (error) {
@@ -161,9 +192,12 @@ function parseMessage(message: Message): KOTRMessage {
     if (ansList.length == 0) {
         throw new Error(`${messageTxt} At least one "ANS" element is required`)
     }
-    uemList.forEach((uem) => {
+    uemList = uemList.filter((uem, index) => {
         if (uem.uebermittlungsmediumSchluessel == "1" && dfuList.length == 0) {
-            throw new Error(`${messageTxt} Data inconsistency: At least one "DFU" element is required if UEM.uebermittlungsmediumSchluessel = 1`)
+            warnings.push(`${messageTxt} skipped invalid UEM ${index+1}: Refers to a non-existing DFU`)
+            return false
+        } else {
+            return true
         }
     })
 
@@ -171,17 +205,20 @@ function parseMessage(message: Message): KOTRMessage {
     dfuList.sort((a, b) => a.index - b.index)
 
     return {
-        id: messageId,
-        idk: idk,
-        vdt: vdt,
-        fkt: fkt,
-        nam: nam,
-        kto: kto,
-        vkgList: vkgList,
-        ansList: ansList,
-        aspList: aspList,
-        dfuList: dfuList,
-        uemList: uemList
+        message: {
+            id: messageId,
+            idk: idk,
+            vdt: vdt,
+            fkt: fkt,
+            nam: nam,
+            kto: kto,
+            vkgList: vkgList,
+            ansList: ansList,
+            aspList: aspList,
+            dfuList: dfuList,
+            uemList: uemList
+        },
+        warnings: warnings
     }
 }
 
@@ -200,7 +237,7 @@ const readVDT = (e: string[]): VDT => ({
 const readFKT = (e: string[]): FKT => {
     const k = e[0]
     if (!verarbeitungskennzeichenSchluessel.hasOwnProperty(k)) {
-        throw new Error(`FKT - Unknown VerarbeitungskennzeichenSchluessel "${k}"`)
+        throw new Error(`Unknown VerarbeitungskennzeichenSchluessel "${k}"`)
     }
     return { verarbeitungskennzeichenSchluessel: k as VerarbeitungskennzeichenSchluessel }
 }
@@ -212,7 +249,7 @@ const readKTO = (e: string[]): KTO => {
     const bic = e[5] || undefined
 
     if (!(accountNumber && bankCode || iban && bic)) {
-        throw new Error("KTO - Bank account information is incomplete")
+        throw new Error("Bank account information is incomplete")
     }
 
     return {
@@ -228,30 +265,30 @@ const readKTO = (e: string[]): KTO => {
 const readVKG = (e: string[]): VKG => {
     const e0 = e[0]
     if (!ikVerknuepfungsartSchluessel.hasOwnProperty(e0)) {
-        throw new Error(`VKG - Unknown IKVerknuepfungsartSchluessel "${e0}"`)
+        throw new Error(`Unknown IKVerknuepfungsartSchluessel "${e0}"`)
     }
     const e2 = e[2]
     if (e2 && !leistungserbringergruppeSchluessel.hasOwnProperty(e2)) {
-        throw new Error(`VKG - Unknown LeistungserbringergruppeSchluessel "${e2}"`)
+        throw new Error(`Unknown LeistungserbringergruppeSchluessel "${e2}"`)
     }
     const e4 = e[4]
     if (e4 && !datenlieferungsArtSchluessel.hasOwnProperty(e4)) {
-        throw new Error(`VKG - Unknown DatenlieferungsartSchluessel "${e4}"`)
+        throw new Error(`Unknown DatenlieferungsartSchluessel "${e4}"`)
     }
     if ((e0 == "02" || e0 == "03") && e4 != "07") {
-        throw new Error(`VKG - Data inconsistency: Link links to data acceptance office but that office does not accept data`)
+        throw new Error(`Links to data acceptance office that does not accept data`)
     }
     const e5 = e[5]
     if (e5 && !uebermittlungsmediumSchluessel.hasOwnProperty(e5)) {
-        throw new Error(`VKG - Unknown UebermittlungsmediumSchluessel "${e5}"`)
+        throw new Error(`Unknown UebermittlungsmediumSchluessel "${e5}"`)
     }
     const e6 = e[6]
     if (e6 && !bundeslandSchluessel.hasOwnProperty(e6)) {
-        throw new Error(`VKG - Unknown BundeslandSchluessel "${e6}"`)
+        throw new Error(`Unknown BundeslandSchluessel "${e6}"`)
     }
     const e7 = e[7]
     if (e7 && !kvBezirkSchluessel.hasOwnProperty(e7)) {
-        throw new Error(`VKG - Unknown KVBezirkSchluessel "${e7}"`)
+        throw new Error(`Unknown KVBezirkSchluessel "${e7}"`)
     }
     const e8 = e[8]
     let pflegeLeistungsart: KostentraegerPflegeLeistungsartSchluessel | undefined
@@ -260,19 +297,19 @@ const readVKG = (e: string[]): VKG => {
         if (e2 == "6") { // Pflege 
             if (!pflegeLeistungsartSchluessel.hasOwnProperty(e8) && 
                 !pflegeLeistungsartSonderschluessel.hasOwnProperty(e8)) {
-                throw new Error(`VKG - Unknown KostentraegerPflegeLeistungsartSchluessel "${e8}"`)
+                throw new Error(`Unknown KostentraegerPflegeLeistungsartSchluessel "${e8}"`)
             }
             pflegeLeistungsart = e8 as KostentraegerPflegeLeistungsartSchluessel
         }
         else if (e2 == "5") { // Sonstige
             if (!abrechnungscodeSchluessel.hasOwnProperty(e8) && 
                 !abrechnungscodeSonderschluessel.hasOwnProperty(e8)) {
-                throw new Error(`VKG - Unknown KostentraegerAbrechnungscodeSchluessel "${e8}"`)
+                throw new Error(`Unknown KostentraegerAbrechnungscodeSchluessel "${e8}"`)
             }
             abrechnungscode = e8 as KostentraegerAbrechnungscodeSchluessel
         }
         else {
-            throw new Error(`VKG - Unexpected value "${e2}" for leistungserbringergruppeSchluessel`)
+            throw new Error(`Unexpected value "${e2}" for leistungserbringergruppeSchluessel`)
         }
     }
 
@@ -301,7 +338,7 @@ const readNAM = (e: string[]): NAM => ({
 const readANS = (e: string[]): ANS => {
     const e0 = e[0]
     if (!anschriftartSchluessel.hasOwnProperty(e0)) {
-        throw new Error(`ANS - Unknown AnschriftartSchluessel "${e0}"`)
+        throw new Error(`Unknown AnschriftartSchluessel "${e0}"`)
     }
     return {
         anschriftartSchluessel: e0 as AnschriftartSchluessel,
@@ -322,16 +359,16 @@ const readASP = (e: string[]): ASP => ({
 const readUEM = (e: string[]): UEM => {
     const e0 = e[0]
     if (!uebermittlungsmediumSchluessel.hasOwnProperty(e0)) {
-        throw new Error(`UEM - Unknown UebermittlungsmediumSchluessel "${e0}"`)
+        throw new Error(`Unknown UebermittlungsmediumSchluessel "${e0}"`)
     }
     const e1 = e[1]
     // is documented to be mandatory, but not all health insurances specify this
     if (e1 && !uebermittlungsmediumParameterSchluessel.hasOwnProperty(e1)) {
-        throw new Error(`UEM - Unknown UebermittlungsmediumParameterSchluessel "${e1}"`)
+        throw new Error(`Unknown UebermittlungsmediumParameterSchluessel "${e1}"`)
     }
     const e2 = e[2]
     if (!uebermittlungszeichensatzSchluessel.hasOwnProperty(e2)) {
-        throw new Error(`UEM - Unknown UebermittlungszeichensatzSchluessel "${e2}"`)
+        throw new Error(`Unknown UebermittlungszeichensatzSchluessel "${e2}"`)
     }
     return {
         uebermittlungsmediumSchluessel: e0 as UebermittlungsmediumSchluessel,
@@ -344,11 +381,11 @@ const readUEM = (e: string[]): UEM => {
 const readDFU = (e: string[]): DFU => {
     const e1 = e[1]
     if (!dfuProtokollSchluessel.hasOwnProperty(e1)) {
-        throw new Error(`DFU - Unknown DFUProtokollSchluessel "${e1}"`)
+        throw new Error(`Unknown DFUProtokollSchluessel "${e1}"`)
     }
     const e5 = e[5]
     if (e5 && !uebertragungstageSchluessel.hasOwnProperty(e5)) {
-        throw new Error(`DFU - Unknown UebertragungstageSchluessel "${e5}"`)
+        throw new Error(`Unknown UebertragungstageSchluessel "${e5}"`)
     }
 
     return {
