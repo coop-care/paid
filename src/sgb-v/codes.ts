@@ -10,7 +10,7 @@ export const abrechnungscodeSchluessel = {
         "15": "Orthopädiemechaniker, Bandagist, Sanitätshaus",
         "16": "Orthopädieschuhmacher",
         "17": "Orthopäde",
-        // deprecated and removed on 31.12.2005 -> "18": Sanitätshaus 
+        "18": "Sanitätshaus", // deprecated and supposedly removed on 31.12.2005 -> de-facto still used at least by AOK
         "19": "Sonstiger Hilfsmittellieferant",
     "20": "Gruppenschlüssel Heilmittelerbringer (Schlüssel 21-29)",
         "21": "Masseur / Medizinischer Badebetrieb",
