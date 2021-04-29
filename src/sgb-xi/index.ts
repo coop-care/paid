@@ -3,7 +3,7 @@
   */
 
 import { BillingData, Abrechnungsfall, Einsatz, Invoice, MessageIdentifiers, BillingFile, Hilfsmittel } from "../types";
-import { entriesGroupedBy, valuesGroupedBy } from "../utils";
+import { valuesGroupedBy } from "../utils";
 import { MehrwertsteuerSchluessel, RechnungsartSchluessel } from "./codes";
 import { makeAnwendungsreferenz, makeDateiname } from "./filenames";
 import { ELS, ESK, FKT, GES, HIL, IAF, INV, MAN, NAD, NAM, REC, SRD, UNB, UNH, UNT, UNZ, UST, ZUS } from "./segments";
@@ -49,7 +49,7 @@ export const makeBillingFile = (
                 - (b?.leistungsBeginn?.getTime() || Number.MAX_VALUE)
             )
         }))
-    }))
+    }));
 
     // according to section 4.2 Struktur der Datei, grouped for all three Rechnungsarten
     const nutzdaten = [
@@ -94,13 +94,17 @@ const forEachKostentraeger = (invoices: Invoice[], rechnungsart: RechnungsartSch
 const groupFaelleByKostentraeger = (faelle: Abrechnungsfall[]) =>
     valuesGroupedBy(faelle, fall => fall.versicherter.kostentraegerIK);
 
-const groupByLeistungsart = (faelle: Abrechnungsfall[]) => faelle
-    .map(fall => {
-        return fall.einsaetze.map(einsatz =>
-            valuesGroupedBy(einsatz.leistungen, leistung => leistung.leistungsart)
-                .map(leistungen => ({ ...einsatz, leistungen } as Einsatz))
-        ).map(einsaetze => ({ ...fall, einsaetze } as Abrechnungsfall))
-    });
+const groupByLeistungsart = (faelle: Abrechnungsfall[]) => faelle.flatMap(fall => [
+    [...new Set(
+        fall.einsaetze.flatMap(einsatz => einsatz.leistungen).map(leistung => leistung.leistungsart)
+    )].map(leistungsart => ({
+        ...fall,
+        einsaetze: fall.einsaetze.map(einsatz => ({
+            ...einsatz,
+            leistungen: einsatz.leistungen.filter(leistung => leistung.leistungsart == leistungsart)
+        })).filter(einsatz => einsatz.leistungen.length)
+    }))
+]);
 
 const structureForRechnungsart = (invoices: Invoice[], rechnungsart: RechnungsartSchluessel) =>
     rechnungsart != "3"
