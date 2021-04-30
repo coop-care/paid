@@ -22,7 +22,6 @@ export default function transform(interchange: KOTRInterchange): InstitutionList
     return {
         institutionList: {
             spitzenverbandIK: interchange.spitzenverbandIK,
-            //creationDate: interchange.creationDate,
             institutions: institutions
         },
         warnings: warnings
@@ -111,6 +110,10 @@ function createReceiptTransmissionMethods(uemList: UEM[], dfuList: DFU[]): Recei
         zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
         email = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
         ftam = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "016")?.address
+    }
+
+    if(!paperReceipt && !machineReadablePaperReceipt && !email && !ftam) {
+        throw new Error(`Expected that institution accepts either paper receipts or sent via email or ftam`)
     }
 
     return {
