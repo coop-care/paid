@@ -19,7 +19,6 @@ import {
     PflegegradSchluessel,
     TarifbereichSchluessel, 
     VerarbeitungskennzeichenSchluessel,
-    VerguetungsartSchluessel,
 } from "./codes";
 import { mask, number, price, day, month, date, time, datetime, segment } from "../formatter";
 
@@ -73,9 +72,12 @@ export const UNT = (
 export const FKT = (
     verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel, // always "01"
     {
-        absenderIK, // PLGA: Absender der Datei, identisch zu Absender in UNB; PLAA: wie RechnungsstellerIK (?)
-        rechnungsstellerIK, // Leistungserbringer oder Abrechnungsstelle mit Inkassovollmacht bei Sammelrechnung; PLAA == PLGA
-    }: Leistungserbringer,
+        absender, // PLGA: Absender der Datei, identisch zu Absender in UNB; PLAA: wie RechnungsstellerIK (?)
+        rechnungssteller, // Leistungserbringer oder Abrechnungsstelle mit Inkassovollmacht bei Sammelrechnung; PLAA == PLGA
+    }: {
+        absender: Institution,
+        rechnungssteller: Institution,
+    },
     {
         kostentraegerIK, // Institution die die Rechnung begleicht laut Kostenträgerdatei; PLAA == PLGA
         pflegekasseIK, // Pflegekasse des Leistungs- bzw. Bewilligungsbescheids; falls angegeben gilt: PLAA == PLGA
@@ -89,10 +91,10 @@ export const FKT = (
         : sammelrechnung
         ? "J"
         : "",
-    rechnungsstellerIK,
+    rechnungssteller.ik,
     kostentraegerIK,
     sammelrechnung !== true ? pflegekasseIK : "",
-    sammelrechnung !== undefined ? absenderIK : rechnungsstellerIK
+    sammelrechnung !== undefined ? absender.ik : rechnungssteller.ik
 );
 
 export const REC = (

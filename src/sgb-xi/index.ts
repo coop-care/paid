@@ -2,7 +2,7 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, Abrechnungsfall, Einsatz, Invoice, MessageIdentifiers, BillingFile, Hilfsmittel } from "../types";
+import { BillingData, Abrechnungsfall, Invoice, MessageIdentifiers, BillingFile, Hilfsmittel } from "../types";
 import { valuesGroupedBy } from "../utils";
 import { MehrwertsteuerSchluessel, RechnungsartSchluessel } from "./codes";
 import { makeAnwendungsreferenz, makeDateiname } from "./filenames";
@@ -26,7 +26,7 @@ export const makeBillingFile = (
         dateiindikator,
         rechnungsart
     } = billing;
-    const absenderIK = invoices[0].leistungserbringer.absenderIK;
+    const absenderIK = absender(billing, invoices[0]).ik;
     const datenaustauschreferenz = datenaustauschreferenzJeEmpfaengerIK[empfaengerIK] || 1;
     const laufendeDatenannahmeImJahr = laufendeDatenannahmeImJahrJeEmpfaengerIK[empfaengerIK] || 1;
     const anwendungsreferenz = makeAnwendungsreferenz(kassenart, laufendeDatenannahmeImJahr, billing);
@@ -68,6 +68,8 @@ export const makeBillingFile = (
         ]),
         UNZ(messageNumber, datenaustauschreferenz)
     ].join("");
+
+    console.log(indentNutzdaten(nutzdaten))
 
     return {
         dateiname,
@@ -154,7 +156,7 @@ const makePLGA = (
     leistungserbringerIndex: number,
     sammelrechnung: boolean
 ) => [
-    FKT("01", invoice.leistungserbringer, invoice.faelle[0].versicherter, sammelrechnung),
+    FKT("01", absenderAndRechnungssteller(billing, invoice), invoice.faelle[0].versicherter, sammelrechnung),
     REC(billing, invoiceIndex, leistungserbringerIndex, sammelrechnung),
     SRD(invoice.leistungserbringer, invoice.faelle[0]),
     UST(invoice.leistungserbringer),
@@ -169,7 +171,7 @@ const makePLAA = (
     invoiceIndex: number,
     leistungserbringerIndex: number,
 ) => [
-    FKT("01", invoice.leistungserbringer, invoice.faelle[0].versicherter),
+    FKT("01", absenderAndRechnungssteller(billing, invoice), invoice.faelle[0].versicherter),
     REC(billing, invoiceIndex, leistungserbringerIndex, false),
     ...groupByMonth(invoice.faelle).flatMap((fall, belegNummer) => [
         INV(fall.versicherter.versichertennummer, belegNummer),
@@ -207,6 +209,32 @@ const groupByMonth = (faelle: Abrechnungsfall[]) => faelle.flatMap(fall => [
         einsaetze
     } as Abrechnungsfall))
 ]);
+
+const absenderAndRechnungssteller = (billing: BillingData, invoice: Invoice) => ({
+    absender: absender(billing, invoice),
+    rechnungssteller: rechnungssteller(billing, invoice),
+});
+
+/** 
+ * @returns Leistungserbringer, der selbst abrechnet (Rechnungsart 1)
+ *     oder Abrechnungsstelle (Rechnungsart 2 + 3)
+ */
+const absender = (
+    {rechnungsart, abrechnungsstelle}: BillingData, 
+    {leistungserbringer}: Invoice
+) => rechnungsart == "1" || !abrechnungsstelle ? leistungserbringer : abrechnungsstelle;
+
+/**
+ * @returns Leistungserbringer (Rechnungsart 1 + 2) 
+ *     oder Abrechnungsstelle mit Inkasssovollmacht (Rechnungsart 3)
+ */
+const rechnungssteller = (
+    { rechnungsart, abrechnungsstelle }: BillingData,
+    { leistungserbringer }: Invoice
+) => rechnungsart != "3" || !abrechnungsstelle ? leistungserbringer : abrechnungsstelle;
+
+
+// - calculation
 
 export const calculateInvoice = (invoice: Invoice) => invoice.faelle
     .reduce((result, fall) => {
@@ -247,3 +275,15 @@ const makeAmounts = () => ({
     beihilfebetrag: 0,
     mehrwertsteuerbetrag: 0,
 });
+
+
+// - debug helper
+
+const indentNutzdaten = (nutzdaten: string) => 
+    nutzdaten.split("\n").slice(0, -1)
+        .map((line, index, list) => `"${line}\\n"` + (index < list.length - 1 ? " +" : ""))
+        .map(line => line
+            .replace(/^"(UNB|UNZ|UNH|UNT)/, "  \"$1")
+            .replace(/^"(FKT|REC|SRD|UST|GES|NAM|INV|IAF)/, "      \"$1")
+            .replace(/^"(NAD|MAN|ESK|ELS|HIL|ZUS)/, "          \"$1"))
+        .join("\n")

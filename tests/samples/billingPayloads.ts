@@ -1,5 +1,6 @@
 import {
     BillingData,
+    Institution,
     Invoice,
     Leistung, 
     Leistungserbringer, 
@@ -13,8 +14,6 @@ const leistungserbringer: Leistungserbringer[] = [{
         name: "Sven Bauer",
         phone: "012 34567-8",
     }],
-    absenderIK: "0000000110",
-    rechnungsstellerIK: "0000000110",
     abrechnungscode: "36",
     tarifbereich: "00",
     umsatzsteuerBefreiung: "01",
@@ -26,8 +25,6 @@ const leistungserbringer: Leistungserbringer[] = [{
         name: "Laila Neumann",
         phone: "012 34567",
     }],
-    absenderIK: "0000000210",
-    rechnungsstellerIK: "0000000120",
     abrechnungscode: "35",
     tarifbereich: "05",
     umsatzsteuerBefreiung: "01",
@@ -41,8 +38,6 @@ const leistungserbringer: Leistungserbringer[] = [{
         name: "Ben Peters",
         phone: "012 3456789",
     }],
-    absenderIK: "0000000210",
-    rechnungsstellerIK: "0000000130",
     abrechnungscode: "36",
     tarifbereich: "02",
     umsatzsteuerBefreiung: "",
@@ -54,8 +49,6 @@ const leistungserbringer: Leistungserbringer[] = [{
         name: "Lena Wolf",
         phone: "0123 456789",
     }],
-    absenderIK: "0000000310",
-    rechnungsstellerIK: "0000000310",
     abrechnungscode: "35",
     tarifbereich: "01",
     umsatzsteuerBefreiung: "01",
@@ -67,13 +60,29 @@ const leistungserbringer: Leistungserbringer[] = [{
         name: "Yvonne Zimmermann",
         phone: "0123 456789",
     }],
-    absenderIK: "0000000310",
-    rechnungsstellerIK: "0000000310",
     abrechnungscode: "36",
     tarifbereich: "23",
     umsatzsteuerOrdnungsnummer: "012/345/67890",
     umsatzsteuerBefreiung: "",
     sondertarifJeKostentraegerIK: {},
+}];
+
+const abrechnungsstellen: Institution[] = [{
+    name: "Payday GmbH",
+    ik: "0000000210",
+    ansprechpartner: [{
+        name: "Peter Schmidt",
+        phone: "0123 45678-90",
+    }]
+}, {
+    name: "PAID Abrechnungszentrum eG",
+    ik: "0000000310",
+    ansprechpartner: [{
+        name: "Sonja Braun",
+        phone: "01234 5678-9",
+    }, {
+        name: "Josef Klein"
+    }]
 }]
 
 const versicherte: Versicherter[] = [{
@@ -377,6 +386,7 @@ export const payload2 = {
         rechnungsart: "2",
         rechnungsnummerprefix: "2021-00267",
         abrechnungsmonat: new Date("2021-04-01"),
+        abrechnungsstelle: abrechnungsstellen[0],
         datenaustauschreferenzJeEmpfaengerIK: {},
         laufendeDatenannahmeImJahrJeEmpfaengerIK: {}
     } as BillingData,
@@ -485,16 +495,7 @@ export const payload3 = {
         rechnungsnummerprefix: "2021-00398",
         rechnungsdatum: new Date("2021-05-03"),
         abrechnungsmonat: new Date("2021-04-01"),
-        abrechnungsstelle: {
-            name: "PAID Abrechnungszentrum eG",
-            ik: "00000310",
-            ansprechpartner: [{
-                name: "Sonja Braun",
-                phone: "01234 5678-9",
-            }, {
-                name: "Josef Klein"
-            }]
-        },
+        abrechnungsstelle: abrechnungsstellen[1],
         datenaustauschreferenzJeEmpfaengerIK: {},
         laufendeDatenannahmeImJahrJeEmpfaengerIK: {}
     } as BillingData,

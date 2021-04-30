@@ -69,18 +69,11 @@ export type Institution = {
     ik: string;
     ansprechpartner: {
         name: string;
-        phone: string;
+        phone?: string;
     }[];
 };
 
 export type Leistungserbringer = Institution & {
-    // Leistungserbringer, der selbst abrechnet (Rechnungsart 1), 
-    // oder Abrechnungsstelle (Rechnungsart 2 + 3):
-    absenderIK: string;
-    // Leistungserbringer (Rechnungsart 1 + 2),
-    // oder Abrechnungsstelle mit Inkasssovollmacht (Rechnungsart 3).
-    // Hinweis: absenderIK und rechnungsstellerIK sind bei Rechnungsart 1 + 3 identisch.
-    rechnungsstellerIK: string;
     abrechnungscode: AbrechnungscodeSchluessel;
     tarifbereich: TarifbereichSchluessel;
     sondertarifJeKostentraegerIK: Record<string, string>;
