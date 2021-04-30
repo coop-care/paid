@@ -42,9 +42,10 @@ export type Institution = {
     /** Optional bank account details of this institution */
     bankAccountDetails?: BankAccountDetails,
 
-    /** Validity start date for this institution information. */
-    validityFrom: Date,
-    /** Validity end date for this institution information. May be undefined. */
+    /** Validity start date for this institution information. May be undefined if it is always valid
+    */
+    validityFrom?: Date,
+    /** Validity end date for this institution information. May be undefined if it is always valid */
     validityTo?: Date,
 
     /** Contacts. This list may be empty */
@@ -53,7 +54,7 @@ export type Institution = {
     addresses: Address[],
     /** Details on where and with which protocol to send receipts. Undefined if this institution
      *  does not accept any receipts directly */
-    transmissionMethods: ReceiptTransmissionMethods | undefined,
+    transmissionMethods?: ReceiptTransmissionMethods,
     /** Links to the Kostenträger (=institution that pays the receipts), to Datenannahmestellen
      *  (=receipt data acceptance office) or to a Papierannahmestellen (=paper acceptance office).
      *  

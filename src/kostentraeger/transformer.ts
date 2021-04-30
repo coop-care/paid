@@ -12,10 +12,12 @@ import {
 
 export default function transform(interchange: KOTRInterchange): InstitutionListParseResult {
 
+    const validityStartDate = interchange.filename.validityStartDate
+
     const warnings: string[] = []
     const institutions = interchange.institutions.map((msg) => {
         try {
-            return transformMessage(msg)
+            return transformMessage(msg, validityStartDate)
         } catch(e) {
             warnings.push(e.message)
         }
@@ -41,12 +43,22 @@ function verfahrenToLeistungserbringergruppeSchluessel(verfahren: VerfahrenSchlu
 }
 
 
-function transformMessage(msg: KOTRMessage): Institution | null {
+function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date): Institution | null {
+
     /* in practice, this doesn't really seem to be used and usage of this field is inconsistent for the
        different umbrella organizations that issue the Kostenträger-file. "03" however seems to mean
        "delete this entry" */
+    if (msg.fkt.verarbeitungskennzeichenSchluessel == "03") {
+        return null
+    }
 
-    if (msg.fkt.verarbeitungskennzeichenSchluessel == "03") return null
+    /* no need to include institutions that are not valid anymore when this kostenträger file
+       becomes valid*/
+    const msgValidityStartDate = msg.vdt.validityFrom
+    const msgValidityEndDate = msg.vdt.validityTo
+    if (msgValidityEndDate && msgValidityEndDate < interchangeValidityStartDate) {
+        return null
+    }
 
     /* Simplification: Certain data is documented that it could be different, but de-facto it's not.
        Let's assert that it is never a value so that our data model and application logic can be 
@@ -102,8 +114,8 @@ function transformMessage(msg: KOTRMessage): Institution | null {
         vertragskassennummer: msg.idk.vertragskassennummer,
         bankAccountDetails: msg.kto ? createBankAccountDetails(msg.kto, msg.idk.abbreviatedName) : undefined,
 
-        validityFrom: msg.vdt.validityFrom,
-        validityTo: msg.vdt.validityTo,
+        validityFrom: msgValidityStartDate > interchangeValidityStartDate ? msgValidityStartDate : undefined,
+        validityTo: msgValidityEndDate,
 
         contacts: msg.aspList.map((asp) => createContact(asp)),
         addresses: msg.ansList.map((ans) => createAddress(ans)),

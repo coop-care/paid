@@ -195,11 +195,106 @@ describe("kostentraeger transformer", () => {
             }],
         }
 
-        /* need to compare the stringified and then parsed result because Javascript Date objects 
-           are compared using identity, not equality :-( */
-        const actual = JSON.parse(JSON.stringify(transform(interchange).institutionList))
-        const expected = JSON.parse(JSON.stringify(expectedInstitutionList))
-
-        expect(actual).toEqual(expected)
+        expect(json(transform(interchange).institutionList)).toEqual(json(expectedInstitutionList))
     })
+    
+    it("skip message that is not valid anymore", () => {
+        const interchange: KOTRInterchange = {
+            spitzenverbandIK: "123456789",
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date("2010-01-01"),
+                version: 1
+            },
+            institutions: [{
+                id: 1, 
+                idk: {
+                    ik: "999999999",
+                    institutionsart: "99",
+                    abbreviatedName: "short name"
+                },
+                vdt: {
+                    validityFrom: new Date("2000-10-20"),
+                    validityTo: new Date("2009-12-31")          // <--- here
+                },
+                fkt: { verarbeitungskennzeichenSchluessel: "01" },
+                nam: { index: 1, names: ["name"]},
+                ansList: [],
+                vkgList: [],
+                aspList: [],
+                dfuList: [],
+                uemList: []
+            }]
+        }
+
+        expect(transform(interchange).institutionList.institutions).toHaveLength(0)
+    })
+
+    it("skip message with verarbeitungskennzeichen 3", () => {
+        const interchange: KOTRInterchange = {
+            spitzenverbandIK: "123456789",
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date("2020-01-01"),
+                version: 1
+            },
+            institutions: [{
+                id: 1, 
+                idk: {
+                    ik: "999999999",
+                    institutionsart: "99",
+                    abbreviatedName: "short name"
+                },
+                vdt: { validityFrom: new Date("2000-20-20") },
+                fkt: { verarbeitungskennzeichenSchluessel: "03" },   // <--- here
+                nam: { index: 1, names: ["name"]},
+                ansList: [],
+                vkgList: [],
+                aspList: [],
+                dfuList: [],
+                uemList: []
+            }]
+        }
+
+        expect(transform(interchange).institutionList.institutions).toHaveLength(0)
+    })
+
+    it("skip message that had a parsing error", () => {
+        const interchange: KOTRInterchange = {
+            spitzenverbandIK: "123456789",
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date("2020-01-01"),
+                version: 1
+            },
+            institutions: [{
+                id: 1, 
+                idk: {
+                    ik: "999999999",
+                    institutionsart: "15",                    // <--- here
+                    abbreviatedName: "short name"
+                },
+                vdt: { validityFrom: new Date("2000-20-20") },
+                fkt: { verarbeitungskennzeichenSchluessel: "01" },
+                nam: { index: 1, names: ["name"]},
+                ansList: [],
+                vkgList: [],
+                aspList: [],
+                dfuList: [],
+                uemList: []
+            }]
+        }
+
+        expect(transform(interchange).institutionList.institutions).toHaveLength(0)
+    })
+
 })
+
+/* need to compare the stringified and then parsed result because Javascript Date objects 
+are compared using identity, not equality :-( */
+function json(obj: object): object {
+    return JSON.parse(JSON.stringify(obj))
+}

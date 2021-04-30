@@ -1,5 +1,7 @@
 
-/** Parses all the URLs that lead to the Kostenträger files from the RSS feed */
+/** Parses all the URLs that lead to the Kostenträger files from the RSS feed. An RSS feed like this
+ *  "https://gkv-datenaustausch.de/leistungserbringer/pflege/kostentraegerdateien_pflege/rss_kostentraegerdateien_pflege.xml"
+ */
 export default function parseKostentraegerUrls(rssText: string): string[] {
     const rssDOM = new DOMParser().parseFromString(rssText, "text/xml")
     const items = rssDOM.getElementsByTagName("item")
