@@ -12,6 +12,12 @@ describe("kostentraeger edifact parser", () => {
         )).toEqual({
             spitzenverbandIK: "109910000",
             institutions: [],
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date(2021,4-1),
+                version: 1
+            }
         })
     })
 

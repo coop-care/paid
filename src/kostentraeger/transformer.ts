@@ -1,4 +1,6 @@
+import { LeistungserbringergruppeSchluessel } from "./edifact/codes"
 import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, KTO, UEM } from "./edifact/segments"
+import { VerfahrenSchluessel } from "./filename/codes"
 import { 
     Address, 
     BankAccountDetails, 
@@ -19,14 +21,25 @@ export default function transform(interchange: KOTRInterchange): InstitutionList
         }
     }).filter((msg): msg is Institution => !!msg)
 
+
     return {
         institutionList: {
             spitzenverbandIK: interchange.spitzenverbandIK,
-            institutions: institutions
+            institutions: institutions,
+            leistungserbringerGruppeSchluessel: verfahrenToLeistungserbringergruppeSchluessel(interchange.filename.verfahren),
         },
         warnings: warnings
     }
 }
+
+function verfahrenToLeistungserbringergruppeSchluessel(verfahren: VerfahrenSchluessel): LeistungserbringergruppeSchluessel {
+    switch(verfahren) {
+        case "05": return "5"
+        case "06": return "6"
+    }
+    throw new Error(`Expected Kostenträger file Verfahren to be "05" or "06" but was "${verfahren}"`)
+}
+
 
 function transformMessage(msg: KOTRMessage): Institution | null {
     /* in practice, this doesn't really seem to be used and usage of this field is inconsistent for the

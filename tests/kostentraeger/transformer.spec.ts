@@ -8,6 +8,12 @@ describe("kostentraeger transformer", () => {
     it("transform one message", () => {
         const interchange: KOTRInterchange = {
             spitzenverbandIK: "123456789",
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date("1999-05-05"),
+                version: 1
+            },
             institutions: [{
                 id: 1, 
                 idk: {
@@ -126,6 +132,7 @@ describe("kostentraeger transformer", () => {
 
         const expectedInstitutionList: InstitutionList = {
             spitzenverbandIK: "123456789",
+            leistungserbringerGruppeSchluessel: "6",
             institutions: [{
                 ik: "999999999",
                 abbreviatedName: "short name",

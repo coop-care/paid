@@ -5,6 +5,7 @@
  * (see /docs/documents.md for more info)
  */
 
+import { KostentraegerFilenameElements } from "../filename/parser"
 import { 
     KostentraegerAbrechnungscodeSchluessel,
     AnschriftartSchluessel, 
@@ -32,7 +33,9 @@ export type KOTRInterchange = {
     /** Institutionskennzeichen (=Institution code) of the umbrella organization that issued this */
     spitzenverbandIK: string
     /** All the Kostentraeger for this umbrella organization */
-    institutions: KOTRMessage[]
+    institutions: KOTRMessage[],
+    /** Filename elements of the parsed file. */
+    filename: KostentraegerFilenameElements
 }
 
 export type KOTRMessageParseResult = {

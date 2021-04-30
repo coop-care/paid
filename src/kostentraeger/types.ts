@@ -1,4 +1,4 @@
-import { UebermittlungszeichensatzSchluessel } from "./edifact/codes"
+import { LeistungserbringergruppeSchluessel, UebermittlungszeichensatzSchluessel } from "./edifact/codes"
 import { VKG } from "./edifact/segments"
 
 /**
@@ -19,7 +19,9 @@ export type InstitutionList = {
      *  list */
     spitzenverbandIK: string,
     /** All the Kostentraeger for this umbrella organization */
-    institutions: Institution[]
+    institutions: Institution[],
+    /** For which Leistungserbringergruppe this institution list is for */
+    leistungserbringerGruppeSchluessel: LeistungserbringergruppeSchluessel,
 }
 
 /** Information for one Institution.

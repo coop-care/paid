@@ -4,7 +4,7 @@
  * 
  * (see /docs/documents.md for more info)
  */
-
+import parseFilename from "../filename/parser"
 import { parseDate } from "../../edifact/parse_utils"
 import { Interchange, Message } from "../../edifact/types"
 import { 
@@ -61,14 +61,17 @@ export default function parse(interchange: Interchange): KOTRInterchangeParseRes
          })
         .filter((msg): msg is KOTRMessage => !!msg)
 
+    let fname = header[6][0]
+    const filenameElements = parseFilename(fname.substring(0, 8) + '.' + fname.substring(8, 11))
+
     return {
         interchange: {
             spitzenverbandIK: header[1][0],
             /* creation date and time would be in header[3][0] and header[3][1], but date format is 
                sometimes YYYYMMDD, sometimes YYMMDD and the info is not really needed anyway. So
                no need to parse it, it only increases the complexity of this parser */
-            institutions: institutions
-            // header[6] would contain the file name. Though there is probably no meaning in parsing that
+            institutions: institutions,
+            filename: filenameElements
         },
         warnings: warnings
     }
