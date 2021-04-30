@@ -11,8 +11,26 @@ const kostentraegerRssUrls = [
 
 export default async function fetchKostentraeger(): Promise<InstitutionList[]> {
     const fileUrls = await fetchKostentraegerUrls(kostentraegerRssUrls)
-    const institutionLists = await fetchKostentraegerFiles(fileUrls)
+    const mostCurrentFileUrls = getOnlyMostCurrentKostentraegerUrls(fileUrls)
+    const institutionLists = await fetchKostentraegerFiles(mostCurrentFileUrls)
     return institutionLists
+}
+
+/** Filter out f.e. "BN06Q318.KE0" if there is also a "BN06Q318.KE1" */
+function getOnlyMostCurrentKostentraegerUrls(fileUrls: string[]): string[] {
+    // disregard any old versions of the same file
+    return fileUrls.filter((url, index) => {
+        const fileName = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."))
+        const version = url.substring(url.lastIndexOf(".") + 1)
+        return !fileUrls.some((url2, index2) => {
+            if (index == index2) return false
+            const fileName2 = url.substring(url2.lastIndexOf("/") + 1, url2.lastIndexOf("."))
+            if (fileName == fileName2) {
+                const version2 = url2.substring(url2.lastIndexOf(".") + 1)
+                return version < version2
+            }
+        })
+    })
 }
 
 async function fetchKostentraegerUrls(kostentraegerRssUrls: string[]): Promise<string[]> {
