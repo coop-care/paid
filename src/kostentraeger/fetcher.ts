@@ -1,8 +1,9 @@
 import fetch from 'cross-fetch'
 import tokenize from "../edifact/tokenizer"
 import parse from "./edifact/parser"
+import parseKostentraegerUrls from './rssreader'
 import transform from "./transformer"
-import { InstitutionList, InstitutionListParseResult } from "./types"
+import { InstitutionList } from "./types"
 
 const kostentraegerRssUrls = [
     "https://gkv-datenaustausch.de/leistungserbringer/pflege/kostentraegerdateien_pflege/rss_kostentraegerdateien_pflege.xml",
@@ -11,42 +12,15 @@ const kostentraegerRssUrls = [
 
 export default async function fetchKostentraeger(): Promise<InstitutionList[]> {
     const fileUrls = await fetchKostentraegerUrls(kostentraegerRssUrls)
-    const mostCurrentFileUrls = getOnlyMostCurrentKostentraegerUrls(fileUrls)
-    const institutionLists = await fetchKostentraegerFiles(mostCurrentFileUrls)
+    const institutionLists = await fetchKostentraegerFiles(fileUrls)
     return institutionLists
-}
-
-/** Filter out f.e. "BN06Q318.KE0" if there is also a "BN06Q318.KE1" */
-function getOnlyMostCurrentKostentraegerUrls(fileUrls: string[]): string[] {
-    // disregard any old versions of the same file
-    return fileUrls.filter((url, index) => {
-        const fileName = url.substring(url.lastIndexOf("/") + 1, url.lastIndexOf("."))
-        const version = url.substring(url.lastIndexOf(".") + 1)
-        return !fileUrls.some((url2, index2) => {
-            if (index == index2) return false
-            const fileName2 = url.substring(url2.lastIndexOf("/") + 1, url2.lastIndexOf("."))
-            if (fileName == fileName2) {
-                const version2 = url2.substring(url2.lastIndexOf(".") + 1)
-                return version < version2
-            }
-        })
-    })
 }
 
 async function fetchKostentraegerUrls(kostentraegerRssUrls: string[]): Promise<string[]> {
     const urlsArray = await Promise.all(kostentraegerRssUrls.map(async (url) => {
+        // The RSS text files are encoded in UTF-8, so we can call .text() here without worry
         const responseText = await (await fetch(url)).text()
-        const rssDOM = new DOMParser().parseFromString(responseText, "text/xml")
-        const items = rssDOM.getElementsByTagName("item")
-        const urls: string[] = []
-        for (let i = 0; i < items.length; i++) {
-            const item = items.item(i)
-            const kostentraegerFileUrl = item?.getElementsByTagName("link")?.item(0)?.childNodes[0]?.nodeValue
-            if (kostentraegerFileUrl) {
-                urls.push(kostentraegerFileUrl)
-            }
-        }
-        return urls
+        return parseKostentraegerUrls(responseText)
     }))
     return urlsArray.flat()
 }
