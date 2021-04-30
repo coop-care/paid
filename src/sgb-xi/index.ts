@@ -171,37 +171,42 @@ const makePLAA = (
 ) => [
     FKT("01", invoice.leistungserbringer, invoice.faelle[0].versicherter),
     REC(billing, invoiceIndex, leistungserbringerIndex, false),
-    ...invoice.faelle.flatMap((fall, belegNummer) => [
+    ...groupByMonth(invoice.faelle).flatMap((fall, belegNummer) => [
         INV(fall.versicherter.versichertennummer, belegNummer),
         NAD(fall.versicherter),
-        ...forEachMonat(fall.einsaetze).flatMap(einsaetze => [
-            MAN(einsaetze[0].leistungsBeginn || billing.abrechnungsmonat, fall.versicherter.pflegegrad),
-            ...einsaetze.flatMap(einsatz => [
-                ESK(einsatz.leistungsBeginn),
-                ...einsatz.leistungen.flatMap(leistung => [
-                    ELS(leistung),
-                    ...leistung.zuschlaege.map((zuschlag, index) =>
-                        ZUS(
-                            index == leistung.zuschlaege.length - 1,
-                            invoice.leistungserbringer.tarifbereich, 
-                            zuschlag,
-                            0 // todo: calculate ergebis
-                        )
-                    ),
-                    ...leistung.hilfsmittel 
-                        ? [HIL(
-                            leistung.hilfsmittel, 
-                            calculateHilfsmittel(leistung.einzelpreis, leistung.hilfsmittel)
-                        )] : []
-                ])
+        MAN(fall.einsaetze[0].leistungsBeginn || billing.abrechnungsmonat, fall.versicherter.pflegegrad),
+        ...fall.einsaetze.flatMap(einsatz => [
+            ESK(einsatz.leistungsBeginn),
+            ...einsatz.leistungen.flatMap(leistung => [
+                ELS(leistung),
+                ...leistung.zuschlaege.map((zuschlag, index) =>
+                    ZUS(
+                        index == leistung.zuschlaege.length - 1,
+                        invoice.leistungserbringer.tarifbereich, 
+                        zuschlag,
+                        0 // todo: calculate ergebis
+                    )
+                ),
+                ...leistung.hilfsmittel 
+                    ? [HIL(
+                        leistung.hilfsmittel, 
+                        calculateHilfsmittel(leistung.einzelpreis, leistung.hilfsmittel)
+                    )] : []
             ])
         ]),
         IAF(calculateFall(fall))
     ]),
 ];
 
-const forEachMonat = (einsaetze: Einsatz[]) => 
-    valuesGroupedBy(einsaetze, einsatz => einsatz.leistungsBeginn?.getMonth().toString() || "");
+const groupByMonth = (faelle: Abrechnungsfall[]) => faelle.flatMap(fall => [
+    ...valuesGroupedBy(fall.einsaetze, ({leistungsBeginn, leistungen}) => 
+        (leistungsBeginn || leistungen.find(leistung => !!leistung.leistungsBeginn)?.leistungsBeginn)
+            ?.getMonth().toString() || ""
+    ).flatMap(einsaetze => ({
+        ...fall,
+        einsaetze
+    } as Abrechnungsfall))
+]);
 
 export const calculateInvoice = (invoice: Invoice) => invoice.faelle
     .reduce((result, fall) => {
