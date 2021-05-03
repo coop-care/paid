@@ -13,7 +13,8 @@ import {
     Hilfsmittel,
     Zuschlag,
     Abrechnungsfall,
-    Institution
+    Institution,
+    FileType
 } from "../types";
 import {
     PflegegradSchluessel,
@@ -30,25 +31,25 @@ export const UNB = (
     empfaengerIK: string, 
     datenaustauschreferenz: number,
     anwendungsreferenz: string, 
-    dateiindikator: string
+    dateiindikator: FileType
 ) => segment(
     "UNB", 
     Syntax_Version,
     absenderIK,
     empfaengerIK,
     datetime(new Date()),
-    datenaustauschreferenz.toString(),
+    datenaustauschreferenz.toString().substr(0, 5),
     anwendungsreferenz,
     dateiindikator
 );
 
 export const UNZ = (
-    controlCount: number, // = number of messages (starting with UNH)
+    numberOfMessages: number,
     datenaustauschreferenz: number,
 ) => segment(
     "UNZ",
-    controlCount.toString(),
-    datenaustauschreferenz.toString()
+    numberOfMessages.toString(),
+    datenaustauschreferenz.toString().substr(0, 5),
 );
 
 export const UNH = (
@@ -56,7 +57,7 @@ export const UNH = (
     messageIdentifier: MessageIdentifiers,
 ) => segment(
     "UNH",
-    messageReferenceNumber.toString(),
+    messageReferenceNumber.toString().substr(0, 5),
     messageIdentifierVersions[messageIdentifier]
 );
 
@@ -66,7 +67,7 @@ export const UNT = (
 ) => segment(
     "UNT",
     numberOfSegments.toString(),
-    messageReferenceNumber.toString()
+    messageReferenceNumber.toString().substr(0, 5),
 );
 
 export const FKT = (

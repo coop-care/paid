@@ -9,7 +9,7 @@ import {
 
 const leistungserbringer: Leistungserbringer[] = [{
     name: "Pflegedienst Musterstadt GmbH",
-    ik: "0000000110",
+    ik: "000000110",
     ansprechpartner: [{
         name: "Sven Bauer",
         phone: "012 34567-8",
@@ -20,7 +20,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Nachbarschaftspflege in Wilhelmsburg gGmbH",
-    ik: "0000000120",
+    ik: "000000120",
     ansprechpartner: [{
         name: "Laila Neumann",
         phone: "012 34567",
@@ -29,11 +29,11 @@ const leistungserbringer: Leistungserbringer[] = [{
     tarifbereich: "05",
     umsatzsteuerBefreiung: "01",
     sondertarifJeKostentraegerIK: {
-        "0000000010": "011"
+        "000000010": "011"
     },
 }, {
     name: "Quartierspflege Neuhausen GmbH",
-    ik: "0000000130",
+    ik: "000000130",
     ansprechpartner: [{
         name: "Ben Peters",
         phone: "012 3456789",
@@ -44,7 +44,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Von Mensch zu Mensch gGmbH",
-    ik: "0000000140",
+    ik: "000000140",
     ansprechpartner: [{
         name: "Lena Wolf",
         phone: "0123 456789",
@@ -55,7 +55,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Pflegedienst Neukölln GmbH",
-    ik: "0000000150",
+    ik: "000000150",
     ansprechpartner: [{
         name: "Yvonne Zimmermann",
         phone: "0123 456789",
@@ -69,14 +69,14 @@ const leistungserbringer: Leistungserbringer[] = [{
 
 const abrechnungsstellen: Institution[] = [{
     name: "Payday GmbH",
-    ik: "0000000210",
+    ik: "000000210",
     ansprechpartner: [{
         name: "Peter Schmidt",
         phone: "0123 45678-90",
     }]
 }, {
     name: "PAID Abrechnungszentrum eG",
-    ik: "0000000310",
+    ik: "000000310",
     ansprechpartner: [{
         name: "Sonja Braun",
         phone: "01234 5678-9",
@@ -86,8 +86,8 @@ const abrechnungsstellen: Institution[] = [{
 }]
 
 const versicherte: Versicherter[] = [{
-    pflegekasseIK: "0000000010",
-    kostentraegerIK: "0000000010",
+    pflegekasseIK: "000000010",
+    kostentraegerIK: "000000010",
     versichertennummer: "0123456789",
     pflegegrad: "3",
     firstName: "Gertrud",
@@ -98,8 +98,8 @@ const versicherte: Versicherter[] = [{
     postalCode: "12345",
     city: "Musterstadt",
 }, {
-    pflegekasseIK: "0000000010",
-    kostentraegerIK: "0000000010",
+    pflegekasseIK: "000000010",
+    kostentraegerIK: "000000010",
     versichertennummer: "0123456789",
     pflegegrad: "2",
     firstName: "Jürgen",
@@ -110,8 +110,8 @@ const versicherte: Versicherter[] = [{
     postalCode: "12345",
     city: "Musterstadt",
 }, {
-    pflegekasseIK: "0000000020",
-    kostentraegerIK: "0000000021",
+    pflegekasseIK: "000000020",
+    kostentraegerIK: "000000021",
     versichertennummer: "0123456789",
     pflegegrad: "4",
     firstName: "Paul",
@@ -122,8 +122,8 @@ const versicherte: Versicherter[] = [{
     postalCode: "12345",
     city: "Musterstadt",
 }, {
-    pflegekasseIK: "0000000030",
-    kostentraegerIK: "0000000031",
+    pflegekasseIK: "000000030",
+    kostentraegerIK: "000000031",
     versichertennummer: "0123456789",
     pflegegrad: "4",
     firstName: "Sabine",
@@ -134,8 +134,8 @@ const versicherte: Versicherter[] = [{
     postalCode: "12345",
     city: "Musterstadt",
 }, {
-    pflegekasseIK: "0000000040",
-    kostentraegerIK: "0000000040",
+    pflegekasseIK: "000000040",
+    kostentraegerIK: "000000040",
     versichertennummer: "0123456789",
     pflegegrad: "1",
     firstName: "Ingeborg",
@@ -146,8 +146,8 @@ const versicherte: Versicherter[] = [{
     postalCode: "12345",
     city: "Musterstadt",
 }, {
-    pflegekasseIK: "0000000030",
-    kostentraegerIK: "0000000031",
+    pflegekasseIK: "000000030",
+    kostentraegerIK: "000000031",
     versichertennummer: "0123456789",
     pflegegrad: "2",
     firstName: "Robert",
@@ -158,8 +158,8 @@ const versicherte: Versicherter[] = [{
     postalCode: "12345",
     city: "Musterstadt",
 }, {
-    pflegekasseIK: "0000000050",
-    kostentraegerIK: "0000000050",
+    pflegekasseIK: "000000050",
+    kostentraegerIK: "000000050",
     versichertennummer: "0123456789",
     pflegegrad: "2",
     firstName: "Małgorzata",
@@ -234,7 +234,7 @@ const pflegehilfsmittel: Leistung = {
     leistungsart: "06",
     verguetungsart: "05",
     qualifikationsabhaengigeVerguetung: "0",
-    leistung: "0000000000",
+    leistung: "000000000",
     einzelpreis: 123.45,
     anzahl: 1,
     zuschlaege: [],

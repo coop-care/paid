@@ -7,7 +7,7 @@ describe("payload", () => {
 
     it("create billing with invoice type 1", () => {
         MockDate.set("2021-04-27T21:59");
-        const result = makeBillingFile("0000000011", "AO", payload1.invoices, payload1.billingData);
+        const result = makeBillingFile("000000011", "AO", payload1.invoices, payload1.billingData);
         
         expect(result.dateiname).toEqual(result1.dateiname);
         expect(result.anwendungsreferenz).toEqual(result1.anwendungsreferenz);
@@ -17,7 +17,7 @@ describe("payload", () => {
 
     it("create billing with invoice type 2", () => {
         MockDate.set("2021-04-27T21:59");
-        const result = makeBillingFile("0000000011", "AO", payload2.invoices, payload2.billingData);
+        const result = makeBillingFile("000000011", "AO", payload2.invoices, payload2.billingData);
 
         expect(result.dateiname).toEqual(result2.dateiname);
         expect(result.anwendungsreferenz).toEqual(result2.anwendungsreferenz);
@@ -27,7 +27,7 @@ describe("payload", () => {
 
     it("create billing with invoice type 3", () => {
         MockDate.set("2021-04-27T21:59");
-        const result = makeBillingFile("0000000011", "AO", payload3.invoices, payload3.billingData);
+        const result = makeBillingFile("000000011", "AO", payload3.invoices, payload3.billingData);
 
         expect(result.dateiname).toEqual(result3.dateiname);
         expect(result.anwendungsreferenz).toEqual(result3.anwendungsreferenz);
