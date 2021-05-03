@@ -4,6 +4,7 @@ import parse from "./edifact/parser"
 import parseKostentraegerUrls from './rssreader'
 import transform from "./transformer"
 import { InstitutionList } from "./types"
+import { TextDecoder } from "util"
 
 const kostentraegerRssUrls = [
     "https://gkv-datenaustausch.de/leistungserbringer/pflege/kostentraegerdateien_pflege/rss_kostentraegerdateien_pflege.xml",
@@ -33,11 +34,8 @@ async function fetchKostentraegerFile(url: string): Promise<InstitutionList> {
     const response = await fetch(url)
     /* Kostenträger files are encoded in iso-8859-1 and not in UTF-8, so we cannot
        just call response.text()! */
-    // TODO but TextDecoder is not available in JSDOM test environment!
-    //const decoder = new TextDecoder("iso-8859-1")
-    //const text = decoder.decode(await response.arrayBuffer())
-
-    const text = await response.text()
+    const decoder = new TextDecoder("iso-8859-1")
+    const text = decoder.decode(await response.arrayBuffer())
 
     const fileName = url.substring(url.lastIndexOf("/")+1)
     try {
