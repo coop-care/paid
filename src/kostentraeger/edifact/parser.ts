@@ -199,9 +199,6 @@ function parseMessage(message: Message): KOTRMessageParseResult {
         if (uem.uebermittlungsmediumSchluessel == "1" && dfuList.length == 0) {
             warnings.push(`${messageTxt} skipped invalid UEM ${index+1}: Refers to a non-existing DFU`)
             return false
-        } else if (uem.uebermittlungsmediumSchluessel != "1" && ansList.length == 0) {
-            warnings.push(`${messageTxt} skipped invalid UEM ${index+1}: Sending paper or data storage mediums not possible without address (ANS)`)
-            return false
         } else {
             return true
         }
