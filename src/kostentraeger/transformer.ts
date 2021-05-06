@@ -1,5 +1,7 @@
 import { 
     BundeslandSchluessel,
+    KostentraegerAbrechnungscodeSchluessel,
+    KostentraegerPflegeLeistungsartSchluessel,
     KVBezirkSchluessel, 
     LeistungserbringergruppeSchluessel
 } from "./edifact/codes"
@@ -13,7 +15,6 @@ import {
     Institution, 
     InstitutionLink, 
     InstitutionListParseResult,
-    KostentraegerLeistungsart,
     KostentraegerLink,
     KVLocationSchluessel,
     PapierannahmestelleLink,
@@ -280,26 +281,23 @@ function createInstitutionLink(vkg: VKG): InstitutionLink {
     if (vkg.tarifkennzeichen) {
         throw new Error(`Expected that tarifkennzeichen is never set, but was "${vkg.tarifkennzeichen}"`)
     }
-
-    let leistungsart: KostentraegerLeistungsart | undefined
     
     const leGruppeSchluessel = vkg.leistungserbringergruppeSchluessel
+    let sgbvAbrechnungscode: KostentraegerAbrechnungscodeSchluessel | undefined
+    let sgbxiLeistungsart: KostentraegerPflegeLeistungsartSchluessel | undefined
     if (leGruppeSchluessel == "5") {
         const schluessel = vkg.abrechnungscodeSchluessel
-        leistungsart = { 
-            sgbvAbrechnungscodeSchluessel: schluessel ?? "00"
-        }
+        sgbvAbrechnungscode = schluessel ?? "00"
     } else if (leGruppeSchluessel == "6") {
         const schluessel = vkg.pflegeLeistungsartSchluessel
-        leistungsart = {
-            sgbxiLeistungsartSchluessel: schluessel ?? "00"
-        }
+        sgbxiLeistungsart = schluessel ?? "00"
     }
 
     return {
         ik: vkg.verknuepfungspartnerIK,
-        standortLeistungserbringerSchluessel: kvLocationSchluessel,
-        leistungsart: leistungsart
+        standort: kvLocationSchluessel,
+        sgbvAbrechnungscode: sgbvAbrechnungscode,
+        sgbxiLeistungsart: sgbxiLeistungsart
     }
 }
 
@@ -325,7 +323,7 @@ function createReceiptTransmissionMethods(uemList: UEM[], dfuList: DFU[]): Recei
         machineReadablePaperReceipt: machineReadablePaperReceipt,
         email: email,
         ftam: ftam,
-        zeichensatzSchluessel: zeichensatzSchluessel
+        zeichensatz: zeichensatzSchluessel
     }
 }
 

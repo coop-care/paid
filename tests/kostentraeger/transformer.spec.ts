@@ -173,41 +173,33 @@ describe("kostentraeger transformer", () => {
                     machineReadablePaperReceipt: true,
                     email: "ok@go.de",
                     ftam: "ftam.blub-it.de:5000",
-                    zeichensatzSchluessel: "I8"
+                    zeichensatz: "I8"
                 },
                 kostentraegerLinks: [{
                     ik: "555444333",
-                    standortLeistungserbringerSchluessel: "HH",
-                    leistungsart: {
-                        sgbxiLeistungsartSchluessel: "00"
-                    }
+                    standort: "HH",
+                    sgbxiLeistungsart: "00"
                 }],
                 datenannahmestelleLinks: [{
                     ik: "112200000",
-                    standortLeistungserbringerSchluessel: "SH",
+                    standort: "SH",
                     canDecrypt: false,
-                    leistungsart: {
-                        sgbxiLeistungsartSchluessel: "12"
-                    }
+                    sgbxiLeistungsart: "12"
                 }, {
                     ik: "112200001",
                     canDecrypt: true
                 }],
                 papierannahmestelleLinks: [{
                     ik: "334455667",
-                    standortLeistungserbringerSchluessel: "Nordrhein",
-                    leistungsart: {
-                        sgbvAbrechnungscodeSchluessel: "25"
-                    },
+                    standort: "Nordrhein",
+                    sgbvAbrechnungscode: "25",
                     paperReceipt: false,
                     machineReadablePaperReceipt: true,
                     costEstimate: true,
                     prescription: true
                 }, {
                     ik: "112233445",
-                    leistungsart: {
-                        sgbxiLeistungsartSchluessel: "00"
-                    },
+                    sgbxiLeistungsart: "00",
                     paperReceipt: true,
                     machineReadablePaperReceipt: false,
                     costEstimate: false,

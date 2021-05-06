@@ -94,32 +94,23 @@ export type InstitutionLink = {
     /** IK of the linked partner */
     ik: string,
     /** For which location of the care provider the link is valid */
-    standortLeistungserbringerSchluessel?: KVLocationSchluessel,
-    /** For which type of health care service provided the link is valid */
-    leistungsart?: KostentraegerLeistungsart,
-}
-
-export type KostentraegerLeistungsart = 
-    KostentraegerPflegeLeistungsart | KostentraegerSonstigeLeistungsart
-
-export type KostentraegerPflegeLeistungsart = {
-    /** The type of care service provided according to SGB XI
+    standort?: KVLocationSchluessel,
+    /** The type of care service provided according to SGB XI. I.e. the link is only valid for that
+     *  care service.
      * 
      *  A value of 00 (Sammelschlüssel) means that this link is valid for all care services 
      *  provided, 99 means the link is valid for all services provided that are not listed */
-    sgbxiLeistungsartSchluessel: KostentraegerPflegeLeistungsartSchluessel,
-}
-
-export type KostentraegerSonstigeLeistungsart = {
+    sgbxiLeistungsart?: KostentraegerPflegeLeistungsartSchluessel,
     /** A.k.a Leistungserbringerart. The group/kind of health care service provided for health
-     *  care services according to SGB V.
+     *  care services according to SGB V. I.e. the link is only valid for that
+     *  care service.
      * 
      *  Some of the possible values are groups. For example "30" means that this link is valid for
      *  any nursing care (keys 31-34).
      *  
      *  A value of 00 (Sammelschlüssel) means that this link is valid for all care services 
      *  provided, 99 means the link is valid for all services provided that are not listed */
-    sgbvAbrechnungscodeSchluessel: KostentraegerAbrechnungscodeSchluessel,
+     sgbvAbrechnungscode?: KostentraegerAbrechnungscodeSchluessel
 }
 
 export const federalStateSchluesselWithoutNRWSchluessel = {
@@ -175,7 +166,7 @@ export type ReceiptTransmissionMethods = {
     /** FTAM address + charset to use to send receipts. Undefined if FTAM is not accepted. */
     ftam?: string | undefined,
     /** Charset in which the data must be transmitted (for email / FTAM) */
-    zeichensatzSchluessel?: UebermittlungszeichensatzSchluessel
+    zeichensatz?: UebermittlungszeichensatzSchluessel
 }
 
 export type Contact = {
