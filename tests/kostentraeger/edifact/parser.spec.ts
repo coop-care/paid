@@ -288,6 +288,11 @@ describe("kostentraeger edifact parser", () => {
         expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "UEM+1+00+I8'"
             ))[0].uemList).toHaveLength(0)
+
+        // valid, but an ANS is missing
+        expect(parseMessages(msg(idk+vdt+fkt+nam+
+            "UEM+5+00+I8'"
+            ))[0].uemList).toHaveLength(0)
     })
 
     it("parse links", () => {

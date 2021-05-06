@@ -199,6 +199,9 @@ function parseMessage(message: Message): KOTRMessageParseResult {
         if (uem.uebermittlungsmediumSchluessel == "1" && dfuList.length == 0) {
             warnings.push(`${messageTxt} skipped invalid UEM ${index+1}: Refers to a non-existing DFU`)
             return false
+        } else if (uem.uebermittlungsmediumSchluessel != "1" && ansList.length == 0) {
+            warnings.push(`${messageTxt} skipped invalid UEM ${index+1}: Sending paper or data storage mediums not possible without address (ANS)`)
+            return false
         } else {
             return true
         }
@@ -280,6 +283,9 @@ const readVKG = (e: string[]): VKG => {
     }
     if ((e0 == "02" || e0 == "03") && e4 != "07") {
         throw new Error(`Links to data acceptance office that does not accept data`)
+    }
+    if (e0 == "09" && e4 == "07") {
+        throw new Error(`Links to paper acceptance office that does not accept paper`)
     }
     const e5 = e[5]
     if (e5 && !uebermittlungsmediumSchluessel.hasOwnProperty(e5)) {

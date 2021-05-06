@@ -81,7 +81,11 @@ export type DFUProtokollSchluessel = keyof typeof dfuProtokollSchluessel
 /** Komprimierungsart */
 // this key is not (yet) defined
 
-/** KV-Bezirk */
+/** KV-Bezirk 
+ * 
+ *  Only used by very few institutions. As of April 2021, actually only used by two sub-branches
+ *  of the AOK: Westfalen-Lippe and Nordrhein (only used values are "20", "38" and a stray "17").
+*/
 export const kvBezirkSchluessel = {
     "01": "Schleswig-Holstein",
     "02": "Hamburg",
