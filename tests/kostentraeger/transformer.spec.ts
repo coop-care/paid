@@ -11,7 +11,7 @@ describe("kostentraeger transformer", () => {
             filename: {
                 kassenart: "AO",
                 verfahren: "06",
-                validityStartDate: new Date("1999-05-05"),
+                validityStartDate: new Date("2018-05-05"),
                 version: 1
             },
             institutions: [{
@@ -23,7 +23,7 @@ describe("kostentraeger transformer", () => {
                     vertragskassennummer: 12345
                 },
                 vdt: {
-                    validityFrom: new Date("2020-20-20"),
+                    validityFrom: new Date("2010-20-20"),
                     validityTo: new Date("2088-10-10")
                 },
                 fkt: {
@@ -39,29 +39,39 @@ describe("kostentraeger transformer", () => {
                     bic: "bicbicbic"
                 },
                 vkgList: [
-                    {   // Kostenträger & Datenannahmestelle
+                    {   // Kostenträger
                         ikVerknuepfungsartSchluessel: "01",
                         verknuepfungspartnerIK: "555444333",
                         leistungserbringergruppeSchluessel: "6",
-                        datenlieferungsartSchluessel: "07",
                         standortLeistungserbringerBundeslandSchluessel: "02",
-                        pflegeLeistungsartSchluessel: "00"
+                    },
+                    {   // Datenannahmestelle ohne Entschlüsselungsbefugnis
+                        ikVerknuepfungsartSchluessel: "02",
+                        verknuepfungspartnerIK: "112200000",
+                        leistungserbringergruppeSchluessel: "6",
+                        datenlieferungsartSchluessel: "07",
+                        standortLeistungserbringerBundeslandSchluessel: "01",
+                        pflegeLeistungsartSchluessel: "12"
+                    },
+                    {   // Datenannahmestelle mit Entschlüsselungsbefugnis
+                        ikVerknuepfungsartSchluessel: "03",
+                        verknuepfungspartnerIK: "112200001",
+                        datenlieferungsartSchluessel: "07",
+                        standortLeistungserbringerBundeslandSchluessel: "99"
                     },
                     {   // Machinenlesbare Belege Annahmestelle
-                        ikVerknuepfungsartSchluessel: "03",
+                        ikVerknuepfungsartSchluessel: "09",
                         verknuepfungspartnerIK: "334455667",
                         leistungserbringergruppeSchluessel: "5",
-                        datenlieferungsartSchluessel: "07",
-                        standortLeistungserbringerKVBezirkSchluessel: "37",
-                        abrechnungscodeSchluessel: "25",
-                        tarifkennzeichen: "12345"
+                        datenlieferungsartSchluessel: "29",
+                        standortLeistungserbringerKVBezirkSchluessel: "38",
+                        abrechnungscodeSchluessel: "25"
                     },
                     {   // Papierannahmestelle
                         ikVerknuepfungsartSchluessel: "09",
                         verknuepfungspartnerIK: "112233445",
                         leistungserbringergruppeSchluessel: "6",
-                        datenlieferungsartSchluessel: "29",
-                        pflegeLeistungsartSchluessel: "00"
+                        datenlieferungsartSchluessel: "21"
                     },
                 ],
                 ansList: [
@@ -137,7 +147,6 @@ describe("kostentraeger transformer", () => {
                 ik: "999999999",
                 abbreviatedName: "short name",
                 name: "very long name",
-                validityFrom: new Date("2020-20-20"),
                 validityTo: new Date("2088-10-10"),
                 vertragskassennummer: 12345,
                 bankAccountDetails: {
@@ -166,36 +175,52 @@ describe("kostentraeger transformer", () => {
                     ftam: "ftam.blub-it.de:5000",
                     zeichensatzSchluessel: "I8"
                 },
-                links: [
-                    {
-                        ikVerknuepfungsartSchluessel: "01",
-                        verknuepfungspartnerIK: "555444333",
-                        leistungserbringergruppeSchluessel: "6",
-                        datenlieferungsartSchluessel: "07",
-                        standortLeistungserbringerBundeslandSchluessel: "02",
-                        pflegeLeistungsartSchluessel: "00"
-                    },
-                    {
-                        ikVerknuepfungsartSchluessel: "03",
-                        verknuepfungspartnerIK: "334455667",
-                        leistungserbringergruppeSchluessel: "5",
-                        datenlieferungsartSchluessel: "07",
-                        standortLeistungserbringerKVBezirkSchluessel: "37",
-                        abrechnungscodeSchluessel: "25",
-                        tarifkennzeichen: "12345"
-                    },
-                    {
-                        ikVerknuepfungsartSchluessel: "09",
-                        verknuepfungspartnerIK: "112233445",
-                        leistungserbringergruppeSchluessel: "6",
-                        datenlieferungsartSchluessel: "29",
-                        pflegeLeistungsartSchluessel: "00"
+                kostentraegerLinks: [{
+                    ik: "555444333",
+                    standortLeistungserbringerSchluessel: "HH",
+                    leistungsart: {
+                        sgbxiLeistungsartSchluessel: "00"
                     }
-                ]
+                }],
+                datenannahmestelleLinks: [{
+                    ik: "112200000",
+                    standortLeistungserbringerSchluessel: "SH",
+                    canDecrypt: false,
+                    leistungsart: {
+                        sgbxiLeistungsartSchluessel: "12"
+                    }
+                }, {
+                    ik: "112200001",
+                    canDecrypt: true
+                }],
+                papierannahmestelleLinks: [{
+                    ik: "334455667",
+                    standortLeistungserbringerSchluessel: "Nordrhein",
+                    leistungsart: {
+                        sgbvAbrechnungscodeSchluessel: "25"
+                    },
+                    paperReceipt: false,
+                    machineReadablePaperReceipt: true,
+                    costEstimate: true,
+                    prescription: true
+                }, {
+                    ik: "112233445",
+                    leistungsart: {
+                        sgbxiLeistungsartSchluessel: "00"
+                    },
+                    paperReceipt: true,
+                    machineReadablePaperReceipt: false,
+                    costEstimate: false,
+                    prescription: false
+                }]
             }],
         }
 
-        expect(json(transform(interchange).institutionList)).toEqual(json(expectedInstitutionList))
+        const result = transform(interchange)
+        // there should also not be any warnings parsing this
+        expect(result.warnings).toEqual([])
+
+        expect(json(result.institutionList)).toEqual(json(expectedInstitutionList))
     })
     
     it("skip message that is not valid anymore", () => {

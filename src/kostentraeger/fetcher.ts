@@ -46,7 +46,7 @@ async function fetchKostentraegerFile(url: string): Promise<InstitutionList> {
     }
 }
 
-function parseKostentraegerString(filename: string, text: string) {
+function parseKostentraegerString(filename: string, text: string): InstitutionList {
     const tokenizedEdifact = tokenize(text)
     const edifactParseResult = parse(tokenizedEdifact)
     const transformedResult = transform(edifactParseResult.interchange)

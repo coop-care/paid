@@ -1,12 +1,22 @@
-import { LeistungserbringergruppeSchluessel } from "./edifact/codes"
-import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, KTO, UEM } from "./edifact/segments"
+import { 
+    BundeslandSchluessel,
+    KVBezirkSchluessel, 
+    LeistungserbringergruppeSchluessel
+} from "./edifact/codes"
+import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, KTO, UEM, VKG } from "./edifact/segments"
 import { VerfahrenSchluessel } from "./filename/codes"
 import { 
     Address, 
     BankAccountDetails, 
     Contact, 
+    DatenannahmestelleLink, 
     Institution, 
+    InstitutionLink, 
     InstitutionListParseResult,
+    KostentraegerLeistungsart,
+    KostentraegerLink,
+    KVLocationSchluessel,
+    PapierannahmestelleLink,
     ReceiptTransmissionMethods
 } from "./types"
 
@@ -53,7 +63,7 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
     }
 
     /* no need to include institutions that are not valid anymore when this kostenträger file
-       becomes valid*/
+       becomes valid */
     const msgValidityStartDate = msg.vdt.validityFrom
     const msgValidityEndDate = msg.vdt.validityTo
     if (msgValidityEndDate && msgValidityEndDate < interchangeValidityStartDate) {
@@ -106,6 +116,24 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
         }
     }
 
+    msg.vkgList.forEach((vkg) => {
+        if (vkg.ikVerknuepfungsartSchluessel == "00") {
+            throw new Error (`Expected that ikVerknuepfungsartSchluessel is never "00"`)
+        }
+    })
+
+    const kostentraegerLinks = msg.vkgList
+        .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "01")
+        .map((vkg) => createKostentraegerLink(vkg))
+
+    const datenannahmestelleLinks = msg.vkgList
+        .filter((vkg) => ["02", "03"].includes(vkg.ikVerknuepfungsartSchluessel))
+        .map((vkg) => createDatenannahmestelleLink(vkg))
+    
+    const papierannahmestelleLinks = msg.vkgList
+        .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "09")
+        .map((vkg) => createPapierannahmestelleLink(vkg))
+
     return {
         ik: msg.idk.ik,
         name: msg.nam.names.join(" "),
@@ -120,7 +148,158 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
         contacts: msg.aspList.map((asp) => createContact(asp)),
         addresses: msg.ansList.map((ans) => createAddress(ans)),
         transmissionMethods: createReceiptTransmissionMethods(msg.uemList, msg.dfuList),
-        links: msg.vkgList
+        kostentraegerLinks: kostentraegerLinks,
+        datenannahmestelleLinks: datenannahmestelleLinks,
+        papierannahmestelleLinks: papierannahmestelleLinks
+    }
+}
+
+function createPapierannahmestelleLink(vkg: VKG): PapierannahmestelleLink {
+    const institutionLink = createInstitutionLink(vkg)
+    
+    const lieferungsartSchluessel = vkg.datenlieferungsartSchluessel
+    let paperReceipt = false
+    let machineReadablePaperReceipt = false
+    let prescription = false
+    let costEstimate = false
+    switch(lieferungsartSchluessel) {
+        case "21": 
+            paperReceipt = true
+            break
+        case "24": 
+            machineReadablePaperReceipt = true
+            break
+        case "26":
+            prescription = true
+            break
+        case "27":
+            costEstimate = true
+            break
+        case "28":
+            paperReceipt = true
+            prescription = true
+            costEstimate = true
+            break
+        case "29":
+            machineReadablePaperReceipt = true
+            prescription = true
+            costEstimate = true
+            break
+    }
+
+    return { ...institutionLink,
+        paperReceipt: paperReceipt,
+        machineReadablePaperReceipt: machineReadablePaperReceipt,
+        prescription: prescription,
+        costEstimate: costEstimate
+    }
+}
+
+function createDatenannahmestelleLink(vkg: VKG): DatenannahmestelleLink {
+    const institutionLink = createInstitutionLink(vkg)
+    const verknuepfungsart = vkg.ikVerknuepfungsartSchluessel
+    let canDecrypt: boolean
+    if (verknuepfungsart == "02") {
+        canDecrypt = false
+    } else if (verknuepfungsart == "03") {
+        canDecrypt = true
+    } else {
+        throw new Error(`Unexpected value "${verknuepfungsart}" for ikVerknuepfungsartSchluessel`)
+    }
+    return { ...institutionLink, canDecrypt: canDecrypt }
+}
+    
+function createKostentraegerLink(vkg: VKG): KostentraegerLink {
+    return createInstitutionLink(vkg)
+}
+
+const bundeslandSchluesselToKVLocation = 
+    new Map<BundeslandSchluessel, KVLocationSchluessel>([
+        ["01", "SH"],
+        ["02", "HH"],
+        ["03", "NI"],
+        ["04", "HB"],
+        ["05", "NW"],
+        ["06", "HE"],
+        ["07", "RP"],
+        ["08", "BW"],
+        ["09", "BY"],
+        ["10", "SL"],
+        ["11", "BE"],
+        ["12", "BB"],
+        ["13", "MV"],
+        ["14", "SN"],
+        ["15", "ST"],
+        ["16", "TH"]
+    ])
+
+const kvBezirkSchluesselToKVLocation = 
+    new Map<KVBezirkSchluessel, KVLocationSchluessel>([
+        ["01", "SH"],
+        ["02", "HH"],
+        ["03", "HB"],
+        ["17", "NI"],
+        ["20", "Westfalen-Lippe"],
+        ["38", "Nordrhein"],
+        ["46", "HE"],
+        ["71", "BY"],
+        ["72", "BE"],
+        ["73", "SL"],
+        ["78", "MV"],
+        ["83", "BB"],
+        ["88", "ST"],
+        ["93", "TH"],
+        ["98", "SN"]
+    ])
+
+function createInstitutionLink(vkg: VKG): InstitutionLink {
+    if (vkg.abrechnungsstelleIK) {
+        throw new Error(`Expected that abrechnungsstelleIK is never set, but was "${vkg.abrechnungsstelleIK}"`)
+    }
+
+    let kvLocationSchluessel: KVLocationSchluessel | undefined
+
+    const bundesland = vkg.standortLeistungserbringerBundeslandSchluessel
+    const bezirk = vkg.standortLeistungserbringerKVBezirkSchluessel
+    if (bezirk) {
+        kvLocationSchluessel = kvBezirkSchluesselToKVLocation.get(bezirk)
+        if (!kvLocationSchluessel) {
+            throw new Error(`Unexpected value "${bezirk}" for standortLeistungserbringerKVBezirkSchluessel `)
+        }
+    } else if (bundesland == "99") {
+        kvLocationSchluessel = undefined
+    } else if (bundesland) {
+        kvLocationSchluessel = bundeslandSchluesselToKVLocation.get(bundesland)
+        if (!kvLocationSchluessel) {
+            throw new Error(`Unexpected value "${bundesland}" for standortLeistungserbringerBundeslandSchluessel`)
+        }
+    } else {
+        kvLocationSchluessel = undefined
+    }
+
+    if (vkg.tarifkennzeichen) {
+        throw new Error(`Expected that tarifkennzeichen is never set, but was "${vkg.tarifkennzeichen}"`)
+    }
+
+    let leistungsart: KostentraegerLeistungsart | undefined
+    
+    const leGruppeSchluessel = vkg.leistungserbringergruppeSchluessel
+    if (leGruppeSchluessel == "5") {
+        const schluessel = vkg.abrechnungscodeSchluessel
+        leistungsart = { 
+            sgbvAbrechnungscodeSchluessel: schluessel ?? "00"
+        }
+    } else if (leGruppeSchluessel == "6") {
+        const schluessel = vkg.pflegeLeistungsartSchluessel
+        leistungsart = {
+            sgbxiLeistungsartSchluessel: schluessel ?? "00"
+        }
+    }
+
+    return {
+        ik: vkg.verknuepfungspartnerIK,
+        standortLeistungserbringerSchluessel: kvLocationSchluessel,
+        leistungsart: leistungsart
     }
 }
 
