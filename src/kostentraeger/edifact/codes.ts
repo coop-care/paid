@@ -320,28 +320,3 @@ export const tarifbereichSchluessel = {
     "99": "Vertrag auf Kassenebene"
 }
 export type TarifbereichSchluessel = keyof typeof tarifbereichSchluessel
-
-/*  Sondertarife (3. bis 5. Stelle des Tarifkennzeichens)
-
-    000 - 090           ohne Besonderheiten
-    A00 - A90           
-    
-    091 - 098           nicht besetzt
-    A91 - A98            (wird von den Verbänden der Krankenkassen auf Bundesebene belegt)
-    U00 - ZZZ           
-    
-    099                 Leistung ohne preisliche Regelung und daher Abrechnung nach genehmigten 
-                         Kostenvoranschlag
-    
-    100 - 999           Sondertarifvereinbarungen zwischen einem oder mehreren Leistungserbringern
-    A99 - TZZ            und einem oder mehreren Kostenträgern
-                         (Das Kennzeichen für Sondertarife wird von den Vertragspartnern festgelegt)
-
-    Alle übrigen        Sondertarifvereinbarungen zwischen einem oder mehreren Leistungserbringern 
-    Zahlen-/Buch-        und einem oder mehreren Kostenträgern 
-    stabenkombi-         (Das Kennzeichen für Sondertarife wird von den Vertragspartnern festgelegt)
-    nationen, die 
-    nicht in die o.g. 
-    reservierten Be-
-    reiche fallen
-*/
