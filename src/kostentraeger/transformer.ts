@@ -34,7 +34,7 @@ export default function transform(interchange: KOTRInterchange): InstitutionList
 
     return {
         institutionList: {
-            spitzenverbandIK: interchange.spitzenverbandIK,
+            issuerIK: interchange.issuerIK,
             institutions: institutions,
             leistungserbringerGruppeSchluessel: verfahrenToLeistungserbringergruppeSchluessel(interchange.filename.verfahren),
         },

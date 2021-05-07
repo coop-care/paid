@@ -10,7 +10,7 @@ describe("kostentraeger edifact parser", () => {
             "UNB+UNOC:3+109910000+999999999+20210401:1510+00178++AO06Q221ke1'"+
             "UNZ+000188+00178'"
         )).toEqual({
-            spitzenverbandIK: "109910000",
+            issuerIK: "109910000",
             institutions: [],
             filename: {
                 kassenart: "AO",

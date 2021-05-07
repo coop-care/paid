@@ -19,9 +19,8 @@ export type InstitutionListParseResult = {
 
 /** A list of Kostentraeger information for one umbrella organization */
 export type InstitutionList = {
-    /** Institutionskennzeichen (=Institution code) of the umbrella organization that issued this
-     *  list */
-    spitzenverbandIK: string,
+    /** Institutionskennzeichen (=Institution code) of the organization that issued this list */
+    issuerIK: string,
     /** All the Kostentraeger for this umbrella organization */
     institutions: Institution[],
     /** For which Leistungserbringergruppe this institution list is for */
@@ -63,9 +62,9 @@ export type Institution = {
      *  office. 
      */
     kostentraegerIK?: string,
-    /** Link(s) to Datenannahmestellen (=data acceptance office). See comment for kostentraegerLinks */
+    /** Link(s) to Datenannahmestellen (=data acceptance office) */
     datenannahmestelleLinks: DatenannahmestelleLink[],
-    /** Link(s) to Papierannahmestellen (=paper acceptance office). See comment for kostentraegerLinks */
+    /** Link(s) to Papierannahmestellen (=paper acceptance office) */
     papierannahmestelleLinks: PapierannahmestelleLink[]
 }
 

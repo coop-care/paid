@@ -30,8 +30,8 @@ export type KOTRInterchangeParseResult = {
 
 /** Contains all the KOTR messages of one EDIFACT interchange and information from the header */
 export type KOTRInterchange = {
-    /** Institutionskennzeichen (=Institution code) of the umbrella organization that issued this */
-    spitzenverbandIK: string
+    /** Institutionskennzeichen (=Institution code) of the organization that issued this */
+    issuerIK: string
     /** All the Kostentraeger for this umbrella organization */
     institutions: KOTRMessage[],
     /** Filename elements of the parsed file. */

@@ -7,7 +7,7 @@ describe("kostentraeger transformer", () => {
 
     it("transform one message", () => {
         const interchange: KOTRInterchange = {
-            spitzenverbandIK: "123456789",
+            issuerIK: "123456789",
             filename: {
                 kassenart: "AO",
                 verfahren: "06",
@@ -141,7 +141,7 @@ describe("kostentraeger transformer", () => {
         }
 
         const expectedInstitutionList: InstitutionList = {
-            spitzenverbandIK: "123456789",
+            issuerIK: "123456789",
             leistungserbringerGruppeSchluessel: "6",
             institutions: [{
                 ik: "999999999",
@@ -149,12 +149,6 @@ describe("kostentraeger transformer", () => {
                 name: "very long name",
                 validityTo: new Date("2088-10-10"),
                 vertragskassennummer: 12345,
-                bankAccountDetails: {
-                    bankName: "Sparbank",
-                    accountOwner: "short name",
-                    iban: "ibanibaniban",
-                    bic: "bicbicbic"
-                },
                 addresses: [
                     { postcode: 12345, place: "Humburg", streetAndHousenumber: "Straßenallee 33" },
                     { postcode: 12345, place: "Humburg", poBox: "123" },
@@ -217,7 +211,7 @@ describe("kostentraeger transformer", () => {
     
     it("skip message that is not valid anymore", () => {
         const interchange: KOTRInterchange = {
-            spitzenverbandIK: "123456789",
+            issuerIK: "123456789",
             filename: {
                 kassenart: "AO",
                 verfahren: "06",
@@ -250,7 +244,7 @@ describe("kostentraeger transformer", () => {
 
     it("skip message with verarbeitungskennzeichen 3", () => {
         const interchange: KOTRInterchange = {
-            spitzenverbandIK: "123456789",
+            issuerIK: "123456789",
             filename: {
                 kassenart: "AO",
                 verfahren: "06",
@@ -280,7 +274,7 @@ describe("kostentraeger transformer", () => {
 
     it("skip message that had a parsing error", () => {
         const interchange: KOTRInterchange = {
-            spitzenverbandIK: "123456789",
+            issuerIK: "123456789",
             filename: {
                 kassenart: "AO",
                 verfahren: "06",
