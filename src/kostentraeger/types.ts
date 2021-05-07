@@ -43,8 +43,6 @@ export type Institution = {
     abbreviatedName: string,
 
     vertragskassennummer?: number,
-    /** Optional bank account details of this institution */
-    bankAccountDetails?: BankAccountDetails,
 
     /** Validity start date for this institution information. May be undefined if it is always valid */
     validityFrom?: Date,
@@ -196,11 +194,4 @@ type BasicAddress = {
     /** max. 25 characters */
     place: string,
     /** max. 30 characters */
-}
-
-export type BankAccountDetails = {
-    bankName: string,
-    accountOwner: string,
-    iban: string,
-    bic: string
 }

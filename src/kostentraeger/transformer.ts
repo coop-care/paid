@@ -9,13 +9,11 @@ import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, KTO, UEM, VKG } from "./ed
 import { VerfahrenSchluessel } from "./filename/codes"
 import { 
     Address, 
-    BankAccountDetails, 
     Contact, 
     DatenannahmestelleLink, 
     Institution, 
     InstitutionLink, 
     InstitutionListParseResult,
-    KostentraegerLink,
     KVLocationSchluessel,
     PapierannahmestelleLink,
     ReceiptTransmissionMethods
@@ -110,12 +108,6 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
         }
     }
 
-    if (msg.kto) {
-        if (!msg.kto.iban || !msg.kto.bic) {
-            throw new Error(`${messageTxt} Expected IBAN and BIC`)
-        }
-    }
-
     msg.vkgList.forEach((vkg) => {
         if (vkg.ikVerknuepfungsartSchluessel == "00") {
             throw new Error (`Expected that ikVerknuepfungsartSchluessel is never "00"`)
@@ -142,7 +134,6 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
         abbreviatedName: msg.idk.abbreviatedName,
         
         vertragskassennummer: msg.idk.vertragskassennummer,
-        bankAccountDetails: msg.kto ? createBankAccountDetails(msg.kto, msg.idk.abbreviatedName) : undefined,
 
         validityFrom: msgValidityStartDate > interchangeValidityStartDate ? msgValidityStartDate : undefined,
         validityTo: msgValidityEndDate,
@@ -330,15 +321,6 @@ function createContact(asp: ASP): Contact {
         fax: asp.fax,
         name: asp.name,
         fieldOfWork: asp.fieldOfWork
-    }
-}
-
-function createBankAccountDetails(kto: KTO, abbreviatedName: string): BankAccountDetails {
-    return {
-        bankName: kto.bankName,
-        accountOwner: kto.accountOwner ?? abbreviatedName,
-        iban: kto.iban!,
-        bic: kto.bic!
     }
 }
 
