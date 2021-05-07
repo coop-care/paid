@@ -5,8 +5,8 @@
  * (see /docs/documents.md for more info)
  */
 
-import { AbrechnungscodeSchluessel as SonstigeAbrechnungscodeSchluessel } from "../../sgb-v/codes"
-import { LeistungsartSchluessel as PflegeLeistungsartSchluessel } from "../../sgb-xi/codes"
+import { AbrechnungscodeSchluessel as SGBVAbrechnungscodeSchluessel } from "../../sgb-v/codes"
+import { LeistungsartSchluessel as SGBXILeistungsartSchluessel } from "../../sgb-xi/codes"
 
 /** Art der Anschrift */
 export const anschriftartSchluessel = {
@@ -234,89 +234,21 @@ export const verarbeitungskennzeichenSchluessel = {
 export type VerarbeitungskennzeichenSchluessel = keyof typeof verarbeitungskennzeichenSchluessel
 
 /** Sonderschlüssel für Leistungsart für Pflegedienstleistungen nach § 105 Abs. 2 SGB XI */
-export const pflegeLeistungsartSonderschluessel = {
+export const sgbxiLeistungsartSonderschluessel = {
     "00": "Sammelschlüssel für alle Leistungsarten",
     "99": "Sonderschlüssel, gilt für alle in der Kostenträgerdatei nicht aufgeführten Gruppen-und Einzelschlüssel",
 }
-export type PflegeLeistungsartSonderschluessel = keyof typeof pflegeLeistungsartSonderschluessel
+export type SGBXILeistungsartSonderschluessel = keyof typeof sgbxiLeistungsartSonderschluessel
 
-export type KostentraegerPflegeLeistungsartSchluessel = 
-    PflegeLeistungsartSonderschluessel | PflegeLeistungsartSchluessel
+export type KostentraegerSGBXILeistungsartSchluessel = 
+    SGBXILeistungsartSonderschluessel | SGBXILeistungsartSchluessel
 
 /** Sonderschlüssel Abrechnungscode für Leistungen nach § 302 Abs. 2 SGB V */
-export const abrechnungscodeSonderschluessel = {
+export const sgbvAbrechnungscodeSonderschluessel = {
     "00": "Sammelschlüssel für alle Leistungsarten",
     "99": "Sonderschlüssel, gilt für alle in der Kostenträgerdatei nicht aufgeführten Gruppen-und Einzelschlüssel"
 }
-export type AbrechnungscodeSonderschluessel = keyof typeof abrechnungscodeSonderschluessel
+export type SGBVAbrechnungscodeSonderschluessel = keyof typeof sgbvAbrechnungscodeSonderschluessel
 
-export type KostentraegerAbrechnungscodeSchluessel = 
-    AbrechnungscodeSonderschluessel | SonstigeAbrechnungscodeSchluessel
-
-// ASK/TODO: Why the duplicates? Relevant for us?
-/** Tarifkennzeichen: Tarifbereich (1-2 Stelle des Tarifkennzeichens) */
-export const tarifbereichSchluessel = {
-    "00": "Bundeseinheitlicher Tarif (gültig für Ost und West)",
-    "01": "Baden-Württemberg",
-    "02": "Bayern",
-    "03": "Berlin Ost",
-    "04": "Bremen",
-    "05": "Hamburg",
-    "06": "Hessen",
-    "07": "Niedersachsen",
-    "08": "Nordrhein-Westfalen",
-    "09": "Rheinland-Pfalz",
-    "10": "Saarland",
-    "11": "Schleswig-Holstein",
-    "12": "Brandenburg",
-    "13": "Sachsen",
-    "14": "Sachsen-Anhalt",
-    "15": "Mecklenburg-Vorpommern",
-    "16": "Thüringen",
-    "17": "Stuttgart und Karlsruhe",
-    "18": "Freiburg und Tübingen",
-    "19": "Berlin West",
-    "20": "Nordrhein",
-    "21": "Westfalen-Lippe",
-    "22": "Lippe",
-    "23": "Berlin (gesamt)",
-    "24": "Bundeseinheitlicher Tarif (West)",
-    "25": "Bundeseinheitlicher Tarif (Ost)",
-    "50": "Bundesvertrag",
-    "51": "Baden-Württemberg",
-    "52": "Bayern",
-    "53": "Berlin Ost",
-    "54": "Bremen",
-    "55": "Hamburg",
-    "56": "Hessen",
-    "57": "Niedersachsen",
-    "58": "Nordrhein-Westfalen",
-    "59": "Rheinland-Pfalz",
-    "60": "Saarland",
-    "61": "Schleswig-Holstein",
-    "62": "Brandenburg",
-    "63": "Sachsen",
-    "64": "Sachsen-Anhalt",
-    "65": "Mecklenburg-Vorpommern",
-    "66": "Thüringen",
-    "67": "Stuttgart und Karlsruhe",
-    "68": "Freiburg und Tübingen",
-    "69": "Berlin West",
-    "70": "Nordrhein",
-    "71": "Westfalen-Lippe",
-    "72": "Lippe",
-    "73": "Berlin (gesamt)",
-    "74": "Bundeseinheitlicher Tarif (West)",
-    "75": "Bundeseinheitlicher Tarif (Ost)",
-    "90": "sonstiger länderübergreifender Tarif",
-    "91": "Vertrag auf Kassenebene",
-    "92": "Vertrag auf Kassenebene",
-    "93": "Vertrag auf Kassenebene",
-    "94": "Vertrag auf Kassenebene",
-    "95": "Vertrag auf Kassenebene",
-    "96": "Vertrag auf Kassenebene",
-    "97": "Vertrag auf Kassenebene",
-    "98": "Vertrag auf Kassenebene",
-    "99": "Vertrag auf Kassenebene"
-}
-export type TarifbereichSchluessel = keyof typeof tarifbereichSchluessel
+export type KostentraegerSGBVAbrechnungscodeSchluessel = 
+    SGBVAbrechnungscodeSonderschluessel | SGBVAbrechnungscodeSchluessel

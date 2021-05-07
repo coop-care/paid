@@ -1,6 +1,6 @@
 import { 
-    KostentraegerAbrechnungscodeSchluessel,
-    KostentraegerPflegeLeistungsartSchluessel,
+    KostentraegerSGBVAbrechnungscodeSchluessel,
+    KostentraegerSGBXILeistungsartSchluessel,
     LeistungserbringergruppeSchluessel, 
     UebermittlungszeichensatzSchluessel 
 } from "./edifact/codes"
@@ -69,7 +69,7 @@ export type Institution = {
     /** Link(s) to Datenannahmestellen (=data acceptance office). See comment for kostentraegerLinks */
     datenannahmestelleLinks: DatenannahmestelleLink[],
     /** Link(s) to Papierannahmestellen (=paper acceptance office). See comment for kostentraegerLinks */
-    papierannahmestelleLinks: PapierannahmestelleLink[],
+    papierannahmestelleLinks: PapierannahmestelleLink[]
 }
 
 export type KostentraegerLink = InstitutionLink
@@ -94,13 +94,13 @@ export type InstitutionLink = {
     /** IK of the linked partner */
     ik: string,
     /** For which location of the care provider the link is valid */
-    standort?: KVLocationSchluessel,
+    location?: KVLocationSchluessel,
     /** The type of care service provided according to SGB XI. I.e. the link is only valid for that
      *  care service.
      * 
      *  A value of 00 (Sammelschlüssel) means that this link is valid for all care services 
      *  provided, 99 means the link is valid for all services provided that are not listed */
-    sgbxiLeistungsart?: KostentraegerPflegeLeistungsartSchluessel,
+    sgbxiLeistungsart?: KostentraegerSGBXILeistungsartSchluessel,
     /** A.k.a Leistungserbringerart. The group/kind of health care service provided for health
      *  care services according to SGB V. I.e. the link is only valid for that
      *  care service.
@@ -110,7 +110,7 @@ export type InstitutionLink = {
      *  
      *  A value of 00 (Sammelschlüssel) means that this link is valid for all care services 
      *  provided, 99 means the link is valid for all services provided that are not listed */
-     sgbvAbrechnungscode?: KostentraegerAbrechnungscodeSchluessel
+     sgbvAbrechnungscode?: KostentraegerSGBVAbrechnungscodeSchluessel
 }
 
 export const federalStateSchluesselWithoutNRWSchluessel = {

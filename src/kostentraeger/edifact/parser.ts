@@ -8,7 +8,7 @@ import parseFilename from "../filename/parser"
 import { parseDate } from "../../edifact/parse_utils"
 import { Interchange, Message } from "../../edifact/types"
 import { 
-    abrechnungscodeSonderschluessel, KostentraegerAbrechnungscodeSchluessel,
+    sgbvAbrechnungscodeSonderschluessel, KostentraegerSGBVAbrechnungscodeSchluessel,
     anschriftartSchluessel, AnschriftartSchluessel,
     bundeslandSchluessel, BundeslandSchluessel,
     datenlieferungsArtSchluessel, DatenlieferungsartSchluessel,
@@ -16,7 +16,7 @@ import {
     ikVerknuepfungsartSchluessel, IKVerknuepfungsartSchluessel, 
     kvBezirkSchluessel, KVBezirkSchluessel, 
     leistungserbringergruppeSchluessel, LeistungserbringergruppeSchluessel, 
-    pflegeLeistungsartSonderschluessel, KostentraegerPflegeLeistungsartSchluessel, 
+    sgbxiLeistungsartSonderschluessel, KostentraegerSGBXILeistungsartSchluessel, 
     uebermittlungsmediumParameterSchluessel, UebermittlungsmediumParameterSchluessel, 
     uebermittlungsmediumSchluessel, UebermittlungsmediumSchluessel,
     uebermittlungszeichensatzSchluessel, UebermittlungszeichensatzSchluessel,
@@ -24,10 +24,10 @@ import {
     verarbeitungskennzeichenSchluessel, VerarbeitungskennzeichenSchluessel
 } from "./codes"
 import {
-    abrechnungscodeSchluessel
+    abrechnungscodeSchluessel as sgbvAbrechnungscodeSchluessel
 } from "../../sgb-v/codes"
 import {
-    leistungsartSchluessel as pflegeLeistungsartSchluessel
+    leistungsartSchluessel as sgbxiLeistungsartSchluessel
 } from "../../sgb-xi/codes"
 import { 
     KOTRInterchangeParseResult, KOTRMessageParseResult, KOTRMessage, 
@@ -297,22 +297,22 @@ const readVKG = (e: string[]): VKG => {
         throw new Error(`Unknown KVBezirkSchluessel "${e7}"`)
     }
     const e8 = e[8]
-    let pflegeLeistungsart: KostentraegerPflegeLeistungsartSchluessel | undefined
-    let abrechnungscode: KostentraegerAbrechnungscodeSchluessel | undefined
+    let sgbxiLeistungsart: KostentraegerSGBXILeistungsartSchluessel | undefined
+    let sgbvAbrechnungscode: KostentraegerSGBVAbrechnungscodeSchluessel | undefined
     if (e8) {
         if (e2 == "6") { // Pflege 
-            if (!pflegeLeistungsartSchluessel.hasOwnProperty(e8) && 
-                !pflegeLeistungsartSonderschluessel.hasOwnProperty(e8)) {
+            if (!sgbxiLeistungsartSchluessel.hasOwnProperty(e8) && 
+                !sgbxiLeistungsartSonderschluessel.hasOwnProperty(e8)) {
                 throw new Error(`Unknown KostentraegerPflegeLeistungsartSchluessel "${e8}"`)
             }
-            pflegeLeistungsart = e8 as KostentraegerPflegeLeistungsartSchluessel
+            sgbxiLeistungsart = e8 as KostentraegerSGBXILeistungsartSchluessel
         }
         else if (e2 == "5") { // Sonstige
-            if (!abrechnungscodeSchluessel.hasOwnProperty(e8) && 
-                !abrechnungscodeSonderschluessel.hasOwnProperty(e8)) {
+            if (!sgbvAbrechnungscodeSchluessel.hasOwnProperty(e8) && 
+                !sgbvAbrechnungscodeSonderschluessel.hasOwnProperty(e8)) {
                 throw new Error(`Unknown KostentraegerAbrechnungscodeSchluessel "${e8}"`)
             }
-            abrechnungscode = e8 as KostentraegerAbrechnungscodeSchluessel
+            sgbvAbrechnungscode = e8 as KostentraegerSGBVAbrechnungscodeSchluessel
         }
         else {
             throw new Error(`Unexpected value "${e2}" for leistungserbringergruppeSchluessel`)
@@ -328,8 +328,8 @@ const readVKG = (e: string[]): VKG => {
         uebermittlungsmediumSchluessel: e5 ? e5 as UebermittlungsmediumSchluessel : undefined,
         standortLeistungserbringerBundeslandSchluessel: e6 ? e6 as BundeslandSchluessel : undefined,
         standortLeistungserbringerKVBezirkSchluessel: e7 ? e7 as KVBezirkSchluessel : undefined,
-        pflegeLeistungsartSchluessel: pflegeLeistungsart,
-        abrechnungscodeSchluessel: abrechnungscode,
+        sgbxiLeistungsartSchluessel: sgbxiLeistungsart,
+        sgbvAbrechnungscodeSchluessel: sgbvAbrechnungscode,
         tarifkennzeichen: e[9] || undefined
     }
 }

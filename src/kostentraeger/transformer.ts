@@ -1,7 +1,7 @@
 import { 
     BundeslandSchluessel,
-    KostentraegerAbrechnungscodeSchluessel,
-    KostentraegerPflegeLeistungsartSchluessel,
+    KostentraegerSGBVAbrechnungscodeSchluessel,
+    KostentraegerSGBXILeistungsartSchluessel,
     KVBezirkSchluessel, 
     LeistungserbringergruppeSchluessel
 } from "./edifact/codes"
@@ -33,7 +33,6 @@ export default function transform(interchange: KOTRInterchange): InstitutionList
             warnings.push(e.message)
         }
     }).filter((msg): msg is Institution => !!msg)
-
 
     return {
         institutionList: {
@@ -283,19 +282,19 @@ function createInstitutionLink(vkg: VKG): InstitutionLink {
     }
     
     const leGruppeSchluessel = vkg.leistungserbringergruppeSchluessel
-    let sgbvAbrechnungscode: KostentraegerAbrechnungscodeSchluessel | undefined
-    let sgbxiLeistungsart: KostentraegerPflegeLeistungsartSchluessel | undefined
+    let sgbvAbrechnungscode: KostentraegerSGBVAbrechnungscodeSchluessel | undefined
+    let sgbxiLeistungsart: KostentraegerSGBXILeistungsartSchluessel | undefined
     if (leGruppeSchluessel == "5") {
-        const schluessel = vkg.abrechnungscodeSchluessel
+        const schluessel = vkg.sgbvAbrechnungscodeSchluessel
         sgbvAbrechnungscode = schluessel ?? "00"
     } else if (leGruppeSchluessel == "6") {
-        const schluessel = vkg.pflegeLeistungsartSchluessel
+        const schluessel = vkg.sgbxiLeistungsartSchluessel
         sgbxiLeistungsart = schluessel ?? "00"
     }
 
     return {
         ik: vkg.verknuepfungspartnerIK,
-        standort: kvLocationSchluessel,
+        location: kvLocationSchluessel,
         sgbvAbrechnungscode: sgbvAbrechnungscode,
         sgbxiLeistungsart: sgbxiLeistungsart
     }

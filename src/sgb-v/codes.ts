@@ -62,26 +62,26 @@ export type AbrechnungscodeEinzelschluessel = keyof typeof abrechnungscodeEinzel
  *  These keys are used in the Kostenträger files for f.e. denote that an institution accepts 
  *  receipts for all services belonging to given group
  */
-export const abrechnungscodeGruppenSchluessel = {
+export const abrechnungscodeGruppenschluessel = {
     "10": "Gruppenschlüssel Hilfsmittellieferant (Schlüssel 11-19)",
     "20": "Gruppenschlüssel Heilmittelerbringer (Schlüssel 21-29)",
     "30": "Gruppenschlüssel Häusliche Krankenpflege (Schlüssel 31-34)",
     "40": "Gruppenschlüssel Krankentransportleistungen (Schlüssel 41-49)",
     "90": "Gruppenschlüssel Kurzzeitpflege (Schlüssel 91-94)"
 }
-export type AbrechnungscodeGruppenSchluessel = keyof typeof abrechnungscodeGruppenSchluessel
+export type AbrechnungscodeGruppenschluessel = keyof typeof abrechnungscodeGruppenschluessel
 
 /** Gruppensschlüssel + Einzelschlüssel für Leistungen nach § 302 Abs. 2 SGB V
  * 
  *  Outside of Kostenträger file parsing and filtering logic, this is probably not used, see 
  *  AbrechnungscodeEinzelschluessel instead
  */
-export const abrechnungscodeSchluessel = { ...abrechnungscodeGruppenSchluessel, ...abrechnungscodeEinzelschluessel }
+export const abrechnungscodeSchluessel = { ...abrechnungscodeGruppenschluessel, ...abrechnungscodeEinzelschluessel }
 
 export type AbrechnungscodeSchluessel = keyof typeof abrechnungscodeSchluessel
 
-const gruppenSchluesselToEinzelSchluessel = 
-    new Map<AbrechnungscodeGruppenSchluessel, AbrechnungscodeEinzelschluessel[]>([
+const gruppenschluesselToEinzelSchluessel = 
+    new Map<AbrechnungscodeGruppenschluessel, AbrechnungscodeEinzelschluessel[]>([
         ["10", ["11","12","13","14","15","16","17","18","19"]],
         ["20", ["21","22","23","24","25","26","27","28","29"]],
         ["30", ["31","32","33","34"]],
@@ -91,20 +91,87 @@ const gruppenSchluesselToEinzelSchluessel =
 
 /** Get all AbrechnungscodeEinzelschluessel that are allocated to the given 
  *  AbrechnungscodeGruppenSchluessel */
-export function getAbrechnungscodeEinzelSchluessel(schluessel: AbrechnungscodeGruppenSchluessel): AbrechnungscodeEinzelschluessel[] {
-    return gruppenSchluesselToEinzelSchluessel.get(schluessel)!
+export function getAbrechnungscodeEinzelschluessel(schluessel: AbrechnungscodeGruppenschluessel): AbrechnungscodeEinzelschluessel[] {
+    return gruppenschluesselToEinzelSchluessel.get(schluessel)!
 }
 
 /** Get the AbrechnungscodeGruppenSchluessel the given AbrechnungscodeEinzelschluessel is allocated
  *  to. Returns undefined if it isn't allocated to any particular group */
-export function getAbrechnungscodeGruppenSchluessel(schluessel: AbrechnungscodeEinzelschluessel): AbrechnungscodeGruppenSchluessel | undefined {
-    for(const [gruppenschluessel, einzelschluesselArray] of gruppenSchluesselToEinzelSchluessel.entries()) {
+export function getAbrechnungscodeGruppenschluessel(schluessel: AbrechnungscodeEinzelschluessel): AbrechnungscodeGruppenschluessel | undefined {
+    for(const [gruppenschluessel, einzelschluesselArray] of gruppenschluesselToEinzelSchluessel.entries()) {
         if (einzelschluesselArray.includes(schluessel)) {
             return gruppenschluessel
         }
     }
 }
 
+// ASK/TODO: Why the duplicates? Relevant for us?
+/** Tarifkennzeichen: Tarifbereich (1-2 Stelle des Tarifkennzeichens) */
+export const tarifbereichSchluessel = {
+    "00": "Bundeseinheitlicher Tarif (gültig für Ost und West)",
+    "01": "Baden-Württemberg",
+    "02": "Bayern",
+    "03": "Berlin Ost",
+    "04": "Bremen",
+    "05": "Hamburg",
+    "06": "Hessen",
+    "07": "Niedersachsen",
+    "08": "Nordrhein-Westfalen",
+    "09": "Rheinland-Pfalz",
+    "10": "Saarland",
+    "11": "Schleswig-Holstein",
+    "12": "Brandenburg",
+    "13": "Sachsen",
+    "14": "Sachsen-Anhalt",
+    "15": "Mecklenburg-Vorpommern",
+    "16": "Thüringen",
+    "17": "Stuttgart und Karlsruhe",
+    "18": "Freiburg und Tübingen",
+    "19": "Berlin West",
+    "20": "Nordrhein",
+    "21": "Westfalen-Lippe",
+    "22": "Lippe",
+    "23": "Berlin (gesamt)",
+    "24": "Bundeseinheitlicher Tarif (West)",
+    "25": "Bundeseinheitlicher Tarif (Ost)",
+    "50": "Bundesvertrag",
+    "51": "Baden-Württemberg",
+    "52": "Bayern",
+    "53": "Berlin Ost",
+    "54": "Bremen",
+    "55": "Hamburg",
+    "56": "Hessen",
+    "57": "Niedersachsen",
+    "58": "Nordrhein-Westfalen",
+    "59": "Rheinland-Pfalz",
+    "60": "Saarland",
+    "61": "Schleswig-Holstein",
+    "62": "Brandenburg",
+    "63": "Sachsen",
+    "64": "Sachsen-Anhalt",
+    "65": "Mecklenburg-Vorpommern",
+    "66": "Thüringen",
+    "67": "Stuttgart und Karlsruhe",
+    "68": "Freiburg und Tübingen",
+    "69": "Berlin West",
+    "70": "Nordrhein",
+    "71": "Westfalen-Lippe",
+    "72": "Lippe",
+    "73": "Berlin (gesamt)",
+    "74": "Bundeseinheitlicher Tarif (West)",
+    "75": "Bundeseinheitlicher Tarif (Ost)",
+    "90": "sonstiger länderübergreifender Tarif",
+    "91": "Vertrag auf Kassenebene",
+    "92": "Vertrag auf Kassenebene",
+    "93": "Vertrag auf Kassenebene",
+    "94": "Vertrag auf Kassenebene",
+    "95": "Vertrag auf Kassenebene",
+    "96": "Vertrag auf Kassenebene",
+    "97": "Vertrag auf Kassenebene",
+    "98": "Vertrag auf Kassenebene",
+    "99": "Vertrag auf Kassenebene"
+}
+export type TarifbereichSchluessel = keyof typeof tarifbereichSchluessel
 
 /*  Sondertarife (3. bis 5. Stelle des Tarifkennzeichens)
 

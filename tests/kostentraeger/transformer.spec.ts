@@ -51,7 +51,7 @@ describe("kostentraeger transformer", () => {
                         leistungserbringergruppeSchluessel: "6",
                         datenlieferungsartSchluessel: "07",
                         standortLeistungserbringerBundeslandSchluessel: "01",
-                        pflegeLeistungsartSchluessel: "12"
+                        sgbxiLeistungsartSchluessel: "12"
                     },
                     {   // Datenannahmestelle mit Entschlüsselungsbefugnis
                         ikVerknuepfungsartSchluessel: "03",
@@ -65,7 +65,7 @@ describe("kostentraeger transformer", () => {
                         leistungserbringergruppeSchluessel: "5",
                         datenlieferungsartSchluessel: "29",
                         standortLeistungserbringerKVBezirkSchluessel: "38",
-                        abrechnungscodeSchluessel: "25"
+                        sgbvAbrechnungscodeSchluessel: "25"
                     },
                     {   // Papierannahmestelle
                         ikVerknuepfungsartSchluessel: "09",
@@ -177,12 +177,12 @@ describe("kostentraeger transformer", () => {
                 },
                 kostentraegerLinks: [{
                     ik: "555444333",
-                    standort: "HH",
+                    location: "HH",
                     sgbxiLeistungsart: "00"
                 }],
                 datenannahmestelleLinks: [{
                     ik: "112200000",
-                    standort: "SH",
+                    location: "SH",
                     canDecrypt: false,
                     sgbxiLeistungsart: "12"
                 }, {
@@ -191,7 +191,7 @@ describe("kostentraeger transformer", () => {
                 }],
                 papierannahmestelleLinks: [{
                     ik: "334455667",
-                    standort: "Nordrhein",
+                    location: "Nordrhein",
                     sgbvAbrechnungscode: "25",
                     paperReceipt: false,
                     machineReadablePaperReceipt: true,

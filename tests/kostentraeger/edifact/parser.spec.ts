@@ -305,8 +305,8 @@ describe("kostentraeger edifact parser", () => {
                 uebermittlungsmediumSchluessel: "7",
                 standortLeistungserbringerBundeslandSchluessel: "01",
                 standortLeistungserbringerKVBezirkSchluessel: undefined,
-                pflegeLeistungsartSchluessel: "02",
-                abrechnungscodeSchluessel: undefined,
+                sgbxiLeistungsartSchluessel: "02",
+                sgbvAbrechnungscodeSchluessel: undefined,
                 tarifkennzeichen: undefined
             }, {
                 ikVerknuepfungsartSchluessel: "00",
@@ -317,8 +317,8 @@ describe("kostentraeger edifact parser", () => {
                 uebermittlungsmediumSchluessel: "1",
                 standortLeistungserbringerBundeslandSchluessel: undefined,
                 standortLeistungserbringerKVBezirkSchluessel: "13",
-                pflegeLeistungsartSchluessel: undefined,
-                abrechnungscodeSchluessel: "40",
+                sgbxiLeistungsartSchluessel: undefined,
+                sgbvAbrechnungscodeSchluessel: "40",
                 tarifkennzeichen: "12345"
             }, {
                 ikVerknuepfungsartSchluessel: "09",
@@ -329,8 +329,8 @@ describe("kostentraeger edifact parser", () => {
                 uebermittlungsmediumSchluessel: undefined,
                 standortLeistungserbringerBundeslandSchluessel: undefined,
                 standortLeistungserbringerKVBezirkSchluessel: undefined,
-                pflegeLeistungsartSchluessel: undefined,
-                abrechnungscodeSchluessel: undefined,
+                sgbxiLeistungsartSchluessel: undefined,
+                sgbvAbrechnungscodeSchluessel: undefined,
                 tarifkennzeichen: undefined
             }
         ])
