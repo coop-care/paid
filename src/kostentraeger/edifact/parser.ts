@@ -204,6 +204,16 @@ function parseMessage(message: Message): KOTRMessageParseResult {
         }
     })
 
+    let kostentraegerCount = 0
+    vkgList.forEach((vkg) => {
+        if (vkg.ikVerknuepfungsartSchluessel == "01") {
+            ++kostentraegerCount
+        }
+    })
+    if (kostentraegerCount > 1) {
+        throw new Error(`${messageTxt} Only one "VKG" with ikVerknuepfungsartSchluessel "01" is allowed`)
+    }
+
     aspList.sort((a, b) => a.index - b.index)
     dfuList.sort((a, b) => a.index - b.index)
 
