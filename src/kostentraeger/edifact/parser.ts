@@ -66,7 +66,7 @@ export default function parse(interchange: Interchange): KOTRInterchangeParseRes
 
     return {
         interchange: {
-            spitzenverbandIK: header[1][0],
+            issuerIK: header[1][0],
             /* creation date and time would be in header[3][0] and header[3][1], but date format is 
                sometimes YYYYMMDD, sometimes YYMMDD and the info is not really needed anyway. So
                no need to parse it, it only increases the complexity of this parser */
