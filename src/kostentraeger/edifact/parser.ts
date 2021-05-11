@@ -64,6 +64,8 @@ export default function parse(interchange: Interchange): KOTRInterchangeParseRes
     let fname = header[6][0]
     const filenameElements = parseFilename(fname.substring(0, 8) + '.' + fname.substring(8, 11))
 
+    warnings.push(...validateLinks(institutions))
+
     return {
         interchange: {
             issuerIK: header[1][0],
@@ -75,6 +77,57 @@ export default function parse(interchange: Interchange): KOTRInterchangeParseRes
         },
         warnings: warnings
     }
+}
+
+/** Validate if all the VKG-links given in each KOTRMessage actually lead anywhere and also are
+ *  not contradictory
+*/
+function validateLinks(institutions: KOTRMessage[]): string[] {
+    const errors: string[] = []
+    const institutionsByIK = new Map<string, KOTRMessage>()
+    institutions.forEach((msg) => {
+        institutionsByIK.set(msg.idk.ik, msg)
+    })
+
+    institutions.forEach((msg) => {
+        msg.vkgList.forEach((vkg) => {
+            const errMsg = `IK ${msg.idk.ik} links to IK ${vkg.verknuepfungspartnerIK}`
+            // every linked verknuepfungspartner must exist
+            if (!institutionsByIK.has(vkg.verknuepfungspartnerIK)) {
+                errors.push(`${errMsg} but that IK does not exist`)
+            } else {
+                // the link target to every link to a Datenannahmestelle must actually accept data
+                if (["02", "03"].includes(vkg.ikVerknuepfungsartSchluessel)) {
+                    const datenannahmestelle = institutionsByIK.get(vkg.verknuepfungspartnerIK)!
+                    if (datenannahmestelle.uemList.length == 0) {
+                        errors.push(`${errMsg} as Datenannahmestelle but that IK does not accept any data`)
+                    } else {
+                        const acceptsSomeData = datenannahmestelle.uemList.some(uem => 
+                            ["1","2","3","4","7","9"].includes(uem.uebermittlungsmediumSchluessel)
+                        )
+                        if (!acceptsSomeData) {
+                            errors.push(`${errMsg} as Datenannahmestelle but that IK does not accept data`)
+                        }
+                    }
+                }
+                // the link target to every link to a Papierannahmestelle must actually accept paper
+                /*else if (vkg.ikVerknuepfungsartSchluessel == "09") {
+                    const papierannahmestelle = institutionsByIK.get(vkg.verknuepfungspartnerIK)!
+                    if (papierannahmestelle.uemList.length == 0) {
+                        errors.push(`${errMsg} as Papierannahmestelle but that IK does not accept any data`)
+                    } else {
+                        const acceptsSomePaper = papierannahmestelle.uemList.some(uem => 
+                            ["5", "6"].includes(uem.uebermittlungsmediumSchluessel)
+                        )
+                        if (!acceptsSomePaper) {
+                            errors.push(`${errMsg} as Papierannahmestelle but that IK does not accept paper`)
+                        }
+                    }
+                }*/
+            }
+        })
+    })
+    return errors
 }
 
 /** Parse only one message of the interchange */

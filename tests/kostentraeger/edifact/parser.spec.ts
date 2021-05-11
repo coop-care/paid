@@ -299,13 +299,13 @@ describe("kostentraeger edifact parser", () => {
 
     it("parse links", () => {
         expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
-            "VKG+01+123456789+6+888888888+07+7+01++02'"+
-            "VKG+00+987654321+5++21+1++13+40+12345'"+
-            "VKG+09+50505050'"
+            "VKG+01+100295017+6+888888888+07+7+01++02'"+
+            "VKG+00+100295017+5++21+1++13+40+12345'"+
+            "VKG+09+100295017'"
         ))[0].vkgList).toEqual([
             {
                 ikVerknuepfungsartSchluessel: "01",
-                verknuepfungspartnerIK: "123456789",
+                verknuepfungspartnerIK: "100295017",
                 leistungserbringergruppeSchluessel: "6",
                 abrechnungsstelleIK: "888888888",
                 datenlieferungsartSchluessel: "07",
@@ -317,7 +317,7 @@ describe("kostentraeger edifact parser", () => {
                 tarifkennzeichen: undefined
             }, {
                 ikVerknuepfungsartSchluessel: "00",
-                verknuepfungspartnerIK: "987654321",
+                verknuepfungspartnerIK: "100295017",
                 leistungserbringergruppeSchluessel: "5",
                 abrechnungsstelleIK: undefined,
                 datenlieferungsartSchluessel: "21",
@@ -329,7 +329,7 @@ describe("kostentraeger edifact parser", () => {
                 tarifkennzeichen: "12345"
             }, {
                 ikVerknuepfungsartSchluessel: "09",
-                verknuepfungspartnerIK: "50505050",
+                verknuepfungspartnerIK: "100295017",
                 leistungserbringergruppeSchluessel: undefined,
                 abrechnungsstelleIK: undefined,
                 datenlieferungsartSchluessel: undefined,
