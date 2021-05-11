@@ -143,6 +143,7 @@ describe("kostentraeger transformer", () => {
         const expectedInstitutionList: InstitutionList = {
             issuerIK: "123456789",
             leistungserbringerGruppeSchluessel: "6",
+            validityStartDate: new Date("2018-05-05"),
             institutions: [{
                 ik: "999999999",
                 abbreviatedName: "short name",

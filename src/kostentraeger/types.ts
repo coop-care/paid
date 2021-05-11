@@ -21,10 +21,12 @@ export type InstitutionListParseResult = {
 export type InstitutionList = {
     /** Institutionskennzeichen (=Institution code) of the organization that issued this list */
     issuerIK: string,
-    /** All the Kostentraeger for this umbrella organization */
-    institutions: Institution[],
     /** For which Leistungserbringergruppe this institution list is for */
     leistungserbringerGruppeSchluessel: LeistungserbringergruppeSchluessel,
+    /** Start of validity for this institution list */
+    validityStartDate: Date, 
+    /** All the Kostentraeger for this umbrella organization */
+    institutions: Institution[],
 }
 
 /** Information for one Institution.

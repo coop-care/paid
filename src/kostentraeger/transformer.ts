@@ -5,7 +5,7 @@ import {
     KVBezirkSchluessel, 
     LeistungserbringergruppeSchluessel
 } from "./edifact/codes"
-import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, KTO, UEM, VKG } from "./edifact/segments"
+import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, UEM, VKG } from "./edifact/segments"
 import { VerfahrenSchluessel } from "./filename/codes"
 import { 
     Address, 
@@ -36,8 +36,9 @@ export default function transform(interchange: KOTRInterchange): InstitutionList
     return {
         institutionList: {
             issuerIK: interchange.issuerIK,
-            institutions: institutions,
             leistungserbringerGruppeSchluessel: verfahrenToLeistungserbringergruppeSchluessel(interchange.filename.verfahren),
+            validityStartDate: validityStartDate,
+            institutions: institutions
         },
         warnings: warnings
     }
