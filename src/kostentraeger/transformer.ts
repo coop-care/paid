@@ -14,6 +14,7 @@ import {
     Institution, 
     InstitutionLink, 
     InstitutionListParseResult,
+    KostentraegerLink,
     KVLocationSchluessel,
     PapierannahmestelleLink,
     ReceiptTransmissionMethods
