@@ -116,9 +116,7 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
 
     const kostentraegerLinks = msg.vkgList
         .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "01")
-    if (kostentraegerLinks.length > 1) {
-        throw new Error (`Expected that there is only one ikVerknuepfungsartSchluessel = "01"`)
-    }
+        .map((vkg) => createKostentraegerLink(vkg))
 
     const datenannahmestelleLinks = msg.vkgList
         .filter((vkg) => ["02", "03"].includes(vkg.ikVerknuepfungsartSchluessel))
@@ -141,7 +139,7 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
         contacts: msg.aspList.map((asp) => createContact(asp)),
         addresses: msg.ansList.map((ans) => createAddress(ans)),
         transmissionMethods: createReceiptTransmissionMethods(msg.uemList, msg.dfuList),
-        kostentraegerIK: kostentraegerLinks[0]?.verknuepfungspartnerIK,
+        kostentraegerLinks: kostentraegerLinks,
         datenannahmestelleLinks: datenannahmestelleLinks,
         papierannahmestelleLinks: papierannahmestelleLinks
     }
@@ -200,6 +198,10 @@ function createDatenannahmestelleLink(vkg: VKG): DatenannahmestelleLink {
         throw new Error(`Unexpected value "${verknuepfungsart}" for ikVerknuepfungsartSchluessel`)
     }
     return { ...institutionLink, canDecrypt: canDecrypt }
+}
+    
+function createKostentraegerLink(vkg: VKG): KostentraegerLink {
+    return createInstitutionLink(vkg)
 }
 
 const bundeslandSchluesselToKVLocation = 

@@ -191,13 +191,6 @@ describe("kostentraeger edifact parser", () => {
         ))).toHaveLength(0)
     })
 
-    it("parsing several links to kostentraeger skips message", () => {
-        expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
-            "VKG+01+180202549+6'"+
-            "VKG+01+150202549+6'"
-        ))).toHaveLength(0)
-    })
-
     it("parse contact persons", () => {
         expect(parseMessages(msg(idk+vdt+fkt+nam+ans+
             "ASP+01+5050/123456798++Mann Musterfrau'"+

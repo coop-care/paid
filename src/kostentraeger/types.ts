@@ -55,18 +55,24 @@ export type Institution = {
     /** Details on where and with which protocol to send receipts. Undefined if this institution
      *  does not accept any receipts directly */
     transmissionMethods?: ReceiptTransmissionMethods,
-    /** IK of the Kostenträger (=institution that pays the receipts) if the Kostenträger is not
-     *  this instituion itself. 
+    /** Link(s) to Kostenträger (=institutions that pays the receipts). 
      *  The institution with the IK as printed on the health-insurance card is not necessarily the
-     *  institution that manages paying the receipts. Often such things are done by a central 
+     *  institution that manages paying the receipts. Usually such things are done by a central 
      *  office. 
+     *  According to the official documentation, there should only ever be one Kostenträger link.
+     *  In reality, there is at least one health insurance (Knappschaft) that does indeed define
+     *  several different Kostenträger for different regions / health care provider groups etc, 
+     *  this is why there can be several links.
      */
-    kostentraegerIK?: string,
     /** Link(s) to Datenannahmestellen (=data acceptance office) */
+    kostentraegerLinks: KostentraegerLink[],
+    /** Link(s) to Datenannahmestellen (=data acceptance office). See comment for kostentraegerLinks */
     datenannahmestelleLinks: DatenannahmestelleLink[],
     /** Link(s) to Papierannahmestellen (=paper acceptance office) */
     papierannahmestelleLinks: PapierannahmestelleLink[]
 }
+
+export type KostentraegerLink = InstitutionLink
 
 export type DatenannahmestelleLink = InstitutionLink & {
     /** whether this data acceptance office can actually decrypt the receipts */
