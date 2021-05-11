@@ -37,6 +37,7 @@ export default function transform(interchange: KOTRInterchange): InstitutionList
         institutionList: {
             issuerIK: interchange.issuerIK,
             leistungserbringerGruppeSchluessel: verfahrenToLeistungserbringergruppeSchluessel(interchange.filename.verfahren),
+            kassenart: interchange.filename.kassenart,
             validityStartDate: validityStartDate,
             institutions: institutions
         },

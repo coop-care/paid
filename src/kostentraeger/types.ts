@@ -4,6 +4,7 @@ import {
     LeistungserbringergruppeSchluessel, 
     UebermittlungszeichensatzSchluessel 
 } from "./edifact/codes"
+import { KassenartSchluessel } from "./filename/codes"
 
 /**
  * These types represent the data from Kostentraeger file(s) cast into a (more) accessible data model
@@ -23,6 +24,8 @@ export type InstitutionList = {
     issuerIK: string,
     /** For which Leistungserbringergruppe this institution list is for */
     leistungserbringerGruppeSchluessel: LeistungserbringergruppeSchluessel,
+    /** Key for which Kassenart this institution list is for */
+    kassenart: KassenartSchluessel,
     /** Start of validity for this institution list */
     validityStartDate: Date, 
     /** All the Kostentraeger for this umbrella organization */
