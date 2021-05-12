@@ -1,5 +1,7 @@
 import { 
-    AbrechnungscodeEinzelschluessel as SGBVAbrechnungscodeEinzelschluessel, AbrechnungscodeGruppenschluessel, abrechnungscodeGruppenschluessel, getAbrechnungscodeEinzelschluessel
+    AbrechnungscodeEinzelschluessel as SGBVAbrechnungscodeEinzelschluessel, 
+    AbrechnungscodeGruppenschluessel, abrechnungscodeGruppenschluessel, 
+    getAbrechnungscodeEinzelschluessel
 } from "../sgb-v/codes";
 import { 
     LeistungsartSchluessel as SGBXILeistungsartSchluessel
@@ -10,12 +12,32 @@ import {
     CareProviderLocationSchluessel,
     Institution,
     InstitutionLink,
-    InstitutionList
+    InstitutionList,
+    PapierannahmestelleLink
 } from "./types";
+
+
+/** Result of a KostentraegerIndex::find* query */
+export type KostentraegerFindResult = {
+    /** Information of the institution with the IK given as pflegekasseIK parameter in the find function */
+    pflegekasse: Institution,
+    /** Information on the instutition which shall be the Kostenträger of this receipt */
+    kostentraeger: Institution,
+    /** Information on the institution for which the receipt shall be encrypted */
+    encryptTo?: Institution,
+    /** Information on the institution to which the receipt shall be sent */
+    sendTo: Institution 
+}
 
 export type Leistungsart = SGBXILeistungsart | SGBVAbrechnungscode
 export type SGBXILeistungsart = { sgbxiLeistungsart: SGBXILeistungsartSchluessel }
 export type SGBVAbrechnungscode = { sgbvAbrechnungscode: SGBVAbrechnungscodeEinzelschluessel }
+
+export type PaperBasedDataType = 
+    "paperReceipt" | 
+    "machineReadablePaperReceipt" |
+    "prescription" |
+    "costEstimate"
 
 type InstitutionListWithValidityStartDate = {
     validityStartDate: Date,
@@ -56,30 +78,15 @@ export class KostentraegerIndex {
         })
     }
 
-    /** Find information on the Kostenträger
-     * 
-     * @param pflegekasseIK 9-digit "Institutionskennzeichen" of the care insurance of the insuree
-     * 
-     * @param leistungsart Type of health care service provided. Either a health care service type 
-     *        (Leistungsart) from SGB XI or a from SGB V (Abrechnungscode).
-     * 
-     * @param location Location of the health care service provider
-     * 
-     * @param date Date at which the receipt should be sent. Optional, defaults to now. Some
-     *             institutions given in the Kostenträger files have a validity date range.
-    */
-    find(
-        pflegekasseIK: string,
-        leistungsart: Leistungsart,
-        location: CareProviderLocationSchluessel,
-        date: Date = new Date()
-    ): FindResult | undefined {
-
+    private findFirst<T>(
+        leistungserbringergruppeSchluessel: LeistungserbringergruppeSchluessel,
+        date: Date,
+        block: (institutions: Map<string, Institution>) => T | undefined
+    ): T | undefined {
         /* only comb through those which are for the right Leistungserbringergruppe */
-        const leGruppe = leistungsartToLeistungserbringergruppeSchluessel(leistungsart)
-        const forLEGruppe = this.index.get(leGruppe)
+        const forLEGruppe = this.index.get(leistungserbringergruppeSchluessel)
         if (!forLEGruppe) {
-            return undefined
+            return
         }
 
         for (const [kassenart, institutionLists] of forLEGruppe) {
@@ -93,55 +100,99 @@ export class KostentraegerIndex {
             for (const institutionList of institutionLists) {
                 // create map of IK -> Institution with only institutions that are valid at the given date
                 const institutionsIndex = getValidInstitutionsIndex(institutionList.institutions, date)
-
-                const pflegekasse = institutionsIndex.get(pflegekasseIK)
-                if (!pflegekasse) {
-                    continue
+                const result = block(institutionsIndex)
+                if (result !== undefined) {
+                    return result
                 }
-
-                // Step 1: find Kostenträger
-                const kostentraeger = findKostentraeger(
-                    pflegekasse, institutionsIndex, leistungsart, location
-                )
-
-                // Step 2: find Datenannahmestelle
-                const datenannahmestelleLinks = getApplicableInstitutionLinks(
-                    kostentraeger.datenannahmestelleLinks, leistungsart, location
-                )
-                const datenannahmestelleLink = datenannahmestelleLinks[0]
-                if (!datenannahmestelleLink) {
-                    continue
-                }
-                const datenannahmestelle = institutionsIndex.get(datenannahmestelleLink.ik)
-                if (!datenannahmestelle) {
-                    continue
-                }
-
-                // Step 3: Find if Datenannahmestelle has decryption authority and handle it if not
-                let encryptedFor: Institution | undefined
-                if (datenannahmestelleLink.canDecrypt) {
-                    encryptedFor = datenannahmestelle
-                } else {
-                    /* The documentation is a unclear where the institution to which it should be 
-                        encrypted should be found.
-                        It would make sense if it is the same as the Kostenträger, but that is not the
-                        case. Looking at a real Kostenträger files, it seems to be somewhat mixed:
-                        
-                        At least AOK Nordost Region MVP (100395611)
-
-                        */
-                    const linkThatCanDecrypt = datenannahmestelleLinks.find((link) => link.canDecrypt)
-                    if (!linkThatCanDecrypt) {
-                        continue
-                    }
-
-                    encryptedFor = institutionsIndex.get(linkThatCanDecrypt.ik)
-                }
-    
             }
         }
+    }
 
-        return undefined 
+    /** Find information on the Kostenträger for sending digital data
+     * 
+     * @param pflegekasseIK 9-digit "Institutionskennzeichen" of the care insurance of the insuree
+     * 
+     * @param leistungsart Type of health care service provided. Either a health care service type 
+     *        (Leistungsart) from SGB XI or a from SGB V (Abrechnungscode).
+     * 
+     * @param location Location of the health care service provider
+     * 
+     * @param date Date at which the receipt should be sent. Optional, defaults to now. Some
+     *        institutions given in the Kostenträger files have a validity date range.
+    */
+    findForData(
+        pflegekasseIK: string,
+        leistungsart: Leistungsart,
+        location: CareProviderLocationSchluessel,
+        date: Date = new Date()
+    ): KostentraegerFindResult | undefined {
+
+        const leGruppe = leistungsartToLeistungserbringergruppeSchluessel(leistungsart)
+        return this.findFirst(leGruppe, date, (institutions => {
+            const pflegekasse = institutions.get(pflegekasseIK)
+            if (!pflegekasse) {
+                return
+            }
+
+            const kostentraeger = findKostentraeger(pflegekasse, institutions, leistungsart, location)
+            
+            const datenannahmestellen = findDatenannahmestelle(kostentraeger, institutions, leistungsart, location)
+            if (!datenannahmestellen) {
+                return
+            }
+
+            return {
+                pflegekasse: pflegekasse,
+                kostentraeger: kostentraeger,
+                encryptTo: datenannahmestellen.encryptTo,
+                sendTo: datenannahmestellen.sendTo
+            }
+        }))
+    }
+
+    /** Find information on the Kostenträger for sending paper receipts, prescriptions, cost 
+     *  estimates etc.
+     * 
+     * @param paperBasedDataType What shall be sent: paper receipts, prescriptions,... etc
+     * 
+     * @param pflegekasseIK 9-digit "Institutionskennzeichen" of the care insurance of the insuree
+     * 
+     * @param leistungsart Type of health care service provided. Either a health care service type 
+     *        (Leistungsart) from SGB XI or a from SGB V (Abrechnungscode).
+     * 
+     * @param location Location of the health care service provider
+     * 
+     * @param date Date at which the receipt should be sent. Optional, defaults to now. Some
+     *        institutions given in the Kostenträger files have a validity date range.
+    */
+    findForPaper(
+        paperBasedDataType: PaperBasedDataType,
+        pflegekasseIK: string,
+        leistungsart: Leistungsart,
+        location: CareProviderLocationSchluessel,
+        date: Date = new Date()
+    ): KostentraegerFindResult | undefined {
+
+        const leGruppe = leistungsartToLeistungserbringergruppeSchluessel(leistungsart)
+        return this.findFirst(leGruppe, date, (institutions => {
+            const pflegekasse = institutions.get(pflegekasseIK)
+            if (!pflegekasse) {
+                return
+            }
+
+            const kostentraeger = findKostentraeger(pflegekasse, institutions, leistungsart, location)
+
+            const sendTo = findPapierannahmestelle(kostentraeger, institutions, paperBasedDataType, leistungsart, location)
+            if (!sendTo) {
+                return
+            }
+
+            return {
+                pflegekasse: pflegekasse,
+                kostentraeger: kostentraeger,
+                sendTo: sendTo
+            }
+        }))
     }
 }
 
@@ -199,7 +250,7 @@ function findKostentraeger(
     location: CareProviderLocationSchluessel
 ): Institution {
 
-    let firstApplicableKostentraegerLink = getApplicableInstitutionLinks(
+    let firstApplicableKostentraegerLink = findApplicableInstitutionLinks(
         pflegekasse.kostentraegerLinks, leistungsart, location
     )[0]
     let kostentraegerList: Institution[] = [pflegekasse]
@@ -232,9 +283,90 @@ function findKostentraeger(
     return kostentraegerList[kostentraegerList.length - 1]!
 }
 
+/** Given a kostenträger, finds to which institution the data should be sent and to which 
+ *  institution is should be encrypted to. (Almost always but not always the same)
+ */
+ function findDatenannahmestelle(
+    kostentraeger: Institution,
+    institutions: Map<string, Institution>,
+    leistungsart: Leistungsart,
+    location: CareProviderLocationSchluessel
+): { sendTo: Institution, encryptTo: Institution } | undefined {
+
+    const encryptToLink = findApplicableInstitutionLinks(
+        kostentraeger.datenannahmestelleLinks, leistungsart, location
+    )[0]
+    if (!encryptToLink) {
+        return
+    }
+    const encryptTo = institutions.get(encryptToLink.ik)
+    if (!encryptTo) {
+        return
+    }
+
+    // Step 3: Find if Datenannahmestelle has decryption authority and handle it if not
+    let sendTo: Institution | undefined
+    if (encryptTo.transmissionMethods?.email || !encryptTo.transmissionMethods?.ftam) {
+        /* if it accepts data itself, that's great! 
+           The documentation is making it
+           sound that even if this institution accepts data directly, one should look
+           if any linked institution that is not able to decrypt it can accept the data 
+           too and send it there. Doesn't make a lot of sense though and it is not clear
+           if this is what the health insurances actually want, so let's first take
+           the easy route here */
+        sendTo = encryptTo
+    } else {
+        const sendToLink = findApplicableInstitutionLinks(
+            encryptTo.untrustedDatenannahmestelleLinks, leistungsart, location
+            )[0]
+        if (!sendToLink) {
+            return
+        }
+        sendTo = institutions.get(sendToLink.ik)
+    }
+    if (!sendTo) {
+        return
+    }
+    return {
+        sendTo: sendTo,
+        encryptTo: encryptTo
+    }
+}
+
+/** Given a kostenträger, finds to which institution the paper should be sent */
+function findPapierannahmestelle(
+    kostentraeger: Institution,
+    institutions: Map<string, Institution>,
+    paperBasedDataType: PaperBasedDataType,
+    leistungsart: Leistungsart,
+    location: CareProviderLocationSchluessel,
+): Institution | undefined {
+
+    const links = findApplicableInstitutionLinks(kostentraeger.papierannahmestelleLinks, leistungsart, location)
+    const firstApplicableLink = filterPapierannahmestelleLinksByDataType(paperBasedDataType, links)[0]
+    if (!firstApplicableLink) {
+        return
+    }
+
+    return institutions.get(firstApplicableLink.ik)
+}
+
+function filterPapierannahmestelleLinksByDataType(
+    paperBasedDataType: PaperBasedDataType,
+    annahmestellen: PapierannahmestelleLink[]
+): PapierannahmestelleLink[] {
+    switch(paperBasedDataType) {
+        case "paperReceipt":                return annahmestellen.filter(it => it.paperReceipt)
+        case "machineReadablePaperReceipt": return annahmestellen.filter(it => it.machineReadablePaperReceipt)
+        case "costEstimate":                return annahmestellen.filter(it => it.costEstimate)
+        case "prescription":                return annahmestellen.filter(it => it.prescription)
+    }
+}
+
+
 /** Return all institution links that match the given parameters of the care provider. See
  *  isInstitutionLinkApplicable for more details */
-function getApplicableInstitutionLinks<L extends InstitutionLink>(
+function findApplicableInstitutionLinks<L extends InstitutionLink>(
     links: L[],
     leistungsart: Leistungsart,
     location: CareProviderLocationSchluessel
@@ -328,8 +460,4 @@ function isInstitutionLinkApplicable(
         }
     }
     return true
-}
-
-type FindResult = {
-    // TODO
 }
