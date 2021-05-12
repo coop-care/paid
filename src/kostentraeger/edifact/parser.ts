@@ -91,43 +91,48 @@ function validateLinks(institutions: KOTRMessage[]): string[] {
 
     institutions.forEach((msg) => {
         msg.vkgList.forEach((vkg) => {
-            const errMsg = `IK ${msg.idk.ik} links to IK ${vkg.verknuepfungspartnerIK}`
+            const errMsg = `IK ${msg.idk.ik} (${msg.idk.abbreviatedName}) links to IK ${vkg.verknuepfungspartnerIK}`
             // every linked verknuepfungspartner must exist
             if (!institutionsByIK.has(vkg.verknuepfungspartnerIK)) {
                 errors.push(`${errMsg} but that IK does not exist`)
             } else {
-                // the link target to every link to a Datenannahmestelle must actually accept data
-                if (["02", "03"].includes(vkg.ikVerknuepfungsartSchluessel)) {
-                    const datenannahmestelle = institutionsByIK.get(vkg.verknuepfungspartnerIK)!
-                    if (datenannahmestelle.uemList.length == 0) {
-                        errors.push(`${errMsg} as Datenannahmestelle but that IK does not accept any data`)
-                    } else {
-                        const acceptsSomeData = datenannahmestelle.uemList.some(uem => 
-                            ["1","2","3","4","7","9"].includes(uem.uebermittlungsmediumSchluessel)
-                        )
-                        if (!acceptsSomeData) {
-                            errors.push(`${errMsg} as Datenannahmestelle but that IK does not accept data`)
+                const institution = institutionsByIK.get(vkg.verknuepfungspartnerIK)!
+                const acceptsData = isInstitutionAcceptingData(institution)
+                /* the link target to every link to a Datenannahmestelle without decrypt acapacity 
+                   must actually accept data */
+                if (vkg.ikVerknuepfungsartSchluessel == "02") {
+                    if (!acceptsData) {
+                        errors.push(`${errMsg} for data but that IK does not accept data`)
+                    }
+                }
+                /* the link target to every link to a Datenannahme with capacity to decrypt must 
+                   either accept data themselves or lead to one that does in one link-step */
+                if (vkg.ikVerknuepfungsartSchluessel == "03") {
+                    if (!acceptsData) {
+                        const butALinkAcceptsData = institution.vkgList.some((vkg) => {
+                            if (vkg.ikVerknuepfungsartSchluessel == "02") {
+                                const datenannahmestelle = institutionsByIK.get(vkg.verknuepfungspartnerIK)
+                                if (datenannahmestelle && isInstitutionAcceptingData(datenannahmestelle)) {
+                                    return true
+                                }
+                            }
+                            return false
+                        })
+                        if (!butALinkAcceptsData) {
+                            errors.push(`${errMsg} for data but neither that IK nor an IK it links to accepts data`)
                         }
                     }
                 }
-                // the link target to every link to a Papierannahmestelle must actually accept paper
-                /*else if (vkg.ikVerknuepfungsartSchluessel == "09") {
-                    const papierannahmestelle = institutionsByIK.get(vkg.verknuepfungspartnerIK)!
-                    if (papierannahmestelle.uemList.length == 0) {
-                        errors.push(`${errMsg} as Papierannahmestelle but that IK does not accept any data`)
-                    } else {
-                        const acceptsSomePaper = papierannahmestelle.uemList.some(uem => 
-                            ["5", "6"].includes(uem.uebermittlungsmediumSchluessel)
-                        )
-                        if (!acceptsSomePaper) {
-                            errors.push(`${errMsg} as Papierannahmestelle but that IK does not accept paper`)
-                        }
-                    }
-                }*/
             }
         })
     })
     return errors
+}
+
+function isInstitutionAcceptingData(institution: KOTRMessage): boolean {
+    return institution.uemList.some(uem => 
+        ["1","2","3","4","7","9"].includes(uem.uebermittlungsmediumSchluessel)
+    )
 }
 
 /** Parse only one message of the interchange */
