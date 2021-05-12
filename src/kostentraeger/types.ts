@@ -69,19 +69,15 @@ export type Institution = {
      *  several different Kostenträger for different regions / health care provider groups etc, 
      *  this is why there can be several links.
      */
-    /** Link(s) to Datenannahmestellen (=data acceptance office) */
-    kostentraegerLinks: KostentraegerLink[],
-    /** Link(s) to Datenannahmestellen (=data acceptance office). See comment for kostentraegerLinks */
-    datenannahmestelleLinks: DatenannahmestelleLink[],
+    kostentraegerLinks: InstitutionLink[],
+    /** Link(s) to Datenannahmestellen (=data acceptance office) that can decrypt the data. 
+     *  See comment for kostentraegerLinks */
+    datenannahmestelleLinks: InstitutionLink[],
+    /** Link(s) to Datenannahmestellen (=data acceptance office) that cannot decrypt the data. 
+     *  See comment for kostentraegerLinks */
+    untrustedDatenannahmestelleLinks: InstitutionLink[],
     /** Link(s) to Papierannahmestellen (=paper acceptance office) */
     papierannahmestelleLinks: PapierannahmestelleLink[]
-}
-
-export type KostentraegerLink = InstitutionLink
-
-export type DatenannahmestelleLink = InstitutionLink & {
-    /** whether this data acceptance office can actually decrypt the receipts */
-    canDecrypt: boolean
 }
 
 export type PapierannahmestelleLink = InstitutionLink & {

@@ -10,11 +10,9 @@ import { VerfahrenSchluessel } from "./filename/codes"
 import { 
     Address, 
     Contact, 
-    DatenannahmestelleLink, 
     Institution, 
     InstitutionLink, 
     InstitutionListParseResult,
-    KostentraegerLink,
     KVLocationSchluessel,
     PapierannahmestelleLink,
     ReceiptTransmissionMethods
@@ -119,12 +117,16 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
 
     const kostentraegerLinks = msg.vkgList
         .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "01")
-        .map((vkg) => createKostentraegerLink(vkg))
+        .map((vkg) => createInstitutionLink(vkg))
 
     const datenannahmestelleLinks = msg.vkgList
-        .filter((vkg) => ["02", "03"].includes(vkg.ikVerknuepfungsartSchluessel))
-        .map((vkg) => createDatenannahmestelleLink(vkg))
+        .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "03")
+        .map((vkg) => createInstitutionLink(vkg))
     
+    const untrustedDatenannahmestelleLinks = msg.vkgList
+        .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "02")
+        .map((vkg) => createInstitutionLink(vkg))
+
     const papierannahmestelleLinks = msg.vkgList
         .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "09")
         .map((vkg) => createPapierannahmestelleLink(vkg))
@@ -144,6 +146,7 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
         transmissionMethods: createReceiptTransmissionMethods(msg.uemList, msg.dfuList),
         kostentraegerLinks: kostentraegerLinks,
         datenannahmestelleLinks: datenannahmestelleLinks,
+        untrustedDatenannahmestelleLinks: untrustedDatenannahmestelleLinks,
         papierannahmestelleLinks: papierannahmestelleLinks
     }
 }
@@ -187,24 +190,6 @@ function createPapierannahmestelleLink(vkg: VKG): PapierannahmestelleLink {
         prescription: prescription,
         costEstimate: costEstimate
     }
-}
-
-function createDatenannahmestelleLink(vkg: VKG): DatenannahmestelleLink {
-    const institutionLink = createInstitutionLink(vkg)
-    const verknuepfungsart = vkg.ikVerknuepfungsartSchluessel
-    let canDecrypt: boolean
-    if (verknuepfungsart == "02") {
-        canDecrypt = false
-    } else if (verknuepfungsart == "03") {
-        canDecrypt = true
-    } else {
-        throw new Error(`Unexpected value "${verknuepfungsart}" for ikVerknuepfungsartSchluessel`)
-    }
-    return { ...institutionLink, canDecrypt: canDecrypt }
-}
-    
-function createKostentraegerLink(vkg: VKG): KostentraegerLink {
-    return createInstitutionLink(vkg)
 }
 
 const bundeslandSchluesselToKVLocation = 

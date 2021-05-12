@@ -177,13 +177,12 @@ describe("kostentraeger transformer", () => {
                     sgbxiLeistungsart: "00"
                 }],
                 datenannahmestelleLinks: [{
+                    ik: "112200001"
+                }],
+                untrustedDatenannahmestelleLinks: [{
                     ik: "112200000",
                     location: "SH",
-                    canDecrypt: false,
                     sgbxiLeistungsart: "12"
-                }, {
-                    ik: "112200001",
-                    canDecrypt: true
                 }],
                 papierannahmestelleLinks: [{
                     ik: "334455667",
