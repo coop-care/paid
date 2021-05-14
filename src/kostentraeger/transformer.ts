@@ -131,6 +131,8 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
         .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "09")
         .map((vkg) => createPapierannahmestelleLink(vkg))
 
+    const contacts = msg.aspList.map((asp) => createContact(asp))
+
     return {
         ik: msg.idk.ik,
         name: msg.nam.names.join(" "),
@@ -141,13 +143,13 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
         validityFrom: msgValidityStartDate > interchangeValidityStartDate ? msgValidityStartDate : undefined,
         validityTo: msgValidityEndDate,
 
-        contacts: msg.aspList.map((asp) => createContact(asp)),
+        contacts: contacts.length > 0 ? contacts : undefined,
         addresses: msg.ansList.map((ans) => createAddress(ans)),
         transmissionMethods: createReceiptTransmissionMethods(msg.uemList, msg.dfuList),
-        kostentraegerLinks: kostentraegerLinks,
-        datenannahmestelleLinks: datenannahmestelleLinks,
-        untrustedDatenannahmestelleLinks: untrustedDatenannahmestelleLinks,
-        papierannahmestelleLinks: papierannahmestelleLinks
+        kostentraegerLinks: kostentraegerLinks.length > 0 ? kostentraegerLinks : undefined,
+        datenannahmestelleLinks: datenannahmestelleLinks.length > 0 ? datenannahmestelleLinks : undefined,
+        untrustedDatenannahmestelleLinks: untrustedDatenannahmestelleLinks.length > 0 ? untrustedDatenannahmestelleLinks : undefined,
+        papierannahmestelleLinks: papierannahmestelleLinks.length > 0 ? papierannahmestelleLinks : undefined
     }
 }
 
@@ -185,10 +187,10 @@ function createPapierannahmestelleLink(vkg: VKG): PapierannahmestelleLink {
     }
 
     return { ...institutionLink,
-        paperReceipt: paperReceipt,
-        machineReadablePaperReceipt: machineReadablePaperReceipt,
-        prescription: prescription,
-        costEstimate: costEstimate
+        paperReceipt: paperReceipt || undefined,
+        machineReadablePaperReceipt: machineReadablePaperReceipt || undefined,
+        prescription: prescription || undefined,
+        costEstimate: costEstimate || undefined
     }
 }
 
@@ -280,19 +282,17 @@ function createInstitutionLink(vkg: VKG): InstitutionLink {
 }
 
 function createReceiptTransmissionMethods(uemList: UEM[], dfuList: DFU[]): ReceiptTransmissionMethods | undefined {
-    if (uemList.length == 0) return undefined
+    if (uemList.length == 0 || dfuList.length == 0) return undefined
 
     let zeichensatzSchluessel, email, ftam
-    if (dfuList.length > 0) {
-        zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
-        email = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
-        ftam = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "016")?.address
-    }
+    zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
+    email = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
+    ftam = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "016")?.address
 
     return {
         email: email,
         ftam: ftam,
-        zeichensatz: zeichensatzSchluessel
+        zeichensatz: zeichensatzSchluessel!
     }
 }
 

@@ -54,7 +54,7 @@ export type Institution = {
     validityTo?: Date,
 
     /** Contacts. This list may be empty */
-    contacts: Contact[],
+    contacts?: Contact[],
     /** Address(es). Contains one to three addresses, (max) one for each type */
     addresses: Address[],
     /** Details on where and with which protocol to send receipts. Undefined if this institution
@@ -69,26 +69,26 @@ export type Institution = {
      *  several different Kostenträger for different regions / health care provider groups etc, 
      *  this is why there can be several links.
      */
-    kostentraegerLinks: InstitutionLink[],
+    kostentraegerLinks?: InstitutionLink[],
     /** Link(s) to Datenannahmestellen (=data acceptance office) that can decrypt the data. 
      *  See comment for kostentraegerLinks */
-    datenannahmestelleLinks: InstitutionLink[],
+    datenannahmestelleLinks?: InstitutionLink[],
     /** Link(s) to Datenannahmestellen (=data acceptance office) that cannot decrypt the data. 
      *  See comment for kostentraegerLinks */
-    untrustedDatenannahmestelleLinks: InstitutionLink[],
+    untrustedDatenannahmestelleLinks?: InstitutionLink[],
     /** Link(s) to Papierannahmestellen (=paper acceptance office) */
-    papierannahmestelleLinks: PapierannahmestelleLink[]
+    papierannahmestelleLinks?: PapierannahmestelleLink[]
 }
 
 export type PapierannahmestelleLink = InstitutionLink & {
     /** Whether it accepts paper receipts that are not machine readable (Rechnung auf Papier) */
-    paperReceipt: boolean,
+    paperReceipt?: boolean,
     /** Whether it accepts paper receipts that are machine readable (maschinenlesbarer Beleg) */
-    machineReadablePaperReceipt: boolean,
+    machineReadablePaperReceipt?: boolean,
     /** Whether it accepts prescriptions (Verordnungen) */
-    prescription: boolean,
+    prescription?: boolean,
     /** Whether it accepts cost estimates (Kostenvoranschlag) */
-    costEstimate: boolean
+    costEstimate?: boolean
 }
 
 export type InstitutionLink = {
@@ -163,7 +163,7 @@ export type ReceiptTransmissionMethods = {
     /** FTAM address + charset to use to send receipts. Undefined if FTAM is not accepted. */
     ftam?: string | undefined,
     /** Charset in which the data must be transmitted (for email / FTAM) */
-    zeichensatz?: UebermittlungszeichensatzSchluessel
+    zeichensatz: UebermittlungszeichensatzSchluessel
 }
 
 export type Contact = {

@@ -319,10 +319,10 @@ function filterPapierannahmestelleLinksByDataType(
     annahmestellen: PapierannahmestelleLink[]
 ): PapierannahmestelleLink[] {
     switch(dataType) {
-        case "paperReceipt":                return annahmestellen.filter(it => it.paperReceipt)
-        case "machineReadablePaperReceipt": return annahmestellen.filter(it => it.machineReadablePaperReceipt)
-        case "costEstimate":                return annahmestellen.filter(it => it.costEstimate)
-        case "prescription":                return annahmestellen.filter(it => it.prescription)
+        case "paperReceipt":                return annahmestellen.filter(it => !!it.paperReceipt)
+        case "machineReadablePaperReceipt": return annahmestellen.filter(it => !!it.machineReadablePaperReceipt)
+        case "costEstimate":                return annahmestellen.filter(it => !!it.costEstimate)
+        case "prescription":                return annahmestellen.filter(it => !!it.prescription)
     }
     return []
 }
@@ -331,11 +331,13 @@ function filterPapierannahmestelleLinksByDataType(
 /** Return all institution links that match the given parameters of the care provider. See
  *  isInstitutionLinkApplicable for more details */
 function findApplicableInstitutionLinks<L extends InstitutionLink>(
-    links: L[],
+    links: L[] | undefined,
     leistungsart: Leistungsart,
     location: CareProviderLocationSchluessel
 ): L[] {
     const result: L[] = []
+    if (!links) return result
+
     for (const link of links) {
         if (isInstitutionLinkApplicable(link, leistungsart, location, false)) {
             result.push(link)

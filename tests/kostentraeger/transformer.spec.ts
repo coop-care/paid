@@ -186,7 +186,6 @@ describe("kostentraeger transformer", () => {
                     ik: "334455667",
                     location: "Nordrhein",
                     sgbvAbrechnungscode: "25",
-                    paperReceipt: false,
                     machineReadablePaperReceipt: true,
                     costEstimate: true,
                     prescription: true
@@ -194,9 +193,6 @@ describe("kostentraeger transformer", () => {
                     ik: "112233445",
                     sgbxiLeistungsart: "00",
                     paperReceipt: true,
-                    machineReadablePaperReceipt: false,
-                    costEstimate: false,
-                    prescription: false
                 }]
             }],
         }
