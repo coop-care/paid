@@ -282,9 +282,6 @@ function createInstitutionLink(vkg: VKG): InstitutionLink {
 function createReceiptTransmissionMethods(uemList: UEM[], dfuList: DFU[]): ReceiptTransmissionMethods | undefined {
     if (uemList.length == 0) return undefined
 
-    const machineReadablePaperReceipt = uemList.some((uem) => uem.uebermittlungsmediumSchluessel == "5")
-    const paperReceipt = uemList.some((uem) => uem.uebermittlungsmediumSchluessel == "6")
-
     let zeichensatzSchluessel, email, ftam
     if (dfuList.length > 0) {
         zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
@@ -292,13 +289,7 @@ function createReceiptTransmissionMethods(uemList: UEM[], dfuList: DFU[]): Recei
         ftam = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "016")?.address
     }
 
-    if(!paperReceipt && !machineReadablePaperReceipt && !email && !ftam) {
-        throw new Error(`Expected that institution accepts either paper receipts or sent via email or ftam`)
-    }
-
     return {
-        paperReceipt: paperReceipt,
-        machineReadablePaperReceipt: machineReadablePaperReceipt,
         email: email,
         ftam: ftam,
         zeichensatz: zeichensatzSchluessel

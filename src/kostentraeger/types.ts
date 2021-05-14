@@ -158,10 +158,6 @@ export type CareProviderLocationSchluessel =
 
 /** Simplified data model of UEM+DFU from the Kostenträger file with legacy stuff removed */
 export type ReceiptTransmissionMethods = {
-    /** Whether it accepts paper receipts that are not machine readable */
-    paperReceipt: boolean,
-    /** Whether it accepts paper receipts that are machine readable */
-    machineReadablePaperReceipt: boolean,
     /** Email address + charset to use to send receipts. Undefined if email is not accepted. */
     email?: string | undefined,
     /** FTAM address + charset to use to send receipts. Undefined if FTAM is not accepted. */

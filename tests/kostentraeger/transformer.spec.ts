@@ -165,8 +165,6 @@ describe("kostentraeger transformer", () => {
                     }
                 ],
                 transmissionMethods: {
-                    paperReceipt: false,
-                    machineReadablePaperReceipt: true,
                     email: "ok@go.de",
                     ftam: "ftam.blub-it.de:5000",
                     zeichensatz: "I8"
