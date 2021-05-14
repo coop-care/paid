@@ -24,7 +24,9 @@ export type KostentraegerFindResult = {
     pflegekasse: Institution,
     /** Information on the instutition which shall be the Kostenträger of this receipt */
     kostentraeger: Institution,
-    /** Information on the institution for which the receipt shall be encrypted */
+    /** Information on the institution for which the receipt shall be encrypted. If this is not 
+     *  about a digital receipt, this field is undefined.
+     */
     encryptTo?: Institution,
     /** Information on the institution to which the receipt shall be sent */
     sendTo: Institution 
@@ -75,13 +77,13 @@ export class KostentraegerIndex {
 
     /** Find information on the Kostenträger for sending the given data type
      * 
-     * @param dataType What shall be sent: digital receipts, paper receipts, prescriptions,... etc
+     * @param paperDataType What shall be sent: digital receipts, paper receipts, prescriptions, etc
      *        0 for digital receipts.
      * 
      * @param pflegekasseIK 9-digit "Institutionskennzeichen" of the care insurance of the insuree
      * 
      * @param leistungsart Type of health care service provided. Either a health care service type 
-     *        (Leistungsart) from SGB XI or a from SGB V (Abrechnungscode).
+     *        (Leistungsart) from SGB XI or one from SGB V (Abrechnungscode).
      * 
      * @param location Location of the health care service provider
      * 
