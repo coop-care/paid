@@ -1,8 +1,9 @@
-import { DataType, KostentraegerFindResult, KostentraegerIndex, Leistungsart } from "../../src/kostentraeger/index"
+import { KostentraegerFindResult, KostentraegerIndex, Leistungsart } from "../../src/kostentraeger/index"
 import { 
     CareProviderLocationSchluessel,
     Institution,
-    InstitutionList
+    InstitutionList,
+    PaperDataType
 } from "../../src/kostentraeger/types"
 
 describe("Kostenträger index", () => {
@@ -571,24 +572,21 @@ describe("Kostenträger index", () => {
             ...base, 
             papierannahmestelleLinks: [{
                 ik: "00000001",
-                paperReceipt: false,
-                machineReadablePaperReceipt: true,
-                prescription: true,
-                costEstimate: false
+                types: PaperDataType.MachineReadableReceipt | PaperDataType.Prescription
             }],
             ik: "00000001"
         } as Institution
         const institutionList = [institutionListOf([kasse])]
 
-        expect(find(institutionList, "00000001", { dataType: "paperReceipt" })).toEqual(undefined)
-        expect(find(institutionList, "00000001", { dataType: "costEstimate" })).toEqual(undefined)
+        expect(find(institutionList, "00000001", { paperDataType: PaperDataType.Receipt })).toEqual(undefined)
+        expect(find(institutionList, "00000001", { paperDataType: PaperDataType.CostEstimate })).toEqual(undefined)
 
-        expect(find(institutionList, "00000001", { dataType: "machineReadablePaperReceipt" })).toEqual({
+        expect(find(institutionList, "00000001", { paperDataType: PaperDataType.MachineReadableReceipt })).toEqual({
             pflegekasse: kasse,
             kostentraeger: kasse,
             sendTo: kasse 
         })
-        expect(find(institutionList, "00000001", { dataType: "prescription" })).toEqual({
+        expect(find(institutionList, "00000001", { paperDataType: PaperDataType.Prescription })).toEqual({
             pflegekasse: kasse,
             kostentraeger: kasse,
             sendTo: kasse 
@@ -598,25 +596,22 @@ describe("Kostenträger index", () => {
             ...base, 
             papierannahmestelleLinks: [{
                 ik: "00000001",
-                paperReceipt: true,
-                machineReadablePaperReceipt: false,
-                prescription: false,
-                costEstimate: true
+                types: PaperDataType.Receipt | PaperDataType.CostEstimate
             }],
             ik: "00000001"
         } as Institution
 
         const institutionList2 = [institutionListOf([kasse2])]
 
-        expect(find(institutionList2, "00000001", { dataType: "machineReadablePaperReceipt" })).toEqual(undefined)
-        expect(find(institutionList2, "00000001", { dataType: "prescription" })).toEqual(undefined)
+        expect(find(institutionList2, "00000001", { paperDataType: PaperDataType.MachineReadableReceipt })).toEqual(undefined)
+        expect(find(institutionList2, "00000001", { paperDataType: PaperDataType.Prescription })).toEqual(undefined)
 
-        expect(find(institutionList2, "00000001", { dataType: "paperReceipt" })).toEqual({
+        expect(find(institutionList2, "00000001", { paperDataType: PaperDataType.Receipt })).toEqual({
             pflegekasse: kasse2,
             kostentraeger: kasse2,
             sendTo: kasse2 
         })
-        expect(find(institutionList2, "00000001", { dataType: "costEstimate" })).toEqual({
+        expect(find(institutionList2, "00000001", { paperDataType: PaperDataType.CostEstimate })).toEqual({
             pflegekasse: kasse2,
             kostentraeger: kasse2,
             sendTo: kasse2 
@@ -657,10 +652,7 @@ const linksPapierAndDatenannahmeTo = (ik: string) => ({
     }],
     papierannahmestelleLinks: [{
         ik: ik,
-        paperReceipt: true,
-        machineReadablePaperReceipt: true,
-        prescription: true,
-        costEstimate: true
+        types: PaperDataType.CostEstimate | PaperDataType.MachineReadableReceipt | PaperDataType.Prescription | PaperDataType.Receipt
     }]
 })
 
@@ -676,7 +668,7 @@ const acceptsData = {
 const simple = { ...base, ...acceptsData, ...linksPapierAndDatenannahmeTo(defaultIK) } as Institution
 
 type OptFindParams = {
-    dataType?: DataType
+    paperDataType?: PaperDataType
     leistungsart?: Leistungsart,
     location?: CareProviderLocationSchluessel,
     date?: Date
@@ -686,13 +678,13 @@ function find(
     institutionLists: InstitutionList[],
     pflegekasseIK: string,
     {
-        dataType = "digitalReceipt",
+        paperDataType = 0,
         leistungsart = { sgbxiLeistungsart: "01" },
         location = "HH",
         date = new Date()
     }: OptFindParams = {}
 ): KostentraegerFindResult | undefined {
     return new KostentraegerIndex(institutionLists).find(
-        dataType, pflegekasseIK, leistungsart, location, date
+        paperDataType, pflegekasseIK, leistungsart, location, date
     )
 }

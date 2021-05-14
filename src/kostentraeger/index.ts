@@ -13,6 +13,7 @@ import {
     Institution,
     InstitutionLink,
     InstitutionList,
+    PaperDataType,
     PapierannahmestelleLink
 } from "./types";
 
@@ -32,13 +33,6 @@ export type KostentraegerFindResult = {
 export type Leistungsart = SGBXILeistungsart | SGBVAbrechnungscode
 export type SGBXILeistungsart = { sgbxiLeistungsart: SGBXILeistungsartSchluessel }
 export type SGBVAbrechnungscode = { sgbvAbrechnungscode: SGBVAbrechnungscodeEinzelschluessel }
-
-export type DataType = 
-    "digitalReceipt" |
-    "paperReceipt" | 
-    "machineReadablePaperReceipt" |
-    "prescription" |
-    "costEstimate"
 
 type InstitutionListWithValidityStartDate = {
     validityStartDate: Date,
@@ -82,6 +76,7 @@ export class KostentraegerIndex {
     /** Find information on the Kostenträger for sending the given data type
      * 
      * @param dataType What shall be sent: digital receipts, paper receipts, prescriptions,... etc
+     *        0 for digital receipts.
      * 
      * @param pflegekasseIK 9-digit "Institutionskennzeichen" of the care insurance of the insuree
      * 
@@ -94,7 +89,7 @@ export class KostentraegerIndex {
      *        institutions given in the Kostenträger files have a validity date range.
      */
     find(
-        dataType: DataType,
+        paperDataType: PaperDataType,
         pflegekasseIK: string,
         leistungsart: Leistungsart,
         location: CareProviderLocationSchluessel,
@@ -126,7 +121,7 @@ export class KostentraegerIndex {
 
             const kostentraeger = findKostentraeger(pflegekasse, institutionsIndex, leistungsart, location)
             
-            if (dataType == "digitalReceipt") {
+            if (paperDataType == 0) {
 
                 const datenannahmestellen = findDatenannahmestelle(kostentraeger, institutionsIndex, leistungsart, location)
                 if (!datenannahmestellen) {
@@ -142,7 +137,7 @@ export class KostentraegerIndex {
 
             } else {
 
-                const sendTo = findPapierannahmestelle(kostentraeger, institutionsIndex, dataType, leistungsart, location)
+                const sendTo = findPapierannahmestelle(kostentraeger, institutionsIndex, paperDataType, leistungsart, location)
                 if (!sendTo) {
                     return
                 }
@@ -300,33 +295,19 @@ function findKostentraeger(
 function findPapierannahmestelle(
     kostentraeger: Institution,
     institutions: Map<string, Institution>,
-    dataType: DataType,
+    paperDataType: PaperDataType,
     leistungsart: Leistungsart,
     location: CareProviderLocationSchluessel,
 ): Institution | undefined {
 
     const links = findApplicableInstitutionLinks(kostentraeger.papierannahmestelleLinks, leistungsart, location)
-    const firstApplicableLink = filterPapierannahmestelleLinksByDataType(dataType, links)[0]
+    const firstApplicableLink = links.filter(link => link.types & paperDataType)[0]
     if (!firstApplicableLink) {
         return
     }
 
     return institutions.get(firstApplicableLink.ik)
 }
-
-function filterPapierannahmestelleLinksByDataType(
-    dataType: DataType,
-    annahmestellen: PapierannahmestelleLink[]
-): PapierannahmestelleLink[] {
-    switch(dataType) {
-        case "paperReceipt":                return annahmestellen.filter(it => !!it.paperReceipt)
-        case "machineReadablePaperReceipt": return annahmestellen.filter(it => !!it.machineReadablePaperReceipt)
-        case "costEstimate":                return annahmestellen.filter(it => !!it.costEstimate)
-        case "prescription":                return annahmestellen.filter(it => !!it.prescription)
-    }
-    return []
-}
-
 
 /** Return all institution links that match the given parameters of the care provider. See
  *  isInstitutionLinkApplicable for more details */

@@ -80,15 +80,16 @@ export type Institution = {
     papierannahmestelleLinks?: PapierannahmestelleLink[]
 }
 
+export enum PaperDataType {
+    Receipt = 1,
+    MachineReadableReceipt = 2,
+    Prescription = 4,
+    CostEstimate = 8,
+}
+
 export type PapierannahmestelleLink = InstitutionLink & {
-    /** Whether it accepts paper receipts that are not machine readable (Rechnung auf Papier) */
-    paperReceipt?: boolean,
-    /** Whether it accepts paper receipts that are machine readable (maschinenlesbarer Beleg) */
-    machineReadablePaperReceipt?: boolean,
-    /** Whether it accepts prescriptions (Verordnungen) */
-    prescription?: boolean,
-    /** Whether it accepts cost estimates (Kostenvoranschlag) */
-    costEstimate?: boolean
+    /** What data on paper is accepted. This is a bit field */
+    types: PaperDataType
 }
 
 export type InstitutionLink = {

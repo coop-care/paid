@@ -1,6 +1,6 @@
 import { KOTRInterchange } from "../../src/kostentraeger/edifact/segments"
 import transform from "../../src/kostentraeger/transformer"
-import { InstitutionList } from "../../src/kostentraeger/types"
+import { InstitutionList, PaperDataType } from "../../src/kostentraeger/types"
 
 
 describe("kostentraeger transformer", () => {
@@ -186,13 +186,11 @@ describe("kostentraeger transformer", () => {
                     ik: "334455667",
                     location: "Nordrhein",
                     sgbvAbrechnungscode: "25",
-                    machineReadablePaperReceipt: true,
-                    costEstimate: true,
-                    prescription: true
+                    types: PaperDataType.MachineReadableReceipt | PaperDataType.CostEstimate | PaperDataType.Prescription,
                 }, {
                     ik: "112233445",
                     sgbxiLeistungsart: "00",
-                    paperReceipt: true,
+                    types: PaperDataType.Receipt,
                 }]
             }],
         }

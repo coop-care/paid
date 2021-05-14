@@ -1,5 +1,6 @@
 import { 
     BundeslandSchluessel,
+    DatenlieferungsartSchluessel,
     KostentraegerSGBVAbrechnungscodeSchluessel,
     KostentraegerSGBXILeistungsartSchluessel,
     KVBezirkSchluessel, 
@@ -14,6 +15,7 @@ import {
     InstitutionLink, 
     InstitutionListParseResult,
     KVLocationSchluessel,
+    PaperDataType,
     PapierannahmestelleLink,
     ReceiptTransmissionMethods
 } from "./types"
@@ -155,43 +157,27 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
 
 function createPapierannahmestelleLink(vkg: VKG): PapierannahmestelleLink {
     const institutionLink = createInstitutionLink(vkg)
-    
-    const lieferungsartSchluessel = vkg.datenlieferungsartSchluessel
-    let paperReceipt = false
-    let machineReadablePaperReceipt = false
-    let prescription = false
-    let costEstimate = false
-    switch(lieferungsartSchluessel) {
-        case "21": 
-            paperReceipt = true
-            break
-        case "24": 
-            machineReadablePaperReceipt = true
-            break
-        case "26":
-            prescription = true
-            break
-        case "27":
-            costEstimate = true
-            break
-        case "28":
-            paperReceipt = true
-            prescription = true
-            costEstimate = true
-            break
-        case "29":
-            machineReadablePaperReceipt = true
-            prescription = true
-            costEstimate = true
-            break
-    }
+    const paperType = datenlieferungsartSchluesselToPaperType(vkg.datenlieferungsartSchluessel!)
 
-    return { ...institutionLink,
-        paperReceipt: paperReceipt || undefined,
-        machineReadablePaperReceipt: machineReadablePaperReceipt || undefined,
-        prescription: prescription || undefined,
-        costEstimate: costEstimate || undefined
+    return { ...institutionLink, types: paperType }
+}
+
+function datenlieferungsartSchluesselToPaperType(schluessel: DatenlieferungsartSchluessel): PaperDataType {
+    switch(schluessel) {
+        case "21": 
+            return PaperDataType.Receipt
+        case "24": 
+            return PaperDataType.MachineReadableReceipt
+        case "26":
+            return PaperDataType.Prescription
+        case "27":
+            return PaperDataType.CostEstimate
+        case "28":
+            return PaperDataType.Receipt | PaperDataType.Prescription | PaperDataType.CostEstimate
+        case "29":
+            return PaperDataType.MachineReadableReceipt | PaperDataType.Prescription | PaperDataType.CostEstimate
     }
+    return 0
 }
 
 const bundeslandSchluesselToKVLocation = 
