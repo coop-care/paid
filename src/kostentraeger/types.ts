@@ -89,7 +89,7 @@ export enum PaperDataType {
 
 export type PapierannahmestelleLink = InstitutionLink & {
     /** What data on paper is accepted. This is a bit field */
-    types: PaperDataType
+    paperTypes: PaperDataType
 }
 
 export type InstitutionLink = {

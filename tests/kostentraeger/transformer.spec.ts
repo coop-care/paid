@@ -186,11 +186,11 @@ describe("kostentraeger transformer", () => {
                     ik: "334455667",
                     location: "Nordrhein",
                     sgbvAbrechnungscode: "25",
-                    types: PaperDataType.MachineReadableReceipt | PaperDataType.CostEstimate | PaperDataType.Prescription,
+                    paperTypes: PaperDataType.MachineReadableReceipt | PaperDataType.CostEstimate | PaperDataType.Prescription,
                 }, {
                     ik: "112233445",
                     sgbxiLeistungsart: "00",
-                    types: PaperDataType.Receipt,
+                    paperTypes: PaperDataType.Receipt,
                 }]
             }],
         }
@@ -293,6 +293,65 @@ describe("kostentraeger transformer", () => {
         }
 
         expect(transform(interchange).institutionList.institutions).toHaveLength(0)
+    })
+
+    it("merge Papierannahmestellen-VKGs", () => {
+        const interchange: KOTRInterchange = {
+            issuerIK: "123456789",
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date("2020-01-01"),
+                version: 1
+            },
+            institutions: [{
+                id: 1, 
+                idk: {
+                    ik: "999999999",
+                    institutionsart: "99",
+                    abbreviatedName: "short name"
+                },
+                vdt: { validityFrom: new Date("2000-20-20") },
+                fkt: { verarbeitungskennzeichenSchluessel: "01" },
+                nam: { index: 1, names: ["name"]},
+                ansList: [],
+                vkgList: [{
+                    ikVerknuepfungsartSchluessel: "09",
+                    verknuepfungspartnerIK: "999999999",
+                    datenlieferungsartSchluessel: "21"
+                },{
+                    ikVerknuepfungsartSchluessel: "09",
+                    verknuepfungspartnerIK: "999999999",
+                    datenlieferungsartSchluessel: "24"
+                },{
+                    ikVerknuepfungsartSchluessel: "09",
+                    verknuepfungspartnerIK: "999999999",
+                    datenlieferungsartSchluessel: "28"
+                },],
+                aspList: [],
+                dfuList: [],
+                uemList: []
+            }]
+        }
+
+        const expectedInstitutionList = {
+            issuerIK: "123456789",
+            leistungserbringerGruppeSchluessel: "6",
+            kassenart: "AO",
+            validityStartDate: new Date("2020-01-01"),
+            institutions: [{
+                ik: "999999999",
+                abbreviatedName: "short name",
+                name: "name",
+                addresses: [],
+                papierannahmestelleLinks: [{
+                    ik: "999999999",
+                    paperTypes: PaperDataType.Receipt | PaperDataType.MachineReadableReceipt | PaperDataType.CostEstimate | PaperDataType.Prescription
+                }]
+            }],
+        } as InstitutionList
+
+        expect(json(transform(interchange).institutionList)).toEqual(json(expectedInstitutionList))
     })
 
 })

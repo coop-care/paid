@@ -20,6 +20,57 @@ import {
     ReceiptTransmissionMethods
 } from "./types"
 
+
+const datenlieferungsartSchluesselToPaperType = 
+    new Map<DatenlieferungsartSchluessel, PaperDataType>([
+        ["21", PaperDataType.Receipt],
+        ["24", PaperDataType.MachineReadableReceipt],
+        ["26", PaperDataType.Prescription],
+        ["27", PaperDataType.CostEstimate],
+        ["28", PaperDataType.Receipt | PaperDataType.Prescription | PaperDataType.CostEstimate],
+        ["29", PaperDataType.MachineReadableReceipt | PaperDataType.Prescription | PaperDataType.CostEstimate]
+    ])
+
+const bundeslandSchluesselToKVLocation = 
+    new Map<BundeslandSchluessel, KVLocationSchluessel>([
+        ["01", "SH"],
+        ["02", "HH"],
+        ["03", "NI"],
+        ["04", "HB"],
+        ["05", "NW"],
+        ["06", "HE"],
+        ["07", "RP"],
+        ["08", "BW"],
+        ["09", "BY"],
+        ["10", "SL"],
+        ["11", "BE"],
+        ["12", "BB"],
+        ["13", "MV"],
+        ["14", "SN"],
+        ["15", "ST"],
+        ["16", "TH"]
+    ])
+
+const kvBezirkSchluesselToKVLocation = 
+    new Map<KVBezirkSchluessel, KVLocationSchluessel>([
+        ["01", "SH"],
+        ["02", "HH"],
+        ["03", "HB"],
+        ["17", "NI"],
+        ["20", "Westfalen-Lippe"],
+        ["38", "Nordrhein"],
+        ["46", "HE"],
+        ["71", "BY"],
+        ["72", "BE"],
+        ["73", "SL"],
+        ["78", "MV"],
+        ["83", "BB"],
+        ["88", "ST"],
+        ["93", "TH"],
+        ["98", "SN"]
+    ])
+
+
 export default function transform(interchange: KOTRInterchange): InstitutionListParseResult {
 
     const validityStartDate = interchange.filename.validityStartDate
@@ -129,9 +180,7 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
         .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "02")
         .map((vkg) => createInstitutionLink(vkg))
 
-    const papierannahmestelleLinks = msg.vkgList
-        .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "09")
-        .map((vkg) => createPapierannahmestelleLink(vkg))
+    const papierannahmestelleLinks = createPapierannahmestelleLinks(msg.vkgList)
 
     const contacts = msg.aspList.map((asp) => createContact(asp))
 
@@ -155,69 +204,32 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
     }
 }
 
-function createPapierannahmestelleLink(vkg: VKG): PapierannahmestelleLink {
-    const institutionLink = createInstitutionLink(vkg)
-    const paperType = datenlieferungsartSchluesselToPaperType(vkg.datenlieferungsartSchluessel!)
+/** Due to the limitations of the EDIFACT format, a link to a Papierannahmestelle that accepts 
+ *  any paper may result in 2 - 6 links. Let's merge them here as well... */
+function createPapierannahmestelleLinks(vkgs: VKG[]): PapierannahmestelleLink[] {
+    const result: PapierannahmestelleLink[] = []
+    vkgs.forEach((vkg) => {
+        if (vkg.ikVerknuepfungsartSchluessel == "09") {
+            const paperType = datenlieferungsartSchluesselToPaperType.get(vkg.datenlieferungsartSchluessel!) ?? 0
+            const institutionLink = { ...createInstitutionLink(vkg), paperTypes: paperType }
 
-    return { ...institutionLink, types: paperType }
+            const existingInstitutionLink = result.find(link => isInstitutionLinkEqual(link, institutionLink))
+            if (existingInstitutionLink) {
+                existingInstitutionLink.paperTypes |= paperType
+            } else {
+                result.push(institutionLink)
+            }
+        }
+    })
+    return result
 }
 
-function datenlieferungsartSchluesselToPaperType(schluessel: DatenlieferungsartSchluessel): PaperDataType {
-    switch(schluessel) {
-        case "21": 
-            return PaperDataType.Receipt
-        case "24": 
-            return PaperDataType.MachineReadableReceipt
-        case "26":
-            return PaperDataType.Prescription
-        case "27":
-            return PaperDataType.CostEstimate
-        case "28":
-            return PaperDataType.Receipt | PaperDataType.Prescription | PaperDataType.CostEstimate
-        case "29":
-            return PaperDataType.MachineReadableReceipt | PaperDataType.Prescription | PaperDataType.CostEstimate
-    }
-    return 0
+function isInstitutionLinkEqual(a: InstitutionLink, b: InstitutionLink): boolean {
+    return a.ik == b.ik && 
+           a.location == a.location && 
+           a.sgbvAbrechnungscode == b.sgbvAbrechnungscode && 
+           a.sgbxiLeistungsart == b.sgbxiLeistungsart
 }
-
-const bundeslandSchluesselToKVLocation = 
-    new Map<BundeslandSchluessel, KVLocationSchluessel>([
-        ["01", "SH"],
-        ["02", "HH"],
-        ["03", "NI"],
-        ["04", "HB"],
-        ["05", "NW"],
-        ["06", "HE"],
-        ["07", "RP"],
-        ["08", "BW"],
-        ["09", "BY"],
-        ["10", "SL"],
-        ["11", "BE"],
-        ["12", "BB"],
-        ["13", "MV"],
-        ["14", "SN"],
-        ["15", "ST"],
-        ["16", "TH"]
-    ])
-
-const kvBezirkSchluesselToKVLocation = 
-    new Map<KVBezirkSchluessel, KVLocationSchluessel>([
-        ["01", "SH"],
-        ["02", "HH"],
-        ["03", "HB"],
-        ["17", "NI"],
-        ["20", "Westfalen-Lippe"],
-        ["38", "Nordrhein"],
-        ["46", "HE"],
-        ["71", "BY"],
-        ["72", "BE"],
-        ["73", "SL"],
-        ["78", "MV"],
-        ["83", "BB"],
-        ["88", "ST"],
-        ["93", "TH"],
-        ["98", "SN"]
-    ])
 
 function createInstitutionLink(vkg: VKG): InstitutionLink {
     if (vkg.abrechnungsstelleIK) {

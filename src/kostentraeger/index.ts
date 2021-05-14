@@ -301,7 +301,7 @@ function findPapierannahmestelle(
 ): Institution | undefined {
 
     const links = findApplicableInstitutionLinks(kostentraeger.papierannahmestelleLinks, leistungsart, location)
-    const firstApplicableLink = links.filter(link => link.types & paperDataType)[0]
+    const firstApplicableLink = links.filter(link => link.paperTypes & paperDataType)[0]
     if (!firstApplicableLink) {
         return
     }

@@ -572,7 +572,7 @@ describe("Kostenträger index", () => {
             ...base, 
             papierannahmestelleLinks: [{
                 ik: "00000001",
-                types: PaperDataType.MachineReadableReceipt | PaperDataType.Prescription
+                paperTypes: PaperDataType.MachineReadableReceipt | PaperDataType.Prescription
             }],
             ik: "00000001"
         } as Institution
@@ -596,7 +596,7 @@ describe("Kostenträger index", () => {
             ...base, 
             papierannahmestelleLinks: [{
                 ik: "00000001",
-                types: PaperDataType.Receipt | PaperDataType.CostEstimate
+                paperTypes: PaperDataType.Receipt | PaperDataType.CostEstimate
             }],
             ik: "00000001"
         } as Institution
@@ -652,7 +652,7 @@ const linksPapierAndDatenannahmeTo = (ik: string) => ({
     }],
     papierannahmestelleLinks: [{
         ik: ik,
-        types: PaperDataType.CostEstimate | PaperDataType.MachineReadableReceipt | PaperDataType.Prescription | PaperDataType.Receipt
+        paperTypes: PaperDataType.CostEstimate | PaperDataType.MachineReadableReceipt | PaperDataType.Prescription | PaperDataType.Receipt
     }]
 })
 
