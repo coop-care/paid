@@ -17,8 +17,9 @@ describe("kostentraeger fetcher", () => {
             institutionMap[filename] = parseResult.institutionList
         })
 
-        writeFileSync("kostentraeger.json", JSON.stringify(institutionMap, undefined, 2))
-        writeFileSync("kostentraeger-warnings.txt", warnings)
+        writeFileSync("dist/kostentraeger.json", JSON.stringify(institutionMap, undefined, 2))
+        writeFileSync("dist/kostentraeger.min.json", JSON.stringify(institutionMap))
+        writeFileSync("dist/kostentraeger-warnings.txt", warnings)
     })
 
 })
