@@ -160,16 +160,13 @@ export class KostentraegerIndex {
  */
 function findMostCurrentValidInstitutionList(lists: InstitutionListWithValidityStartDate[], date: Date): Institution[] | undefined {
     let result: Institution[] | undefined = undefined
-    let mostCurrentValidityStartDate: Date | undefined
-    for (let i = 0; i < lists.length; i++) {
-        const list = lists[i]
-        if (list.validityStartDate < date) {
-            if (!mostCurrentValidityStartDate || list.validityStartDate > mostCurrentValidityStartDate) {
-                result = list.institutions
-                mostCurrentValidityStartDate = list.validityStartDate
-            }
+    let mostCurrentValidityStartDate = new Date(0) // 1970
+    lists.forEach(list => {
+        if (list.validityStartDate < date && list.validityStartDate > mostCurrentValidityStartDate) {
+            result = list.institutions
+            mostCurrentValidityStartDate = list.validityStartDate
         }
-    }
+    })
     return result
 }
 
