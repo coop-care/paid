@@ -5,8 +5,9 @@
  * (see /docs/documents.md for more info)
  */
 
+import { KostentraegerFilenameElements } from "../filename/parser"
 import { 
-    KostentraegerAbrechnungscodeSchluessel,
+    KostentraegerSGBVAbrechnungscodeSchluessel,
     AnschriftartSchluessel, 
     BundeslandSchluessel, 
     DatenlieferungsartSchluessel, 
@@ -14,7 +15,7 @@ import {
     IKVerknuepfungsartSchluessel, 
     KVBezirkSchluessel, 
     LeistungserbringergruppeSchluessel, 
-    KostentraegerPflegeLeistungsartSchluessel, 
+    KostentraegerSGBXILeistungsartSchluessel, 
     UebermittlungsmediumParameterSchluessel, 
     UebermittlungsmediumSchluessel, 
     UebermittlungszeichensatzSchluessel, 
@@ -22,14 +23,24 @@ import {
     VerarbeitungskennzeichenSchluessel 
 } from "./codes"
 
+export type KOTRInterchangeParseResult = {
+    interchange: KOTRInterchange,
+    warnings: string[]
+}
+
 /** Contains all the KOTR messages of one EDIFACT interchange and information from the header */
 export type KOTRInterchange = {
-    /** Institutionskennzeichen (=Institution code) of the umbrella organization that issued this */
-    spitzenverbandIK: string
-    /** Date this list was created. This is not the validity start date. */
-    creationDate: Date,
+    /** Institutionskennzeichen (=Institution code) of the organization that issued this */
+    issuerIK: string
     /** All the Kostentraeger for this umbrella organization */
-    institutions: KOTRMessage[]
+    institutions: KOTRMessage[],
+    /** Filename elements of the parsed file. */
+    filename: KostentraegerFilenameElements
+}
+
+export type KOTRMessageParseResult = {
+    message: KOTRMessage,
+    warnings: string[]
 }
 
 /** All the segments of one KOTR (=Kostenträger) message */
@@ -111,7 +122,7 @@ export type VKG = {
      * 
      *  A value of 00 (Sammelschlüssel) means that this link is valid for all health care services 
      *  provided. */
-    pflegeLeistungsartSchluessel?: KostentraegerPflegeLeistungsartSchluessel,
+    sgbxiLeistungsartSchluessel?: KostentraegerSGBXILeistungsartSchluessel,
     /** A.k.a Leistungserbringerart. Only defined if leistungserbringergruppeSchluessel = 5 (Sonstige)
      *  
      *  The group/kind of health care service provided. Some of the possible values are groups. For
@@ -119,7 +130,7 @@ export type VKG = {
      *  
      *  A value of 00 (Sammelschlüssel) means that this link is valid for all health care services 
      *  provided. */
-    abrechnungscodeSchluessel?: KostentraegerAbrechnungscodeSchluessel,
+    sgbvAbrechnungscodeSchluessel?: KostentraegerSGBVAbrechnungscodeSchluessel,
     /** Only defined if leistungserbringergruppeSchluessel = 5 (Sonstige)
      *  
      *  A 5-digit numeral whose first 2 digits form the TarifbereichSchluessel and its last 3 digits
@@ -169,7 +180,7 @@ export type UEM = {
     /** Over which medium the invoices should be transmitted (internet, CD-ROM, floppy, ...) */
     uebermittlungsmediumSchluessel: UebermittlungsmediumSchluessel,
     /** Parameter for the medium */
-    uebermittlungsmediumParameterSchluessel: UebermittlungsmediumParameterSchluessel,
+    uebermittlungsmediumParameterSchluessel?: UebermittlungsmediumParameterSchluessel,
     /** In which character set the invoices should be transmitted */
     uebermittlungszeichensatzSchluessel: UebermittlungszeichensatzSchluessel
 }

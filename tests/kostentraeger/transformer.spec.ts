@@ -1,23 +1,29 @@
 import { KOTRInterchange } from "../../src/kostentraeger/edifact/segments"
 import transform from "../../src/kostentraeger/transformer"
-import { InstitutionList } from "../../src/kostentraeger/types"
+import { InstitutionList, PaperDataType } from "../../src/kostentraeger/types"
 
 
 describe("kostentraeger transformer", () => {
 
     it("transform one message", () => {
         const interchange: KOTRInterchange = {
-            spitzenverbandIK: "123456789",
-            creationDate: new Date("2020-20-20"),
+            issuerIK: "123456789",
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date("2018-05-05"),
+                version: 1
+            },
             institutions: [{
                 id: 1, 
                 idk: {
                     ik: "999999999",
                     institutionsart: "99",
-                    abbreviatedName: "short name"
+                    abbreviatedName: "short name",
+                    vertragskassennummer: 12345
                 },
                 vdt: {
-                    validityFrom: new Date("2020-20-20"),
+                    validityFrom: new Date("2010-20-20"),
                     validityTo: new Date("2088-10-10")
                 },
                 fkt: {
@@ -33,29 +39,39 @@ describe("kostentraeger transformer", () => {
                     bic: "bicbicbic"
                 },
                 vkgList: [
-                    {   // Kostenträger & Datenannahmestelle
+                    {   // Kostenträger
                         ikVerknuepfungsartSchluessel: "01",
                         verknuepfungspartnerIK: "555444333",
                         leistungserbringergruppeSchluessel: "6",
-                        datenlieferungsartSchluessel: "07",
                         standortLeistungserbringerBundeslandSchluessel: "02",
-                        pflegeLeistungsartSchluessel: "00"
+                    },
+                    {   // Datenannahmestelle ohne Entschlüsselungsbefugnis
+                        ikVerknuepfungsartSchluessel: "02",
+                        verknuepfungspartnerIK: "112200000",
+                        leistungserbringergruppeSchluessel: "6",
+                        datenlieferungsartSchluessel: "07",
+                        standortLeistungserbringerBundeslandSchluessel: "01",
+                        sgbxiLeistungsartSchluessel: "12"
+                    },
+                    {   // Datenannahmestelle mit Entschlüsselungsbefugnis
+                        ikVerknuepfungsartSchluessel: "03",
+                        verknuepfungspartnerIK: "112200001",
+                        datenlieferungsartSchluessel: "07",
+                        standortLeistungserbringerBundeslandSchluessel: "99"
                     },
                     {   // Machinenlesbare Belege Annahmestelle
-                        ikVerknuepfungsartSchluessel: "03",
+                        ikVerknuepfungsartSchluessel: "09",
                         verknuepfungspartnerIK: "334455667",
                         leistungserbringergruppeSchluessel: "5",
-                        datenlieferungsartSchluessel: "07",
-                        standortLeistungserbringerKVBezirkSchluessel: "37",
-                        abrechnungscodeSchluessel: "25",
-                        tarifkennzeichen: "12345"
+                        datenlieferungsartSchluessel: "29",
+                        standortLeistungserbringerKVBezirkSchluessel: "38",
+                        sgbvAbrechnungscodeSchluessel: "25"
                     },
                     {   // Papierannahmestelle
                         ikVerknuepfungsartSchluessel: "09",
                         verknuepfungspartnerIK: "112233445",
                         leistungserbringergruppeSchluessel: "6",
-                        datenlieferungsartSchluessel: "29",
-                        pflegeLeistungsartSchluessel: "00"
+                        datenlieferungsartSchluessel: "21"
                     },
                 ],
                 ansList: [
@@ -125,20 +141,16 @@ describe("kostentraeger transformer", () => {
         }
 
         const expectedInstitutionList: InstitutionList = {
-            spitzenverbandIK: "123456789",
-            creationDate: new Date("2020-20-20"),
+            issuerIK: "123456789",
+            leistungserbringerGruppeSchluessel: "6",
+            kassenart: "AO",
+            validityStartDate: new Date("2018-05-05"),
             institutions: [{
                 ik: "999999999",
                 abbreviatedName: "short name",
                 name: "very long name",
-                validityFrom: new Date("2020-20-20"),
                 validityTo: new Date("2088-10-10"),
-                bankAccountDetails: {
-                    bankName: "Sparbank",
-                    accountOwner: "short name",
-                    iban: "ibanibaniban",
-                    bic: "bicbicbic"
-                },
+                vertragskassennummer: 12345,
                 addresses: [
                     { postcode: 12345, place: "Humburg", streetAndHousenumber: "Straßenallee 33" },
                     { postcode: 12345, place: "Humburg", poBox: "123" },
@@ -153,46 +165,199 @@ describe("kostentraeger transformer", () => {
                     }
                 ],
                 transmissionMethods: {
-                    paperReceipt: false,
-                    machineReadablePaperReceipt: true,
                     email: "ok@go.de",
                     ftam: "ftam.blub-it.de:5000",
-                    zeichensatzSchluessel: "I8"
+                    zeichensatz: "I8"
                 },
-                links: [
-                    {
-                        ikVerknuepfungsartSchluessel: "01",
-                        verknuepfungspartnerIK: "555444333",
-                        leistungserbringergruppeSchluessel: "6",
-                        datenlieferungsartSchluessel: "07",
-                        standortLeistungserbringerBundeslandSchluessel: "02",
-                        pflegeLeistungsartSchluessel: "00"
-                    },
-                    {
-                        ikVerknuepfungsartSchluessel: "03",
-                        verknuepfungspartnerIK: "334455667",
-                        leistungserbringergruppeSchluessel: "5",
-                        datenlieferungsartSchluessel: "07",
-                        standortLeistungserbringerKVBezirkSchluessel: "37",
-                        abrechnungscodeSchluessel: "25",
-                        tarifkennzeichen: "12345"
-                    },
-                    {
-                        ikVerknuepfungsartSchluessel: "09",
-                        verknuepfungspartnerIK: "112233445",
-                        leistungserbringergruppeSchluessel: "6",
-                        datenlieferungsartSchluessel: "29",
-                        pflegeLeistungsartSchluessel: "00"
-                    }
-                ]
+                kostentraegerLinks: [{
+                    ik: "555444333",
+                    location: "HH",
+                    sgbxiLeistungsart: "00"
+                }],
+                datenannahmestelleLinks: [{
+                    ik: "112200001"
+                }],
+                untrustedDatenannahmestelleLinks: [{
+                    ik: "112200000",
+                    location: "SH",
+                    sgbxiLeistungsart: "12"
+                }],
+                papierannahmestelleLinks: [{
+                    ik: "334455667",
+                    location: "Nordrhein",
+                    sgbvAbrechnungscode: "25",
+                    paperTypes: PaperDataType.MachineReadableReceipt | PaperDataType.CostEstimate | PaperDataType.Prescription,
+                }, {
+                    ik: "112233445",
+                    sgbxiLeistungsart: "00",
+                    paperTypes: PaperDataType.Receipt,
+                }]
             }],
         }
 
-        /* need to compare the stringified and then parsed result because Javascript Date objects 
-           are compared using identity, not equality :-( */
-        const actual = JSON.parse(JSON.stringify(transform(interchange)))
-        const expected = JSON.parse(JSON.stringify(expectedInstitutionList))
+        const result = transform(interchange)
+        // there should also not be any warnings parsing this
+        expect(result.warnings).toEqual([])
 
-        expect(actual).toEqual(expected)
+        expect(json(result.institutionList)).toEqual(json(expectedInstitutionList))
     })
+    
+    it("skip message that is not valid anymore", () => {
+        const interchange: KOTRInterchange = {
+            issuerIK: "123456789",
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date("2010-01-01"),
+                version: 1
+            },
+            institutions: [{
+                id: 1, 
+                idk: {
+                    ik: "999999999",
+                    institutionsart: "99",
+                    abbreviatedName: "short name"
+                },
+                vdt: {
+                    validityFrom: new Date("2000-10-20"),
+                    validityTo: new Date("2009-12-31")          // <--- here
+                },
+                fkt: { verarbeitungskennzeichenSchluessel: "01" },
+                nam: { index: 1, names: ["name"]},
+                ansList: [],
+                vkgList: [],
+                aspList: [],
+                dfuList: [],
+                uemList: []
+            }]
+        }
+
+        expect(transform(interchange).institutionList.institutions).toHaveLength(0)
+    })
+
+    it("skip message with verarbeitungskennzeichen 3", () => {
+        const interchange: KOTRInterchange = {
+            issuerIK: "123456789",
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date("2020-01-01"),
+                version: 1
+            },
+            institutions: [{
+                id: 1, 
+                idk: {
+                    ik: "999999999",
+                    institutionsart: "99",
+                    abbreviatedName: "short name"
+                },
+                vdt: { validityFrom: new Date("2000-20-20") },
+                fkt: { verarbeitungskennzeichenSchluessel: "03" },   // <--- here
+                nam: { index: 1, names: ["name"]},
+                ansList: [],
+                vkgList: [],
+                aspList: [],
+                dfuList: [],
+                uemList: []
+            }]
+        }
+
+        expect(transform(interchange).institutionList.institutions).toHaveLength(0)
+    })
+
+    it("skip message that had a parsing error", () => {
+        const interchange: KOTRInterchange = {
+            issuerIK: "123456789",
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date("2020-01-01"),
+                version: 1
+            },
+            institutions: [{
+                id: 1, 
+                idk: {
+                    ik: "999999999",
+                    institutionsart: "15",                    // <--- here
+                    abbreviatedName: "short name"
+                },
+                vdt: { validityFrom: new Date("2000-20-20") },
+                fkt: { verarbeitungskennzeichenSchluessel: "01" },
+                nam: { index: 1, names: ["name"]},
+                ansList: [],
+                vkgList: [],
+                aspList: [],
+                dfuList: [],
+                uemList: []
+            }]
+        }
+
+        expect(transform(interchange).institutionList.institutions).toHaveLength(0)
+    })
+
+    it("merge Papierannahmestellen-VKGs", () => {
+        const interchange: KOTRInterchange = {
+            issuerIK: "123456789",
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date("2020-01-01"),
+                version: 1
+            },
+            institutions: [{
+                id: 1, 
+                idk: {
+                    ik: "999999999",
+                    institutionsart: "99",
+                    abbreviatedName: "short name"
+                },
+                vdt: { validityFrom: new Date("2000-20-20") },
+                fkt: { verarbeitungskennzeichenSchluessel: "01" },
+                nam: { index: 1, names: ["name"]},
+                ansList: [],
+                vkgList: [{
+                    ikVerknuepfungsartSchluessel: "09",
+                    verknuepfungspartnerIK: "999999999",
+                    datenlieferungsartSchluessel: "21"
+                },{
+                    ikVerknuepfungsartSchluessel: "09",
+                    verknuepfungspartnerIK: "999999999",
+                    datenlieferungsartSchluessel: "24"
+                },{
+                    ikVerknuepfungsartSchluessel: "09",
+                    verknuepfungspartnerIK: "999999999",
+                    datenlieferungsartSchluessel: "28"
+                },],
+                aspList: [],
+                dfuList: [],
+                uemList: []
+            }]
+        }
+
+        const expectedInstitutionList = {
+            issuerIK: "123456789",
+            leistungserbringerGruppeSchluessel: "6",
+            kassenart: "AO",
+            validityStartDate: new Date("2020-01-01"),
+            institutions: [{
+                ik: "999999999",
+                abbreviatedName: "short name",
+                name: "name",
+                addresses: [],
+                papierannahmestelleLinks: [{
+                    ik: "999999999",
+                    paperTypes: PaperDataType.Receipt | PaperDataType.MachineReadableReceipt | PaperDataType.CostEstimate | PaperDataType.Prescription
+                }]
+            }],
+        } as InstitutionList
+
+        expect(json(transform(interchange).institutionList)).toEqual(json(expectedInstitutionList))
+    })
+
 })
+
+/* need to compare the stringified and then parsed result because Javascript Date objects 
+are compared using identity, not equality :-( */
+function json(obj: object): object {
+    return JSON.parse(JSON.stringify(obj))
+}

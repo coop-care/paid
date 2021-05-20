@@ -1,19 +1,35 @@
-import { UebermittlungszeichensatzSchluessel } from "./edifact/codes"
-import { VKG } from "./edifact/segments"
+import { 
+    KostentraegerSGBVAbrechnungscodeSchluessel,
+    KostentraegerSGBXILeistungsartSchluessel,
+    LeistungserbringergruppeSchluessel, 
+    UebermittlungszeichensatzSchluessel 
+} from "./edifact/codes"
+import { KassenartSchluessel } from "./filename/codes"
 
 /**
  * These types represent the data from Kostentraeger file(s) cast into a (more) accessible data model
  */
 
-/** A list of Kostentraeger informations for one umbrella organization */
+/** A parse result of a list of Kostentraeger information for one umbrella organization. Includes
+ *  all warnings that occured when parsing the information
+ */
+export type InstitutionListParseResult = {
+    institutionList: InstitutionList,
+    warnings: string[]
+}
+
+/** A list of Kostentraeger information for one umbrella organization */
 export type InstitutionList = {
-    /** Institutionskennzeichen (=Institution code) of the umbrella organization that issued this
-     *  list */
-    spitzenverbandIK: string,
-    /** Date this list was created. This is not the validity start date. */
-    creationDate: Date,
+    /** Institutionskennzeichen (=Institution code) of the organization that issued this list */
+    issuerIK: string,
+    /** For which Leistungserbringergruppe this institution list is for */
+    leistungserbringerGruppeSchluessel: LeistungserbringergruppeSchluessel,
+    /** Key for which Kassenart this institution list is for */
+    kassenart: KassenartSchluessel,
+    /** Start of validity for this institution list */
+    validityStartDate: Date, 
     /** All the Kostentraeger for this umbrella organization */
-    institutions: Institution[]
+    institutions: Institution[],
 }
 
 /** Information for one Institution.
@@ -30,50 +46,125 @@ export type Institution = {
     /** Abbreviated name of the institution (max. 30 characters) */
     abbreviatedName: string,
 
-    /** Optional bank account details of this institution */
-    bankAccountDetails?: BankAccountDetails,
+    vertragskassennummer?: number,
 
-    /** Validity start date for this institution information. */
-    validityFrom: Date,
-    /** Validity end date for this institution information. May be undefined. */
+    /** Validity start date for this institution information. May be undefined if it is always valid */
+    validityFrom?: Date,
+    /** Validity end date for this institution information. May be undefined if it is always valid */
     validityTo?: Date,
 
     /** Contacts. This list may be empty */
-    contacts: Contact[],
+    contacts?: Contact[],
     /** Address(es). Contains one to three addresses, (max) one for each type */
     addresses: Address[],
     /** Details on where and with which protocol to send receipts. Undefined if this institution
      *  does not accept any receipts directly */
-    transmissionMethods: ReceiptTransmissionMethods | undefined,
-    /** Links to the Kostenträger (=institution that pays the receipts), to Datenannahmestellen
-     *  (=receipt data acceptance office) or to a Papierannahmestellen (=paper acceptance office).
-     *  
-     *  The institution with the IK as printed on the health-insurance card does only in the fewest
-     *  cases also manage the processing of the receipt data and manage the paying of receipts.
-     *  Usually such things are done by a central office. 
-     * 
-     *  The rules defined in the link define to which institution the receipts should be sent: It
-     *  can depend on the place the health care provider is located, what kind of health care 
-     *  service was provided, to which health care provider group it belongs and more. 
-     * */
-    links: InstitutionLink[]
+    transmissionMethods?: ReceiptTransmissionMethods,
+    /** Link(s) to Kostenträger (=institutions that pays the receipts). 
+     *  The institution with the IK as printed on the health-insurance card is not necessarily the
+     *  institution that manages paying the receipts. Usually such things are done by a central 
+     *  office. 
+     *  According to the official documentation, there should only ever be one Kostenträger link.
+     *  In reality, there is at least one health insurance (Knappschaft) that does indeed define
+     *  several different Kostenträger for different regions / health care provider groups etc, 
+     *  this is why there can be several links.
+     */
+    kostentraegerLinks?: InstitutionLink[],
+    /** Link(s) to Datenannahmestellen (=data acceptance office) that can decrypt the data. 
+     *  See comment for kostentraegerLinks */
+    datenannahmestelleLinks?: InstitutionLink[],
+    /** Link(s) to Datenannahmestellen (=data acceptance office) that cannot decrypt the data. 
+     *  See comment for kostentraegerLinks */
+    untrustedDatenannahmestelleLinks?: InstitutionLink[],
+    /** Link(s) to Papierannahmestellen (=paper acceptance office) */
+    papierannahmestelleLinks?: PapierannahmestelleLink[]
 }
 
-/* Same as VKG from Kostenträger file */
-export type InstitutionLink = VKG
+export enum PaperDataType {
+    Receipt = 1,
+    MachineReadableReceipt = 2,
+    Prescription = 4,
+    CostEstimate = 8,
+}
+
+export type PapierannahmestelleLink = InstitutionLink & {
+    /** What data on paper is accepted. This is a bit field */
+    paperTypes: PaperDataType
+}
+
+export type InstitutionLink = {
+    /** IK of the linked partner */
+    ik: string,
+    /** For which location of the care provider the link is valid */
+    location?: KVLocationSchluessel,
+    /** The type of care service provided according to SGB XI. I.e. the link is only valid for that
+     *  care service.
+     * 
+     *  A value of 00 (Sammelschlüssel) means that this link is valid for all care services 
+     *  provided, 99 means the link is valid for all services provided that are not listed */
+    sgbxiLeistungsart?: KostentraegerSGBXILeistungsartSchluessel,
+    /** A.k.a Leistungserbringerart. The group/kind of health care service provided for health
+     *  care services according to SGB V. I.e. the link is only valid for that
+     *  care service.
+     * 
+     *  Some of the possible values are groups. For example "30" means that this link is valid for
+     *  any nursing care (keys 31-34).
+     *  
+     *  A value of 00 (Sammelschlüssel) means that this link is valid for all care services 
+     *  provided, 99 means the link is valid for all services provided that are not listed */
+     sgbvAbrechnungscode?: KostentraegerSGBVAbrechnungscodeSchluessel
+}
+
+export const federalStateSchluesselWithoutNRWSchluessel = {
+    "SH": "Schleswig-Holstein",
+    "HH": "Hamburg",
+    "NI": "Niedersachsen",
+    "HB": "Bremen",
+    "HE": "Hessen",
+    "RP": "Rheinland-Pfalz",
+    "BW": "Baden-Württemberg",
+    "BY": "Bayern",
+    "SL": "Saarland",
+    "BE": "Berlin",
+    "BB": "Brandenburg",
+    "MV": "Mecklenburg-Vorpommern",
+    "SN": "Sachsen",
+    "ST": "Sachsen-Anhalt",
+    "TH": "Thüringen",
+}
+
+type FederalStateSchluesselWithoutNRWSchluessel = keyof typeof federalStateSchluesselWithoutNRWSchluessel
+
+export const nrwSubdivisionSchluessel = {
+    "Nordrhein": "Nordrhein (Düsseldorf, Köln)",
+    "Westfalen-Lippe": "Westfalen-Lippe (Arnsberg, Detmold, Münster)",
+}
+export type NRWSubdivisionSchluessel = keyof typeof nrwSubdivisionSchluessel
+
+/** Information for which region (usually federal state) the public health care institution 
+ *  (Kostenträger, Datenannahmestelle, ...) has authority. Special case is NRW: The AOK currently
+ *  (2021-05) distinguishes between the western or eastern part of Nordrhein-Westfalen
+ */
+export type KVLocationSchluessel = 
+    FederalStateSchluesselWithoutNRWSchluessel |
+    NRWSubdivisionSchluessel |
+    "NW" // Nordrhein-Westfalen
+
+/** Information in which region the health care provider is located. Special case is NRW: 
+ *  The AOK currently (2021-05) distinguishes between the western or eastern part of 
+ *  Nordrhein-Westfalen
+ */
+export type CareProviderLocationSchluessel = 
+    FederalStateSchluesselWithoutNRWSchluessel | NRWSubdivisionSchluessel
 
 /** Simplified data model of UEM+DFU from the Kostenträger file with legacy stuff removed */
 export type ReceiptTransmissionMethods = {
-    /** Whether it accepts paper receipts that are not machine readable */
-    paperReceipt: boolean,
-    /** Whether it accepts paper receipts that are machine readable */
-    machineReadablePaperReceipt: boolean,
     /** Email address + charset to use to send receipts. Undefined if email is not accepted. */
     email?: string | undefined,
     /** FTAM address + charset to use to send receipts. Undefined if FTAM is not accepted. */
     ftam?: string | undefined,
     /** Charset in which the data must be transmitted (for email / FTAM) */
-    zeichensatzSchluessel?: UebermittlungszeichensatzSchluessel
+    zeichensatz: UebermittlungszeichensatzSchluessel
 }
 
 export type Contact = {
@@ -106,11 +197,4 @@ type BasicAddress = {
     /** max. 25 characters */
     place: string,
     /** max. 30 characters */
-}
-
-export type BankAccountDetails = {
-    bankName: string,
-    accountOwner: string,
-    iban: string,
-    bic: string
 }

@@ -37,11 +37,15 @@ describe("filename parser", () => {
         expect(parseDate("0199")).toEqual(new Date(2099, 0))
     })
 
-    // TODO tzwick: test the other elements too
-
-    /* TODO tzwick: deferring fail-tests and the others until after deciding if the parser
-       should really be that strict
-    */
+    it("parsing file name in invalid format results in error", () => {
+        expect(() => parse("readme.md")).toThrow()
+        expect(() => parse("AO06Q221.Xe1")).toThrow()
+        expect(() => parse("AO06Q221.kX1")).toThrow()
+        expect(() => parse("XX06Q221.ke1")).toThrow()
+        expect(() => parse("AOXXQ221.ke1")).toThrow()
+        expect(() => parse("AO06XX21.ke1")).toThrow()
+        expect(() => parse("AO06Q221.kex")).toThrow()
+    })
 
     afterEach(() => {
         // reset mockings

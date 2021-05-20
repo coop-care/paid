@@ -4,11 +4,11 @@
  * 
  * (see /docs/documents.md for more info)
  */
-
+import parseFilename from "../filename/parser"
 import { parseDate } from "../../edifact/parse_utils"
 import { Interchange, Message } from "../../edifact/types"
 import { 
-    abrechnungscodeSonderschluessel, KostentraegerAbrechnungscodeSchluessel,
+    sgbvAbrechnungscodeSonderschluessel, KostentraegerSGBVAbrechnungscodeSchluessel,
     anschriftartSchluessel, AnschriftartSchluessel,
     bundeslandSchluessel, BundeslandSchluessel,
     datenlieferungsArtSchluessel, DatenlieferungsartSchluessel,
@@ -16,7 +16,7 @@ import {
     ikVerknuepfungsartSchluessel, IKVerknuepfungsartSchluessel, 
     kvBezirkSchluessel, KVBezirkSchluessel, 
     leistungserbringergruppeSchluessel, LeistungserbringergruppeSchluessel, 
-    pflegeLeistungsartSonderschluessel, KostentraegerPflegeLeistungsartSchluessel, 
+    sgbxiLeistungsartSonderschluessel, KostentraegerSGBXILeistungsartSchluessel, 
     uebermittlungsmediumParameterSchluessel, UebermittlungsmediumParameterSchluessel, 
     uebermittlungsmediumSchluessel, UebermittlungsmediumSchluessel,
     uebermittlungszeichensatzSchluessel, UebermittlungszeichensatzSchluessel,
@@ -24,12 +24,15 @@ import {
     verarbeitungskennzeichenSchluessel, VerarbeitungskennzeichenSchluessel
 } from "./codes"
 import {
-    abrechnungscodeSchluessel
+    abrechnungscodeSchluessel as sgbvAbrechnungscodeSchluessel
 } from "../../sgb-v/codes"
 import {
-    leistungsartSchluessel as pflegeLeistungsartSchluessel
+    leistungsartSchluessel as sgbxiLeistungsartSchluessel
 } from "../../sgb-xi/codes"
-import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, VDT, VKG } from "./segments"
+import { 
+    KOTRInterchangeParseResult, KOTRMessageParseResult, KOTRMessage, 
+    ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, VDT, VKG
+} from "./segments"
 
 /** 
  *  Parses a Kostenträgerdatei (payer file) which provides information how to send invoices to the
@@ -42,20 +45,100 @@ import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, FKT, IDK, KTO, NAM, UEM, V
 /* Transforms the serial data (array of arrays) from a Kostenträger EDIFACT-interchange into legible
  * messages with labelled typesafe segments. It does however not divorce the data structure from 
  * (the limitations of) the EDIFACT message format yet. */
-export default function parse(interchange: Interchange): KOTRInterchange {
+export default function parse(interchange: Interchange): KOTRInterchangeParseResult {
     const header = interchange.header
+
+    const warnings: string[] = []
+    const institutions = interchange.messages
+        .map((message) => { 
+            try {
+                const parseResult = parseMessage(message)
+                warnings.push(...parseResult.warnings)
+                return parseResult.message
+            } catch(e) {
+                warnings.push("skipped invalid " + e.message)
+            }
+         })
+        .filter((msg): msg is KOTRMessage => !!msg)
+
+    let fname = header[6][0]
+    const filenameElements = parseFilename(fname.substring(0, 8) + '.' + fname.substring(8, 11))
+
+    warnings.push(...validateLinks(institutions))
+
     return {
-        spitzenverbandIK: header[1][0],
-        creationDate: parseDate(header[3][0], header[3][1]),
-        institutions: interchange.messages.map((message) => parseMessage(message))
-        // header[6] would contain the file name. Though there is probably no meaning in parsing that
+        interchange: {
+            issuerIK: header[1][0],
+            /* creation date and time would be in header[3][0] and header[3][1], but date format is 
+               sometimes YYYYMMDD, sometimes YYMMDD and the info is not really needed anyway. So
+               no need to parse it, it only increases the complexity of this parser */
+            institutions: institutions,
+            filename: filenameElements
+        },
+        warnings: warnings
     }
 }
 
+/** Validate if all the VKG-links given in each KOTRMessage actually lead anywhere and also are
+ *  not contradictory
+*/
+function validateLinks(institutions: KOTRMessage[]): string[] {
+    const errors: string[] = []
+    const institutionsByIK = new Map<string, KOTRMessage>()
+    institutions.forEach((msg) => {
+        institutionsByIK.set(msg.idk.ik, msg)
+    })
+
+    institutions.forEach((msg) => {
+        msg.vkgList.forEach((vkg) => {
+            const errMsg = `IK ${msg.idk.ik} (${msg.idk.abbreviatedName}) links to IK ${vkg.verknuepfungspartnerIK}`
+            // every linked verknuepfungspartner must exist
+            if (!institutionsByIK.has(vkg.verknuepfungspartnerIK)) {
+                errors.push(`${errMsg} but that IK does not exist`)
+            } else {
+                const institution = institutionsByIK.get(vkg.verknuepfungspartnerIK)!
+                const acceptsData = isInstitutionAcceptingData(institution)
+                /* the link target to every link to a Datenannahmestelle without decrypt acapacity 
+                   must actually accept data */
+                if (vkg.ikVerknuepfungsartSchluessel == "02") {
+                    if (!acceptsData) {
+                        errors.push(`${errMsg} for data but that IK does not accept data`)
+                    }
+                }
+                /* the link target to every link to a Datenannahme with capacity to decrypt must 
+                   either accept data themselves or lead to one that does in one link-step */
+                if (vkg.ikVerknuepfungsartSchluessel == "03") {
+                    if (!acceptsData) {
+                        const butALinkAcceptsData = institution.vkgList.some((vkg) => {
+                            if (vkg.ikVerknuepfungsartSchluessel == "02") {
+                                const datenannahmestelle = institutionsByIK.get(vkg.verknuepfungspartnerIK)
+                                if (datenannahmestelle && isInstitutionAcceptingData(datenannahmestelle)) {
+                                    return true
+                                }
+                            }
+                            return false
+                        })
+                        if (!butALinkAcceptsData) {
+                            errors.push(`${errMsg} for data but neither that IK nor an IK it links to accepts data`)
+                        }
+                    }
+                }
+            }
+        })
+    })
+    return errors
+}
+
+function isInstitutionAcceptingData(institution: KOTRMessage): boolean {
+    return institution.uemList.some(uem => 
+        ["1","2","3","4","7","9"].includes(uem.uebermittlungsmediumSchluessel)
+    )
+}
+
 /** Parse only one message of the interchange */
-function parseMessage(message: Message): KOTRMessage {
+function parseMessage(message: Message): KOTRMessageParseResult {
     const messageId = parseInt(message.header[0][0])
-    const messageTxt = `Message ${messageId} -`
+    const messageTxt = `message ${messageId} -`
     const messageType = message.header[1][0]
     if (messageType != "KOTR") {
         throw new Error(`${messageTxt} Unknown message type ${messageType}`)
@@ -73,8 +156,14 @@ function parseMessage(message: Message): KOTRMessage {
     const ansList = new Array<ANS>()
     const aspList = new Array<ASP>()
     const dfuList = new Array<DFU>()
-    const uemList = new Array<UEM>() 
+    let uemList = new Array<UEM>() 
     const vkgList = new Array<VKG>()
+
+    const warnings: string[] = []
+
+    let vkgCount = 0
+    let uemCount = 0
+    let ansCount = 0
 
     message.segments.forEach((segment) => {
         const tag = segment.tag
@@ -105,22 +194,42 @@ function parseMessage(message: Message): KOTRMessage {
                     kto = readKTO(elements)
                     break
                 case "VKG": // Verknüpfung
-                    vkgList.push(readVKG(elements))
+                    try {
+                        ++vkgCount
+                        vkgList.push(readVKG(elements))
+                    } catch(e) {
+                        warnings.push(messageTxt + " skipped invalid VKG " + vkgCount + ": " + e.message)
+                    }
                     break
                 case "NAM": // Name
                     nam = readNAM(elements)
                     break
                 case "ANS": // Anschrift
-                    ansList.push(readANS(elements))
+                    try {
+                        ++ansCount
+                        ansList.push(readANS(elements))
+                    } catch(e) {
+                        warnings.push(messageTxt + " skipped invalid ANS " + ansCount + ": " + e.message)
+                    }
                     break
                 case "ASP": // Ansprechpartner
                     aspList.push(readASP(elements))
                     break
                 case "UEM": // Übermittlungsmedium
-                    uemList.push(readUEM(elements))
+                    try {
+                        ++uemCount
+                        uemList.push(readUEM(elements))
+                    } catch(e) {
+                        warnings.push(messageTxt + " skipped invalid UEM " + uemCount + ": " + e.message)
+                    }
                     break
                 case "DFU": // Datenfernübertragung
-                    dfuList.push(readDFU(elements))
+                    try {
+                        dfuList.push(readDFU(elements))
+                    } catch(e) {
+                        const index = parseInt(elements[0])
+                        warnings.push(messageTxt + " skipped invalid DFU " + index + ": " + e.message)
+                    }
                     break
             }
         } catch (error) {
@@ -144,9 +253,12 @@ function parseMessage(message: Message): KOTRMessage {
     if (ansList.length == 0) {
         throw new Error(`${messageTxt} At least one "ANS" element is required`)
     }
-    uemList.forEach((uem) => {
+    uemList = uemList.filter((uem, index) => {
         if (uem.uebermittlungsmediumSchluessel == "1" && dfuList.length == 0) {
-            throw new Error(`${messageTxt} Data inconsistency: At least one "DFU" element is required if UEM.uebermittlungsmediumSchluessel = 1`)
+            warnings.push(`${messageTxt} skipped invalid UEM ${index+1}: Refers to a non-existing DFU`)
+            return false
+        } else {
+            return true
         }
     })
 
@@ -154,17 +266,20 @@ function parseMessage(message: Message): KOTRMessage {
     dfuList.sort((a, b) => a.index - b.index)
 
     return {
-        id: messageId,
-        idk: idk,
-        vdt: vdt,
-        fkt: fkt,
-        nam: nam,
-        kto: kto,
-        vkgList: vkgList,
-        ansList: ansList,
-        aspList: aspList,
-        dfuList: dfuList,
-        uemList: uemList
+        message: {
+            id: messageId,
+            idk: idk,
+            vdt: vdt,
+            fkt: fkt,
+            nam: nam,
+            kto: kto,
+            vkgList: vkgList,
+            ansList: ansList,
+            aspList: aspList,
+            dfuList: dfuList,
+            uemList: uemList
+        },
+        warnings: warnings
     }
 }
 
@@ -222,7 +337,10 @@ const readVKG = (e: string[]): VKG => {
         throw new Error(`Unknown DatenlieferungsartSchluessel "${e4}"`)
     }
     if ((e0 == "02" || e0 == "03") && e4 != "07") {
-        throw new Error(`Data inconsistency: Link links to data acceptance office but that office does not accept data`)
+        throw new Error(`Links to data acceptance office that does not accept data`)
+    }
+    if (e0 == "09" && e4 == "07") {
+        throw new Error(`Links to paper acceptance office that does not accept paper`)
     }
     const e5 = e[5]
     if (e5 && !uebermittlungsmediumSchluessel.hasOwnProperty(e5)) {
@@ -237,25 +355,25 @@ const readVKG = (e: string[]): VKG => {
         throw new Error(`Unknown KVBezirkSchluessel "${e7}"`)
     }
     const e8 = e[8]
-    let pflegeLeistungsart: KostentraegerPflegeLeistungsartSchluessel | undefined
-    let abrechnungscode: KostentraegerAbrechnungscodeSchluessel | undefined
+    let sgbxiLeistungsart: KostentraegerSGBXILeistungsartSchluessel | undefined
+    let sgbvAbrechnungscode: KostentraegerSGBVAbrechnungscodeSchluessel | undefined
     if (e8) {
         if (e2 == "6") { // Pflege 
-            if (!pflegeLeistungsartSchluessel.hasOwnProperty(e8) && 
-                !pflegeLeistungsartSonderschluessel.hasOwnProperty(e8)) {
+            if (!sgbxiLeistungsartSchluessel.hasOwnProperty(e8) && 
+                !sgbxiLeistungsartSonderschluessel.hasOwnProperty(e8)) {
                 throw new Error(`Unknown KostentraegerPflegeLeistungsartSchluessel "${e8}"`)
             }
-            pflegeLeistungsart = e8 as KostentraegerPflegeLeistungsartSchluessel
+            sgbxiLeistungsart = e8 as KostentraegerSGBXILeistungsartSchluessel
         }
         else if (e2 == "5") { // Sonstige
-            if (!abrechnungscodeSchluessel.hasOwnProperty(e8) && 
-                !abrechnungscodeSonderschluessel.hasOwnProperty(e8)) {
+            if (!sgbvAbrechnungscodeSchluessel.hasOwnProperty(e8) && 
+                !sgbvAbrechnungscodeSonderschluessel.hasOwnProperty(e8)) {
                 throw new Error(`Unknown KostentraegerAbrechnungscodeSchluessel "${e8}"`)
             }
-            abrechnungscode = e8 as KostentraegerAbrechnungscodeSchluessel
+            sgbvAbrechnungscode = e8 as KostentraegerSGBVAbrechnungscodeSchluessel
         }
         else {
-            throw new Error(`Unexpected value for leistungserbringergruppeSchluessel: "${e2}"`)
+            throw new Error(`Unexpected value "${e2}" for leistungserbringergruppeSchluessel`)
         }
     }
 
@@ -268,8 +386,8 @@ const readVKG = (e: string[]): VKG => {
         uebermittlungsmediumSchluessel: e5 ? e5 as UebermittlungsmediumSchluessel : undefined,
         standortLeistungserbringerBundeslandSchluessel: e6 ? e6 as BundeslandSchluessel : undefined,
         standortLeistungserbringerKVBezirkSchluessel: e7 ? e7 as KVBezirkSchluessel : undefined,
-        pflegeLeistungsartSchluessel: pflegeLeistungsart,
-        abrechnungscodeSchluessel: abrechnungscode,
+        sgbxiLeistungsartSchluessel: sgbxiLeistungsart,
+        sgbvAbrechnungscodeSchluessel: sgbvAbrechnungscode,
         tarifkennzeichen: e[9] || undefined
     }
 }
@@ -308,7 +426,8 @@ const readUEM = (e: string[]): UEM => {
         throw new Error(`Unknown UebermittlungsmediumSchluessel "${e0}"`)
     }
     const e1 = e[1]
-    if (!uebermittlungsmediumParameterSchluessel.hasOwnProperty(e1)) {
+    // is documented to be mandatory, but not all health insurances specify this
+    if (e1 && !uebermittlungsmediumParameterSchluessel.hasOwnProperty(e1)) {
         throw new Error(`Unknown UebermittlungsmediumParameterSchluessel "${e1}"`)
     }
     const e2 = e[2]
@@ -317,7 +436,7 @@ const readUEM = (e: string[]): UEM => {
     }
     return {
         uebermittlungsmediumSchluessel: e0 as UebermittlungsmediumSchluessel,
-        uebermittlungsmediumParameterSchluessel: e1 as UebermittlungsmediumParameterSchluessel,
+        uebermittlungsmediumParameterSchluessel: e1 ? e1 as UebermittlungsmediumParameterSchluessel : undefined,
         uebermittlungszeichensatzSchluessel: e2 as UebermittlungszeichensatzSchluessel,
         // e[3] is type of compression - not used
     }
