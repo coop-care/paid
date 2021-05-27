@@ -1,5 +1,5 @@
-{
-  "AO06Q221.ke1": {
+[
+  {
     "issuerIK": "109910000",
     "leistungserbringerGruppeSchluessel": "6",
     "kassenart": "AO",
@@ -5718,7 +5718,7 @@
       }
     ]
   },
-  "BK06Q221.ke1": {
+  {
     "issuerIK": "104027544",
     "leistungserbringerGruppeSchluessel": "6",
     "kassenart": "BK",
@@ -12544,7 +12544,7 @@
       },
       {
         "ik": "661430035",
-        "name": "INTER-FORUM AG",
+        "name": "DAVASO GmbH",
         "abbreviatedName": "DAVASO zuvor INTER-FORUM",
         "contacts": [
           {
@@ -12556,9 +12556,13 @@
         ],
         "addresses": [
           {
+            "place": "Taucha",
+            "postcode": 4425,
+            "streetAndHousenumber": "Gärtnerweg 12"
+          },
+          {
             "place": "Leipzig",
-            "postcode": 4316,
-            "streetAndHousenumber": "Sommerfelder Str 120"
+            "postcode": 4310
           }
         ],
         "transmissionMethods": {
@@ -14717,7 +14721,7 @@
       }
     ]
   },
-  "IK06Q221.ke1": {
+  {
     "issuerIK": "109900019",
     "leistungserbringerGruppeSchluessel": "6",
     "kassenart": "IK",
@@ -15959,7 +15963,7 @@
       },
       {
         "ik": "661430035",
-        "name": "INTER-FORUM AG",
+        "name": "DAVASO GmbH",
         "abbreviatedName": "DAVASO vorm. INTER-FORUM AG",
         "contacts": [
           {
@@ -15971,9 +15975,13 @@
         ],
         "addresses": [
           {
+            "place": "Taucha",
+            "postcode": 4425,
+            "streetAndHousenumber": "Gärtnerweg 12"
+          },
+          {
             "place": "Leipzig",
-            "postcode": 4316,
-            "streetAndHousenumber": "Sommerfelder Str 120"
+            "postcode": 4310
           }
         ],
         "transmissionMethods": {
@@ -16136,7 +16144,7 @@
       }
     ]
   },
-  "BN06Q318.ke0": {
+  {
     "issuerIK": "109905003",
     "leistungserbringerGruppeSchluessel": "6",
     "kassenart": "BN",
@@ -20118,7 +20126,7 @@
       }
     ]
   },
-  "LK06Q121.ke0": {
+  {
     "issuerIK": "109908701",
     "leistungserbringerGruppeSchluessel": "6",
     "kassenart": "LK",
@@ -20566,7 +20574,7 @@
       }
     ]
   },
-  "LK06Q321.ke0": {
+  {
     "issuerIK": "109908701",
     "leistungserbringerGruppeSchluessel": "6",
     "kassenart": "LK",
@@ -21014,7 +21022,7 @@
       }
     ]
   },
-  "EK06Q221.ke2": {
+  {
     "issuerIK": "109979990",
     "leistungserbringerGruppeSchluessel": "6",
     "kassenart": "EK",
@@ -24711,7 +24719,7 @@
         ],
         "addresses": [
           {
-            "place": "Leipzig",
+            "place": "Taucha",
             "postcode": 4425,
             "streetAndHousenumber": "Gärtnerweg 12"
           },
@@ -24756,7 +24764,7 @@
       }
     ]
   },
-  "AO05Q221.ke1": {
+  {
     "issuerIK": "109910000",
     "leistungserbringerGruppeSchluessel": "5",
     "kassenart": "AO",
@@ -34428,7 +34436,7 @@
       }
     ]
   },
-  "BK05Q221.ke2": {
+  {
     "issuerIK": "104027544",
     "leistungserbringerGruppeSchluessel": "5",
     "kassenart": "BK",
@@ -47609,7 +47617,7 @@
       },
       {
         "ik": "661430035",
-        "name": "DAVASO zuvor INTER-FORUM",
+        "name": "DAVASO GmbH",
         "abbreviatedName": "DAVASO zuvor INTER-FORUM",
         "contacts": [
           {
@@ -47621,9 +47629,13 @@
         ],
         "addresses": [
           {
+            "place": "Taucha",
+            "postcode": 4425,
+            "streetAndHousenumber": "Gärtnerweg 12"
+          },
+          {
             "place": "Leipzig",
-            "postcode": 4316,
-            "streetAndHousenumber": "Sommerfelder Str 120"
+            "postcode": 4310
           }
         ],
         "transmissionMethods": {
@@ -47726,7 +47738,7 @@
       }
     ]
   },
-  "IK05Q221.ke1": {
+  {
     "issuerIK": "109900019",
     "leistungserbringerGruppeSchluessel": "5",
     "kassenart": "IK",
@@ -51280,7 +51292,7 @@
       },
       {
         "ik": "661430035",
-        "name": "DAVASO zuvor INTER-FORUM",
+        "name": "DAVASO GmbH",
         "abbreviatedName": "DAVASO zuvor INTER-FORUM",
         "contacts": [
           {
@@ -51292,9 +51304,13 @@
         ],
         "addresses": [
           {
+            "place": "Taucha",
+            "postcode": 4425,
+            "streetAndHousenumber": "Gärtnerweg 12"
+          },
+          {
             "place": "Leipzig",
-            "postcode": 4316,
-            "streetAndHousenumber": "Sommerfelder Str 120"
+            "postcode": 4310
           }
         ],
         "transmissionMethods": {
@@ -53347,7 +53363,7 @@
       }
     ]
   },
-  "BN050321.ke0": {
+  {
     "issuerIK": "109905003",
     "leistungserbringerGruppeSchluessel": "5",
     "kassenart": "BN",
@@ -60411,7 +60427,7 @@
       }
     ]
   },
-  "LK05Q121.ke0": {
+  {
     "issuerIK": "109908701",
     "leistungserbringerGruppeSchluessel": "5",
     "kassenart": "LK",
@@ -60735,7 +60751,7 @@
       }
     ]
   },
-  "LK05Q321.ke0": {
+  {
     "issuerIK": "109908701",
     "leistungserbringerGruppeSchluessel": "5",
     "kassenart": "LK",
@@ -61058,7 +61074,7 @@
       }
     ]
   },
-  "EK05Q221.ke0": {
+  {
     "issuerIK": "109979990",
     "leistungserbringerGruppeSchluessel": "5",
     "kassenart": "EK",
@@ -66892,13 +66908,12 @@
         "addresses": [
           {
             "place": "Leipzig",
-            "postcode": 4316,
-            "streetAndHousenumber": "Sommerfelder Straße 120"
+            "postcode": 4425,
+            "streetAndHousenumber": "Gärtnerweg 12"
           },
           {
             "place": "Leipzig",
-            "postcode": 4305,
-            "poBox": "Postfach 500554"
+            "postcode": 4310
           }
         ],
         "transmissionMethods": {
@@ -66930,4 +66945,4 @@
       }
     ]
   }
-}
+]

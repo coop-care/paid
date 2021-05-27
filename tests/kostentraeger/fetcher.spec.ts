@@ -1,27 +1,24 @@
 import fetchKostentraeger from "../../src/kostentraeger/fetcher"
 import { writeFileSync } from "fs"
-import { InstitutionList } from "../../src/kostentraeger/types"
+import { institutionListReplacer } from "../../src/kostentraeger/types"
 
 describe("kostentraeger fetcher", () => {
 
     it("fetch all", async () => {
         const institutionListParseResults = await fetchKostentraeger()
 
-        const institutionMap: {[k: string]: InstitutionList} = {}
-        let warnings: string = ""
+        const institutionLists = institutionListParseResults.map(result => result.institutionList)
 
-        institutionListParseResults.forEach((parseResult, filename) => {
+        let warnings: string = ""
+        institutionListParseResults.forEach(parseResult => {
             if (parseResult.warnings.length > 0) {
-                warnings += filename + "\n" + parseResult.warnings.map(it => "  " + it).join("\n") + "\n\n"
+                warnings += parseResult.fileName + "\n" + parseResult.warnings.map(it => "  " + it).join("\n") + "\n\n"
             }
-            institutionMap[filename] = parseResult.institutionList
         })
 
-        writeFileSync("dist/kostentraeger.json", JSON.stringify(institutionMap, undefined, 2))
-        writeFileSync("dist/kostentraeger.min.json", JSON.stringify(institutionMap))
+        writeFileSync("dist/kostentraeger.json", JSON.stringify(institutionLists, institutionListReplacer, 2))
+        writeFileSync("dist/kostentraeger.min.json", JSON.stringify(institutionLists, institutionListReplacer))
         writeFileSync("dist/kostentraeger-warnings.txt", warnings)
     })
 
 })
-
-

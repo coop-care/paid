@@ -31,7 +31,7 @@ AO05Q221.ke1
   message 153 - skipped invalid DFU 3: Unknown DFUProtokollSchluessel "011"
   message 202 - skipped invalid UEM 1: Refers to a non-existing DFU
 
-BK05Q221.ke2
+BK05Q221.ke3
   IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts data
   IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts data
   IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts data

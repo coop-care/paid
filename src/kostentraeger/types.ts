@@ -10,6 +10,10 @@ import { KassenartSchluessel } from "./filename/codes"
  * These types represent the data from Kostentraeger file(s) cast into a (more) accessible data model
  */
 
+ export type InstitutionListFileParseResult = InstitutionListParseResult & {
+    fileName: string
+}
+
 /** A parse result of a list of Kostentraeger information for one umbrella organization. Includes
  *  all warnings that occured when parsing the information
  */
