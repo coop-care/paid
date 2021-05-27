@@ -23,7 +23,7 @@ The data could potentially change daily but should at least be fetched once a qu
 
 ```typescript
 import fetchPublicKeyInfos from "pki/fetcher"
-import fetchInstitutions from "pki/fetcher"
+import fetchInstitutions from "kostentraeger/fetcher"
 
 const publicKeyInfos = await fetchPublicKeyInfos()
 const institutionsParseResult = await fetchInstitutions()
