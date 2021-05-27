@@ -198,3 +198,15 @@ type BasicAddress = {
     place: string,
     /** max. 30 characters */
 }
+
+export const institutionListReplacer = (key: string, value: any): any => {
+    return value
+}
+
+export const institutionListReviver = (key: string, value: any): any => {
+    const isDate = ["validityStartDate", "validityFrom", "validityTo"].includes(key)
+    if (isDate && value) {
+        return new Date(value as string)
+    }
+    return value
+}

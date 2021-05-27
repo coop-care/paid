@@ -66,6 +66,11 @@ Version **1.0** from 2020-11-26, to be applied from: **10/2003**
 [Kostenträgerdatei](https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anhang_03_Anlage_1_TP5_20200616.pdf)  
 Version **07** from 2020-06-16, to be applied from **10/2021** 
 
+### Gemeinsame Grundsätze Technik
+
+- Gemeinsame Grundsätze Technik, Anlage 16:  
+[Security Schnittstelle (SECON)](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_16.pdf)  
+from **2020-09-10**, to be applied from **2021-01-01**
 
 ## RSS feeds for notifications about new document publications
 
