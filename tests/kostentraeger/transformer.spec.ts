@@ -41,13 +41,13 @@ describe("kostentraeger transformer", () => {
                 vkgList: [
                     {   // Kostenträger
                         ikVerknuepfungsartSchluessel: "01",
-                        verknuepfungspartnerIK: "555444333",
+                        verknuepfungspartnerIK: "999999999",
                         leistungserbringergruppeSchluessel: "6",
                         standortLeistungserbringerBundeslandSchluessel: "02",
                     },
                     {   // Datenannahmestelle ohne Entschlüsselungsbefugnis
                         ikVerknuepfungsartSchluessel: "02",
-                        verknuepfungspartnerIK: "112200000",
+                        verknuepfungspartnerIK: "999999999",
                         leistungserbringergruppeSchluessel: "6",
                         datenlieferungsartSchluessel: "07",
                         standortLeistungserbringerBundeslandSchluessel: "01",
@@ -55,13 +55,13 @@ describe("kostentraeger transformer", () => {
                     },
                     {   // Datenannahmestelle mit Entschlüsselungsbefugnis
                         ikVerknuepfungsartSchluessel: "03",
-                        verknuepfungspartnerIK: "112200001",
+                        verknuepfungspartnerIK: "999999999",
                         datenlieferungsartSchluessel: "07",
                         standortLeistungserbringerBundeslandSchluessel: "99"
                     },
                     {   // Machinenlesbare Belege Annahmestelle
                         ikVerknuepfungsartSchluessel: "09",
-                        verknuepfungspartnerIK: "334455667",
+                        verknuepfungspartnerIK: "999999999",
                         leistungserbringergruppeSchluessel: "5",
                         datenlieferungsartSchluessel: "29",
                         standortLeistungserbringerKVBezirkSchluessel: "38",
@@ -69,7 +69,7 @@ describe("kostentraeger transformer", () => {
                     },
                     {   // Papierannahmestelle
                         ikVerknuepfungsartSchluessel: "09",
-                        verknuepfungspartnerIK: "112233445",
+                        verknuepfungspartnerIK: "999999999",
                         leistungserbringergruppeSchluessel: "6",
                         datenlieferungsartSchluessel: "21"
                     },
@@ -164,31 +164,30 @@ describe("kostentraeger transformer", () => {
                         fieldOfWork: "Schabernack"
                     }
                 ],
-                transmissionMethods: {
+                transmission: {
                     email: "ok@go.de",
-                    ftam: "ftam.blub-it.de:5000",
                     zeichensatz: "I8"
                 },
                 kostentraegerLinks: [{
-                    ik: "555444333",
+                    ik: "999999999",
                     location: "HH",
                     sgbxiLeistungsart: "00"
                 }],
                 datenannahmestelleLinks: [{
-                    ik: "112200001"
+                    ik: "999999999"
                 }],
                 untrustedDatenannahmestelleLinks: [{
-                    ik: "112200000",
+                    ik: "999999999",
                     location: "SH",
                     sgbxiLeistungsart: "12"
                 }],
                 papierannahmestelleLinks: [{
-                    ik: "334455667",
+                    ik: "999999999",
                     location: "Nordrhein",
                     sgbvAbrechnungscode: "25",
                     paperTypes: PaperDataType.MachineReadableReceipt | PaperDataType.CostEstimate | PaperDataType.Prescription,
                 }, {
-                    ik: "112233445",
+                    ik: "999999999",
                     sgbxiLeistungsart: "00",
                     paperTypes: PaperDataType.Receipt,
                 }]

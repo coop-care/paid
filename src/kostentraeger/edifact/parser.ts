@@ -98,7 +98,7 @@ function validateLinks(institutions: KOTRMessage[]): string[] {
             } else {
                 const institution = institutionsByIK.get(vkg.verknuepfungspartnerIK)!
                 const acceptsData = isInstitutionAcceptingData(institution)
-                /* the link target to every link to a Datenannahmestelle without decrypt acapacity 
+                /* the link target to every link to a Datenannahmestelle without decrypt capacity 
                    must actually accept data */
                 if (vkg.ikVerknuepfungsartSchluessel == "02") {
                     if (!acceptsData) {

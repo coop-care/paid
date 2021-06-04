@@ -57,9 +57,9 @@ export type Institution = {
     contacts?: Contact[],
     /** Address(es). Contains one to three addresses, (max) one for each type */
     addresses: Address[],
-    /** Details on where and with which protocol to send receipts. Undefined if this institution
-     *  does not accept any receipts directly */
-    transmissionMethods?: ReceiptTransmissionMethods,
+    /** Details on where to send receipts. Undefined if this institution does not accept any 
+     *  receipts directly */
+    transmission?: ReceiptTransmission,
     /** Link(s) to Kostenträger (=institutions that pays the receipts). 
      *  The institution with the IK as printed on the health-insurance card is not necessarily the
      *  institution that manages paying the receipts. Usually such things are done by a central 
@@ -158,12 +158,10 @@ export type CareProviderLocationSchluessel =
     FederalStateSchluesselWithoutNRWSchluessel | NRWSubdivisionSchluessel
 
 /** Simplified data model of UEM+DFU from the Kostenträger file with legacy stuff removed */
-export type ReceiptTransmissionMethods = {
-    /** Email address + charset to use to send receipts. Undefined if email is not accepted. */
-    email?: string | undefined,
-    /** FTAM address + charset to use to send receipts. Undefined if FTAM is not accepted. */
-    ftam?: string | undefined,
-    /** Charset in which the data must be transmitted (for email / FTAM) */
+export type ReceiptTransmission = {
+    /** Email address to use to send receipts. */
+    email: string,
+    /** Charset in which the data must be transmitted */
     zeichensatz: UebermittlungszeichensatzSchluessel
 }
 

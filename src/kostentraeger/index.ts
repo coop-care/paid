@@ -13,8 +13,7 @@ import {
     Institution,
     InstitutionLink,
     InstitutionList,
-    PaperDataType,
-    PapierannahmestelleLink
+    PaperDataType
 } from "./types";
 
 
@@ -263,7 +262,7 @@ function findKostentraeger(
 
     // Step 3: Find if Datenannahmestelle has decryption authority and handle it if not
     let sendTo: Institution | undefined
-    if (encryptTo.transmissionMethods?.email || encryptTo.transmissionMethods?.ftam) {
+    if (encryptTo.transmission?.email) {
         /* if it accepts data itself, that's great! 
            The documentation is making it
            sound that even if this institution accepts data directly, one should look

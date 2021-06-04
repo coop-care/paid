@@ -17,7 +17,7 @@ import {
     KVLocationSchluessel,
     PaperDataType,
     PapierannahmestelleLink,
-    ReceiptTransmissionMethods
+    ReceiptTransmission
 } from "./types"
 
 
@@ -196,7 +196,7 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
 
         contacts: contacts.length > 0 ? contacts : undefined,
         addresses: msg.ansList.map((ans) => createAddress(ans)),
-        transmissionMethods: createReceiptTransmissionMethods(msg.uemList, msg.dfuList),
+        transmission: createReceiptTransmission(msg.uemList, msg.dfuList),
         kostentraegerLinks: kostentraegerLinks.length > 0 ? kostentraegerLinks : undefined,
         datenannahmestelleLinks: datenannahmestelleLinks.length > 0 ? datenannahmestelleLinks : undefined,
         untrustedDatenannahmestelleLinks: untrustedDatenannahmestelleLinks.length > 0 ? untrustedDatenannahmestelleLinks : undefined,
@@ -279,17 +279,16 @@ function createInstitutionLink(vkg: VKG): InstitutionLink {
     }
 }
 
-function createReceiptTransmissionMethods(uemList: UEM[], dfuList: DFU[]): ReceiptTransmissionMethods | undefined {
+function createReceiptTransmission(uemList: UEM[], dfuList: DFU[]): ReceiptTransmission | undefined {
     if (uemList.length == 0 || dfuList.length == 0) return undefined
 
-    let zeichensatzSchluessel, email, ftam
-    zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
-    email = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
-    ftam = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "016")?.address
+    const zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
+    const email = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
+
+    if (!email) return undefined
 
     return {
         email: email,
-        ftam: ftam,
         zeichensatz: zeichensatzSchluessel!
     }
 }

@@ -110,9 +110,7 @@ describe("Kostenträger index", () => {
         const datenannahmestelle = {
             ...base, 
             ik: "00000003",
-            transmissionMethods: {
-                paperReceipt: true,
-                machineReadablePaperReceipt: true,
+            transmission: {
                 email: "default@default.de",
                 zeichensatz: "I8"
             }
@@ -151,9 +149,7 @@ describe("Kostenträger index", () => {
         const untrustedDatenannahmestelle = {
             ...base, 
             ik: "00000004",
-            transmissionMethods: {
-                paperReceipt: true,
-                machineReadablePaperReceipt: true,
+            transmission: {
                 email: "default@default.de",
                 zeichensatz: "I8"
             }
@@ -657,9 +653,7 @@ const linksPapierAndDatenannahmeTo = (ik: string) => ({
 })
 
 const acceptsData = {
-    transmissionMethods: {
-        paperReceipt: true,
-        machineReadablePaperReceipt: true,
+    transmission: {
         email: "default@default.de",
         zeichensatz: "I8"
     }
