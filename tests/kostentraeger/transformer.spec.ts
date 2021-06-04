@@ -353,6 +353,109 @@ describe("kostentraeger transformer", () => {
         expect(json(transform(interchange).institutionList)).toEqual(json(expectedInstitutionList))
     })
 
+    it("validate messages for dependence on FTAM", () => {
+        const interchange: KOTRInterchange = {
+            issuerIK: "123456789",
+            filename: {
+                kassenart: "AO",
+                verfahren: "06",
+                validityStartDate: new Date("2018-05-05"),
+                version: 1
+            },
+            institutions: [
+            // 1. The Kostenträger
+            {
+                id: 1, 
+                idk: {
+                    ik: "999999999",
+                    institutionsart: "99",
+                    abbreviatedName: "short name"
+                },
+                vdt: { validityFrom: new Date("2000-20-20") },
+                fkt: { verarbeitungskennzeichenSchluessel: "01" },
+                nam: { index: 1, names: ["name"]},
+                ansList: [],
+                aspList: [],
+                dfuList: [],
+                uemList: [],
+                vkgList: [
+                    {   // link to Datenannahmestelle mit Entschlüsselungsbefugnis
+                        ikVerknuepfungsartSchluessel: "03",
+                        verknuepfungspartnerIK: "999999991",
+                        datenlieferungsartSchluessel: "07"
+                    }
+                ]
+            },
+            // 2. The Datenannahmestelle mit Entschlüsselungsbefugnis
+            {
+                id: 2, 
+                idk: {
+                    ik: "999999991",
+                    institutionsart: "99",
+                    abbreviatedName: "short name"
+                },
+                vdt: { validityFrom: new Date("2000-20-20") },
+                fkt: { verarbeitungskennzeichenSchluessel: "01" },
+                nam: { index: 1, names: ["name"]},
+                ansList: [],
+                aspList: [],
+                uemList: [
+                    {
+                        uebermittlungsmediumSchluessel: "1",
+                        uebermittlungsmediumParameterSchluessel: "00",
+                        uebermittlungszeichensatzSchluessel: "I8"
+                    }
+                ],
+                dfuList: [
+                    {   // only accept FTAM :-(
+                        index: 1,
+                        dfuProtokollSchluessel: "016",
+                        address: "ftam.blub-it.de:5000"
+                    }
+                ],
+                vkgList: [
+                    {   // link to Datenannahmestelle ohne Entschlüsselungsbefugnis
+                        ikVerknuepfungsartSchluessel: "02",
+                        verknuepfungspartnerIK: "999999992",
+                        datenlieferungsartSchluessel: "07"
+                    }
+                ]
+            },
+            // 3. The Datenannahmestelle ohne Entschlüsselungsbefugnis
+            {
+                id: 3, 
+                idk: {
+                    ik: "999999992",
+                    institutionsart: "99",
+                    abbreviatedName: "short name"
+                },
+                vdt: { validityFrom: new Date("2000-20-20") },
+                fkt: { verarbeitungskennzeichenSchluessel: "01" },
+                nam: { index: 1, names: ["name"]},
+                ansList: [],
+                aspList: [],
+                uemList: [
+                    {
+                        uebermittlungsmediumSchluessel: "1",
+                        uebermittlungsmediumParameterSchluessel: "00",
+                        uebermittlungszeichensatzSchluessel: "I8"
+                    }
+                ],
+                dfuList: [
+                    {   // only accept FTAM :-(
+                        index: 1,
+                        dfuProtokollSchluessel: "016",
+                        address: "ftam.blub-it.de:5000"
+                    }
+                ],
+                vkgList: []
+            }]
+        }
+
+        const result = transform(interchange)
+        // there should also not be any warnings parsing this
+        expect(result.warnings).toHaveLength(1)
+    })
 })
 
 /* need to compare the stringified and then parsed result because Javascript Date objects 
