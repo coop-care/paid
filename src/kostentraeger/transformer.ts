@@ -17,7 +17,7 @@ import {
     KVLocationSchluessel,
     PaperDataType,
     PapierannahmestelleLink,
-    ReceiptTransmissionMethods
+    ReceiptTransmission
 } from "./types"
 
 
@@ -84,6 +84,8 @@ export default function transform(interchange: KOTRInterchange): InstitutionList
         }
     }).filter((msg): msg is Institution => !!msg)
 
+    warnings.push(...validateLinks(institutions))
+
     return {
         institutionList: {
             issuerIK: interchange.issuerIK,
@@ -95,6 +97,34 @@ export default function transform(interchange: KOTRInterchange): InstitutionList
         warnings: warnings
     }
 }
+
+function validateLinks(institutions: Institution[]): string[] {
+    const errors: string[] = []
+    const institutionsByIK = new Map<string, Institution>()
+    institutions.forEach((institution) => {
+        institutionsByIK.set(institution.ik, institution)
+    })
+
+    institutions.forEach((institution) => {
+        const errMsg = `IK ${institution.ik} (${institution.abbreviatedName})`
+        /* the link target to every link to a Datenannahme with capacity to decrypt must 
+            either accept email themselves or lead to one that does in one link-step */
+        institution.datenannahmestelleLinks?.forEach((link) => {
+            const da = institutionsByIK.get(link.ik)
+            if (!da?.transmission) {
+                const butALinkAcceptsData = da?.untrustedDatenannahmestelleLinks?.some((link2) => {
+                    const uda = institutionsByIK.get(link2.ik)
+                    return !!(uda?.transmission)
+                })
+                if (!butALinkAcceptsData) {
+                    errors.push(`${errMsg} links to IK ${link.ik} for data but neither that IK nor an IK it links to accepts SMTP (email)`)
+                }
+            }
+        })
+    })
+    return errors
+}
+
 
 function verfahrenToLeistungserbringergruppeSchluessel(verfahren: VerfahrenSchluessel): LeistungserbringergruppeSchluessel {
     switch(verfahren) {
@@ -196,7 +226,7 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
 
         contacts: contacts.length > 0 ? contacts : undefined,
         addresses: msg.ansList.map((ans) => createAddress(ans)),
-        transmissionMethods: createReceiptTransmissionMethods(msg.uemList, msg.dfuList),
+        transmission: createReceiptTransmission(msg.uemList, msg.dfuList),
         kostentraegerLinks: kostentraegerLinks.length > 0 ? kostentraegerLinks : undefined,
         datenannahmestelleLinks: datenannahmestelleLinks.length > 0 ? datenannahmestelleLinks : undefined,
         untrustedDatenannahmestelleLinks: untrustedDatenannahmestelleLinks.length > 0 ? untrustedDatenannahmestelleLinks : undefined,
@@ -279,17 +309,16 @@ function createInstitutionLink(vkg: VKG): InstitutionLink {
     }
 }
 
-function createReceiptTransmissionMethods(uemList: UEM[], dfuList: DFU[]): ReceiptTransmissionMethods | undefined {
+function createReceiptTransmission(uemList: UEM[], dfuList: DFU[]): ReceiptTransmission | undefined {
     if (uemList.length == 0 || dfuList.length == 0) return undefined
 
-    let zeichensatzSchluessel, email, ftam
-    zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
-    email = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
-    ftam = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "016")?.address
+    const zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
+    const email = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
+
+    if (!email) return undefined
 
     return {
         email: email,
-        ftam: ftam,
         zeichensatz: zeichensatzSchluessel!
     }
 }
