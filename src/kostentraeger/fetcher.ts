@@ -3,7 +3,7 @@ import tokenize from "../edifact/tokenizer"
 import parse from "./edifact/parser"
 import parseKostentraegerUrls from './rssreader'
 import transform from "./transformer"
-import { InstitutionList, InstitutionListParseResult } from "./types"
+import { InstitutionListFileParseResult, InstitutionListParseResult } from "./types"
 import { TextDecoder } from "util"
 
 const kostentraegerRssUrls = [
@@ -11,7 +11,7 @@ const kostentraegerRssUrls = [
     "https://gkv-datenaustausch.de/leistungserbringer/sonstige_leistungserbringer/kostentraegerdateien_sle/rss_kostentraegerdateien_sonstige_leistungserbringer.xml"
 ]
 
-export default async function fetchKostentraeger(): Promise<Map<string,InstitutionListParseResult>> {
+export default async function fetchKostentraeger(): Promise<InstitutionListFileParseResult[]> {
     const fileUrls = await fetchKostentraegerUrls(kostentraegerRssUrls)
     const institutionListParseResults = await fetchKostentraegerFiles(fileUrls)
     return institutionListParseResults
@@ -26,19 +26,13 @@ async function fetchKostentraegerUrls(kostentraegerRssUrls: string[]): Promise<s
     return urlsArray.flat()
 }
 
-async function fetchKostentraegerFiles(
-    kostentraegerFileUrls: string[]
-): Promise<Map<string,InstitutionListParseResult>> {
-    const parseResultsPerFilename = await Promise.all(kostentraegerFileUrls.map(async (url) => {
-        const fileName = url.substring(url.lastIndexOf("/")+1)
-        const parseResult = await fetchKostentraegerFile(url)
-        return [fileName, parseResult]
-    }))
-    return new Map<string,InstitutionListParseResult>(parseResultsPerFilename as [string, InstitutionListParseResult][])
-
+async function fetchKostentraegerFiles(kostentraegerFileUrls: string[]): Promise<InstitutionListFileParseResult[]> {
+    return await Promise.all(
+        kostentraegerFileUrls.map(async url => await fetchKostentraegerFile(url))
+    )
 }
 
-async function fetchKostentraegerFile(url: string): Promise<InstitutionListParseResult> {
+async function fetchKostentraegerFile(url: string): Promise<InstitutionListFileParseResult> {
     const response = await fetch(url)
     /* Kostenträger files are encoded in iso-8859-1 and not in UTF-8, so we cannot
        just call response.text()! */
@@ -47,7 +41,7 @@ async function fetchKostentraegerFile(url: string): Promise<InstitutionListParse
 
     const fileName = url.substring(url.lastIndexOf("/")+1)
     try {
-        return parseKostentraegerString(text)
+        return { fileName: fileName, ...parseKostentraegerString(text) }
     } catch(e) {
         e.message = fileName + ": " + e.message
         throw e
