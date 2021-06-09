@@ -4,6 +4,7 @@
 
 import { BillingData, FileType } from "../types";
 
+/** A.k.a. "logischer Dateiname" */
 export const makeAnwendungsreferenz = (
     kassenart: string,
     laufendeDatenannahmeImJahr: number,
@@ -22,11 +23,13 @@ export const makeAnwendungsreferenz = (
     kassenart
 ].join("");
 
+/** A.k.a "Verfahrenskennung" */
 export const makeDateiname = (
     dateiindikator: FileType,
-    verfahrensVersion: number
+    transferNumber: number
 ) => [
     dateiindikator == "2" ? "E" : "T",
     "PFL",
-    verfahrensVersion.toString().slice(0, 4).padStart(4, "0")
+    "0", // verfahrensversion. Always 0
+    transferNumber.toString().slice(0, 3).padStart(3, "0")
 ].join("");

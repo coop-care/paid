@@ -210,8 +210,8 @@ export type UebermittlungsmediumParameterSchluessel = keyof typeof uebermittlung
 /** Übermittlungszeichensatz */
 export const uebermittlungszeichensatzSchluessel = {
     "I1": "ISO 8859-1",
-    "I7": "ASCII 7-Bit",
-    "I8": "ASCII 8-Bit",
+    "I7": "ISO 7-Bit, DIN 66003 DRV 7",
+    "I8": "ISO 8-Bit, DIN 66303 DRV 8, in der Fassung 1986-11",
     "99": "alle Zeichensätze gemäß Anlage 15 GGT"
 }
 export type UebermittlungszeichensatzSchluessel = keyof typeof uebermittlungszeichensatzSchluessel
