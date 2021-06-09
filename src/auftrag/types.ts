@@ -7,6 +7,7 @@ import { VerfahrenKennung } from "./codes";
  * (see /docs/documents.md for more info)
  */
 
+/** Data necessary to write the Auftragsdatei that is to be included for every Nutzdatendatei */
 export type Auftrag = {
     /** Leistungserbringer-group */
     verfahrenKennung: VerfahrenKennung,
@@ -26,14 +27,16 @@ export type Auftrag = {
     /** date at which this file has been sent */
     dateSent: Date,
 
-    /** unencrypted file size of the Nutzdaten */
+    /** unencrypted file size of the Nutzdaten. Max length: 12 digits */
     unencryptedNutzdatenSizeBytes: number,
-    /** encrypted file size of the Nutzdaten */
+    /** encrypted file size of the Nutzdaten. Max length: 12 digits */
     encryptedNutzdatenSizeBytes: number,
 
     /** whether this is test data. Should also be true during the "Erprobungsverfahren" */
     isTest: boolean,
 
-    /** serial number that should globally increased by one for each Auftragsdatei */
+    /** serial number that should globally increased by one for each Auftragsdatei. A value from
+     *  0-999. It should loop back to 0 when 1000 is reached.
+     */
     transferNumber: number,
 }
