@@ -1,5 +1,5 @@
-import parse from "../../src/pki/parser"
-import { base64ToArrayBuffer } from "../../src/pki/utils"
+import parse from "../../../src/kostentraeger/pki/parser"
+import { base64ToArrayBuffer } from "../../../src/kostentraeger/pki/utils"
 
 describe("certificates parser", () => {
 

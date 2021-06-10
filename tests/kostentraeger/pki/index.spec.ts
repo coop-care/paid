@@ -1,5 +1,5 @@
-import { IKPublicKeyInfo } from "../../src/pki/types"
-import { IKPublicKeyIndex } from "../../src/pki/index"
+import { IKPublicKeyInfo } from "../../../src/kostentraeger/pki/types"
+import { IKPublicKeyIndex } from "../../../src/kostentraeger/pki/index"
 
 describe("public key index", () => {
 

@@ -1,6 +1,6 @@
-import fetch from "../../src/pki/fetcher"
+import fetch from "../../../src/kostentraeger/pki/fetcher"
 import { writeFileSync } from "fs"
-import { ikPublicKeyInfoReplacer } from "../../src/pki/types"
+import { ikPublicKeyInfoReplacer } from "../../../src/kostentraeger/pki/types"
 
 describe("certificates fetcher", () => {
 

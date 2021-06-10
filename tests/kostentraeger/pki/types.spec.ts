@@ -1,5 +1,5 @@
-import { IKPublicKeyInfo, ikPublicKeyInfoReplacer, ikPublicKeyInfoReviver } from "../../src/pki/types"
-import { base64ToArrayBuffer } from "../../src/pki/utils"
+import { IKPublicKeyInfo, ikPublicKeyInfoReplacer, ikPublicKeyInfoReviver } from "../../../src/kostentraeger/pki/types"
+import { base64ToArrayBuffer } from "../../../src/kostentraeger/pki/utils"
 
 describe("IKPublicKeyInfo", () => {
 
