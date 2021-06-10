@@ -4,21 +4,25 @@ import { base64ToArrayBuffer } from "../../../src/kostentraeger/pki/utils"
 describe("certificates parser", () => {
 
     it("parse two certificates", () => {
-        const pkeys = parse(twoCertificatesInPEM)
+        const pkeyMap = parse(twoCertificatesInPEM)
         
-        expect(pkeys[0].ik).toEqual("109979978")
-        expect(pkeys[0].publicKey).toEqual(base64ToArrayBuffer(
+        const info1 = pkeyMap.get("109979978")!
+        expect(info1).toHaveLength(1)
+
+        expect(info1[0]!.publicKey).toEqual(base64ToArrayBuffer(
             "MIIBCgKCAQEAgAj2jKduEwdV7XrNtRcZ92018LtrxYnrScto5dadK/MJTzX+BPPn2OGLmLfLyXFHreFV4m4eXn99jjPby2UwNDBf9XnPiJnLybvluj9Ja7mSOZIRNbRrRK3lurnqQ9M4mHE+840XmdB8a5kY/DdjqOy7aiwIhUFlBhYaKF8vWFp1s1BpqU7RkphG7oWVQDoZ8e2bMuedAtW4ABQDosydqPSz2gGDBRCgu4+up72kV0EqX6ITKDT8ULZ9juPL50CBewZAwO1jmyTSXRvu3s0U7M7DA9p5muS7qhEpX1VIgsyBIgfLuAtwFryfh+5gz7gHN/2gi0xBCv5W4yPF75QBYwIDAQAB"
         ))
-        expect(pkeys[0].validityFrom.toISOString()).toEqual("2020-11-24T00:00:00.000Z")
-        expect(pkeys[0].validityTo.toISOString()).toEqual("2023-01-08T23:59:59.000Z")
+        expect(info1[0]!.validityFrom.toISOString()).toEqual("2020-11-24T00:00:00.000Z")
+        expect(info1[0]!.validityTo.toISOString()).toEqual("2023-01-08T23:59:59.000Z")
 
-        expect(pkeys[1].ik).toEqual("109905003")
-        expect(pkeys[1].publicKey).toEqual(base64ToArrayBuffer(
+        const info2 = pkeyMap.get("109905003")!
+        expect(info2).toHaveLength(1)
+
+        expect(info2[0]!.publicKey).toEqual(base64ToArrayBuffer(
             "MIICCgKCAgEAgCQvTcBf2rSezyfcv8SeGOaWU9CL3GXlW2+uCc6QmPLUgTB/p26f4e61mYWk4osxcZqaDk7oeaRR1F+NNQbX41GdzNzbRg/wplIwbme4X2JrOMgDPKdTGTeDmOhXweaallSVcc414l7ethaEHbI4OI4Hm9aJSj1NV/a6TcOMUhJtxPJrZzvC9NFgdSYrI0QZ78Aed9A+W+79WyKJ59AMbCWzwDRNeB1tajWoxcbuMbd/Szdysdlxot4VEmki6s7Es5CfEJOKzX7iCpQltQzMuk+Y6UDbyJ/kpvRxcUbz0MpRxxpsBdJ/V9P7/Ub2gVVxqKgjIKtVOe3FIat1NZqeQmablvjfyHZ7KjLFdl24L6BadSFWMM3DDZ3dnYroE+iXRWLrp9/YWWGOD+bzCQTY4i3sa17B8cqceJ1takHpVSpxREEJ9lSwToQ2PsGuSdFtXm1XQr6JSi7qh0EeRiT6KSRiMqxpsSv4teKt09RxRszYTEiiMYxXe1uKHqFgn1oQ+X1eQ3PSIRzHZ/9K6Mvp+HlD6jzFHDmovl5QTbDD/Al8mDSaU1lhRMGk/9redyUfEx/G3B+4soMdpcKyLkLzQS1xkJ/BipdqFzl11GO6ONx8GR6y8h6EmJWcSkVyp6MHQf/+bo29hj944ZBcmQSNSN7NozZDeOVIFcoQY9zpwHkCAwEAAQ=="
         ))
-        expect(pkeys[1].validityFrom.toISOString()).toEqual("2018-11-14T00:00:00.000Z")
-        expect(pkeys[1].validityTo.toISOString()).toEqual("2021-12-31T23:59:59.000Z")
+        expect(info2[0]!.validityFrom.toISOString()).toEqual("2018-11-14T00:00:00.000Z")
+        expect(info2[0]!.validityTo.toISOString()).toEqual("2021-12-31T23:59:59.000Z")
     })
 })
 
