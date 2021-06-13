@@ -56,5 +56,10 @@
     ],
     "testRegex": "tests/.+\\.spec\\.ts$",
     "collectCoverageFrom": ["src/**"]
+  },
+  "dependencies": {
+    "@peculiar/asn1-schema": "^2.0.32",
+    "@peculiar/asn1-x509": "^2.0.32",
+    "cross-fetch": "^3.1.4"
   }
 }

@@ -8,6 +8,12 @@
 
 ## List of latest evaluated document versions
 
+### Gemeinsame Grundsätze Technik
+
+- Gemeinsame Grundsätze Technik, Anlage 2:  
+[Auftragsdatei](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_2_-_Auftragsdatei.pdf)  
+from 2019-10-23, to be applied from **2020-01-01**
+
 ### Pflege
 
 - Pflege, Broschüre:  
@@ -62,9 +68,19 @@ Version **1.0** from 2020-11-26, to be applied from: **10/2003**
 
 #### zu den Richtlinien der Spitzenverbände der Krankenkassen nach § 302 Abs. 2 SGB V über Form und Inhalt des Abrechnungsverfahrens mit "Sonstigen Leistungserbringern" sowie mit Hebammen und Entbindungspflegern (§ 301a SGB V)
 
+- Sonstige Leistungserbringer, Anlage 1, Anhang 1, Kapitel 4:  
+[Datenübermittlung](https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anhang_1_Anlage_1_TP5_20170831.pdf)  
+from 2017-08-31, to be applied from **09/2017** 
+
 - Sonstige Leistungserbringer, Anlage 1, Anhang 3, Kapitel 10:  
 [Kostenträgerdatei](https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anhang_03_Anlage_1_TP5_20200616.pdf)  
 Version **07** from 2020-06-16, to be applied from **10/2021** 
+
+### Gemeinsame Grundsätze Technik
+
+- Gemeinsame Grundsätze Technik, Anlage 16:  
+[Security Schnittstelle (SECON)](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_16.pdf)  
+from **2020-09-10**, to be applied from **2021-01-01**
 
 
 ## RSS feeds for notifications about new document publications

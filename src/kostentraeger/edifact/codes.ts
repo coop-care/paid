@@ -5,8 +5,8 @@
  * (see /docs/documents.md for more info)
  */
 
-import { AbrechnungscodeSchluessel as SonstigeAbrechnungscodeSchluessel } from "../../sgb-v/codes"
-import { LeistungsartSchluessel as PflegeLeistungsartSchluessel } from "../../sgb-xi/codes"
+import { AbrechnungscodeSchluessel as SGBVAbrechnungscodeSchluessel } from "../../sgb-v/codes"
+import { LeistungsartSchluessel as SGBXILeistungsartSchluessel } from "../../sgb-xi/codes"
 
 /** Art der Anschrift */
 export const anschriftartSchluessel = {
@@ -81,7 +81,11 @@ export type DFUProtokollSchluessel = keyof typeof dfuProtokollSchluessel
 /** Komprimierungsart */
 // this key is not (yet) defined
 
-/** KV-Bezirk */
+/** KV-Bezirk 
+ * 
+ *  Only used by very few institutions. As of April 2021, actually only used by two sub-branches
+ *  of the AOK: Westfalen-Lippe and Nordrhein (only used values are "20", "38" and a stray "17").
+*/
 export const kvBezirkSchluessel = {
     "01": "Schleswig-Holstein",
     "02": "Hamburg",
@@ -206,8 +210,8 @@ export type UebermittlungsmediumParameterSchluessel = keyof typeof uebermittlung
 /** Übermittlungszeichensatz */
 export const uebermittlungszeichensatzSchluessel = {
     "I1": "ISO 8859-1",
-    "I7": "ASCII 7-Bit",
-    "I8": "ASCII 8-Bit",
+    "I7": "ISO 7-Bit, DIN 66003 DRV 7",
+    "I8": "ISO 8-Bit, DIN 66303 DRV 8, in der Fassung 1986-11",
     "99": "alle Zeichensätze gemäß Anlage 15 GGT"
 }
 export type UebermittlungszeichensatzSchluessel = keyof typeof uebermittlungszeichensatzSchluessel
@@ -230,114 +234,21 @@ export const verarbeitungskennzeichenSchluessel = {
 export type VerarbeitungskennzeichenSchluessel = keyof typeof verarbeitungskennzeichenSchluessel
 
 /** Sonderschlüssel für Leistungsart für Pflegedienstleistungen nach § 105 Abs. 2 SGB XI */
-export const pflegeLeistungsartSonderschluessel = {
+export const sgbxiLeistungsartSonderschluessel = {
     "00": "Sammelschlüssel für alle Leistungsarten",
     "99": "Sonderschlüssel, gilt für alle in der Kostenträgerdatei nicht aufgeführten Gruppen-und Einzelschlüssel",
 }
-export type PflegeLeistungsartSonderschluessel = keyof typeof pflegeLeistungsartSonderschluessel
+export type SGBXILeistungsartSonderschluessel = keyof typeof sgbxiLeistungsartSonderschluessel
 
-export type KostentraegerPflegeLeistungsartSchluessel = 
-    PflegeLeistungsartSonderschluessel | PflegeLeistungsartSchluessel
+export type KostentraegerSGBXILeistungsartSchluessel = 
+    SGBXILeistungsartSonderschluessel | SGBXILeistungsartSchluessel
 
 /** Sonderschlüssel Abrechnungscode für Leistungen nach § 302 Abs. 2 SGB V */
-export const abrechnungscodeSonderschluessel = {
+export const sgbvAbrechnungscodeSonderschluessel = {
     "00": "Sammelschlüssel für alle Leistungsarten",
     "99": "Sonderschlüssel, gilt für alle in der Kostenträgerdatei nicht aufgeführten Gruppen-und Einzelschlüssel"
 }
-export type AbrechnungscodeSonderschluessel = keyof typeof abrechnungscodeSonderschluessel
+export type SGBVAbrechnungscodeSonderschluessel = keyof typeof sgbvAbrechnungscodeSonderschluessel
 
-export type KostentraegerAbrechnungscodeSchluessel = 
-    AbrechnungscodeSonderschluessel | SonstigeAbrechnungscodeSchluessel
-
-// ASK/TODO: Why the duplicates? Relevant for us?
-/** Tarifkennzeichen: Tarifbereich (1-2 Stelle des Tarifkennzeichens) */
-export const tarifbereichSchluessel = {
-    "00": "Bundeseinheitlicher Tarif (gültig für Ost und West)",
-    "01": "Baden-Württemberg",
-    "02": "Bayern",
-    "03": "Berlin Ost",
-    "04": "Bremen",
-    "05": "Hamburg",
-    "06": "Hessen",
-    "07": "Niedersachsen",
-    "08": "Nordrhein-Westfalen",
-    "09": "Rheinland-Pfalz",
-    "10": "Saarland",
-    "11": "Schleswig-Holstein",
-    "12": "Brandenburg",
-    "13": "Sachsen",
-    "14": "Sachsen-Anhalt",
-    "15": "Mecklenburg-Vorpommern",
-    "16": "Thüringen",
-    "17": "Stuttgart und Karlsruhe",
-    "18": "Freiburg und Tübingen",
-    "19": "Berlin West",
-    "20": "Nordrhein",
-    "21": "Westfalen-Lippe",
-    "22": "Lippe",
-    "23": "Berlin (gesamt)",
-    "24": "Bundeseinheitlicher Tarif (West)",
-    "25": "Bundeseinheitlicher Tarif (Ost)",
-    "50": "Bundesvertrag",
-    "51": "Baden-Württemberg",
-    "52": "Bayern",
-    "53": "Berlin Ost",
-    "54": "Bremen",
-    "55": "Hamburg",
-    "56": "Hessen",
-    "57": "Niedersachsen",
-    "58": "Nordrhein-Westfalen",
-    "59": "Rheinland-Pfalz",
-    "60": "Saarland",
-    "61": "Schleswig-Holstein",
-    "62": "Brandenburg",
-    "63": "Sachsen",
-    "64": "Sachsen-Anhalt",
-    "65": "Mecklenburg-Vorpommern",
-    "66": "Thüringen",
-    "67": "Stuttgart und Karlsruhe",
-    "68": "Freiburg und Tübingen",
-    "69": "Berlin West",
-    "70": "Nordrhein",
-    "71": "Westfalen-Lippe",
-    "72": "Lippe",
-    "73": "Berlin (gesamt)",
-    "74": "Bundeseinheitlicher Tarif (West)",
-    "75": "Bundeseinheitlicher Tarif (Ost)",
-    "90": "sonstiger länderübergreifender Tarif",
-    "91": "Vertrag auf Kassenebene",
-    "92": "Vertrag auf Kassenebene",
-    "93": "Vertrag auf Kassenebene",
-    "94": "Vertrag auf Kassenebene",
-    "95": "Vertrag auf Kassenebene",
-    "96": "Vertrag auf Kassenebene",
-    "97": "Vertrag auf Kassenebene",
-    "98": "Vertrag auf Kassenebene",
-    "99": "Vertrag auf Kassenebene"
-}
-export type TarifbereichSchluessel = keyof typeof tarifbereichSchluessel
-
-/*  Sondertarife (3. bis 5. Stelle des Tarifkennzeichens)
-
-    000 - 090           ohne Besonderheiten
-    A00 - A90           
-    
-    091 - 098           nicht besetzt
-    A91 - A98            (wird von den Verbänden der Krankenkassen auf Bundesebene belegt)
-    U00 - ZZZ           
-    
-    099                 Leistung ohne preisliche Regelung und daher Abrechnung nach genehmigten 
-                         Kostenvoranschlag
-    
-    100 - 999           Sondertarifvereinbarungen zwischen einem oder mehreren Leistungserbringern
-    A99 - TZZ            und einem oder mehreren Kostenträgern
-                         (Das Kennzeichen für Sondertarife wird von den Vertragspartnern festgelegt)
-
-    Alle übrigen        Sondertarifvereinbarungen zwischen einem oder mehreren Leistungserbringern 
-    Zahlen-/Buch-        und einem oder mehreren Kostenträgern 
-    stabenkombi-         (Das Kennzeichen für Sondertarife wird von den Vertragspartnern festgelegt)
-    nationen, die 
-    nicht in die o.g. 
-    reservierten Be-
-    reiche fallen
-*/
+export type KostentraegerSGBVAbrechnungscodeSchluessel = 
+    SGBVAbrechnungscodeSonderschluessel | SGBVAbrechnungscodeSchluessel
