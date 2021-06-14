@@ -8,6 +8,7 @@ import {
 } from "./edifact/codes"
 import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, UEM, VKG } from "./edifact/segments"
 import { VerfahrenSchluessel } from "./filename/codes"
+import { PublicKeyInfo } from "./pki/types"
 import { 
     Address, 
     Contact, 
@@ -71,14 +72,14 @@ const kvBezirkSchluesselToKVLocation =
     ])
 
 
-export default function transform(interchange: KOTRInterchange): InstitutionListParseResult {
+export default function transform(pkeys: Map<string, PublicKeyInfo[]>, interchange: KOTRInterchange): InstitutionListParseResult {
 
     const validityStartDate = interchange.filename.validityStartDate
 
     const warnings: string[] = []
     const institutions = interchange.institutions.map((msg) => {
         try {
-            return transformMessage(msg, validityStartDate)
+            return transformMessage(pkeys, msg, validityStartDate)
         } catch(e) {
             warnings.push(e.message)
         }
@@ -120,6 +121,10 @@ function validateLinks(institutions: Institution[]): string[] {
                     errors.push(`${errMsg} links to IK ${link.ik} for data but neither that IK nor an IK it links to accepts SMTP (email)`)
                 }
             }
+            /** each Datenannahme with capacity to decrypt must have a public key */
+            if (!da?.publicKeys) {
+                errors.push(`${errMsg} links to IK ${link.ik} for data but there is not any public key for encryption`)
+            }
         })
     })
     return errors
@@ -135,7 +140,7 @@ function verfahrenToLeistungserbringergruppeSchluessel(verfahren: VerfahrenSchlu
 }
 
 
-function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date): Institution | null {
+function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage, interchangeValidityStartDate: Date): Institution | null {
 
     /* in practice, this doesn't really seem to be used and usage of this field is inconsistent for the
        different umbrella organizations that issue the Kostenträger-file. "03" however seems to mean
@@ -214,6 +219,8 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
 
     const contacts = msg.aspList.map((asp) => createContact(asp))
 
+    const publicKeys = pkeys.get(msg.idk.ik)
+
     return {
         ik: msg.idk.ik,
         name: msg.nam.names.join(" "),
@@ -227,6 +234,7 @@ function transformMessage(msg: KOTRMessage, interchangeValidityStartDate: Date):
         contacts: contacts.length > 0 ? contacts : undefined,
         addresses: msg.ansList.map((ans) => createAddress(ans)),
         transmission: createReceiptTransmission(msg.uemList, msg.dfuList),
+        publicKeys: publicKeys,
         kostentraegerLinks: kostentraegerLinks.length > 0 ? kostentraegerLinks : undefined,
         datenannahmestelleLinks: datenannahmestelleLinks.length > 0 ? datenannahmestelleLinks : undefined,
         untrustedDatenannahmestelleLinks: untrustedDatenannahmestelleLinks.length > 0 ? untrustedDatenannahmestelleLinks : undefined,
