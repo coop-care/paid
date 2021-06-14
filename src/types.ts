@@ -22,10 +22,14 @@ import {
 export const messageIdentifiers = {
     "PLGA": "Pflegeleistungserbringer Gesamtaufstellung der Abrechnung",
     "PLAA": "Pflegeleistungserbringer Abrechnungsdaten je Abrechnungsfall",
+    "SLGA": "Sonstige Leistungserbringer Gesamtaufstellung der Abrechnung",
+    "SLLA": "Sonstige Leistungserbringer Abrechnungsdaten je Abrechnungsfall",
 }
 export const messageIdentifierVersions = {
     "PLGA": "PLGA:2",
     "PLAA": "PLAA:3",
+    "SLGA": "SLGA:15:0:0",
+    "SLLA": "SLLA:15:0:0"
 }
 export type MessageIdentifiers = keyof typeof messageIdentifiers;
 

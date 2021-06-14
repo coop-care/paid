@@ -1,6 +1,8 @@
+/** based on document: Sonstige Leistungserbringer, Technische Anlage 3, Schlüsselverzeichnisse
+  * see docs/documents.md for more info
+  */
 
-
-/** Schlüssel Abrechnungscode für Leistungen nach § 302 Abs. 2 SGB V */
+/** Schlüssel Abrechnungscode für Leistungen nach § 302 Abs. 2 SGB V, 8.1.5.1 */
 export const abrechnungscodeEinzelschluessel = {
     "11": "Hilfsmittellieferant: Apotheke (mit gesonderter Zulassung nach § 126 SGB V)",
     "12": "Hilfsmittellieferant: Augenoptiker",
@@ -197,3 +199,25 @@ export type TarifbereichSchluessel = keyof typeof tarifbereichSchluessel
     reservierten Be-
     reiche fallen
 */
+
+/** Schlüssel Leistungserbringer-Sammelgruppenschlüssel 8.1.14 */
+export const sammelgruppenSchluessel = {
+    "A": "Leistungserbringer von Hilfsmitteln",
+    "B": "Leistungserbringer von Heilmitteln",
+    "C": "Leistungserbringer von häuslicher Krankenpflege",
+    "D": "Leistungserbringer von Haushaltshilfe",
+    "E": "Leistungserbringer von Krankentransportleistungen",
+    "F": "Hebammen",
+    "G": "nichtärztliche Dialysesachleistungen",
+    "H": "Leistungserbringer von Rehabilitationssport",
+    "I": "Leistungserbringer von Funktionstraining",
+    "J": "Weitere Sonstige Leistungserbringer, sofern nicht unter A - I und K - O aufgeführt",
+    "K": "Leistungserbringer von Präventions- und Gesundheitsförderungsmaßnahmen im Rahmen von ambulanten Vorsorgeleistungen",
+    "L": "Leistungserbringer für ergänzende Rehamaßnahmen",
+    "M": "Sozialpädiatrische Zentren/Frühförderstellen",
+    "N": "Soziotherapeutischer Leistungserbringer",
+    "O": "SAPV",
+    "P": "Leistungserbringer nach § 132g SGB V",
+    "Q": "Kurzzeitpflege",
+};
+export type SammelgruppenSchluessel = keyof typeof sammelgruppenSchluessel;
