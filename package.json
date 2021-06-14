@@ -11,6 +11,7 @@
   },
   "files": [
     "lib",
+    "dist",
     "package.json"
   ],
   "repository": {
@@ -54,7 +55,10 @@
       "ts",
       "js"
     ],
-    "testRegex": "tests/.+\\.spec\\.ts$"
+    "testRegex": "tests/.+\\.spec\\.ts$",
+    "collectCoverageFrom": [
+        "src/**"
+    ]
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.0.32",
