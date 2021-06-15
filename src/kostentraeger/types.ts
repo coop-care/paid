@@ -142,7 +142,7 @@ export const federalStateSchluesselWithoutNRWSchluessel = {
     "TH": "Thüringen",
 }
 
-type FederalStateSchluesselWithoutNRWSchluessel = keyof typeof federalStateSchluesselWithoutNRWSchluessel
+export type FederalStateSchluesselWithoutNRWSchluessel = keyof typeof federalStateSchluesselWithoutNRWSchluessel
 
 export const nrwSubdivisionSchluessel = {
     "Nordrhein": "Nordrhein (Düsseldorf, Köln)",
