@@ -1,4 +1,10 @@
-import { KostentraegerFindResult, KostentraegerIndex, Leistungsart } from "../../src/kostentraeger/index"
+import { 
+    KostentraegerForDataFindResult,
+    KostentraegerForPaperFindResult,
+    InstitutionListsIndex,
+    Leistungsart
+} from "../../src/kostentraeger/index"
+import { PublicKeyInfo } from "../../src/kostentraeger/pki/types"
 import { 
     CareProviderLocationSchluessel,
     Institution,
@@ -16,10 +22,11 @@ describe("Kostenträger index", () => {
             ik: "00000001"
         } as Institution
 
-        expect(find([institutionListOf([kasse])], "00000001")).toEqual({
+        expect(findForData([institutionListOf([kasse])], "00000001")).toEqual({
             pflegekasse: kasse,
             kostentraeger: kasse,
             encryptTo: kasse,
+            publicKey: defaultPublicKey,
             sendTo: kasse 
         })
     })
@@ -33,10 +40,11 @@ describe("Kostenträger index", () => {
             kostentraegerLinks: [{ ik: "00000001" }],
         } as Institution
 
-        expect(find([institutionListOf([kasse])], "00000001")).toEqual({
+        expect(findForData([institutionListOf([kasse])], "00000001")).toEqual({
             pflegekasse: kasse,
             kostentraeger: kasse,
             encryptTo: kasse,
+            publicKey: defaultPublicKey,
             sendTo: kasse 
         })
     })
@@ -61,10 +69,11 @@ describe("Kostenträger index", () => {
             ik: "00000003",
         } as Institution
 
-        expect(find([institutionListOf([kasse1, kasse2, kasse3])], "00000001")).toEqual({
+        expect(findForData([institutionListOf([kasse1, kasse2, kasse3])], "00000001")).toEqual({
             pflegekasse: kasse1,
             kostentraeger: kasse3,
             encryptTo: kasse3,
+            publicKey: defaultPublicKey,
             sendTo: kasse3 
         })
     })
@@ -84,10 +93,11 @@ describe("Kostenträger index", () => {
             kostentraegerLinks: [{ ik: "00000001" }],
         } as Institution
 
-        expect(find([institutionListOf([kasse1, kasse2])], "00000001")).toEqual({
+        expect(findForData([institutionListOf([kasse1, kasse2])], "00000001")).toEqual({
             pflegekasse: kasse1,
             kostentraeger: kasse2,
             encryptTo: kasse2,
+            publicKey: defaultPublicKey,
             sendTo: kasse2 
         })
     })
@@ -113,13 +123,15 @@ describe("Kostenträger index", () => {
             transmission: {
                 email: "default@default.de",
                 zeichensatz: "I8"
-            }
+            },
+            ...usesDefaultPublicKey
         } as Institution
 
-        expect(find([institutionListOf([pflegekasse, kostentraeger, datenannahmestelle])], "00000001")).toEqual({
+        expect(findForData([institutionListOf([pflegekasse, kostentraeger, datenannahmestelle])], "00000001")).toEqual({
             pflegekasse: pflegekasse,
             kostentraeger: kostentraeger,
             encryptTo: datenannahmestelle,
+            publicKey: defaultPublicKey,
             sendTo: datenannahmestelle 
         })
     })
@@ -144,7 +156,8 @@ describe("Kostenträger index", () => {
             ik: "00000003",
             untrustedDatenannahmestelleLinks: [{
                 ik: "00000004"
-            }]
+            }],
+            ...usesDefaultPublicKey
         } as Institution
         const untrustedDatenannahmestelle = {
             ...base, 
@@ -155,7 +168,7 @@ describe("Kostenträger index", () => {
             }
         } as Institution
 
-        expect(find([institutionListOf([
+        expect(findForData([institutionListOf([
             pflegekasse,
             kostentraeger,
             trustedDatenannahmestelle,
@@ -164,12 +177,13 @@ describe("Kostenträger index", () => {
             pflegekasse: pflegekasse,
             kostentraeger: kostentraeger,
             encryptTo: trustedDatenannahmestelle,
+            publicKey: defaultPublicKey,
             sendTo: untrustedDatenannahmestelle 
         })
     })
 
     it("excludes lists for a different Leistungserbringer group", () => {
-        expect(find(
+        expect(findForData(
             [{
                 ...institutionListOf([simple]),
                 leistungserbringerGruppeSchluessel: "6",  // <- LE-Gruppe 6 but...
@@ -180,7 +194,7 @@ describe("Kostenträger index", () => {
     })
 
     it("excludes lists that are not valid yet", () => {
-        expect(find(
+        expect(findForData(
             [{
                 ...institutionListOf([simple]),
                 validityStartDate: new Date("2010-02-01"), // valid starting then...
@@ -191,7 +205,7 @@ describe("Kostenträger index", () => {
     })
 
     it("when several lists of the same issuer etc. are valid, takes only the most current one", () => {
-        expect(find(
+        expect(findForData(
             [{
                 ...institutionListOf([simple]),
                 validityStartDate: new Date("2010-02-01"), // older
@@ -205,7 +219,7 @@ describe("Kostenträger index", () => {
     })
 
     it("excludes single institutions that are not valid", () => {
-        expect(find(
+        expect(findForData(
             [institutionListOf([
                 {
                     ...simple,
@@ -221,7 +235,7 @@ describe("Kostenträger index", () => {
     })
 
     it("excludes single institutions that are not valid when linked to as Kostenträger", () => {
-        expect(find(
+        expect(findForData(
             [institutionListOf([
                 { 
                     ...base, 
@@ -241,7 +255,7 @@ describe("Kostenträger index", () => {
     })
 
     it("excludes single institutions that are not valid when linked to as Datenannahmestelle", () => {
-        expect(find(
+        expect(findForData(
             [institutionListOf([
                 { 
                     ...base, 
@@ -291,19 +305,21 @@ describe("Kostenträger index", () => {
 
         const institutionLists = [institutionListOf([kasse, kostentraeger2, kostentraeger3])]
 
-        expect(find(institutionLists, "00000001",{ location: "SL" })).toEqual(undefined)
+        expect(findForData(institutionLists, "00000001",{ location: "SL" })).toEqual(undefined)
 
-        expect(find(institutionLists, "00000001",{ location: "HH" })).toEqual({
+        expect(findForData(institutionLists, "00000001",{ location: "HH" })).toEqual({
             pflegekasse: kasse,
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger2
         })
 
-        expect(find(institutionLists, "00000001",{ location: "SH" })).toEqual({
+        expect(findForData(institutionLists, "00000001",{ location: "SH" })).toEqual({
             pflegekasse: kasse,
             kostentraeger: kostentraeger3,
             encryptTo: kostentraeger3,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger3
         })
     })
@@ -327,12 +343,13 @@ describe("Kostenträger index", () => {
 
         const institutionLists = [institutionListOf([kasse, kostentraeger])]
 
-        expect(find(institutionLists, "00000001",{ location: "HH" })).toEqual(undefined)
+        expect(findForData(institutionLists, "00000001",{ location: "HH" })).toEqual(undefined)
 
-        expect(find(institutionLists, "00000001",{ location: "Westfalen-Lippe" })).toEqual({
+        expect(findForData(institutionLists, "00000001",{ location: "Westfalen-Lippe" })).toEqual({
             pflegekasse: kasse,
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger
         })
     })
@@ -366,17 +383,19 @@ describe("Kostenträger index", () => {
 
         const institutionLists = [institutionListOf([kasse, kostentraeger2, kostentraeger3])]
 
-        expect(find(institutionLists, "00000001", { leistungsart: { sgbxiLeistungsart: "05" }})).toEqual({
+        expect(findForData(institutionLists, "00000001", { leistungsart: { sgbxiLeistungsart: "05" }})).toEqual({
             pflegekasse: kasse,
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger2
         })
 
-        expect(find(institutionLists, "00000001",{ leistungsart: { sgbxiLeistungsart: "08" } })).toEqual({
+        expect(findForData(institutionLists, "00000001",{ leistungsart: { sgbxiLeistungsart: "08" } })).toEqual({
             pflegekasse: kasse,
             kostentraeger: kostentraeger3,
             encryptTo: kostentraeger3,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger3
         })
     })
@@ -413,17 +432,19 @@ describe("Kostenträger index", () => {
             leistungserbringerGruppeSchluessel: "5"
         }] as InstitutionList[]
 
-        expect(find(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "31" }})).toEqual({
+        expect(findForData(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "31" }})).toEqual({
             pflegekasse: kasse,
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger2
         })
 
-        expect(find(institutionLists, "00000001",{ leistungsart: { sgbvAbrechnungscode: "60" } })).toEqual({
+        expect(findForData(institutionLists, "00000001",{ leistungsart: { sgbvAbrechnungscode: "60" } })).toEqual({
             pflegekasse: kasse,
             kostentraeger: kostentraeger3,
             encryptTo: kostentraeger3,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger3
         })
     })
@@ -450,19 +471,21 @@ describe("Kostenträger index", () => {
             leistungserbringerGruppeSchluessel: "5"
         }] as InstitutionList[]
 
-        expect(find(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "31" }})).toEqual({
+        expect(findForData(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "31" }})).toEqual({
             pflegekasse: kasse,
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger
         })
-        expect(find(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "32" }})).toEqual({
+        expect(findForData(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "32" }})).toEqual({
             pflegekasse: kasse,
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger
         })
-        expect(find(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "41" }})).toEqual(undefined)
+        expect(findForData(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "41" }})).toEqual(undefined)
     })
 
     it("heeds both the location and leistungsart", () => {
@@ -485,19 +508,19 @@ describe("Kostenträger index", () => {
 
         const institutionLists = [institutionListOf([kasse, kostentraeger])]
 
-        expect(find(
+        expect(findForData(
             institutionLists,
             "00000001",
             { location: "SL", leistungsart: { sgbxiLeistungsart: "05"} }
         )).toEqual(undefined)
 
-        expect(find(
+        expect(findForData(
             institutionLists,
             "00000001",
             { location: "HH", leistungsart: { sgbxiLeistungsart: "06"} }
         )).toEqual(undefined)
 
-        expect(find(
+        expect(findForData(
             institutionLists,
             "00000001",
             { location: "HH", leistungsart: { sgbxiLeistungsart: "05"} }
@@ -505,6 +528,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger
         })
     })
@@ -537,9 +561,7 @@ describe("Kostenträger index", () => {
             ik: "00000003"
         } as Institution
 
-        const institutionLists = 
-
-        expect(find(
+        expect(findForData(
             [institutionListOf([kasse, kostentraeger2, kostentraeger3])],
             "00000001",
             { location: "HH" }
@@ -547,11 +569,12 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger2
         })
 
         // make sure that the previous test didn't just succeed because of the order
-        expect(find(
+        expect(findForData(
             [institutionListOf([kasse, kostentraeger3, kostentraeger2])], // <- different order
             "00000001",
             { location: "HH" }
@@ -559,6 +582,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
+            publicKey: defaultPublicKey,
             sendTo: kostentraeger2
         })
     })
@@ -574,15 +598,15 @@ describe("Kostenträger index", () => {
         } as Institution
         const institutionList = [institutionListOf([kasse])]
 
-        expect(find(institutionList, "00000001", { paperDataType: PaperDataType.Receipt })).toEqual(undefined)
-        expect(find(institutionList, "00000001", { paperDataType: PaperDataType.CostEstimate })).toEqual(undefined)
+        expect(findForPaper(institutionList, "00000001", { paperDataType: PaperDataType.Receipt })).toEqual(undefined)
+        expect(findForPaper(institutionList, "00000001", { paperDataType: PaperDataType.CostEstimate })).toEqual(undefined)
 
-        expect(find(institutionList, "00000001", { paperDataType: PaperDataType.MachineReadableReceipt })).toEqual({
+        expect(findForPaper(institutionList, "00000001", { paperDataType: PaperDataType.MachineReadableReceipt })).toEqual({
             pflegekasse: kasse,
             kostentraeger: kasse,
             sendTo: kasse 
         })
-        expect(find(institutionList, "00000001", { paperDataType: PaperDataType.Prescription })).toEqual({
+        expect(findForPaper(institutionList, "00000001", { paperDataType: PaperDataType.Prescription })).toEqual({
             pflegekasse: kasse,
             kostentraeger: kasse,
             sendTo: kasse 
@@ -599,23 +623,87 @@ describe("Kostenträger index", () => {
 
         const institutionList2 = [institutionListOf([kasse2])]
 
-        expect(find(institutionList2, "00000001", { paperDataType: PaperDataType.MachineReadableReceipt })).toEqual(undefined)
-        expect(find(institutionList2, "00000001", { paperDataType: PaperDataType.Prescription })).toEqual(undefined)
+        expect(findForPaper(institutionList2, "00000001", { paperDataType: PaperDataType.MachineReadableReceipt })).toEqual(undefined)
+        expect(findForPaper(institutionList2, "00000001", { paperDataType: PaperDataType.Prescription })).toEqual(undefined)
 
-        expect(find(institutionList2, "00000001", { paperDataType: PaperDataType.Receipt })).toEqual({
+        expect(findForPaper(institutionList2, "00000001", { paperDataType: PaperDataType.Receipt })).toEqual({
             pflegekasse: kasse2,
             kostentraeger: kasse2,
             sendTo: kasse2 
         })
-        expect(find(institutionList2, "00000001", { paperDataType: PaperDataType.CostEstimate })).toEqual({
+        expect(findForPaper(institutionList2, "00000001", { paperDataType: PaperDataType.CostEstimate })).toEqual({
             pflegekasse: kasse2,
             kostentraeger: kasse2,
             sendTo: kasse2 
         })
     })
+
+    it("excludes results for datenannahmestelle without public key", () => {
+        const kasse = { 
+            ...base, 
+            ...acceptsData,
+            ...linksPapierAndDatenannahmeTo("00000001"),
+            ik: "00000001",
+            publicKeys: []
+        } as Institution
+
+        expect(findForData([institutionListOf([kasse])], "00000001")).toBeUndefined()
+    })
+
+    it("excludes results for datenannahmestelle with expired public key", () => {
+        const expiredKeyInfo: PublicKeyInfo = {
+            validityFrom: new Date("2010-01-01"),
+            validityTo: new Date("2012-01-01"),
+            publicKey: new ArrayBuffer(8)
+        }
+
+        const kasse = { 
+            ...base, 
+            ...acceptsData,
+            ...linksPapierAndDatenannahmeTo("00000001"),
+            publicKeys: [expiredKeyInfo],
+            ik: "00000001"
+        } as Institution
+
+        expect(findForData([institutionListOf([kasse])], "00000001", {
+            date: new Date("2012-01-02"),
+        })).toBeUndefined()
+    })
+
+    it("finds kostentraeger and uses the newer public key for result if there are several", () => {
+        const oldKeyInfo: PublicKeyInfo = {
+            validityFrom: new Date("2010-01-01"),
+            validityTo: new Date("2020-01-01"),
+            publicKey: new ArrayBuffer(8)
+        }
+        const newKeyInfo: PublicKeyInfo = {
+            validityFrom: new Date("2010-01-01"),
+            validityTo: new Date("2022-01-01"),
+            publicKey: new ArrayBuffer(9)
+        }
+
+        const kasse = { 
+            ...base, 
+            ...acceptsData,
+            ...linksPapierAndDatenannahmeTo("00000001"),
+            publicKeys: [oldKeyInfo, newKeyInfo],
+            ik: "00000001"
+        } as Institution
+
+        expect(findForData([institutionListOf([kasse])], "00000001", {
+            date: new Date("2011-01-01"),
+        })).toEqual({
+            pflegekasse: kasse,
+            kostentraeger: kasse,
+            encryptTo: kasse,
+            publicKey: newKeyInfo.publicKey,
+            sendTo: kasse 
+        })
+    })
 })
 
 const defaultIK: string = "00000000"
+const defaultPublicKey: ArrayBuffer = new ArrayBuffer(111)
 
 const institutionListOf = (institutions: Institution[]): InstitutionList => ({
     issuerIK: "00000000",
@@ -652,7 +740,16 @@ const linksPapierAndDatenannahmeTo = (ik: string) => ({
     }]
 })
 
+const usesDefaultPublicKey = {
+    publicKeys: [{
+        validityFrom: new Date("2010-01-01"),
+        validityTo: new Date("2090-01-01"),
+        publicKey: defaultPublicKey
+    }]
+}
+
 const acceptsData = {
+    ...usesDefaultPublicKey,
     transmission: {
         email: "default@default.de",
         zeichensatz: "I8"
@@ -668,7 +765,7 @@ type OptFindParams = {
     date?: Date
 }
 
-function find(
+function findForPaper(
     institutionLists: InstitutionList[],
     pflegekasseIK: string,
     {
@@ -677,8 +774,22 @@ function find(
         location = "HH",
         date = new Date()
     }: OptFindParams = {}
-): KostentraegerFindResult | undefined {
-    return new KostentraegerIndex(institutionLists).find(
+): KostentraegerForPaperFindResult | undefined {
+    return new InstitutionListsIndex(institutionLists).findForPaper(
         paperDataType, pflegekasseIK, leistungsart, location, date
+    )
+}
+
+function findForData(
+    institutionLists: InstitutionList[],
+    pflegekasseIK: string,
+    {
+        leistungsart = { sgbxiLeistungsart: "01" },
+        location = "HH",
+        date = new Date()
+    }: OptFindParams = {}
+): KostentraegerForDataFindResult | undefined {
+    return new InstitutionListsIndex(institutionLists).findForData(
+        pflegekasseIK, leistungsart, location, date
     )
 }
