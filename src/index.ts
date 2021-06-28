@@ -90,7 +90,9 @@ export type {
     PapierannahmestelleLink,
     PaperDataType,
     KVLocationSchluessel,
+    CareProviderLocationSchluessel,
 } from "./kostentraeger/types";
+export { careProviderLocationSchluessel } from "./kostentraeger/types";
 import fetchKostentraeger from "./kostentraeger/fetcher";
 export { fetchKostentraeger };
 export * from "./kostentraeger/json_serializer";
