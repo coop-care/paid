@@ -41,6 +41,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     abrechnungscode: "36",
     tarifbereich: "02",
     umsatzsteuerBefreiung: "",
+    umsatzsteuerOrdnungsnummer: "123/456/78900",
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Von Mensch zu Mensch gGmbH",
@@ -384,7 +385,7 @@ export const payload2 = {
     billingData: {
         dateiindikator: "0",
         rechnungsart: "2",
-        rechnungsnummerprefix: "2021-00267",
+        rechnungsnummerprefix: "2021-0267",
         abrechnungsmonat: new Date("2021-04-01"),
         abrechnungsstelle: abrechnungsstellen[0],
         datenaustauschreferenzJeEmpfaengerIK: {},
@@ -492,12 +493,16 @@ export const payload3 = {
     billingData: {
         dateiindikator: "0",
         rechnungsart: "3",
-        rechnungsnummerprefix: "2021-00398",
+        rechnungsnummerprefix: "2021-0398",
         rechnungsdatum: new Date("2021-05-03"),
         abrechnungsmonat: new Date("2021-04-01"),
         abrechnungsstelle: abrechnungsstellen[1],
-        datenaustauschreferenzJeEmpfaengerIK: {},
-        laufendeDatenannahmeImJahrJeEmpfaengerIK: {}
+        datenaustauschreferenzJeEmpfaengerIK: {
+            "123456789": 1
+        },
+        laufendeDatenannahmeImJahrJeEmpfaengerIK: {
+            "123456789": 1
+        }
     } as BillingData,
     invoices: [{
         leistungserbringer: { ...leistungserbringer[3] },

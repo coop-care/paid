@@ -69,7 +69,7 @@ export const makeBillingFile = (
         UNZ(messageNumber, datenaustauschreferenz)
     ].join("");
 
-    console.log(indentNutzdaten(nutzdaten))
+    // console.log(indentNutzdaten(nutzdaten));
 
     return {
         dateiname,

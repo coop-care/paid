@@ -40,7 +40,7 @@ export type BillingData = {
     datenaustauschreferenzJeEmpfaengerIK: Record<string, number>;
     dateiindikator: FileType;
     rechnungsart: RechnungsartSchluessel;
-    rechnungsnummerprefix: string; // must be unique for each billing
+    rechnungsnummerprefix: string;
     rechnungsdatum?: Date;
     abrechnungsmonat: Date;
     korrekturlieferung?: number;
