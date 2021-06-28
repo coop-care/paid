@@ -16,7 +16,7 @@ export const makeAnwendungsreferenz = (
 ) => [
     "PL",
     (abrechnungsmonat.getMonth() + 1).toString().padStart(2, "0") +
-    abrechnungsmonat.getFullYear().toString().substr(2, 1),
+    abrechnungsmonat.getFullYear().toString().substr(3, 1),
     korrekturlieferung,
     laufendeDatenannahmeImJahr.toString().slice(0, 2).padStart(2, "0"),
     rechnungsart == "1" ? "S" : "A",
