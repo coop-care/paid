@@ -5,12 +5,13 @@ import {
     UebermittlungszeichensatzSchluessel 
 } from "./edifact/codes"
 import { KassenartSchluessel } from "./filename/codes"
+import { PublicKeyInfo } from "./pki/types"
 
 /**
  * These types represent the data from Kostentraeger file(s) cast into a (more) accessible data model
  */
 
- export type InstitutionListFileParseResult = InstitutionListParseResult & {
+export type InstitutionListFileParseResult = InstitutionListParseResult & {
     fileName: string
 }
 
@@ -64,6 +65,10 @@ export type Institution = {
     /** Details on where to send receipts. Undefined if this institution does not accept any 
      *  receipts directly */
     transmission?: ReceiptTransmission,
+    /** Public key(s) to use for encrypting to this IK, if any. One institution may have several
+     *  public keys, with overlapping validity dates
+     */
+    publicKeys?: PublicKeyInfo[],
     /** Link(s) to Kostenträger (=institutions that pays the receipts). 
      *  The institution with the IK as printed on the health-insurance card is not necessarily the
      *  institution that manages paying the receipts. Usually such things are done by a central 
@@ -199,16 +204,4 @@ type BasicAddress = {
     /** max. 25 characters */
     place: string,
     /** max. 30 characters */
-}
-
-export const institutionListReplacer = (key: string, value: any): any => {
-    return value
-}
-
-export const institutionListReviver = (key: string, value: any): any => {
-    const isDate = ["validityStartDate", "validityFrom", "validityTo"].includes(key)
-    if (isDate && value) {
-        return new Date(value as string)
-    }
-    return value
 }

@@ -8,6 +8,7 @@ import {
 } from "../sgb-xi/codes";
 import { LeistungserbringergruppeSchluessel } from "./edifact/codes";
 import { KassenartSchluessel } from "./filename/codes";
+import { PublicKeyInfo } from "./pki/types";
 import { 
     CareProviderLocationSchluessel,
     Institution,
@@ -17,18 +18,22 @@ import {
 } from "./types";
 
 
-/** Result of a KostentraegerIndex::find query */
-export type KostentraegerFindResult = {
+/** Result of a InstitutionListsIndex::findForPaper query */
+export type KostentraegerForPaperFindResult = {
     /** Information of the institution with the IK given as pflegekasseIK parameter in the find function */
     pflegekasse: Institution,
     /** Information on the instutition which shall be the Kostenträger of this receipt */
     kostentraeger: Institution,
-    /** Information on the institution for which the receipt shall be encrypted. If this is not 
-     *  about a digital receipt, this field is undefined.
-     */
-    encryptTo?: Institution,
     /** Information on the institution to which the receipt shall be sent */
     sendTo: Institution 
+}
+
+/** Result of a InstitutionListsIndex::findForData query */
+export type KostentraegerForDataFindResult = KostentraegerForPaperFindResult & {
+    /** Information on the institution for which the receipt shall be encrypted */
+    encryptTo: Institution,
+    /** array buffer containing the public key to use for encryption */
+    publicKey: ArrayBuffer
 }
 
 export type Leistungsart = SGBXILeistungsart | SGBVAbrechnungscode
@@ -41,7 +46,7 @@ type InstitutionListWithValidityStartDate = {
 }
 
 /** An index to find Kostenträger information for Pflegedienstleister and sonstige Dienstleister */
-export class KostentraegerIndex {
+export class InstitutionListsIndex {
 
     /* The lists are deliberately not merged together because it is neither invalid nor unrealistic
        that one and the same institution is mentioned in different Kostenträger files, each with 
@@ -74,29 +79,111 @@ export class KostentraegerIndex {
         })
     }
 
-    /** Find information on the Kostenträger for sending the given data type
+    
+    /** Find information on the Kostenträger for sending the given paper data type
      * 
      * @param paperDataType What shall be sent: digital receipts, paper receipts, prescriptions, etc
-     *        0 for digital receipts.
+     *                      0 for digital receipts.
      * 
      * @param pflegekasseIK 9-digit "Institutionskennzeichen" of the care insurance of the insuree
      * 
      * @param leistungsart Type of health care service provided. Either a health care service type 
-     *        (Leistungsart) from SGB XI or one from SGB V (Abrechnungscode).
+     *                     (Leistungsart) from SGB XI or one from SGB V (Abrechnungscode).
      * 
      * @param location Location of the health care service provider
      * 
      * @param date Date at which the receipt should be sent. Optional, defaults to now. Some
-     *        institutions given in the Kostenträger files have a validity date range.
+     *             institutions given in the Kostenträger files have a validity date range (as well
+     *             as the certificates used for encryption).
      */
-    find(
+    findForPaper(
         paperDataType: PaperDataType,
         pflegekasseIK: string,
         leistungsart: Leistungsart,
         location: CareProviderLocationSchluessel,
         date: Date = new Date()
+    ): KostentraegerForPaperFindResult | undefined {
+        return this.find(pflegekasseIK, leistungsart, location, date, (
+                pflegekasse: Institution,
+                kostentraeger: Institution,
+                institutionsIndex: Map<string, Institution>
+            ) => {
+                const sendTo = findPapierannahmestelle(kostentraeger, institutionsIndex, paperDataType, leistungsart, location)
+                if (!sendTo) {
+                    return
+                }
+    
+                return {
+                    pflegekasse: pflegekasse,
+                    kostentraeger: kostentraeger,
+                    sendTo: sendTo
+                }
+            }
+        )
+    }
 
-    ): KostentraegerFindResult | undefined {
+    
+    /** Find information on the Kostenträger for sending data
+     * 
+     * @param pflegekasseIK 9-digit "Institutionskennzeichen" of the care insurance of the insuree
+     * 
+     * @param leistungsart Type of health care service provided. Either a health care service type 
+     *                     (Leistungsart) from SGB XI or one from SGB V (Abrechnungscode).
+     * 
+     * @param location Location of the health care service provider
+     * 
+     * @param date Date at which the receipt should be sent. Optional, defaults to now. Some
+     *             institutions given in the Kostenträger files have a validity date range (as well
+     *             as the certificates used for encryption).
+     */
+    findForData(
+        pflegekasseIK: string,
+        leistungsart: Leistungsart,
+        location: CareProviderLocationSchluessel,
+        date: Date = new Date()
+    ): KostentraegerForDataFindResult | undefined {
+        return this.find(pflegekasseIK, leistungsart, location, date, (
+                pflegekasse: Institution,
+                kostentraeger: Institution,
+                institutionsIndex: Map<string, Institution>
+            ) => {
+                const datenannahmestelle = findDatenannahmestelle(kostentraeger, institutionsIndex, leistungsart, location)
+                if (!datenannahmestelle) {
+                    return
+                }
+
+                const pkeyInfos = datenannahmestelle.encryptTo.publicKeys
+                if (!pkeyInfos) {
+                    return
+                }
+
+                const pkey = findMostCurrentValidKey(pkeyInfos, date)?.publicKey
+                if (!pkey) {
+                    return
+                }
+                
+                return {
+                    pflegekasse: pflegekasse,
+                    kostentraeger: kostentraeger,
+                    encryptTo: datenannahmestelle.encryptTo,
+                    sendTo: datenannahmestelle.sendTo,
+                    publicKey: pkey
+                }
+            }
+        )
+    }
+
+    private find<T>(
+        pflegekasseIK: string,
+        leistungsart: Leistungsart,
+        location: CareProviderLocationSchluessel,
+        date: Date = new Date(),
+        block: (
+            pflegekasse: Institution,
+            kostentraeger: Institution,
+            institutionsIndex: Map<string, Institution>
+        ) => T | undefined
+    ): T | undefined {
         /* only comb through those which are for the right Leistungserbringergruppe */
         const leGruppe = leistungsartToLeistungserbringergruppeSchluessel(leistungsart)
         const forLEGruppe = this.index.get(leGruppe)
@@ -122,36 +209,26 @@ export class KostentraegerIndex {
 
             const kostentraeger = findKostentraeger(pflegekasse, institutionsIndex, leistungsart, location)
             
-            if (paperDataType == 0) {
-
-                const datenannahmestellen = findDatenannahmestelle(kostentraeger, institutionsIndex, leistungsart, location)
-                if (!datenannahmestellen) {
-                    continue
-                }
-                
-                return {
-                    pflegekasse: pflegekasse,
-                    kostentraeger: kostentraeger,
-                    encryptTo: datenannahmestellen.encryptTo,
-                    sendTo: datenannahmestellen.sendTo
-                }
-
-            } else {
-
-                const sendTo = findPapierannahmestelle(kostentraeger, institutionsIndex, paperDataType, leistungsart, location)
-                if (!sendTo) {
-                    return
-                }
-    
-                return {
-                    pflegekasse: pflegekasse,
-                    kostentraeger: kostentraeger,
-                    sendTo: sendTo
-                }
-
+            const result = block(pflegekasse, kostentraeger, institutionsIndex)
+            if (result) {
+                return result
             }
         }
     }
+}
+
+function findMostCurrentValidKey(pkeys: PublicKeyInfo[], date: Date): PublicKeyInfo | undefined {
+    let result: PublicKeyInfo | undefined = undefined
+    let mostCurrentValidityToDate = new Date(0) // 1970
+    pkeys.forEach(pkey => {
+        if (pkey.validityFrom < date && pkey.validityTo > date) {
+            if (mostCurrentValidityToDate < pkey.validityTo ) {
+                mostCurrentValidityToDate = pkey.validityTo
+                result = pkey
+            }
+        }
+    })
+    return result
 }
 
 /** Finds the index of the entry in the given lists that has the most current valid date that is

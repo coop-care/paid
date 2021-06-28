@@ -1,4 +1,4 @@
-import { arrayBufferToBase64, base64ToArrayBuffer } from "../../src/pki/utils"
+import { arrayBufferToBase64, base64ToArrayBuffer } from "../../../src/kostentraeger/pki/utils"
 
 describe("pki utils", () => {
 
