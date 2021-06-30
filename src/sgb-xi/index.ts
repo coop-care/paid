@@ -51,8 +51,8 @@ export const makeBillingFile = (
     // according to section 4.2 Struktur der Datei, grouped for all three Rechnungsarten
     const nutzdaten = [
         UNB(absenderIK, empfaengerIK, datenaustauschreferenz, anwendungsreferenz, dateiindikator),
-        ...forEachKostentraeger(invoices, rechnungsart).flatMap(invoices => [
-            ...forEachLeistungserbringerAndPflegekasse(invoices).flatMap((invoicesByPflegekasse, index) => [
+        ...mapEachKostentraeger(invoices, rechnungsart).flatMap(invoices => [
+            ...mapEachLeistungserbringerAndPflegekasse(invoices).flatMap((invoicesByPflegekasse, index) => [
                 ...(invoicesByPflegekasse.length > 1 || rechnungsart == "3"
                     ? makeMessage("PLGA", true, mergeInvoices(invoices), billing, ++messageNumber, invoiceIndex, index)
                     : []),
@@ -78,7 +78,7 @@ export const makeBillingFile = (
     } as BillingFile;
 };
 
-const forEachKostentraeger = (invoices: Invoice[], rechnungsart: RechnungsartSchluessel): Invoice[][] => 
+const mapEachKostentraeger = (invoices: Invoice[], rechnungsart: RechnungsartSchluessel): Invoice[][] => 
     structureForRechnungsart(
         invoices.flatMap(invoice => 
             groupFaelleByKostentraeger(invoice.faelle)
@@ -93,7 +93,7 @@ const groupFaelleByKostentraeger = (faelle: Abrechnungsfall[]): Abrechnungsfall[
     valuesGroupedBy(faelle, fall => fall.versicherter.kostentraegerIK);
 
 /** 
- * split and sort an array of Abrechnungsfälle based on the property leistungsart 
+ * split an array of Abrechnungsfälle based on the property leistungsart 
  * that is stored deep down the nested structure on each leistung
  * because each invoice has to be for one kind of leistungsart only
 */
@@ -124,7 +124,7 @@ const structureForRechnungsart = (invoices: Invoice[], rechnungsart: Rechnungsar
 const groupInvoicesByKostentraeger = (invoices: Invoice[]): Invoice[][] => 
     valuesGroupedBy(invoices, invoice => invoice.faelle[0].versicherter.kostentraegerIK);
 
-const forEachLeistungserbringerAndPflegekasse = (invoices: Invoice[]): Invoice[][] => 
+const mapEachLeistungserbringerAndPflegekasse = (invoices: Invoice[]): Invoice[][] => 
     invoices.map(invoice =>
         valuesGroupedBy(invoice.faelle, fall => fall.versicherter.pflegekasseIK)
             .map(faelle => ({ ...invoice, faelle } as Invoice))
