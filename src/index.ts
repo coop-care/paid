@@ -93,8 +93,8 @@ export type {
     CareProviderLocationSchluessel,
 } from "./kostentraeger/types";
 export { careProviderLocationSchluessel } from "./kostentraeger/types";
-import fetchKostentraeger from "./kostentraeger/fetcher";
-export { fetchKostentraeger };
+import fetchInstitutionLists from "./kostentraeger/fetcher";
+export { fetchInstitutionLists };
 export * from "./kostentraeger/json_serializer";
 export { InstitutionListsIndex } from "./kostentraeger";
 
