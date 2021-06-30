@@ -2,9 +2,9 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, Abrechnungsfall, Invoice, MessageIdentifiers, BillingFile, Hilfsmittel } from "../types";
+import { BillingData, Abrechnungsfall, Invoice, MessageIdentifiers, BillingFile, Hilfsmittel, Einsatz, Leistung } from "../types";
 import { valuesGroupedBy } from "../utils";
-import { MehrwertsteuerSchluessel, RechnungsartSchluessel } from "./codes";
+import { LeistungsartSchluessel, MehrwertsteuerSchluessel, RechnungsartSchluessel } from "./codes";
 import { makeAnwendungsreferenz, makeDateiname } from "./filenames";
 import { ELS, ESK, FKT, GES, HIL, IAF, INV, MAN, NAD, NAM, REC, SRD, UNB, UNH, UNT, UNZ, UST, ZUS } from "./segments";
 
@@ -13,6 +13,10 @@ const mehrwertsteuersaetze: Record<MehrwertsteuerSchluessel, number> = {
     "1": 0.19,
     "2": 0.07
 };
+
+const sortByLeistungsBeginn = (a: Einsatz | Leistung, b: Einsatz | Leistung) =>
+    (a?.leistungsBeginn?.getTime() || Number.MAX_VALUE)
+    - (b?.leistungsBeginn?.getTime() || Number.MAX_VALUE);
 
 export const makeBillingFile = (
     empfaengerIK: string, 
@@ -35,22 +39,14 @@ export const makeBillingFile = (
     let invoiceIndex = 0;
 
     // sort leistungen und einsätze by start date
-    invoices.map(invoice => ({
-        ...invoice,
-        faelle: invoice.faelle.map(fall => ({
-            ...fall,
-            einsaetze: fall.einsaetze.map(einsatz => ({
-                ...einsatz,
-                leistungen: einsatz.leistungen.sort((a, b) =>
-                    (a?.leistungsBeginn?.getTime() || Number.MAX_VALUE)
-                    - (b?.leistungsBeginn?.getTime() || Number.MAX_VALUE)
-                )
-            })).sort((a, b) =>
-                (a?.leistungsBeginn?.getTime() || Number.MAX_VALUE)
-                - (b?.leistungsBeginn?.getTime() || Number.MAX_VALUE)
-            )
-        }))
-    }));
+    invoices.forEach(invoice => 
+        invoice.faelle.forEach(fall => {
+            fall.einsaetze.forEach(einsatz =>
+                einsatz.leistungen.sort(sortByLeistungsBeginn)
+            );
+            fall.einsaetze.sort(sortByLeistungsBeginn);
+        })
+    );
 
     // according to section 4.2 Struktur der Datei, grouped for all three Rechnungsarten
     const nutzdaten = [
@@ -82,50 +78,62 @@ export const makeBillingFile = (
     } as BillingFile;
 };
 
-const forEachKostentraeger = (invoices: Invoice[], rechnungsart: RechnungsartSchluessel) => 
+const forEachKostentraeger = (invoices: Invoice[], rechnungsart: RechnungsartSchluessel): Invoice[][] => 
     structureForRechnungsart(
         invoices.flatMap(invoice => 
             groupFaelleByKostentraeger(invoice.faelle)
-                .flatMap(faelle => groupByLeistungsart(faelle))
                 .map(faelle => ({
                     ...invoice,
-                    faelle 
+                    faelle: groupByLeistungsart(faelle)
                 } as Invoice))
         ), rechnungsart
     );
 
-const groupFaelleByKostentraeger = (faelle: Abrechnungsfall[]) =>
+const groupFaelleByKostentraeger = (faelle: Abrechnungsfall[]): Abrechnungsfall[][] =>
     valuesGroupedBy(faelle, fall => fall.versicherter.kostentraegerIK);
 
-const groupByLeistungsart = (faelle: Abrechnungsfall[]) => faelle.flatMap(fall => [
-    [...new Set(
-        fall.einsaetze.flatMap(einsatz => einsatz.leistungen).map(leistung => leistung.leistungsart)
-    )].map(leistungsart => ({
-        ...fall,
-        einsaetze: fall.einsaetze.map(einsatz => ({
-            ...einsatz,
-            leistungen: einsatz.leistungen.filter(leistung => leistung.leistungsart == leistungsart)
-        })).filter(einsatz => einsatz.leistungen.length)
-    }))
-]);
+/** 
+ * split and sort an array of Abrechnungsfälle based on the property leistungsart 
+ * that is stored deep down the nested structure on each leistung
+ * because each invoice has to be for one kind of leistungsart only
+*/
+const groupByLeistungsart = (faelle: Abrechnungsfall[]): Abrechnungsfall[] =>
+    faelle.flatMap(fall =>
+        existingLeistungsarten(fall.einsaetze) // find all unique leistungsarten in einseatze
+        .map(leistungsart => ({
+            ...fall,
+            einsaetze: fall.einsaetze.map(einsatz => ({
+                ...einsatz,
+                leistungen: einsatz.leistungen.filter(leistung => 
+                    leistung.leistungsart == leistungsart // keep every leistung that has the current leistungsart 
+                )
+            })).filter(einsatz => einsatz.leistungen.length) // remove every einsatz with empty leistungen
+        }))
+    );
 
-const structureForRechnungsart = (invoices: Invoice[], rechnungsart: RechnungsartSchluessel) =>
+const existingLeistungsarten = (einsaetze: Einsatz[]): LeistungsartSchluessel[] =>
+    [...new Set(
+        einsaetze.flatMap(einsatz => einsatz.leistungen).map(leistung => leistung.leistungsart)
+    )];
+
+const structureForRechnungsart = (invoices: Invoice[], rechnungsart: RechnungsartSchluessel): Invoice[][] =>
     rechnungsart != "3"
         ? [invoices]
         : groupInvoicesByKostentraeger(invoices);
 
-const groupInvoicesByKostentraeger = (invoices: Invoice[]) => 
+const groupInvoicesByKostentraeger = (invoices: Invoice[]): Invoice[][] => 
     valuesGroupedBy(invoices, invoice => invoice.faelle[0].versicherter.kostentraegerIK);
 
-const forEachLeistungserbringerAndPflegekasse = (invoices: Invoice[]) => invoices.map(invoice =>
-    valuesGroupedBy(invoice.faelle, fall => fall.versicherter.pflegekasseIK)
-        .map(faelle => ({ ...invoice, faelle } as Invoice))
-);
+const forEachLeistungserbringerAndPflegekasse = (invoices: Invoice[]): Invoice[][] => 
+    invoices.map(invoice =>
+        valuesGroupedBy(invoice.faelle, fall => fall.versicherter.pflegekasseIK)
+            .map(faelle => ({ ...invoice, faelle } as Invoice))
+    );
 
-const mergeInvoices = (invoices: Invoice[]) => ({
+const mergeInvoices = (invoices: Invoice[]): Invoice => ({
     leistungserbringer: {...invoices[0].leistungserbringer},
     faelle: invoices.flatMap(invoice => invoice.faelle)
-} as Invoice)
+})
 
 
 const makeMessage = (
