@@ -99,7 +99,7 @@ export * from "./kostentraeger/json_serializer";
 export { InstitutionListsIndex } from "./kostentraeger";
 
 export type {
-    HilfsmittelProduct
-} from "./hilfsmittelverzeichnis/reader";
+    Hilfsmittelverzeichnis
+} from "./hilfsmittelverzeichnis/types";
 import readHilfsmittelverzeichnis from "./hilfsmittelverzeichnis/reader";
 export { readHilfsmittelverzeichnis };
