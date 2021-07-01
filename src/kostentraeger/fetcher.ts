@@ -5,8 +5,11 @@ import parsePems from "./pki/parser"
 import parseKostentraegerUrls from './rssreader'
 import transform from "./transformer"
 import { InstitutionListFileParseResult, InstitutionListParseResult } from "./types"
-import { TextDecoder } from "util"
 import { PublicKeyInfo } from './pki/types'
+
+const getTextDecoder = async () => (typeof window !== 'undefined') && window.TextDecoder
+    ? window.TextDecoder
+    : (await import("util"))?.default?.TextDecoder
 
 const kostentraegerRssUrls = [
     "https://gkv-datenaustausch.de/leistungserbringer/pflege/kostentraegerdateien_pflege/rss_kostentraegerdateien_pflege.xml",
@@ -50,6 +53,7 @@ async function fetchKostentraegerFiles(kostentraegerFileUrls: string[], proxyFet
 }
 
 async function fetchKostentraegerFile(url: string, proxyFetch = fetch): Promise<[string, string]> {
+    const TextDecoder = await getTextDecoder()
     const response = await proxyFetch(url)
     /* Kostenträger files are encoded in iso-8859-1 and not in UTF-8, so we cannot
        just call response.text()! */
