@@ -12,6 +12,9 @@ export const number = (value?: number, fractionDigits?: number) => value?.toLoca
 
 export const price = (value?: number) => number(value, 2);
 
+export const pad = (value: number, length: number) => 
+    value.toString().padStart(length, "0").substr(0, length);
+
 export const day = (value: Date) => value.getDate().toString().padStart(2, "0");
 
 export const month = (value: Date) => (value.getMonth() + 1).toString().padStart(2, "0");

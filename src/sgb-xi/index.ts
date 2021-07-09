@@ -34,7 +34,7 @@ export const makeBillingFile = (
     const datenaustauschreferenz = datenaustauschreferenzJeEmpfaengerIK[empfaengerIK] || 1;
     const laufendeDatenannahmeImJahr = laufendeDatenannahmeImJahrJeEmpfaengerIK[empfaengerIK] || 1;
     const anwendungsreferenz = makeAnwendungsreferenz(kassenart, laufendeDatenannahmeImJahr, billing);
-    const dateiname = makeDateiname(dateiindikator, datenaustauschreferenz - 1); // todo: resaearch „verfahrensversion”, maybe in Auftragsdatei documentation?
+    const dateiname = makeDateiname(dateiindikator, datenaustauschreferenz - 1);
     let messageNumber = 0;
     let invoiceIndex = 0;
 
