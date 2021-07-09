@@ -5,8 +5,11 @@ import parsePems from "./pki/parser"
 import parseKostentraegerUrls from './rssreader'
 import transform from "./transformer"
 import { InstitutionListFileParseResult, InstitutionListParseResult } from "./types"
-import { TextDecoder } from "util"
 import { PublicKeyInfo } from './pki/types'
+
+const getTextDecoder = async () => (typeof window !== 'undefined') && window.TextDecoder
+    ? window.TextDecoder
+    : (await import("util"))?.default?.TextDecoder
 
 const kostentraegerRssUrls = [
     "https://gkv-datenaustausch.de/leistungserbringer/pflege/kostentraegerdateien_pflege/rss_kostentraegerdateien_pflege.xml",
@@ -20,37 +23,38 @@ const kostentraegerRssUrls = [
  */
 const certificatesUrl = "https://trustcenter-data.itsg.de/dale/annahme-rsa4096.key"
 
-export default async function fetchInstitutionLists(): Promise<InstitutionListFileParseResult[]> {
-    const publicKeyInfos = await fetchPublicKeyInfos()
-    const fileUrls = await fetchKostentraegerUrls(kostentraegerRssUrls)
-    const kostentraegerFiles = await fetchKostentraegerFiles(fileUrls)
+export default async function fetchInstitutionLists(proxyFetch = fetch): Promise<InstitutionListFileParseResult[]> {
+    const publicKeyInfos = await fetchPublicKeyInfos(proxyFetch)
+    const fileUrls = await fetchKostentraegerUrls(kostentraegerRssUrls, proxyFetch)
+    const kostentraegerFiles = await fetchKostentraegerFiles(fileUrls, proxyFetch)
     return kostentraegerFiles.map(([fileName, text]) => {
         return { fileName: fileName, ...parseKostentraegerString(publicKeyInfos, text) }
     })
 }
 
-async function fetchPublicKeyInfos(): Promise<Map<string,PublicKeyInfo[]>> {
-    const pems = await (await fetch(certificatesUrl)).text()
+async function fetchPublicKeyInfos(proxyFetch = fetch): Promise<Map<string,PublicKeyInfo[]>> {
+    const pems = await (await proxyFetch(certificatesUrl)).text()
     return parsePems(pems)
 }
 
-async function fetchKostentraegerUrls(kostentraegerRssUrls: string[]): Promise<string[]> {
+async function fetchKostentraegerUrls(kostentraegerRssUrls: string[], proxyFetch = fetch): Promise<string[]> {
     const urlsArray = await Promise.all(kostentraegerRssUrls.map(async (url) => {
         // The RSS text files are encoded in UTF-8, so we can call .text() here without worry
-        const responseText = await (await fetch(url)).text()
+        const responseText = await (await proxyFetch(url)).text()
         return parseKostentraegerUrls(responseText)
     }))
     return urlsArray.flat()
 }
 
-async function fetchKostentraegerFiles(kostentraegerFileUrls: string[]): Promise<[string, string][]> {
+async function fetchKostentraegerFiles(kostentraegerFileUrls: string[], proxyFetch = fetch): Promise<[string, string][]> {
     return await Promise.all(
-        kostentraegerFileUrls.map(async url => await fetchKostentraegerFile(url))
+        kostentraegerFileUrls.map(async url => await fetchKostentraegerFile(url, proxyFetch))
     )
 }
 
-async function fetchKostentraegerFile(url: string): Promise<[string, string]> {
-    const response = await fetch(url)
+async function fetchKostentraegerFile(url: string, proxyFetch = fetch): Promise<[string, string]> {
+    const TextDecoder = await getTextDecoder()
+    const response = await proxyFetch(url)
     /* Kostenträger files are encoded in iso-8859-1 and not in UTF-8, so we cannot
        just call response.text()! */
     const decoder = new TextDecoder("iso-8859-1")
