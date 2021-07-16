@@ -47,6 +47,8 @@ export type BillingData = {
     rechnungsnummerprefix: string;
     rechnungsdatum?: Date;
     abrechnungsmonat: Date;
+    /** An ascending number indicating a correction of an earlier version of this same bill.
+     *  0 or undefined if this is not a correction. */
     korrekturlieferung?: number;
     abrechnungsstelle?: Institution;
     laufendeDatenannahmeImJahrJeEmpfaengerIK: Record<string, number>;
