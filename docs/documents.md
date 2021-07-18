@@ -76,6 +76,10 @@ from 2017-08-31, to be applied from **09/2017**
 [Kostenträgerdatei](https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anhang_03_Anlage_1_TP5_20200616.pdf)  
 Version **07** from 2020-06-16, to be applied from **10/2021** 
 
+- Sonstige Leistungserbringer, Anlage 3:  
+[Schlüsselverzeichnisse](https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anlage_3_TP5_V16_20210331.pdf)  
+Version **16** from 2021-03-31, to be applied from **01/2022** 
+
 ### Gemeinsame Grundsätze Technik
 
 - Gemeinsame Grundsätze Technik, Anlage 16:  

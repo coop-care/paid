@@ -3,9 +3,11 @@
   */
 
 import { 
+    RechnungsartSchluessel
+} from "./codes";
+import { 
     AbrechnungscodeSchluessel,
     PflegegradSchluessel, 
-    RechnungsartSchluessel, 
     TarifbereichSchluessel, 
     LeistungsartSchluessel, 
     UmsatzsteuerBefreiungSchluessel,
@@ -18,6 +20,8 @@ import {
     MehrwertsteuerSchluessel,
     PflegehilfsmittelSchluessel,
 } from "./sgb-xi/codes";
+
+
 
 export const messageIdentifiers = {
     "PLGA": "Pflegeleistungserbringer Gesamtaufstellung der Abrechnung",

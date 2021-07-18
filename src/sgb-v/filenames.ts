@@ -3,14 +3,13 @@
   */
 
 import { BillingData, FileType } from "../types"
+import { RechnungsartSchluessel } from "../codes"
 
 /** A.k.a. "logischer Dateiname" */
 export const makeAnwendungsreferenz = (
     absenderIK: string,
-    {
-        rechnungsart,
-        abrechnungsmonat
-    }: BillingData
+    rechnungsart: RechnungsartSchluessel,
+    abrechnungsmonat: Date
 ) => [
     // "Absenderklassifikation". "SL" stands for "Sonstige Leistungserbringer"
     "SL",
