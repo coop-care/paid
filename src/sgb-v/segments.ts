@@ -4,7 +4,7 @@
 
 import { FileType, MessageIdentifiers, messageIdentifierVersions } from "../types";
 import { mask, number, price, day, month, date, time, datetime, segment, pad } from "../formatter";
-import { SammelgruppenSchluessel } from "./codes";
+import { LeistungserbringerSammelgruppenSchluessel } from "./codes";
 
 const Syntax_Version = "UNOC:3";
 const DefaultCurrency = "EUR";
@@ -13,7 +13,8 @@ export const UNB = (
     absenderIK: string,
     empfaengerIK: string,
     datenaustauschreferenz: number,
-    leistungsbereich: SammelgruppenSchluessel,
+    /** To which group of health care providers the care provider belongs */
+    leistungsbereich: LeistungserbringerSammelgruppenSchluessel,
     anwendungsreferenz: string,
     dateiindikator: FileType
 ) => segment(

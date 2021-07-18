@@ -201,7 +201,7 @@ export type TarifbereichSchluessel = keyof typeof tarifbereichSchluessel
 */
 
 /** Schlüssel Leistungserbringer-Sammelgruppenschlüssel 8.1.14 */
-export const sammelgruppenSchluessel = {
+export const leistungserbringerSammelgruppenSchluessel = {
     "A": "Leistungserbringer von Hilfsmitteln",
     "B": "Leistungserbringer von Heilmitteln",
     "C": "Leistungserbringer von häuslicher Krankenpflege",
@@ -220,4 +220,4 @@ export const sammelgruppenSchluessel = {
     "P": "Leistungserbringer nach § 132g SGB V",
     "Q": "Kurzzeitpflege",
 };
-export type SammelgruppenSchluessel = keyof typeof sammelgruppenSchluessel;
+export type LeistungserbringerSammelgruppenSchluessel = keyof typeof leistungserbringerSammelgruppenSchluessel;

@@ -4,10 +4,11 @@
 
 import { BillingData, Abrechnungsfall, Invoice, MessageIdentifiers, BillingFile, Hilfsmittel } from "../types";
 import { valuesGroupedBy } from "../utils";
-import { MehrwertsteuerSchluessel, RechnungsartSchluessel } from "./codes";
+import { MehrwertsteuerSchluessel } from "./codes";
 import { makeAnwendungsreferenz, makeDateiname } from "./filenames";
 import { KassenartSchluessel as KostentraegerKassenartSchluessel } from "../kostentraeger/filename/codes"
 import { ELS, ESK, FKT, GES, HIL, IAF, INV, MAN, NAD, NAM, REC, SRD, UNB, UNH, UNT, UNZ, UST, ZUS } from "./segments";
+import { RechnungsartSchluessel } from "../codes";
 
 const mehrwertsteuersaetze: Record<MehrwertsteuerSchluessel, number> = {
     "": 0,
