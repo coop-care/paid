@@ -2,19 +2,19 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, FileType } from "../types"
 import { RechnungsartSchluessel } from "../codes"
+import { TestIndicator } from "../types"
 
 /** A.k.a. "logischer Dateiname" */
 export const makeAnwendungsreferenz = (
-    absenderIK: string,
+    senderIK: string,
     rechnungsart: RechnungsartSchluessel,
     abrechnungsmonat: Date
 ) => [
     // "Absenderklassifikation". "SL" stands for "Sonstige Leistungserbringer"
     "SL",
     // Index 2-3 of the IK is the "Regionalschlüssel", index 4-7 is a serial number
-    absenderIK.substr(2, 6),
+    senderIK.substr(2, 6),
     // Who sends this bill: "S" stands for "Selbstabrechner", "A" stands for "Abrechnungszentrum"
     rechnungsart == "1" ? "S" : "A",
     (abrechnungsmonat.getMonth() + 1).toString().padStart(2, "0"),
@@ -22,7 +22,7 @@ export const makeAnwendungsreferenz = (
 
 /** A.k.a "Verfahrenskennung" */
 export const makeDateiname = (
-    dateiindikator: FileType,
+    dateiindikator: TestIndicator,
     transfernummer: number
 ) => [
     dateiindikator == "2" ? "E" : "T",

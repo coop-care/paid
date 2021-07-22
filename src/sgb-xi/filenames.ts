@@ -2,7 +2,7 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, FileType } from "../types"
+import { BillingData, TestIndicator } from "../types"
 import { KassenartSchluessel as KostentraegerKassenartSchluessel } from "../kostentraeger/filename/codes"
 
 /** A.k.a. "logischer Dateiname" */
@@ -28,7 +28,7 @@ export const makeAnwendungsreferenz = (
 
 /** A.k.a "Verfahrenskennung" */
 export const makeDateiname = (
-    dateiindikator: FileType,
+    dateiindikator: TestIndicator,
     transferNumber: number
 ) => [
     dateiindikator == "2" ? "E" : "T",

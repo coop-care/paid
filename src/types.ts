@@ -37,16 +37,16 @@ export const messageIdentifierVersions = {
 }
 export type MessageIdentifiers = keyof typeof messageIdentifiers;
 
-export const fileTypes = {
+export const testIndicator = {
     "0": "Testdatei",
     "1": "Erprobungsdatei",
     "2": "Echtdatei",
 }
-export type FileType = keyof typeof fileTypes;
+export type TestIndicator = keyof typeof testIndicator;
 
 export type BillingData = {
     datenaustauschreferenzJeEmpfaengerIK: Record<string, number>;
-    dateiindikator: FileType;
+    testIndicator: TestIndicator;
     rechnungsart: RechnungsartSchluessel;
     rechnungsnummerprefix: string;
     rechnungsdatum?: Date;

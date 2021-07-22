@@ -5,6 +5,7 @@
 import { FileType, MessageIdentifiers, messageIdentifierVersions } from "../types";
 import { mask, number, price, day, month, date, time, datetime, segment, pad } from "../formatter";
 import { LeistungserbringerSammelgruppenSchluessel } from "./codes";
+import { TestIndicator } from "../types"
 
 const Syntax_Version = "UNOC:3";
 const DefaultCurrency = "EUR";

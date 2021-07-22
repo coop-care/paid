@@ -25,7 +25,7 @@ export const makeBillingFile = (
     const {
         datenaustauschreferenzJeEmpfaengerIK,
         laufendeDatenannahmeImJahrJeEmpfaengerIK,
-        dateiindikator,
+        testIndicator: dateiindikator,
         rechnungsart
     } = billing;
     const absenderIK = absender(billing, invoices[0]).ik;

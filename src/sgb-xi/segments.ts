@@ -14,7 +14,7 @@ import {
     Zuschlag,
     Abrechnungsfall,
     Institution,
-    FileType
+    TestIndicator
 } from "../types";
 import {
     PflegegradSchluessel,
@@ -31,7 +31,7 @@ export const UNB = (
     empfaengerIK: string, 
     datenaustauschreferenz: number,
     anwendungsreferenz: string, 
-    dateiindikator: FileType
+    dateiindikator: TestIndicator
 ) => segment(
     "UNB", 
     Syntax_Version,
