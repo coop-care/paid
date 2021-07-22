@@ -9,14 +9,16 @@
  */
 
 
-/** Whether this is a bill by the health care provider itself or by an accounting center
+/** Whether this is a bill by the health care provider himself or by an accounting center (with or
+ *  without power to collect)
  * 
  *  Identically documented at 
  *  - 8.1.4 Schlüssel Rechnungsart for Sonstige Leistungserbringer
- *  - 2.1 Schlüssel Rechnungsart 
+ *  - 2.1 Schlüssel Rechnungsart for Pflege
  */
 export const rechnungsartSchluessel =  {
     "1": "Abrechnung von Leistungserbringer und Zahlung an IK Leistungserbringer",
+    // note: also used if Leistungserbringer has several IKs
     "2": "Abrechnung über Abrechnungsstelle (ohne Inkassovollmacht) und Zahlung an IK Leistungserbringer",
     "3": "Abrechnung über Abrechnungsstelle (mit Inkassovollmacht) und Zahlung an IK Abrechnungsstelle",
 }

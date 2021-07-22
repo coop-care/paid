@@ -15,12 +15,16 @@ export const price = (value?: number) => number(value, 2);
 export const pad = (value: number, length: number) => 
     value.toString().padStart(length, "0").substr(0, length);
 
+/** Return only the day component of a date as a string formatted DD */
 export const day = (value: Date) => value.getDate().toString().padStart(2, "0");
 
+/** Return only the month component of a date as a string formatted MM (1 is January) */
 export const month = (value: Date) => (value.getMonth() + 1).toString().padStart(2, "0");
 
+/** Return the date as a string formatted JJJJMMDD */
 export const date = (value: Date) => value.getFullYear() + month(value) + day(value);
 
+/** Return only the time component of a date as a string formatted HHMM */
 export const time = (value: Date) =>
     value.getHours().toString().padStart(2, "0") +
     value.getMinutes().toString().padStart(2, "0");
