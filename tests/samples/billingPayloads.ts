@@ -286,7 +286,7 @@ const kurzzeitpflege: Leistung = {
 
 export const payload1 = {
     billingData: {
-        dateiindikator: "0",
+        testIndicator: "0",
         rechnungsart: "1",
         rechnungsnummerprefix: "2021-0087",
         rechnungsdatum: new Date("2021-05-03"),
@@ -383,7 +383,7 @@ export const payload1 = {
 
 export const payload2 = {
     billingData: {
-        dateiindikator: "0",
+        testIndicator: "0",
         rechnungsart: "2",
         rechnungsnummerprefix: "2021-0267",
         abrechnungsmonat: new Date("2021-04-01"),
@@ -491,7 +491,7 @@ export const payload2 = {
 
 export const payload3 = {
     billingData: {
-        dateiindikator: "0",
+        testIndicator: "0",
         rechnungsart: "3",
         rechnungsnummerprefix: "2021-0398",
         rechnungsdatum: new Date("2021-05-03"),

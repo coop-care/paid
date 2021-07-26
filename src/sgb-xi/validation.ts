@@ -122,7 +122,7 @@ export const validate = (invoices: Invoice[], billing: BillingData) => {
   errors = errors.concat(
     isMissing(billing, [
       "datenaustauschreferenzJeEmpfaengerIK",
-      "dateiindikator",
+      "testIndicator",
       "rechnungsart",
       "rechnungsnummerprefix",
       "abrechnungsmonat",
