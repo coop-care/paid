@@ -12,3 +12,5 @@ export const valuesGroupedBy = <T, K extends string>(items: T[], getKey: (item: 
 export const entriesGroupedBy = <T, K extends string>(items: T[], getKey: (item: T) => K) =>
     Object.entries(groupBy(items, getKey)) as [K, T[]][];
     
+/** Sum the numbers in the given array. Just a shorthand for that awkward reduce function. */
+export const sum = (items: number[]) => items.reduce((a, b) => a + b, 0)
