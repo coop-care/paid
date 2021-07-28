@@ -69,7 +69,7 @@ export type AbrechnungscodeEinzelschluessel =
     SozialpaediatrikAbrechnungscodeSchluessel |
     SozioTherapeutikAbrechnungscodeSchluessel |
     SAPVAbrechnungscodeSchluessel |
-    SGB_V_132g_AbrechnungscodeSchluessel |
+    VersorgungsplanungAbrechnungscodeSchluessel |
     KurzzeitpflegeAbrechnungscodeSchluessel
 
 export const hilfsmittellieferantAbrechnungscodeSchluessel = {
@@ -177,10 +177,10 @@ export const sapvAbrechnungscodeSchluessel = {
 }
 export type SAPVAbrechnungscodeSchluessel = keyof typeof sapvAbrechnungscodeSchluessel
 
-export const sgb_v_132g_AbrechnungscodeSchluessel = {
+export const versorgungsplanungAbrechnungscodeSchluessel = {
     "76": "Leistungserbringer nach § 132g SGB V",
 }
-export type SGB_V_132g_AbrechnungscodeSchluessel = keyof typeof sgb_v_132g_AbrechnungscodeSchluessel
+export type VersorgungsplanungAbrechnungscodeSchluessel = keyof typeof versorgungsplanungAbrechnungscodeSchluessel
 
 export const kurzzeitpflegeAbrechnungscodeSchluessel = {
     "91": "Kurzzeitpflege: privat gewerblicher Anbieter",
@@ -479,7 +479,7 @@ const leistungserbringerSammelgruppenschluesselToEinzelSchluessel =
         ["M", Object.keys(sozialpaediatrikAbrechnungscodeSchluessel)],
         ["N", Object.keys(sozioTherapeutikAbrechnungscodeSchluessel)],
         ["O", Object.keys(sapvAbrechnungscodeSchluessel)],
-        ["P", Object.keys(sgb_v_132g_AbrechnungscodeSchluessel)],
+        ["P", Object.keys(versorgungsplanungAbrechnungscodeSchluessel)],
         ["Q", Object.keys(kurzzeitpflegeAbrechnungscodeSchluessel)]
     ])
 
@@ -734,7 +734,7 @@ export const abrechnungscodeSchluessel = {
     ...sozialpaediatrikAbrechnungscodeSchluessel,
     ...sozioTherapeutikAbrechnungscodeSchluessel,
     ...sapvAbrechnungscodeSchluessel,
-    ...sgb_v_132g_AbrechnungscodeSchluessel,
+    ...versorgungsplanungAbrechnungscodeSchluessel,
     ...kurzzeitpflegeAbrechnungscodeSchluessel
 }
 
