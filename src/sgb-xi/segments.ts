@@ -70,8 +70,10 @@ export const UNT = (
     messageReferenceNumber.toString().substr(0, 5),
 );
 
+/** Funktion */
 export const FKT = (
-    verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel, // always "01"
+    /** identical in PLGA.FKT and PLAA.FKT */
+    verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel,
     {
         absender, // PLGA: Absender der Datei, identisch zu Absender in UNB; PLAA: wie RechnungsstellerIK (?)
         rechnungssteller, // Leistungserbringer oder Abrechnungsstelle mit Inkassovollmacht bei Sammelrechnung; PLAA == PLGA
@@ -98,6 +100,7 @@ export const FKT = (
     sammelrechnung !== undefined ? absender.ik : rechnungssteller.ik
 );
 
+/** Rechnung / Zahlung */
 export const REC = (
     {
         rechnungsdatum = new Date(),
@@ -117,6 +120,7 @@ export const REC = (
     currency
 );
 
+/** Rechnungsdaten */
 export const SRD = (
     {
         abrechnungscode,
@@ -134,6 +138,7 @@ export const SRD = (
     einsaetze[0].leistungen[0].leistungsart
 );
 
+/** Umsatzsteuer */
 export const UST = ({
     umsatzsteuerOrdnungsnummer = "",
     umsatzsteuerBefreiung,
@@ -144,6 +149,7 @@ export const UST = ({
     umsatzsteuerBefreiung
 );
 
+/** Rechnungssummen  */
 export const GES = ({
     gesamtbruttobetrag,
     rechnungsbetrag,
@@ -159,6 +165,7 @@ export const GES = ({
     price(mehrwertsteuerbetrag || undefined)
 );
 
+/** Namen */
 export const NAM = ({
     name,
     ansprechpartner
@@ -170,6 +177,7 @@ export const NAM = ({
     )
 );
 
+/** Information des Pflegebedürftigen */
 export const INV = (
     versichertennummer: string,
     belegNummer: number
@@ -179,6 +187,7 @@ export const INV = (
     (belegNummer + 1).toString()
 );
 
+/** Name und Anschrift des Versicherten */
 export const NAD = ({
     firstName,
     lastName,
@@ -198,6 +207,7 @@ export const NAD = ({
     mask(city.substr(0, 40))
 );
 
+/** Monatskopf-Segment */
 export const MAN = (
     monatLeistungserbringung: Date,
     pflegegrad: PflegegradSchluessel,
@@ -209,6 +219,7 @@ export const MAN = (
     pflegegrad
 );
 
+/** Einsatzkopf-Segment */
 export const ESK = (
     leistungsBeginn?: Date,
 ) => segment(
@@ -218,6 +229,7 @@ export const ESK = (
 );
 
 // ELS is insanely complex: leistung and several parameters depend on verguetungsart
+/** Einzelleistungen */
 export const ELS = ({
     leistungsart,
     verguetungsart,
@@ -262,6 +274,7 @@ export const ELS = ({
     )
 };
 
+/** Zuschläge/Abzüge */
 export const ZUS = (
     isLast: boolean,
     tarifbereich: TarifbereichSchluessel,
@@ -287,6 +300,7 @@ export const ZUS = (
     isLast? "1" : "0"
 );
 
+/** Einzelleistungen */
 export const HIL = ({
     mehrwertsteuerart = "",
     zuzahlungsbetrag,
@@ -311,6 +325,7 @@ export const HIL = ({
     mask(inventarnummerPflegehilfsmittel.substr(0, 20)),
 );
 
+/** Abrechnungsfall-Endesegment  */
 export const IAF = ({ // is calculcated from all ELS / ZUS / HIL segments for one INV segment
     gesamtbruttobetrag,
     rechnungsbetrag,
