@@ -97,5 +97,14 @@ const stringifyElements = (elements: Element[], ssa: ServiceStringAdvice): strin
 const escape = (str: string, characters: string): string =>
     str.replace(new RegExp("([" + characters + "])", "g"), "?$1")
 
+/* The documentation is vague on whether the decimal notation character (usually ",") should be 
+   escaped or not, so we asked GKV-Spitzenverband.
+   
+   They answered that the decimal notation is NOT escaped:
+   
+   > Hier handelt es sich um eine Ungenauigkeit in der Technischen Anlage. Das Komma ist als 
+   > Dezimalzeichen vorgesehen, aber nicht als Trennzeichen im Sinne der EDIFACT-Syntax. Somit ist
+   > das Komma nicht zu maskieren. Zu maskieren sind nur die Zeichen Doppelpunkt, Plus und Apostroph.
+*/
 const escapeCharacters = (ssa: ServiceStringAdvice): string =>
     ssa.componentSeparator + ssa.elementSeparator + ssa.releaseCharacter + ssa.segmentTerminator
