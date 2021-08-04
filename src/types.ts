@@ -156,6 +156,14 @@ export type Hilfsmittel = {
      *  replied that there is no directory of such service and supply contracts for 
      *  Produktbesonderheiten made by the different GKV. And thus, they assume that this field is to
      *  be filled in by each Leistungserbringer individually depending on their invididual contract(s)
+     * 
+     *  > Die Angabe von „besonderen Positionsnummern für Produktbesonderheiten“ ist in diesen 
+     *  > [vom GKV Spitzenverband geschlossenen] Verträgen nicht vorgesehen. Die Regelungen in den 
+     *  > Pflegehilfsmittelverträgen, die die Pflegekassen z.B. zur Versorgung mit Pflegebetten 
+     *  > geschlossen haben, sind uns nicht bekannt. Ein Verzeichnis der vertraglich vereinbarten 
+     *  > Produktbesonderheiten bei Pflegehilfsmitteln liegt uns nicht vor. Wir gehen davon aus, 
+     *  > dass die Angabe der Hilfsmittelpositionsnummern für Produktbesonderheiten durch den 
+     *  > Leistungserbringer vertragsabhängig als manuelle Eingabe erfolgen muss.
     */
     produktbesonderheitenPflegehilfsmittel?: string;
     inventarnummerPflegehilfsmittel?: string;
