@@ -22,28 +22,63 @@ import {
  * 
  *  ERRORS:
  *  ------- 
- *    Versicherter:
- *      !(versichertennummer && versichertenstatus) && !(street && houseNumber && postalCode && city)
- *    Einsatz:
- *      startDateTime < endDateTime
- *    Abrechnungsposition:
- *      einzelpreis >= 10 000 000 000
- *      anzahl >= 10000
- *      gefahreneKilometer >= 1 000 000
- *      leistungserbringergruppe.sondertarif.length != 3
- *    Verordnung:
- *      kostenzusagen.length < 1
+ *  Rechnung:
+ *    leistungserbringerIK.length != 9
+ *    kostentraegerIK.length != 9
+ *    pflegekasseIK.length != 9
+ *    sammelRechnungsnummer.length > 14
+ *    einzelrechnungsnummer?.length > 6
+ * 
+ *    Abrechnungsfall:
+ *      belegnummer.length > 10
+ *      besondereVersorgungsform.length > 25
+ *      einsaetze.length < 1
+ *      verordnungen.length < 1
+ * 
+ *      Versicherter:
+ *        !(versichertennummer && versichertenstatus) && !(address.street && address.houseNumber && address.postalCode && address.city)
+ *        versichertennummer.length > 12
+ * 
+ *      Einsatz:
+ *        startDateTime.getTime() < endDateTime.getTime()
+ *        abrechnungspositionen.length < 1
+ * 
+ *        Abrechnungsposition:
+ *          einzelpreis <= 0 || einzelpreis >= 10 000 000 000
+ *          anzahl <= 0 || anzahl >= 10000
+ *          gefahreneKilometer < 0 || gefahreneKilometer >= 1 000 000
+ *          leistungserbringergruppe.sondertarif.length != 3
+ * 
+ *        HaeuslicheKrankenpflegeEinzelposition:
+ *          anzahl <= 0 || anzahl >= 10000
+ * 
+ *      Verordnung:
+ *        kostenzusagen.length < 1
+ *        betriebsstaettennummer.length > 9
+ *        vertragsarztnummer.length > 9
  *      
+ *        Diagnose:
+ *          diagnoseschluessel.length > 12
+ * 
+ *        Kostenzusage:
+ *          genehmigungsKennzeichen.length > 20
  * 
  *  WARNINGS:
  *  ---------
- *    Versicherter:
- *      lastName.length > 47
- *      firstName.length > 30
- *      street.length + 1 + houseNumber.length > 30
- *      city.length > 25
- *    Abrechnungsposition:
- *      text.length > 70
+ *  Rechnung:
+ *    Abrechnungsfall:
+ *      Versicherter:
+ *        lastName.length > 47
+ *        firstName.length > 30
+ *        (houseNumber.length == 0 ? street.length : street.length + 1 + houseNumber.length).length > 30
+ *        city.length > 25
+ * 
+ *      Abrechnungsposition:
+ *        text.length > 70
+ * 
+ *        Verordnung:
+ *          Diagnose:
+ *            diagnosetext.length > 70
 */
 
 /**

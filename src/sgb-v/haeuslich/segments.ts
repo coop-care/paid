@@ -46,14 +46,14 @@ export const einsatzSegment = (
 /** Einzelfallnachweis Häusliche Krankenpflege / Haushaltshilfe */
 export const einzelfallnachweisSegment = (
     le: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
-    abrechnungsposition: HaeuslicheKrankenpflegeAbrechnungsposition
+    a: HaeuslicheKrankenpflegeAbrechnungsposition
 ) => segment(
     le == "C" ? "EHK" : "EHH",
-    leistungserbringergruppeCode(abrechnungsposition.leistungserbringergruppe),
-    haeuslicheKrankenpflegePositionsnummerCode(abrechnungsposition.positionsnummer),
-    decimal(abrechnungsposition.anzahl, 4, 2),
-    decimal(abrechnungsposition.einzelpreis, 10, 2),
-    int(abrechnungsposition.gefahreneKilometer, 0, 999999)
+    leistungserbringergruppeCode(a.leistungserbringergruppe),
+    haeuslicheKrankenpflegePositionsnummerCode(a.positionsnummer),
+    decimal(a.anzahl, 4, 2),
+    decimal(a.einzelpreis, 10, 2),
+    int(a.gefahreneKilometer, 0, 999999)
 )
 
 /** Erbrachte unterschiedliche Leistungen je Leistungspauschale 

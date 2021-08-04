@@ -93,7 +93,7 @@ export const URI = (
 )
 
 function concatStreetAndHousenumber(street: string, houseNumber: string, maxLength: number): string {
-    if (houseNumber == "") {
+    if (houseNumber.length == 0) {
         return street.substr(0, maxLength)
     } else {
         /** If we have to cut, we should cut the street, not the housenumber - if possible */
