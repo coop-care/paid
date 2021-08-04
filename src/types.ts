@@ -147,7 +147,17 @@ export type Hilfsmittel = {
     genehmigungsdatum?: Date;
     kennzeichenPflegehilfsmittel?: PflegehilfsmittelSchluessel;
     bezeichnungPflegehilfsmittel?: string;
-    produktbesonderheitenPflegehilfsmittel?: string; // siehe Schlüssel Positionsnummer für Produktbesonderheiten von Pflegehilfsmitteln Anlage 3, Abschnitt 2.12
+    /** Positionsnummer für Produktbesonderheiten von Pflegehilfsmitteln 
+     *  
+     *  This 1-10 digit number must be specified if it is specified that way in the respective 
+     *  service and supply contracts.
+     * 
+     *  We asked the GKV-Spitzenverband about whether any numbers are known and documented. They
+     *  replied that there is no directory of such service and supply contracts for 
+     *  Produktbesonderheiten made by the different GKV. And thus, they assume that this field is to
+     *  be filled in by each Leistungserbringer individually depending on their invididual contract(s)
+    */
+    produktbesonderheitenPflegehilfsmittel?: string;
     inventarnummerPflegehilfsmittel?: string;
 };
 
