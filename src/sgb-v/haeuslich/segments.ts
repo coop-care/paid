@@ -14,7 +14,6 @@ import {
     haeuslicheKrankenpflegePositionsnummerCode
 } from "./codes"
 import { 
-    Leistungserbringergruppe,
     leistungserbringergruppeCode, 
     Verordnung
 } from "../types"
@@ -22,63 +21,35 @@ import {
     HaeuslicheKrankenpflegeAbrechnungsposition,
     HaeuslicheKrankenpflegeEinzelposition
 } from "./types"
+import { HaeuslicheLeistungserbringerSammelgruppenSchluessel } from "../codes"
 
 /** Segments for SLLA C message (Häusliche Krankenpflege) and SLLA D message (Haushaltshilfe)
  * 
  *  Except for the segment tags, they are almost identical, this is why they are defined in the
  *  same file */
 
-/** Informationen zum Einsatz/Hausbesuch für häusliche Krankenpflege */
-export const ESK = (
+/** Informationen zum Einsatz/Hausbesuch für häusliche Krankenpflege / Haushaltshilfe */
+export const einsatzSegment = (
+    le: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
     /** Date and time at which the health care service started */
     startDateTime: Date,
     /** Date and time at which the health care service ended */
-    endDateTime: Date
-) => einsatz("ESK", startDateTime, endDateTime)
-
-/** Informationen zum Einsatz/Hausbesuch für Haushaltshilfe */
-export const ESH = (
-    /** Date and time at which the health care service started */
-    startDateTime: Date,
-    /** Date and time at which the health care service ended */
-    endDateTime: Date
-) => einsatz("ESH", startDateTime, endDateTime)
-
-const einsatz = (
-    tag: string,
-    startDateTime: Date,
     endDateTime: Date
 ) => segment(
-    tag,
+    le == "C" ? "ESK" : "ESH",
     date(startDateTime),
     time(startDateTime),
     time(endDateTime),
     int(duration(startDateTime, endDateTime), 0, 9999)
 )
 
-/** Einzelfallnachweis Häusliche Krankenpflege */
-export const EHK = (
-    leistungserbringergruppe: Leistungserbringergruppe,
-    abrechnungsposition: HaeuslicheKrankenpflegeAbrechnungsposition
-) => einzelfallnachweis(
-    "EHK", leistungserbringergruppe, abrechnungsposition
-)
-
-/** Einzelfallnachweis Haushaltshilfe */
-export const EHH = (
-    leistungserbringergruppe: Leistungserbringergruppe,
-    abrechnungsposition: HaeuslicheKrankenpflegeAbrechnungsposition
-) => einzelfallnachweis(
-    "EHH", leistungserbringergruppe, abrechnungsposition
-)
-
-const einzelfallnachweis = (
-    tag: string,
-    leistungserbringergruppe: Leistungserbringergruppe,
+/** Einzelfallnachweis Häusliche Krankenpflege / Haushaltshilfe */
+export const einzelfallnachweisSegment = (
+    le: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
     abrechnungsposition: HaeuslicheKrankenpflegeAbrechnungsposition
 ) => segment(
-    tag,
-    leistungserbringergruppeCode(leistungserbringergruppe),
+    le == "C" ? "EHK" : "EHH",
+    leistungserbringergruppeCode(abrechnungsposition.leistungserbringergruppe),
     haeuslicheKrankenpflegePositionsnummerCode(abrechnungsposition.positionsnummer),
     decimal(abrechnungsposition.anzahl, 4, 2),
     decimal(abrechnungsposition.einzelpreis, 10, 2),
@@ -96,14 +67,12 @@ export const ELP = (e: HaeuslicheKrankenpflegeEinzelposition) => segment(
     decimal(e.anzahl, 4, 2)
 )
 
-/** Zusatzinfo Verordnung für Häusliche Krankenpflege */
- export const ZHK = (v: Verordnung) => verordnung("ZHK", v)
-/** Zusatzinfo Bescheinigung für Haushaltshilfe */
- export const ZHH = (v: Verordnung) => verordnung("ZHH", v)
-
-/* except for the segment name, the segments ZHK and ZHH are exactly the same */
-const verordnung = (tag: string, v: Verordnung) => segment(
-    tag,
+/** Zusatzinfo Verordnung für Häusliche Krankenpflege / Haushaltshilfe */
+export const verordnungSegment = (
+    le: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
+    v: Verordnung
+) => segment(
+    le == "C" ? "ZHK" : "ZHH",
     varchar(v.betriebsstaettennummer ?? "999999999", 9),
     varchar(v.vertragsarztnummer ?? "999999999", 9),
     date(v.verordnungsDatum),

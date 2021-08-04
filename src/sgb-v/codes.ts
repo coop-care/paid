@@ -462,6 +462,13 @@ export type ZuzahlungsartSchluessel = keyof typeof zuzahlungsartSchluessel
 }
 export type LeistungserbringerSammelgruppenSchluessel = keyof typeof leistungserbringerSammelgruppenSchluessel
 
+// because the two are almost identical
+export const haeuslicheLeistungserbringerSammelgruppenSchluessel = {
+    "C": "Leistungserbringer von häuslicher Krankenpflege",
+    "D": "Leistungserbringer von Haushaltshilfe",
+}
+export type HaeuslicheLeistungserbringerSammelgruppenSchluessel = keyof typeof haeuslicheLeistungserbringerSammelgruppenSchluessel
+
 const leistungserbringerSammelgruppenschluesselToEinzelSchluessel = 
     new Map<LeistungserbringerSammelgruppenSchluessel, string[]>([
         ["A", Object.keys(hilfsmittellieferantAbrechnungscodeSchluessel)],

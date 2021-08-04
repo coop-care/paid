@@ -11,9 +11,12 @@
 import { Segment } from "../../edifact/types"
 import { sum } from "../../utils"
 import { INV, NAD, TXT, DIA, SKZ, FKT, REC } from "../segments_slla"
-import { Versicherter, Einsatz, Verordnung, Leistungserbringergruppe, Rechnung } from "../types"
-import { ESK, EHK, ZHK, BES, ELP } from "./segments"
-import { HaeuslicheKrankenpflegeAbrechnungsposition } from "./types"
+import { einsatzSegment, BES, ELP, einzelfallnachweisSegment, verordnungSegment } from "./segments"
+import { 
+    HaeuslicheKrankenpflegeAbrechnungsposition,
+    HaeuslicheKrankenpflegePauschaleAbrechnungsposition,
+    HaeuslicheKrankenpflegeRechnung
+} from "./types"
 
 /* TODO validations: 
  * 
@@ -43,9 +46,14 @@ import { HaeuslicheKrankenpflegeAbrechnungsposition } from "./types"
  *      text.length > 70
 */
 
-
 /**
- * One message per combination of health insurance (Pflegekasse), health care service provider (Leistungserbringer) and payer (Kostenträger)
+ * Structure:
+ * ----------
+ * The structure is (currently) the same for häusl. Krankenpflege and Haushaltshilfe, only the 
+ * segment names differ.
+ * 
+ * One message per combination of health insurance (Pflegekasse), 
+ * health care service provider (Leistungserbringer) and payer (Kostenträger)
  * 
  * FKT
  * REC
@@ -55,67 +63,66 @@ import { HaeuslicheKrankenpflegeAbrechnungsposition } from "./types"
  *   NAD
  *   IMG (cond.)
  *   for each Einsatz, in chronological order:
- *     ESK
+ *     ESK / ESH
  *     for each Abrechnungsposition:
- *       EHK
+ *       EHK / EHH
  *       TXT (cond.)
  *       if Abrechnungsposition is Pauschale, for each Einzelleistung:
  *         ELP
  *   for each Verordnung:
- *     ZHK
+ *     ZHK / ZHH
  *     for each Diagnose, if any:
  *       DIA
  *     for each Kostenzusage:
  *       SKZ
  *   BES
  */
-export const makeMessage = (
-    rechnung: Rechnung
-    ): Segment[] => {
+export const makeMessage = (rechnung: HaeuslicheKrankenpflegeRechnung): Segment[] => {
     // contract: all insurees must have same pflegekasseIK
+    // contract: all Abrechnungsposition in all Einsatz in all Abrechnungsfall must be of type
+    //           HaeuslicheKrankenpflegeAbrechnungsposition
 
-    const insurees: Versicherter[] = []
-        // per insuree
-        const einsaetzeChronological: Einsatz[] = []
-            // per einsatz
-            const positionen: HaeuslicheKrankenpflegeAbrechnungsposition[] = []
-        const verordnungen: Verordnung[] = []
+    // all Einsaetze must be sorted chronologically
+    rechnung.abrechnungsfaelle.forEach(abrechnungsfall => {
+        abrechnungsfall.einsaetze.sort((a, b) => 
+        a.leistungsBeginn.getTime() - b.leistungsBeginn.getTime()
+    )})
 
-    const result = [
+    const le = rechnung.leistungserbringerSammelgruppe
+
+    return [
         FKT("01", rechnung),
         REC(rechnung),
-        ...insurees.flatMap(insuree => [
-            INV(
-                insuree.versichertennummer,
-                insuree.versichertenstatus,
-                beleginformation,
-                belegnummer,
-                besondereVersorgungsform
-            ),
-            NAD(insuree),
-            ...einsaetzeChronological.flatMap(einsatz => [
-                ESK(einsatz.leistungsBeginn, einsatz.leistungsEnde),
-                ...positionen.flatMap(position => [
-                    EHK(leistungserbringergruppe, position),
+        ...rechnung.abrechnungsfaelle.flatMap(fall => [
+            INV(fall),
+            NAD(fall.versicherter),
+            ...fall.einsaetze.flatMap(einsatz => [
+                einsatzSegment(le, einsatz.leistungsBeginn, einsatz.leistungsEnde),
+                ...einsatz.abrechnungspositionen.flatMap(position => [
+                    einzelfallnachweisSegment(le, position as HaeuslicheKrankenpflegeAbrechnungsposition),
                     // add TXT segment only if there is any text
                     position.text ? TXT(position.text) : undefined,
                     // add ELP segments only if there are any einzelpositionen (= position is a Pauschale)
                     ...("einzelpositionen" in position ? 
-                        position.einzelpositionen.map(e => ELP(e)) : 
+                        (position as HaeuslicheKrankenpflegePauschaleAbrechnungsposition).einzelpositionen.map(e => ELP(e)) : 
                         [undefined]
                     )
                 ])
             ]),
-            ...verordnungen.flatMap(verordnung => [
-                ZHK(verordnung),
+            ...fall.verordnungen.flatMap(verordnung => [
+                verordnungSegment(le, verordnung),
                 ...verordnung.diagnosen.map(d => DIA(d)),
                 ...verordnung.kostenzusagen.map(k => SKZ(k))
             ]),
             BES(
-                // TODO actually all positions from all einsätze...
-                sum(positionen.map(p => Math.round(p.einzelpreis * p.anzahl)))
+                // sum all prices of all Abrechnungspositions of all Einsätze
+                sum(fall.einsaetze.flatMap(einsatz => 
+                    einsatz.abrechnungspositionen.map(position => 
+                        Math.round(position.einzelpreis * position.anzahl)
+                    )
+                ))
             )
         ])
-    ].filter(segment => segment !== undefined)
-    
+    // some segments are left out conditionally (by returning undefined), so we need to filter those out
+    ].filter(segment => segment !== undefined) as Segment[]
 }

@@ -32,8 +32,8 @@ export const messageIdentifiers = {
 export const messageIdentifierVersions = {
     "PLGA": "PLGA:2",
     "PLAA": "PLAA:3",
-    "SLGA": "SLGA:15:0:0",
-    "SLLA": "SLLA:15:0:0"
+    "SLGA": "SLGA:16:0:0",
+    "SLLA": "SLLA:16:0:0"
 }
 export type MessageIdentifiers = keyof typeof messageIdentifiers;
 

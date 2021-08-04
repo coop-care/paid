@@ -7,9 +7,9 @@
 
 import { segment } from "../edifact/builder"
 import { char, varchar, fixedInt, date, decimal } from "../edifact/formatter"
-import { BeleginformationSchluessel, VerarbeitungskennzeichenSchluessel } from "./codes"
+import { VerarbeitungskennzeichenSchluessel } from "./codes"
 import { REC as SLGA_REC } from "./segments_slga"
-import { Diagnose, Kostenzusage, Rechnung, Versicherter } from "./types"
+import { Abrechnungsfall, Diagnose, Kostenzusage, Rechnung, Versicherter } from "./types"
 
 /** Base-Segments for SLLA message 
  *  
@@ -41,35 +41,16 @@ export const REC = SLGA_REC
 /** Information Versicherte
  * 
  *  Contains information about insuree */
-export const INV = (
-    /** The field "Versicherten-Nr." from the prescription. Mandatory if known. If not known, full 
-     *  address and date of birth must be specified in NAD */
-    versichertennummer: string | undefined,
-    /** The field "Status" (Versichertenstatus) from the prescription. Mandatory if known. 
-     *  If not known, full address and date of birth must be specified in NAD */
-    versichertenstatus: string | undefined,
-    beleginformation: BeleginformationSchluessel | undefined,
-    /** Unique number within the whole bill. 
-     * 
-     *  ASK Belegnummer: Docs mention "siehe § 4 des Richtlinientextes". Neither §4 of 
-     *  Heilmittelrichtlinie nor §4 Hilfsmittelrichtlinie seem to be related here.
-     */
-    belegnummer: string,
-    /** "Vertragskennzeichen für besondere Versorgungsformen gemäß der vertraglichen Vereinbarungen.
-     *  Für Verordnungen im Rahmen der Versorgung nach §116b Abs. 1 SGB V ist eine "1" zu 
-     *  übermitteln." https://www.gesetze-im-internet.de/sgb_5/__116b.html
-     */
-    besondereVersorgungsformKennzeichen: string | undefined
-) => segment(
+export const INV = (a: Abrechnungsfall) => segment(
     "INV",
-    varchar(versichertennummer, 12),
+    varchar(a.versicherter.versichertennummer, 12),
     /* only those digits of the status are specified that are visible on the prescription. I.e. 
        there could be more or less than 5 characters. If it is less than 5, they are padded with 
        "0"s at the END, if it is more than 5, the digits at the end are cut off */
-    char(versichertenstatus?.substring(0, 5)?.padEnd(5, "0"), 5),
-    beleginformation,
-    varchar(belegnummer, 10),
-    varchar(besondereVersorgungsformKennzeichen, 25)
+    char(a.versicherter.versichertenstatus?.substring(0, 5)?.padEnd(5, "0"), 5),
+    a.beleginformation,
+    varchar(a.belegnummer, 10),
+    varchar(a.besondereVersorgungsform, 25)
 )
 
 /** ursprüngliche Rechnung/Zahlung
