@@ -86,6 +86,14 @@ const stringifyElements = (elements: Element[], ssa: ServiceStringAdvice): strin
         .replace(trailingElementsRegex, "")
 }
 
+/* Escaping characters increases the length of the string. We were uncertain if the escape 
+   characters count towards the (max) field too, so we asked the GKV-Spitzenverband. 
+   
+   They answered that the escape characters do not count, so the implementation can be easy (i.e.
+   validating string length before building the edifact string) here :-)
+
+   > Das Maskierungszeichen wird bei der Feldlänge nicht mitgezählt.
+   */
 const escape = (str: string, characters: string): string =>
     str.replace(new RegExp("([" + characters + "])", "g"), "?$1")
 
