@@ -3,7 +3,7 @@ import { mask, price, datetime, segment } from "../src/formatter"
 describe("formatter", () => {
 
     it("masks special characters in string", () => {
-        expect(mask("Hello, 'world'? :+1:")).toEqual("Hello?, ?'world?'?? ?:?+1?:");
+        expect(mask("Hello, 'world'? :+1:")).toEqual("Hello, ?'world?'?? ?:?+1?:");
     });
 
     it("price format: zero", () => {
