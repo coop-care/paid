@@ -11,14 +11,15 @@ import {
     messageIdentifierVersions, 
     Versicherter,
     Hilfsmittel,
-    Zuschlag
+    Zuschlag,
+    Abrechnungsfall,
+    Institution,
+    FileType
 } from "../types";
 import {
     PflegegradSchluessel,
     TarifbereichSchluessel, 
     VerarbeitungskennzeichenSchluessel,
-    VerguetungsartSchluessel, 
-    LeistungsartSchluessel, 
 } from "./codes";
 import { mask, number, price, day, month, date, time, datetime, segment } from "../formatter";
 
@@ -30,25 +31,25 @@ export const UNB = (
     empfaengerIK: string, 
     datenaustauschreferenz: number,
     anwendungsreferenz: string, 
-    dateiindikator: string
+    dateiindikator: FileType
 ) => segment(
     "UNB", 
     Syntax_Version,
     absenderIK,
     empfaengerIK,
     datetime(new Date()),
-    datenaustauschreferenz.toString(),
+    datenaustauschreferenz.toString().substr(0, 5),
     anwendungsreferenz,
     dateiindikator
 );
 
 export const UNZ = (
-    controlCount: number, // = number of messages (starting with UNH)
+    numberOfMessages: number,
     datenaustauschreferenz: number,
 ) => segment(
     "UNZ",
-    controlCount.toString(),
-    datenaustauschreferenz.toString()
+    numberOfMessages.toString(),
+    datenaustauschreferenz.toString().substr(0, 5),
 );
 
 export const UNH = (
@@ -56,7 +57,7 @@ export const UNH = (
     messageIdentifier: MessageIdentifiers,
 ) => segment(
     "UNH",
-    messageReferenceNumber.toString(),
+    messageReferenceNumber.toString().substr(0, 5),
     messageIdentifierVersions[messageIdentifier]
 );
 
@@ -66,15 +67,18 @@ export const UNT = (
 ) => segment(
     "UNT",
     numberOfSegments.toString(),
-    messageReferenceNumber.toString()
+    messageReferenceNumber.toString().substr(0, 5),
 );
 
 export const FKT = (
     verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel, // always "01"
     {
-        absenderIK, // PLGA: Absender der Datei, identisch zu Absender in UNB; PLAA: wie RechnungsstellerIK (?)
-        rechnungsstellerIK, // Leistungserbringer oder Abrechnungsstelle mit Inkassovollmacht bei Sammelrechnung; PLAA == PLGA
-    }: Leistungserbringer,
+        absender, // PLGA: Absender der Datei, identisch zu Absender in UNB; PLAA: wie RechnungsstellerIK (?)
+        rechnungssteller, // Leistungserbringer oder Abrechnungsstelle mit Inkassovollmacht bei Sammelrechnung; PLAA == PLGA
+    }: {
+        absender: Institution,
+        rechnungssteller: Institution,
+    },
     {
         kostentraegerIK, // Institution die die Rechnung begleicht laut Kostenträgerdatei; PLAA == PLGA
         pflegekasseIK, // Pflegekasse des Leistungs- bzw. Bewilligungsbescheids; falls angegeben gilt: PLAA == PLGA
@@ -88,10 +92,10 @@ export const FKT = (
         : sammelrechnung
         ? "J"
         : "",
-    rechnungsstellerIK,
+    rechnungssteller.ik,
     kostentraegerIK,
     sammelrechnung !== true ? pflegekasseIK : "",
-    sammelrechnung !== undefined ? absenderIK : rechnungsstellerIK
+    sammelrechnung !== undefined ? absender.ik : rechnungssteller.ik
 );
 
 export const REC = (
@@ -106,7 +110,7 @@ export const REC = (
     currency = DefaultCurrency
 ) => segment(
     "REC",
-    mask(rechnungsnummerprefix + "-" + invoiceIndex + 1) + ":" +
+    mask(rechnungsnummerprefix + "-" + (invoiceIndex + 1)) + ":" +
         (sammelrechnung || rechnungsart == "1" ? 0 : (leistungserbringerIndex + 1)),
     date(rechnungsdatum),
     rechnungsart,
@@ -117,17 +121,22 @@ export const SRD = (
     {
         abrechnungscode,
         tarifbereich,
+        sondertarifJeKostentraegerIK,
     }: Leistungserbringer,
-    leistungsart: LeistungsartSchluessel,
+    {
+        versicherter,
+        einsaetze,
+    }: Abrechnungsfall
 ) => segment(
     "SRD",
-    abrechnungscode + ":" + tarifbereich,
-    leistungsart
+    abrechnungscode + ":" + tarifbereich 
+        + (sondertarifJeKostentraegerIK[versicherter.kostentraegerIK] || "000"),
+    einsaetze[0].leistungen[0].leistungsart
 );
 
 export const UST = ({
     umsatzsteuerOrdnungsnummer = "",
-    umsatzsteuerBefreiung = "",
+    umsatzsteuerBefreiung,
 }: Leistungserbringer) => segment(
     "UST",
     mask(umsatzsteuerOrdnungsnummer),
@@ -153,7 +162,7 @@ export const GES = ({
 export const NAM = ({
     name,
     ansprechpartner
-}: Leistungserbringer) => segment(
+}: Institution) => segment(
     "NAM",
     mask(name.substr(0, 30)),
     ...ansprechpartner.slice(0, 3).map(ansprechpartner =>
@@ -163,11 +172,11 @@ export const NAM = ({
 
 export const INV = (
     versichertennummer: string,
-    eindeutigeBelegnummer: string
+    belegNummer: number
 ) => segment(
     "INV",
     mask(versichertennummer),
-    mask(eindeutigeBelegnummer)
+    (belegNummer + 1).toString()
 );
 
 export const NAD = ({
@@ -201,12 +210,11 @@ export const MAN = (
 );
 
 export const ESK = (
-    leistungsBeginn: Date,
-    verguetungsart: VerguetungsartSchluessel,
+    leistungsBeginn?: Date,
 ) => segment(
     "ESK",
-    day(leistungsBeginn),
-    ["01", "02", "03", "06"].includes(verguetungsart) ? time(leistungsBeginn) : ""
+    leistungsBeginn ? day(leistungsBeginn) : "99",
+    leistungsBeginn ? time(leistungsBeginn) : ""
 );
 
 // ELS is insanely complex: leistung and several parameters depend on verguetungsart

@@ -40,10 +40,11 @@ export type BillingData = {
     datenaustauschreferenzJeEmpfaengerIK: Record<string, number>;
     dateiindikator: FileType;
     rechnungsart: RechnungsartSchluessel;
-    rechnungsnummerprefix: string; // must be unique for each billing
+    rechnungsnummerprefix: string;
     rechnungsdatum?: Date;
     abrechnungsmonat: Date;
     korrekturlieferung?: number;
+    abrechnungsstelle?: Institution;
     laufendeDatenannahmeImJahrJeEmpfaengerIK: Record<string, number>;
 }
 
@@ -63,28 +64,25 @@ export type Invoice = {
     faelle: Abrechnungsfall[];
 };
 
-export type Leistungserbringer = {
+export type Institution = {
     name: string;
+    ik: string;
     ansprechpartner: {
-        name?: string;
+        name: string;
         phone?: string;
     }[];
-    // Leistungserbringer, der selbst abrechnet (Rechnungsart 1), 
-    // oder Abrechnungsstelle (Rechnungsart 2 + 3):
-    absenderIK: string;
-    // Leistungserbringer (Rechnungsart 1 + 2),
-    // oder Abrechnungsstelle mit Inkasssovollmacht (Rechnungsart 3).
-    // Hinweis: absenderIK und rechnungsstellerIK sind bei Rechnungsart 1 + 3 identisch.
-    rechnungsstellerIK: string;
+};
+
+export type Leistungserbringer = Institution & {
     abrechnungscode: AbrechnungscodeSchluessel;
     tarifbereich: TarifbereichSchluessel;
+    sondertarifJeKostentraegerIK: Record<string, string>;
     umsatzsteuerBefreiung: UmsatzsteuerBefreiungSchluessel;
     umsatzsteuerOrdnungsnummer?: string;
 };
 
 export type Abrechnungsfall = {
     versicherter: Versicherter;
-    eindeutigeBelegnummer: string;
     einsaetze: Einsatz[];
 }
 
@@ -103,7 +101,7 @@ export type Versicherter = {
 };
 
 export type Einsatz = {
-    leistungsBeginn: Date;
+    leistungsBeginn?: Date;
     leistungen: Leistung[];
 };
 
@@ -125,8 +123,8 @@ export type Leistung = {
 
 export type Zuschlag = {
     zuschlagsart: ZuschlagsartSchluessel;
-    beschreibungZuschlagsart?: string;
     zuschlag: ZuschlagSchluessel;
+    beschreibungZuschlagsart?: string;
     zuschlagszuordnung: ZuschlagszuordnungSchluessel;
     zuschlagsberechnung: ZuschlagsberechnungSchluessel;
     istAbzugStattZuschlag: boolean;
