@@ -128,6 +128,15 @@ export type Zuschlag = {
     zuschlagszuordnung: ZuschlagszuordnungSchluessel;
     zuschlagsberechnung: ZuschlagsberechnungSchluessel;
     istAbzugStattZuschlag: boolean;
+    /** value for the surcharge. The meaning of this value depends on the 
+     *  ZuschlagsberechnungSchluessel given: It could be the Punktzahl (score), a Betrag (amount, in
+     *  Euro) or a Prozentsatz (percentage). 
+     * 
+     *  For example, if it is 42,12%, the value specified here will be 42.12. This was not clear
+     *  from the docs, but we asked GKV-Spitzenverband and they clarified that:
+     * 
+     *  > Der Prozentsatz wird als Zahl ohne Prozent-Zeichen angegeben, z. B. „10“ für 10 %.
+     *  */
     wert: number;
 };
 
