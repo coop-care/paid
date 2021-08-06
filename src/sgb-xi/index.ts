@@ -166,8 +166,8 @@ const makePLGA = (
     REC(billing, invoiceIndex, leistungserbringerIndex, isSammelrechnungPLGA),
     SRD(invoice.leistungserbringer, invoice.faelle[0]),
     ...(isSammelrechnungPLGA
-        ? [UST(invoice.leistungserbringer)]
-        : []
+        ? []
+        : [UST(invoice.leistungserbringer)]
     ),
     GES(calculateInvoice(invoice)),
     NAM(billing.rechnungsart != "3" || !billing.abrechnungsstelle ? invoice.leistungserbringer : billing.abrechnungsstelle)

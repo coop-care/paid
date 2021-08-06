@@ -83,19 +83,19 @@ export const FKT = (
         kostentraegerIK, // Institution die die Rechnung begleicht laut Kostenträgerdatei; PLAA == PLGA
         pflegekasseIK, // Pflegekasse des Leistungs- bzw. Bewilligungsbescheids; falls angegeben gilt: PLAA == PLGA
     }: Versicherter,
-    sammelrechnung?: boolean, // only for PLGA, undefined for PLAA
+    isSammelrechnungPLGA?: boolean, // only for PLGA, undefined for PLAA
 ) => segment(
     "FKT",
     verarbeitungskennzeichen,
-    sammelrechnung === undefined
+    isSammelrechnungPLGA === undefined
         ? undefined
-        : sammelrechnung
+        : isSammelrechnungPLGA
         ? "J"
         : "",
     rechnungssteller.ik,
     kostentraegerIK,
-    sammelrechnung !== true ? pflegekasseIK : "",
-    sammelrechnung !== undefined ? absender.ik : rechnungssteller.ik
+    isSammelrechnungPLGA !== true ? pflegekasseIK : "",
+    isSammelrechnungPLGA !== undefined ? absender.ik : rechnungssteller.ik
 );
 
 export const REC = (
