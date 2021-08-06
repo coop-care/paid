@@ -53,10 +53,10 @@ export const makeBillingFile = (
         UNB(absenderIK, empfaengerIK, datenaustauschreferenz, anwendungsreferenz, dateiindikator),
         ...mapEachKostentraeger(invoices, rechnungsart).flatMap(invoices => [
             ...mapEachLeistungserbringerAndPflegekasse(invoices).flatMap((invoicesByPflegekasse, index) => [
-                ...makeMessage("PLGA", true, mergeInvoices(invoicesByPflegekasse), billing, ++messageNumber, invoiceIndex, index),
+                ...makeMessage("PLGA", true, mergeInvoices(invoicesByPflegekasse), billing, ++messageNumber, ++invoiceIndex, index),
                 ...invoicesByPflegekasse.flatMap((invoice, leistungserbringerIndex) => [
                     ...makeMessage("PLGA", false, invoice, billing, ++messageNumber, invoiceIndex, leistungserbringerIndex),
-                    ...makeMessage("PLAA", false, invoice, billing, ++messageNumber, invoiceIndex++, leistungserbringerIndex)
+                    ...makeMessage("PLAA", false, invoice, billing, ++messageNumber, invoiceIndex, leistungserbringerIndex)
                 ])
             ])
         ]),

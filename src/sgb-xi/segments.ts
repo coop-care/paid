@@ -110,7 +110,7 @@ export const REC = (
     currency = DefaultCurrency
 ) => segment(
     "REC",
-    mask(rechnungsnummerprefix + "-" + (invoiceIndex + 1)) + ":" +
+    mask(rechnungsnummerprefix + "-" + invoiceIndex) + ":" +
         (isSammelrechnungPLGA || rechnungsart == "1" ? 0 : (leistungserbringerIndex + 1)),
     date(rechnungsdatum),
     rechnungsart,
