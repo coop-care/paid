@@ -53,7 +53,7 @@ export const makeBillingFile = (
         UNB(absenderIK, empfaengerIK, datenaustauschreferenz, anwendungsreferenz, dateiindikator),
         ...mapEachKostentraeger(invoices, rechnungsart).flatMap(invoices => [
             ...mapEachLeistungserbringerAndPflegekasse(invoices).flatMap((invoicesByPflegekasse, index) => [
-                ...makeMessage("PLGA", true, mergeInvoices(invoices), billing, ++messageNumber, invoiceIndex, index),
+                ...makeMessage("PLGA", true, mergeInvoices(invoicesByPflegekasse), billing, ++messageNumber, invoiceIndex, index),
                 ...invoicesByPflegekasse.flatMap(invoice => [
                     ...makeMessage("PLGA", false, invoice, billing, ++messageNumber, invoiceIndex, index),
                     ...makeMessage("PLAA", false, invoice, billing, ++messageNumber, invoiceIndex++, index)
@@ -162,7 +162,7 @@ const makePLGA = (
     leistungserbringerIndex: number,
     isSammelrechnungPLGA: boolean
 ) => [
-        FKT("01", absenderAndRechnungssteller(billing, invoice), invoice.faelle[0].versicherter, isSammelrechnungPLGA),
+    FKT("01", absenderAndRechnungssteller(billing, invoice), invoice.faelle[0].versicherter, isSammelrechnungPLGA),
     REC(billing, invoiceIndex, leistungserbringerIndex, isSammelrechnungPLGA),
     SRD(invoice.leistungserbringer, invoice.faelle[0]),
     ...(isSammelrechnungPLGA

@@ -11,7 +11,7 @@ export const result1 = {
             "FKT+01+J+000000110+000000010++000000110'\n" +
             "REC+2021-0087-1:0+20210503+1+EUR'\n" +
             "SRD+36:00000+01'\n" +
-            "GES+439,17+10,12++429,05+23,46'\n" +
+            "GES+359,72+10,12++349,60+23,46'\n" +
             "NAM+Pflegedienst Musterstadt GmbH+Sven Bauer, 012 34567-8'\n" +
         "UNT+5+1'\n" +
         "UNH+2+PLGA:2'\n" +
@@ -62,10 +62,10 @@ export const result1 = {
             "IAF+32,00+++32,00'\n" +
         "UNT+37+3'\n" +
         "UNH+4+PLGA:2'\n" +
-            "FKT+01+J+000000110+000000010++000000110'\n" +
+            "FKT+01+J+000000110+000000021++000000110'\n" +
             "REC+2021-0087-2:0+20210503+1+EUR'\n" +
             "SRD+36:00000+01'\n" +
-            "GES+439,17+10,12++429,05+23,46'\n" +
+            "GES+79,45+++79,45'\n" +
             "NAM+Pflegedienst Musterstadt GmbH+Sven Bauer, 012 34567-8'\n" +
         "UNT+5+4'\n" +
         "UNH+5+PLGA:2'\n" +
@@ -109,7 +109,7 @@ export const result2 = {
             "FKT+01+J+000000120+000000010++000000210'\n" +
             "REC+2021-0267-1:0+20210427+2+EUR'\n" +
             "SRD+35:05011+01'\n" +
-            "GES+626,88+20,24++606,64+46,91'\n" +
+            "GES+237,81+10,12++227,69+23,46'\n" +
             "NAM+Nachbarschaftspflege in Wilhel+Laila Neumann, 012 34567'\n" +
         "UNT+5+1'\n" +
         "UNH+2+PLGA:2'\n" +
@@ -140,10 +140,10 @@ export const result2 = {
             "IAF+146,91+10,12++136,79'\n" +
         "UNT+17+3'\n" +
         "UNH+4+PLGA:2'\n" +
-            "FKT+01+J+000000120+000000010++000000210'\n" +
+            "FKT+01+J+000000120+000000031++000000210'\n" +
             "REC+2021-0267-2:0+20210427+2+EUR'\n" +
-            "SRD+35:05011+01'\n" +
-            "GES+626,88+20,24++606,64+46,91'\n" +
+            "SRD+35:05000+01'\n" +
+            "GES+237,81+10,12++227,69+23,46'\n" +
             "NAM+Nachbarschaftspflege in Wilhel+Laila Neumann, 012 34567'\n" +
         "UNT+5+4'\n" +
         "UNH+5+PLGA:2'\n" +
@@ -174,11 +174,11 @@ export const result2 = {
             "IAF+146,91+10,12++136,79'\n" +
         "UNT+17+6'\n" +
         "UNH+7+PLGA:2'\n" +
-            "FKT+01+J+000000120+000000010++000000210'\n" +
+            "FKT+01+J+000000130+000000040++000000210'\n" +
             "REC+2021-0267-3:0+20210427+2+EUR'\n" +
-            "SRD+35:05011+01'\n" +
-            "GES+626,88+20,24++606,64+46,91'\n" +
-            "NAM+Nachbarschaftspflege in Wilhel+Laila Neumann, 012 34567'\n" +
+            "SRD+36:02000+01'\n" +
+            "GES+73,82+++73,82'\n" +
+            "NAM+Quartierspflege Neuhausen GmbH+Ben Peters, 012 3456789'\n" +
         "UNT+5+7'\n" +
         "UNH+8+PLGA:2'\n" +
             "FKT+01++000000130+000000040+000000040+000000210'\n" +
@@ -201,11 +201,11 @@ export const result2 = {
             "IAF+73,82+++73,82'\n" +
         "UNT+10+9'\n" +
         "UNH+10+PLGA:2'\n" +
-            "FKT+01+J+000000120+000000010++000000210'\n" +
+            "FKT+01+J+000000130+000000031++000000210'\n" +
             "REC+2021-0267-4:0+20210427+2+EUR'\n" +
-            "SRD+35:05011+01'\n" +
-            "GES+626,88+20,24++606,64+46,91'\n" +
-            "NAM+Nachbarschaftspflege in Wilhel+Laila Neumann, 012 34567'\n" +
+            "SRD+36:02000+01'\n" +
+            "GES+77,45+++77,45'\n" +
+            "NAM+Quartierspflege Neuhausen GmbH+Ben Peters, 012 3456789'\n" +
         "UNT+5+10'\n" +
         "UNH+11+PLGA:2'\n" +
             "FKT+01++000000130+000000031+000000030+000000210'\n" +
@@ -274,7 +274,7 @@ export const result3 = {
             "FKT+01+J+000000310+000000010++000000310'\n" +
             "REC+2021-0398-2:0+20210503+3+EUR'\n" +
             "SRD+35:01000+01'\n" +
-            "GES+138,19+++138,19'\n" +
+            "GES+77,45+++77,45'\n" +
             "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+5+4'\n" +
         "UNH+5+PLGA:2'\n" +
@@ -304,8 +304,8 @@ export const result3 = {
         "UNH+7+PLGA:2'\n" +
             "FKT+01+J+000000310+000000010++000000310'\n" +
             "REC+2021-0398-3:0+20210503+3+EUR'\n" +
-            "SRD+35:01000+01'\n" +
-            "GES+138,19+++138,19'\n" +
+            "SRD+36:23000+01'\n" +
+            "GES+60,74+++60,74'\n" +
             "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+5+7'\n" +
         "UNH+8+PLGA:2'\n" +
@@ -334,7 +334,7 @@ export const result3 = {
             "FKT+01+J+000000310+000000021++000000310'\n" +
             "REC+2021-0398-4:0+20210503+3+EUR'\n" +
             "SRD+35:01000+02'\n" +
-            "GES+105,21+++105,21'\n" +
+            "GES+42,84+++42,84'\n" +
             "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+5+10'\n" +
         "UNH+11+PLGA:2'\n" +
@@ -358,8 +358,8 @@ export const result3 = {
         "UNH+13+PLGA:2'\n" +
             "FKT+01+J+000000310+000000021++000000310'\n" +
             "REC+2021-0398-5:0+20210503+3+EUR'\n" +
-            "SRD+35:01000+02'\n" +
-            "GES+105,21+++105,21'\n" +
+            "SRD+36:23000+01'\n" +
+            "GES+62,37+++62,37'\n" +
             "NAM+PAID Abrechnungszentrum eG+Sonja Braun, 01234 5678-9+Josef Klein'\n" +
         "UNT+5+13'\n" +
         "UNH+14+PLGA:2'\n" +
