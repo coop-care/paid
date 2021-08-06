@@ -160,12 +160,15 @@ const makePLGA = (
     billing: BillingData,
     invoiceIndex: number,
     leistungserbringerIndex: number,
-    sammelrechnung: boolean
+    isSammelrechnungPLGA: boolean
 ) => [
-    FKT("01", absenderAndRechnungssteller(billing, invoice), invoice.faelle[0].versicherter, sammelrechnung),
-    REC(billing, invoiceIndex, leistungserbringerIndex, sammelrechnung),
+        FKT("01", absenderAndRechnungssteller(billing, invoice), invoice.faelle[0].versicherter, isSammelrechnungPLGA),
+    REC(billing, invoiceIndex, leistungserbringerIndex, isSammelrechnungPLGA),
     SRD(invoice.leistungserbringer, invoice.faelle[0]),
-    UST(invoice.leistungserbringer),
+    ...(isSammelrechnungPLGA
+        ? [UST(invoice.leistungserbringer)]
+        : []
+    ),
     GES(calculateInvoice(invoice)),
     NAM(billing.rechnungsart != "3" || !billing.abrechnungsstelle ? invoice.leistungserbringer : billing.abrechnungsstelle)
 ];

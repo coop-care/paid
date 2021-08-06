@@ -106,12 +106,12 @@ export const REC = (
     }: BillingData,
     invoiceIndex: number,
     leistungserbringerIndex: number,
-    sammelrechnung: boolean,
+    isSammelrechnungPLGA: boolean,
     currency = DefaultCurrency
 ) => segment(
     "REC",
     mask(rechnungsnummerprefix + "-" + (invoiceIndex + 1)) + ":" +
-        (sammelrechnung || rechnungsart == "1" ? 0 : (leistungserbringerIndex + 1)),
+        (isSammelrechnungPLGA || rechnungsart == "1" ? 0 : (leistungserbringerIndex + 1)),
     date(rechnungsdatum),
     rechnungsart,
     currency
@@ -271,7 +271,7 @@ export const ZUS = (
         zuschlagszuordnung,
         zuschlagsberechnung,
         istAbzugStattZuschlag,
-        wert,
+        wert, // absolute value e.g. 123,4 = 123,40000, percent value e.g. 12 % = 12,00000
         beschreibungZuschlagsart,
     }: Zuschlag,
     ergebnis: number,
