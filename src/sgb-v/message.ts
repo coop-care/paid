@@ -7,13 +7,33 @@
 import { TestIndicator } from "../types"
 import { 
     getSummenstatus,
-    LeistungserbringerSammelgruppenSchluessel, SummenstatusSchluessel, summenstatusSchluessel,
+    LeistungserbringerSammelgruppenSchluessel,
+    SummenstatusSchluessel,
+    summenstatusSchluessel,
 } from "./codes"
 import { elements } from "../edifact/builder"
 import { date, time, char, fixedInt } from "../edifact/formatter"
 import { Message, Segment } from "../edifact/types"
-import { FKT, FKT_Sammelrechnung, GES, NAM, REC, REC_Sammelrechnung, SKO, UST } from "./segments_slga"
-import { getAbrechnungsfallPositionen, Abrechnungsposition, calculateBruttobetrag, Einsatz, Einzelrechnung, Sammelrechung, calculateZuzahlungUndEigentanteilBetrag, Abrechnungsfall } from "./types"
+import { 
+    FKT, 
+    FKT_Sammelrechnung, 
+    GES, 
+    NAM, 
+    REC, 
+    REC_Sammelrechnung, 
+    SKO, 
+    UST
+} from "./segments_slga"
+import { 
+    getAbrechnungsfallPositionen,
+    Abrechnungsposition,
+    calculateBruttobetrag, 
+    Einzelrechnung, 
+    Sammelrechung, 
+    calculateZuzahlungUndEigentanteilBetrag, 
+    Abrechnungsfall, 
+    Skonto
+} from "./types"
 import { sum } from "../utils"
 
 export const makeInterchangeHeader = (
@@ -50,7 +70,7 @@ export const makeSLGA_SammelrechnungMessage = (s: Sammelrechung): Message => ({
                 GES needs to be adjusted */ 
         FKT_Sammelrechnung("01", s),
         REC_Sammelrechnung(s),
-        ...(s.skontos ?? []).slice(0,9).map(skonto => SKO(skonto)),
+        ...createSkontoList(s.skontos),
         ...calculateGESList(s.rechnungen.flatMap(r => r.abrechnungsfaelle)),
         NAM(s.rechnungssteller)
     ]
@@ -64,12 +84,17 @@ export const makeSLGAMessage = (r: Einzelrechnung): Message => ({
                  GES needs to be adjusted */ 
         FKT("01", r), 
         REC(r),
-        UST(r.umsatzsteuerIdentifikationsnummer, r.umsatzsteuerBefreit),
-        ...(r.skontos ?? []).slice(0,9).map(skonto => SKO(skonto)),
+        r.umsatzsteuer ? UST(r.umsatzsteuer) : undefined,
+        ...createSkontoList(r.skontos),
         ...calculateGESList(r.abrechnungsfaelle),
         NAM(r.leistungserbringer)
-    ]
+    // filter out undefined (left out segments)
+    ].filter(segment => segment !== undefined) as Segment[]
 })
+
+const createSkontoList = (skontos: Skonto[] | undefined): Segment[] =>
+    // at most 9 Skontos are allowed
+    (skontos ?? []).slice(0,9).map(skonto => SKO(skonto))
 
 /** Returns a bunch of GES segments:
  * 
@@ -85,9 +110,8 @@ const calculateGESList = (abrechnungsfaelle: Abrechnungsfall[]): Segment[] =>
             const summen = calculateGesamtsummen(abrechnungspositions)
             return GES(summenstatus, summen.gesamtbruttobetrag, summen.zuzahlungUndEigenanteilBetrag)
         }
-    // some segments are left out conditionally (by returning undefined), so we need to filter those out
+    // filter out undefined (left out segments)
     }).filter(segment => segment !== undefined) as Segment[]
-
 
 /** Return all the Abrechnungspositions ascribed to the given Summenstatus */
 const getRechnungsAbrechnungspositionen = (

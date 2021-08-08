@@ -12,7 +12,7 @@ import {
     SummenstatusSchluessel,
     VerarbeitungskennzeichenSchluessel
 } from "./codes"
-import { Einzelrechnung, Sammelrechung, Skonto } from "./types"
+import { Einzelrechnung, Sammelrechung, Skonto, Umsatzsteuer } from "./types"
 
 /** Segments for SLGA message */
 
@@ -67,15 +67,10 @@ export const REC_Sammelrechnung = (r: Sammelrechung) => segment(
 /** Umsatzsteuer
  * 
  *  Not to be used in Sammelrechnung-SLGA */
- export const UST = (
-    /** Steuernummer (according to §14 Abs. 1a) OR Umsatzsteuer-Identifikationsnummer */
-    umsatzsteuerIdentifikationsnummer: string,
-    /** whether it is Umsatzsteuer excempt (according to §4 UStG) */
-    umsatzsteuerBefreit: boolean
-) => segment(
+ export const UST = (u: Umsatzsteuer) => segment(
     "UST",
-    varchar(umsatzsteuerIdentifikationsnummer, 20),
-    umsatzsteuerBefreit ? "J" : undefined
+    varchar(u.identifikationsnummer, 20),
+    u.befreit ? "J" : undefined
 )
 
 /** Skonto */

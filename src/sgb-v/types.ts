@@ -42,14 +42,19 @@ export type Einzelrechnung = Rechnung & {
     leistungserbringer: Institution
     pflegekasseIK: string
 
-    umsatzsteuerIdentifikationsnummer: string
-    umsatzsteuerBefreit: boolean
+    umsatzsteuer?: Umsatzsteuer
 
     leistungserbringerSammelgruppe: LeistungserbringerSammelgruppenSchluessel
 
     abrechnungsfaelle: Abrechnungsfall[]
 }
 
+export type Umsatzsteuer = {
+    /** Steuernummer (according to §14 Abs. 1a) OR Umsatzsteuer-Identifikationsnummer */
+    identifikationsnummer?: string
+    /** whether it is Umsatzsteuer excempt (according to §4 UStG) */
+    befreit?: boolean
+}
 
 export type Abrechnungsfall = {
     versicherter: Versicherter
