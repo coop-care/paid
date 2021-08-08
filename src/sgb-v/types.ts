@@ -7,6 +7,7 @@
 import { RechnungsartSchluessel } from "../codes"
 import { LaenderkennzeichenSchluessel } from "../country_codes"
 import { char } from "../edifact/formatter"
+import { Institution } from "../types"
 import { 
     AbrechnungscodeEinzelschluessel,
     BeleginformationSchluessel,
@@ -18,22 +19,31 @@ import {
     VerordnungsbesonderheitenSchluessel,
 } from "./codes"
 
+export type Sammelrechung = Rechnung & {
+    rechnungen: Einzelrechnung[]
+}
+
 export type Rechnung = {
-    /** For Sammelrechnungs-SLGA, must be identical to all associated SGLA and SLLA */
     rechnungsart: RechnungsartSchluessel
-    rechnungsdatum: Date
-    /** Rechnungsnummer or Sammel-Rechnungsnummer if it is a Sammelrechnung */
+    kostentraegerIK: string
     sammelRechnungsnummer: string
+    rechnungsdatum: Date
+    /** at most 9 */
+    skontos?: Skonto[]
+    rechnungssteller: Institution
+}
+
+export type Einzelrechnung = Rechnung & {
     /** if RechnungsartSchluessel == 3 and it is a Sammelrechnung, each Leistungserbringer 
      *  (health care service provider) within one bill is assigned an own unique 
      *  Einzel-Rechnungsnummer. This is effectively an index, starting with 1.
      *  */
     einzelRechnungsnummer?: string
-    leistungserbringerIK: string
+    leistungserbringer: Institution
     pflegekasseIK: string
-    kostentraegerIK: string
-    /** Only specify if RechnungsartSchluessel == 3 */
-    rechnungsstellerIK: string
+
+    umsatzsteuerIdentifikationsnummer: string
+    umsatzsteuerBefreit: boolean
 
     leistungserbringerSammelgruppe: LeistungserbringerSammelgruppenSchluessel
 
@@ -108,7 +118,23 @@ export type Abrechnungsposition = {
     gefahreneKilometer?: number
     /** Explanatory text */
     text?: string
+
+// TODO below not used for häusliche krankenpflege...
+    gesetzlicheZuzahlungBetrag?: number,
+    /** amount of co-payment by the insuree */
+    eigenanteilBetrag?: number,
 }
+
+export const calculateBruttobetrag = (p: Abrechnungsposition): number =>
+    // commercially rounded to full cents
+    Math.round(100 * p.einzelpreis * p.anzahl) / 100
+
+export const calculateZuzahlungUndEigentanteilBetrag = (p: Abrechnungsposition): number =>
+    (p.gesetzlicheZuzahlungBetrag ?? 0) + (p.eigenanteilBetrag ?? 0)
+
+export const getAbrechnungsfallPositionen = (abrechnungsfall: Abrechnungsfall): Abrechnungsposition[] =>
+    abrechnungsfall.einsaetze.flatMap(einsatz => einsatz.abrechnungspositionen)
+
 
 /** 7-character code:
  *  
@@ -173,4 +199,14 @@ export type Kostenzusage = {
     genehmigungsKennzeichen: string
     genehmigungsDatum: Date
     kostenzusageGenehmigung: KostenzusageGenehmigung
+}
+
+/** Skonto
+ * 
+ *  Contains information about cashback */
+export type Skonto = {
+    /** granted skonto in percent */
+    skontoPercent: number
+    /** skonto is granted if payment is settled within the given number of days */
+    zahlungsziel: number
 }

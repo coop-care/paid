@@ -306,6 +306,18 @@ export type TarifbereichSchluessel = keyof typeof tarifbereichSchluessel
 }
 export type SummenstatusSchluessel = keyof typeof summenstatusSchluessel
 
+const versichertenstatusToSummenstatus = new Map<string, SummenstatusSchluessel>([
+    ["1", "11"],
+    ["3", "31"],
+    ["5", "51"]
+])
+
+/** Returns Summenstatus by Versichertenstatus */
+export function getSummenstatus(versichertenStatus?: string): SummenstatusSchluessel {
+    if (versichertenStatus == undefined) return "99"
+    return versichertenstatusToSummenstatus.get(versichertenStatus.substr(0,1)) ?? "99"
+}
+
 /** Verarbeitungskennzeichen für die Weiterverarbeitung der Nachricht.
  * 
  *  How the bill should be processed. The values 02, 03 and 04 can only be used after a bilateral 

@@ -9,7 +9,7 @@ import { segment } from "../edifact/builder"
 import { char, varchar, fixedInt, date, decimal } from "../edifact/formatter"
 import { VerarbeitungskennzeichenSchluessel } from "./codes"
 import { REC as SLGA_REC } from "./segments_slga"
-import { Abrechnungsfall, Diagnose, Kostenzusage, Rechnung, Versicherter } from "./types"
+import { Abrechnungsfall, Diagnose, Kostenzusage, Einzelrechnung, Versicherter } from "./types"
 
 /** Base-Segments for SLLA message 
  *  
@@ -21,15 +21,15 @@ import { Abrechnungsfall, Diagnose, Kostenzusage, Rechnung, Versicherter } from 
  *  Contains information about care provider, IK of health insurance card */
  export const FKT = (
     verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel, 
-    r: Rechnung
+    r: Einzelrechnung
 ) => segment(
     "FKT",
     verarbeitungskennzeichen,
     undefined,
-    char(r.leistungserbringerIK, 9),
+    char(r.leistungserbringer.ik, 9),
     char(r.kostentraegerIK, 9),
     char(r.pflegekasseIK, 9),
-    char(r.rechnungsart == "3" ? r.rechnungsstellerIK : undefined, 9)
+    char(r.rechnungsart == "3" ? r.rechnungssteller.ik : undefined, 9)
 )
 
 

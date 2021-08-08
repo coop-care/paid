@@ -8,9 +8,11 @@
   * see docs/documents.md for more info
   */
 
-import { Segment } from "../../edifact/types"
+import { elements } from "../../edifact/builder"
+import { Message, Segment } from "../../edifact/types"
 import { sum } from "../../utils"
 import { INV, NAD, TXT, DIA, SKZ, FKT, REC } from "../segments_slla"
+import { getAbrechnungsfallPositionen, calculateBruttobetrag } from "../types"
 import { einsatzSegment, BES, ELP, einzelfallnachweisSegment, verordnungSegment } from "./segments"
 import { 
     HaeuslicheKrankenpflegeAbrechnungsposition,
@@ -90,6 +92,7 @@ import {
  * One message per combination of health insurance (Pflegekasse), 
  * health care service provider (Leistungserbringer) and payer (Kostenträger)
  * 
+ * ```
  * FKT
  * REC
  * for each Abrechnungsfall:
@@ -111,10 +114,11 @@ import {
  *     for each Kostenzusage:
  *       SKZ
  *   BES
+ * ```
  */
-export const makeMessage = (rechnung: HaeuslicheKrankenpflegeRechnung): Segment[] => {
-    // contract: all insurees must have same pflegekasseIK
-    // contract: all Abrechnungsposition in all Einsatz in all Abrechnungsfall must be of type
+export const makeMessage = (rechnung: HaeuslicheKrankenpflegeRechnung): Message => {
+    // TODO contract: all insurees must have same pflegekasseIK
+    // TODO contract: all Abrechnungsposition in all Einsatz in all Abrechnungsfall must be of type
     //           HaeuslicheKrankenpflegeAbrechnungsposition
 
     // all Einsaetze must be sorted chronologically
@@ -125,39 +129,38 @@ export const makeMessage = (rechnung: HaeuslicheKrankenpflegeRechnung): Segment[
 
     const le = rechnung.leistungserbringerSammelgruppe
 
-    return [
-        FKT("01", rechnung),
-        REC(rechnung),
-        ...rechnung.abrechnungsfaelle.flatMap(fall => [
-            INV(fall),
-            NAD(fall.versicherter),
-            ...fall.einsaetze.flatMap(einsatz => [
-                einsatzSegment(le, einsatz.leistungsBeginn, einsatz.leistungsEnde),
-                ...einsatz.abrechnungspositionen.flatMap(position => [
-                    einzelfallnachweisSegment(le, position as HaeuslicheKrankenpflegeAbrechnungsposition),
-                    // add TXT segment only if there is any text
-                    position.text ? TXT(position.text) : undefined,
-                    // add ELP segments only if there are any einzelpositionen (= position is a Pauschale)
-                    ...("einzelpositionen" in position ? 
-                        (position as HaeuslicheKrankenpflegePauschaleAbrechnungsposition).einzelpositionen.map(e => ELP(e)) : 
-                        [undefined]
-                    )
-                ])
-            ]),
-            ...fall.verordnungen.flatMap(verordnung => [
-                verordnungSegment(le, verordnung),
-                ...verordnung.diagnosen.map(d => DIA(d)),
-                ...verordnung.kostenzusagen.map(k => SKZ(k))
-            ]),
-            BES(
-                // sum all prices of all Abrechnungspositions of all Einsätze
-                sum(fall.einsaetze.flatMap(einsatz => 
-                    einsatz.abrechnungspositionen.map(position => 
-                        Math.round(position.einzelpreis * position.anzahl)
-                    )
+    return {
+        header: elements(["SLLA", "16", "0", "0"]),
+        segments: [
+            FKT("01", rechnung),
+            REC(rechnung),
+            ...rechnung.abrechnungsfaelle.flatMap(fall => [
+                INV(fall),
+                NAD(fall.versicherter),
+                ...fall.einsaetze.flatMap(einsatz => [
+                    einsatzSegment(le, einsatz.leistungsBeginn, einsatz.leistungsEnde),
+                    ...einsatz.abrechnungspositionen.flatMap(position => [
+                        einzelfallnachweisSegment(le, position as HaeuslicheKrankenpflegeAbrechnungsposition),
+                        // add TXT segment only if there is any text
+                        position.text ? TXT(position.text) : undefined,
+                        // add ELP segments only if there are any einzelpositionen (= position is a Pauschale)
+                        ...("einzelpositionen" in position ? 
+                            (position as HaeuslicheKrankenpflegePauschaleAbrechnungsposition).einzelpositionen.map(e => ELP(e)) : 
+                            [undefined]
+                        )
+                    ])
+                ]),
+                ...fall.verordnungen.flatMap(verordnung => [
+                    verordnungSegment(le, verordnung),
+                    ...verordnung.diagnosen.map(d => DIA(d)),
+                    ...verordnung.kostenzusagen.map(k => SKZ(k))
+                ]),
+                BES(sum(
+                    getAbrechnungsfallPositionen(fall)
+                        .map(calculateBruttobetrag)
                 ))
-            )
-        ])
-    // some segments are left out conditionally (by returning undefined), so we need to filter those out
-    ].filter(segment => segment !== undefined) as Segment[]
+            ])
+        // some segments are left out conditionally (by returning undefined), so we need to filter those out
+        ].filter(segment => segment !== undefined) as Segment[]
+    }
 }

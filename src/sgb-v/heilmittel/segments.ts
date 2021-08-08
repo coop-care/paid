@@ -113,6 +113,8 @@ export const BES = (
 /** Gesamtbetrag Zuzahlungsforderung 
  * 
  *  only to be transmitted if Verarbeitungskennzeichen == 3
+ * 
+ *  NOTE: When this segment is used, the calculation of SLGA.GES needs to be adjusted!
 */
 export const GZF = (
     /** = gesamtbetragProzentualeZuzahlung + pauschalerZuzahlungsbetrag */

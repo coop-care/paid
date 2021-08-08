@@ -141,6 +141,8 @@ export const ZHI = (v : Hilfsmittelverordnung) => segment(
 /** Betrags-Summen 
  * 
  *  Although this segment is common in all the different SLLA segments, it has a different content in each
+ * 
+ *  NOTE: When this segment is used, the calculation of SLGA.GES needs to be adjusted!
 */
 export const BES = (
     /** gross price including VAT if applicable 

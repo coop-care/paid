@@ -1,5 +1,5 @@
 import { HaeuslicheLeistungserbringerSammelgruppenSchluessel } from "../codes"
-import { Abrechnungsposition, Rechnung } from "../types"
+import { Abrechnungsposition, Einzelrechnung } from "../types"
 import { 
     HaeuslicheKrankenpflegeEinzelPositionsnummer,
     HaeuslicheKrankenpflegePauschalePositionsnummer
@@ -31,6 +31,6 @@ export type HaeuslicheKrankenpflegeEinzelposition = {
     anzahl: number
 }
 
-export type HaeuslicheKrankenpflegeRechnung = Rechnung & {
+export type HaeuslicheKrankenpflegeRechnung = Einzelrechnung & {
     leistungserbringerSammelgruppe: HaeuslicheLeistungserbringerSammelgruppenSchluessel
 }

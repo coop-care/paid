@@ -77,11 +77,14 @@ export type Invoice = {
 export type Institution = {
     name: string;
     ik: string;
-    ansprechpartner: {
-        name: string;
-        phone?: string;
-    }[];
+    ansprechpartner: Ansprechpartner[];
+    email?: string;
 };
+
+export type Ansprechpartner = {
+    name: string;
+    phone?: string;
+}
 
 export type Leistungserbringer = Institution & {
     abrechnungscode: AbrechnungscodeSchluessel;
