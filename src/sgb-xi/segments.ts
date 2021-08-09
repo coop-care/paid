@@ -83,19 +83,19 @@ export const FKT = (
         kostentraegerIK, // Institution die die Rechnung begleicht laut Kostenträgerdatei; PLAA == PLGA
         pflegekasseIK, // Pflegekasse des Leistungs- bzw. Bewilligungsbescheids; falls angegeben gilt: PLAA == PLGA
     }: Versicherter,
-    sammelrechnung?: boolean, // only for PLGA, undefined for PLAA
+    isSammelrechnungPLGA?: boolean, // only for PLGA, undefined for PLAA
 ) => segment(
     "FKT",
     verarbeitungskennzeichen,
-    sammelrechnung === undefined
+    isSammelrechnungPLGA === undefined
         ? undefined
-        : sammelrechnung
+        : isSammelrechnungPLGA
         ? "J"
         : "",
     rechnungssteller.ik,
     kostentraegerIK,
-    sammelrechnung !== true ? pflegekasseIK : "",
-    sammelrechnung !== undefined ? absender.ik : rechnungssteller.ik
+    isSammelrechnungPLGA !== true ? pflegekasseIK : "",
+    isSammelrechnungPLGA !== undefined ? absender.ik : rechnungssteller.ik
 );
 
 export const REC = (
@@ -106,12 +106,12 @@ export const REC = (
     }: BillingData,
     invoiceIndex: number,
     leistungserbringerIndex: number,
-    sammelrechnung: boolean,
+    isSammelrechnungPLGA: boolean,
     currency = DefaultCurrency
 ) => segment(
     "REC",
-    mask(rechnungsnummerprefix + "-" + (invoiceIndex + 1)) + ":" +
-        (sammelrechnung || rechnungsart == "1" ? 0 : (leistungserbringerIndex + 1)),
+    mask(rechnungsnummerprefix + "-" + invoiceIndex) + ":" +
+        (isSammelrechnungPLGA || rechnungsart == "1" ? 0 : (leistungserbringerIndex + 1)),
     date(rechnungsdatum),
     rechnungsart,
     currency
@@ -271,7 +271,7 @@ export const ZUS = (
         zuschlagszuordnung,
         zuschlagsberechnung,
         istAbzugStattZuschlag,
-        wert,
+        wert, // absolute value e.g. 123,4 = 123,40000, percent value e.g. 12 % = 12,00000
         beschreibungZuschlagsart,
     }: Zuschlag,
     ergebnis: number,
