@@ -1,7 +1,7 @@
-import { makeMessage } from "../../src/sgb-v/haeuslich/message"
-import { segment } from "../../src/edifact/builder"
-import { Kostenzusage, Verordnung } from "../../src/sgb-v/types"
-import { HaeuslicheKrankenpflegeEinzelAbrechnungsposition } from "../../src/sgb-v/haeuslich/types"
+import { makeMessage } from "../../../src/sgb-v/haeuslich/message"
+import { segment } from "../../../src/edifact/builder"
+import { Kostenzusage, Verordnung } from "../../../src/sgb-v/types"
+import { HaeuslicheKrankenpflegeEinzelAbrechnungsposition } from "../../../src/sgb-v/haeuslich/types"
 
 describe.only("Häusliche Krankenpflege message", () => {
     it("constructs correct message", () => {
