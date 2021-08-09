@@ -1,5 +1,5 @@
 import { HaeuslicheLeistungserbringerSammelgruppenSchluessel } from "../codes"
-import { Abrechnungsposition, Einzelrechnung } from "../types"
+import { BaseAbrechnungsposition, Einzelrechnung } from "../types"
 import { 
     HaeuslicheKrankenpflegeEinzelPositionsnummer,
     HaeuslicheKrankenpflegePauschalePositionsnummer
@@ -11,16 +11,21 @@ export type HaeuslicheKrankenpflegeAbrechnungsposition =
     HaeuslicheKrankenpflegePauschaleAbrechnungsposition |
     HaeuslicheKrankenpflegeEinzelAbrechnungsposition
 
-/** The Abrechnungsposition in the sector häusliche Krankenpflege and Haushaltshilf is furthermore
+/** The Abrechnungsposition in the sector häusliche Krankenpflege and Haushaltshilfe is furthermore
  *  split into two categories: 
  *  1. Using a Pauschale - in this case, the Einzelpositions must be listed as well
  *  2. Not using a Pauschale
  */
- export type HaeuslicheKrankenpflegePauschaleAbrechnungsposition = Abrechnungsposition & {
+ export type HaeuslicheKrankenpflegePauschaleAbrechnungsposition = BaseAbrechnungsposition & {
+    leistungserbringerSammelgruppe: HaeuslicheLeistungserbringerSammelgruppenSchluessel
+    /** Which service was provided (Pauschale) */
     positionsnummer: HaeuslicheKrankenpflegePauschalePositionsnummer
+    /** Breakdown of which individual Einzelleistungen were provided */
     einzelpositionen: HaeuslicheKrankenpflegeEinzelposition[]
 }
-export type HaeuslicheKrankenpflegeEinzelAbrechnungsposition = Abrechnungsposition & {
+export type HaeuslicheKrankenpflegeEinzelAbrechnungsposition = BaseAbrechnungsposition & {
+    leistungserbringerSammelgruppe: HaeuslicheLeistungserbringerSammelgruppenSchluessel
+    /** Which service was provided (Einzelleistung) */
     positionsnummer: HaeuslicheKrankenpflegeEinzelPositionsnummer
 }
 

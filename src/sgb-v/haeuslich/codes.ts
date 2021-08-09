@@ -11,8 +11,8 @@
  * gesetzliche Lebensgrundlage
  *  │  Versorgungsart
  *  │   |  Vergütungsart
- * ┌┴─┐┌┴┐┌┴─┐
- *  XX  X  XX
+ * ┌┴─┐┌┴┐┌┴──┐
+ *  XX  X  XXX
  * ```
  */
 export type HaeuslicheKrankenpflegePositionsnummer = {

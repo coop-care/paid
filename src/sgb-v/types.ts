@@ -18,6 +18,8 @@ import {
     UnfallSchluessel,
     VerordnungsbesonderheitenSchluessel,
 } from "./codes"
+import { HaeuslicheKrankenpflegePositionsnummer } from "./haeuslich/codes"
+import { HaeuslicheKrankenpflegeAbrechnungsposition } from "./haeuslich/types"
 
 export type Sammelrechung = Rechnung & {
     rechnungen: Einzelrechnung[]
@@ -80,7 +82,7 @@ export type Versicherter = {
      *  On prescription, listed in field "Versicherten-Nr." */
     versichertennummer?: string
     /** Mandatory if known. If not known, full address must be specified.
-     *  On prescription, listed in field "Staus" */
+     *  On prescription, listed in field "Status" */
     versichertenstatus?: string
     /** Strings longer than 30 characters will be cut off. */
     firstName: string
@@ -110,12 +112,24 @@ export type Einsatz = {
     abrechnungspositionen: Abrechnungsposition[] 
 }
 
-export type Abrechnungsposition = {
+/** An Abrechnungsposition as defined in SGB V could be any of the given types
+ * 
+ *  For each (supported) LeistungserbringerSammelgruppe, there is a (slightly) different data
+ *  structure.
+ *  (Currently, only one is supported)
+ */
+export type Abrechnungsposition = 
+    HaeuslicheKrankenpflegeAbrechnungsposition // for "C" and "D"
+
+/** Fields common to all types of Abrechnungsposition for the different subgroups (Heilmittel-
+ *  erbringer, Hilfsmittelerbringer, häusliche Krankenpfleger, etc etc...)
+ * */
+export type BaseAbrechnungsposition = {
+    /** to tell apart the different types */
+    leistungserbringerSammelgruppe: LeistungserbringerSammelgruppenSchluessel,
+
     leistungserbringergruppe: Leistungserbringergruppe
-    /** Which service was provided. The format of the positionsnummer is different for each 
-     *  group (Krankentransport, Hilfsmittellieferand, Heilmittelerbringer, ...) */
-    positionsnummer: string
-    /** Price of one */
+    /** Price of one service provided */
     einzelpreis: number
     /** Number of things done, f.e. 3x check blood pressure, 3x 15 minutes etc. */
     anzahl: number
@@ -131,7 +145,6 @@ export type Abrechnungsposition = {
 }
 
 export const calculateBruttobetrag = (p: Abrechnungsposition): number =>
-    // commercially rounded to full cents
     Math.round(100 * p.einzelpreis * p.anzahl) / 100
 
 export const calculateZuzahlungUndEigentanteilBetrag = (p: Abrechnungsposition): number =>
@@ -182,7 +195,7 @@ export type Verordnung = {
     /** Content of the fields at "behandlungsrelevante Diagnose(n)". Empty array if not specified.
      *  Some prescription forms have fields for multiple diagnoses */
     diagnosen: Diagnose[]
-    /** At least one is required. Without no guarantee to cover the costs, no billing */
+    /** At least one is required. No a guarantee to cover the costs -> no billing possible */
     kostenzusagen: Kostenzusage[]
 }
 
