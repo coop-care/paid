@@ -3,7 +3,7 @@ import { segment } from "../../../src/edifact/builder"
 import { Kostenzusage, Verordnung } from "../../../src/sgb-v/types"
 import { HaeuslicheKrankenpflegeEinzelAbrechnungsposition } from "../../../src/sgb-v/haeuslich/types"
 
-describe.only("Häusliche Krankenpflege message", () => {
+describe("Häusliche Krankenpflege message", () => {
     it("constructs correct message", () => {
         expect(makeMessage({
             rechnungsart: "1",
