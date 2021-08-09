@@ -128,6 +128,15 @@ export type Zuschlag = {
     zuschlagszuordnung: ZuschlagszuordnungSchluessel;
     zuschlagsberechnung: ZuschlagsberechnungSchluessel;
     istAbzugStattZuschlag: boolean;
+    /** value for the surcharge. The meaning of this value depends on the 
+     *  ZuschlagsberechnungSchluessel given: It could be the Punktzahl (score), a Betrag (amount, in
+     *  Euro) or a Prozentsatz (percentage). 
+     * 
+     *  For example, if it is 42,12%, the value specified here will be 42.12. This was not clear
+     *  from the docs, but we asked GKV-Spitzenverband and they clarified that:
+     * 
+     *  > Der Prozentsatz wird als Zahl ohne Prozent-Zeichen angegeben, z. B. „10“ für 10 %.
+     *  */
     wert: number;
 };
 
@@ -138,7 +147,25 @@ export type Hilfsmittel = {
     genehmigungsdatum?: Date;
     kennzeichenPflegehilfsmittel?: PflegehilfsmittelSchluessel;
     bezeichnungPflegehilfsmittel?: string;
-    produktbesonderheitenPflegehilfsmittel?: string; // siehe Schlüssel Positionsnummer für Produktbesonderheiten von Pflegehilfsmitteln Anlage 3, Abschnitt 2.12
+    /** Positionsnummer für Produktbesonderheiten von Pflegehilfsmitteln 
+     *  
+     *  This 1-10 digit number must be specified if it is specified that way in the respective 
+     *  service and supply contracts.
+     * 
+     *  We asked the GKV-Spitzenverband about whether any numbers are known and documented. They
+     *  replied that there is no directory of such service and supply contracts for 
+     *  Produktbesonderheiten made by the different GKV. And thus, they assume that this field is to
+     *  be filled in by each Leistungserbringer individually depending on their invididual contract(s)
+     * 
+     *  > Die Angabe von „besonderen Positionsnummern für Produktbesonderheiten“ ist in diesen 
+     *  > [vom GKV Spitzenverband geschlossenen] Verträgen nicht vorgesehen. Die Regelungen in den 
+     *  > Pflegehilfsmittelverträgen, die die Pflegekassen z.B. zur Versorgung mit Pflegebetten 
+     *  > geschlossen haben, sind uns nicht bekannt. Ein Verzeichnis der vertraglich vereinbarten 
+     *  > Produktbesonderheiten bei Pflegehilfsmitteln liegt uns nicht vor. Wir gehen davon aus, 
+     *  > dass die Angabe der Hilfsmittelpositionsnummern für Produktbesonderheiten durch den 
+     *  > Leistungserbringer vertragsabhängig als manuelle Eingabe erfolgen muss.
+    */
+    produktbesonderheitenPflegehilfsmittel?: string;
     inventarnummerPflegehilfsmittel?: string;
 };
 

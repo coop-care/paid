@@ -99,7 +99,14 @@ export default function write(auftragsdatei: Auftrag): string {
 
         // processing-internal physical filename (44 chars). Used within data processing center
         "".padEnd(44, " "),
-        // (variable) additional info for file
+        // (variable) additional info for file.
+        /* The documentation mentions that "Schlüssel Art der abgegebenen Leistung" is
+           specified here, however, in the docs it was unclear if the field is optional or not. 
+           We asked the GKV-Spitzenverband and got the reply that it is indeed optional:
+
+           > Die Angabe kann von Absender gesetzt werden, ist aber nicht verpflichtend.
+           
+           So, we don't set it. */
         "".padEnd(30, " ")
     ].join("")
 }

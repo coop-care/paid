@@ -1,6 +1,7 @@
 /** based on documents: 
  *  - Pflege, Technische Anlage 1, Anhang 5: Kostenträgerdatei
  *  - Sonstige Leistungserbringer, Anlage 1, Anhang 3, Kapitel 10: Kostenträgerdatei
+ *  - Gemeinsame Grundsätze Technik, Anlage 15: Zeichensätze
  * 
  * (see /docs/documents.md for more info)
  */
@@ -207,9 +208,12 @@ export const uebermittlungsmediumParameterSchluessel = {
 }
 export type UebermittlungsmediumParameterSchluessel = keyof typeof uebermittlungsmediumParameterSchluessel
 
-/** Übermittlungszeichensatz */
+/** Übermittlungszeichensatz.
+ * 
+ *  See  Gemeinsame Grundsätze Technik, Anlage 15: Zeichensätze
+ */
 export const uebermittlungszeichensatzSchluessel = {
-    "I1": "ISO 8859-1",
+    "I1": "ISO 8859-1", 
     "I7": "ISO 7-Bit, DIN 66003 DRV 7",
     "I8": "ISO 8-Bit, DIN 66303 DRV 8, in der Fassung 1986-11",
     "99": "alle Zeichensätze gemäß Anlage 15 GGT"

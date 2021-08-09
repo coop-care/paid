@@ -14,6 +14,10 @@
 [Auftragsdatei](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_2_-_Auftragsdatei.pdf)  
 from 2019-10-23, to be applied from **2020-01-01**
 
+- Gemeinsame Grundsätze Technik, Anlage 15:  
+[Zeichensätze](https://www.gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_15_-_Zeichensaetze.pdf)  
+from 2020-07-01, to be applied from **2020-09-01**
+
 ### Pflege
 
 - Pflege, Broschüre:  

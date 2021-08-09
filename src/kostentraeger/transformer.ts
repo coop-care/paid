@@ -141,10 +141,22 @@ function verfahrenToLeistungserbringergruppeSchluessel(verfahren: VerfahrenSchlu
 
 
 function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage, interchangeValidityStartDate: Date): Institution | null {
+    /* Since the use of this field was unclear to us, we asked GKV-Spitzenverband.
+       
+       They answered that this field marks whether an entry was added, changed, not changed or 
+       deleted. Since the Kostenträger-file is always published as a complete directory (and not a 
+       diff of sorts), they are of no relevance here, because we also produce a complete directory
+       and not a diff.
+       
+       > Mit Hilfe des Verarbeitungskennzeichens kann ein Nutzer erkennen, ob und wenn ja, welche 
+       > Art von Veränderung in der Kostenträgerdatei enthalten ist. Da die Kostenträgerdateien
+       > immer als Gesamtverzeichnis aller IK und aller Datenannahmestellen je Kassenart 
+       > bereitgestellt werden, liegt dem Nutzer aber unabhängig vom Verarbeitungskennzeichen aber
+       > immer ein vollständiges Verzeichnis vor. 
 
-    /* in practice, this doesn't really seem to be used and usage of this field is inconsistent for the
-       different umbrella organizations that issue the Kostenträger-file. "03" however seems to mean
-       "delete this entry" */
+       But to be on the same side, we will not include "03" in the parse result as it means 
+       "this entry was deleted".
+    */
     if (msg.fkt.verarbeitungskennzeichenSchluessel == "03") {
         return null
     }
