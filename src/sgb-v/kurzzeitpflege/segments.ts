@@ -7,16 +7,16 @@
 
 import { segment } from "../../edifact/builder"
 import { char, decimal, date } from "../../edifact/formatter"
-import { 
-    Leistungserbringergruppe,
-    leistungserbringergruppeCode 
-} from "../types"
+import { AbrechnungscodeEinzelschluessel, TarifbereichSchluessel } from "../codes"
 
 /** Segments for SLLA Q message (Kurzzeitpflege) */
 
 /** Einzelfallnachweis Kurzzeitpflege  */
 export const EHP = (
-    leistungserbringergruppe: Leistungserbringergruppe,
+    abrechnungscode: AbrechnungscodeEinzelschluessel,
+    tarifbereich: TarifbereichSchluessel,
+    /** 3-character string, see Sondertarife in ./codes.ts */
+    sondertarif: string,
     /** Abrechnungspositionsnummer für Kurzzeitpflege. See ./codes.ts */
     positionsnummer: string,
     amount: number,
@@ -28,7 +28,10 @@ export const EHP = (
     serviceEndDate: Date,
 ) => segment(
     "EHP",
-    leistungserbringergruppeCode(leistungserbringergruppe),
+    [
+        abrechnungscode,
+        tarifbereich + char(sondertarif, 3)
+    ],
     char(positionsnummer, 7),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),

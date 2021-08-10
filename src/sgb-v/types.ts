@@ -98,7 +98,10 @@ export type BaseAbrechnungsposition = {
     /** to tell apart the different types */
     leistungserbringerSammelgruppe: LeistungserbringerSammelgruppenSchluessel,
 
-    leistungserbringergruppe: Leistungserbringergruppe
+    abrechnungscode: AbrechnungscodeEinzelschluessel
+    tarifbereich: TarifbereichSchluessel
+    /** 3-character string, see Sondertarife in ./codes.ts */
+    sondertarif: string
     /** Price of one service provided */
     einzelpreis: number
     /** Number of things done, f.e. 3x check blood pressure, 3x 15 minutes etc. */
@@ -122,32 +125,6 @@ export const calculateZuzahlungUndEigentanteilBetrag = (p: Abrechnungsposition):
 
 export const getAbrechnungsfallPositionen = (abrechnungsfall: Abrechnungsfall): Abrechnungsposition[] =>
     abrechnungsfall.einsaetze.flatMap(einsatz => einsatz.abrechnungspositionen)
-
-
-/** 7-character code:
- *  
- * ```
- * Abrechnungscode
- *  │  Tarifkennzeichen
- * ┌┴─┐┌─┴─────┐
- *  XX  XX  XXX
- *     └┬─┘└─┬─┘
- *      │   Sondertarif
- *     Tarifbereich
- * ```
- */
-export type Leistungserbringergruppe = {
-    abrechnungscode: AbrechnungscodeEinzelschluessel
-    tarifbereich: TarifbereichSchluessel
-    /** 3-character string, see Sondertarife in ./codes.ts */
-    sondertarif: string
-}
-
-export const leistungserbringergruppeCode = (le: Leistungserbringergruppe): string[] =>
-[
-    le.abrechnungscode,
-    le.tarifbereich + char(le.sondertarif, 3)
-]
 
 /** Represents a prescription/voucher (Verordnung, Beleg) from a doctor */
 export type Verordnung = {

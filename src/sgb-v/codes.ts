@@ -51,6 +51,23 @@ export const zuzahlungSchluessel = {
 }
 export type ZuzahlungSchluessel = keyof typeof zuzahlungSchluessel
 
+/* Schlüssel Leistungserbringergruppe
+ * 
+ * documented in (a) 8.1.5
+ * 
+ * 7-character code
+ * 
+ * ```
+ * Abrechnungscode
+ *  │  Tarifkennzeichen
+ * ┌┴─┐┌─┴─────┐
+ *  XX  XX  XXX
+ *     └┬─┘└─┬─┘
+ *      │   Sondertarif
+ *     Tarifbereich
+ * ```
+ */
+
 /** Abrechnungscode für Leistungen nach § 302 Abs. 2 SGB V
  * 
  *  documented in (a) 8.1.5.1, (b) 8.14 */

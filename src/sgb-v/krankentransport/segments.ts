@@ -9,12 +9,10 @@
 import { segment } from "../../edifact/builder"
 import { char, decimal, int, varchar, date, duration, time } from "../../edifact/formatter"
 import { 
+    AbrechnungscodeEinzelschluessel,
+    TarifbereichSchluessel,
     ZuzahlungsartSchluessel
 } from "../codes"
-import { 
-    Leistungserbringergruppe,
-    leistungserbringergruppeCode 
-} from "../types"
 import { LaenderkennzeichenSchluessel } from "../../country_codes"
 import { KrankentransportVerordnung } from "./types"
 
@@ -58,7 +56,10 @@ export const KTL = (
 
 /** Einzelfallnachweis Krankentransport  */
 export const EKT = (
-    leistungserbringergruppe: Leistungserbringergruppe,
+    abrechnungscode: AbrechnungscodeEinzelschluessel,
+    tarifbereich: TarifbereichSchluessel,
+    /** 3-character string, see Sondertarife in ./codes.ts */
+    sondertarif: string,
     /** Which service was provided */
     positionsnummer: string,
     /** If the "pauschale is used", "kilometersDriven" must be specified too */
@@ -73,7 +74,10 @@ export const EKT = (
     endDateTime: Date
 ) => segment(
     "EKT",
-    leistungserbringergruppeCode(leistungserbringergruppe),
+    [
+        abrechnungscode,
+        tarifbereich + char(sondertarif, 3)
+    ],
     char(positionsnummer, 6),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),

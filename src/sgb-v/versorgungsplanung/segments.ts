@@ -7,17 +7,17 @@
 
 import { segment } from "../../edifact/builder"
 import { char, decimal, int, varchar, date } from "../../edifact/formatter"
-import { 
-    Leistungserbringergruppe,
-    leistungserbringergruppeCode 
-} from "../types"
+import { AbrechnungscodeEinzelschluessel, TarifbereichSchluessel } from "../codes"
 
 /** Segments for SLLA P message (gesundheitliche Versorgungsplanung nach § 132g SGB V) 
 */
 
 /** Einzelfallnachweis gesundheitliche Versorgungsplanung  */
 export const EGV = (
-    leistungserbringergruppe: Leistungserbringergruppe,
+    abrechnungscode: AbrechnungscodeEinzelschluessel,
+    tarifbereich: TarifbereichSchluessel,
+    /** 3-character string, see Sondertarife in ./codes.ts */
+    sondertarif: string,
     /** Abrechnungspositionsnummer für sonstige Leistungen. See ./codes.ts */
     positionsnummer: string,
     amount: number,
@@ -31,7 +31,10 @@ export const EGV = (
     serviceEndDate: Date | undefined,
 ) => segment(
     "EGV",
-    leistungserbringergruppeCode(leistungserbringergruppe),
+    [
+        abrechnungscode,
+        tarifbereich + char(sondertarif, 3)
+    ],
     char(positionsnummer, 7),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),

@@ -8,10 +8,7 @@
 
 import { segment } from "../../edifact/builder"
 import { char, decimal, int, varchar, date } from "../../edifact/formatter"
-import { 
-    Leistungserbringergruppe,
-    leistungserbringergruppeCode 
-} from "../types"
+import { AbrechnungscodeEinzelschluessel, TarifbereichSchluessel } from "../codes"
 import { HeilmittelVerordnung } from "./types"
 
 /** Segments for SLLA B message (Heilmittel) */
@@ -20,7 +17,10 @@ import { HeilmittelVerordnung } from "./types"
  * 
  *  Contains information about the therapies used */
  export const EHE = (
-    leistungserbringergruppe: Leistungserbringergruppe,
+    abrechnungscode: AbrechnungscodeEinzelschluessel,
+    tarifbereich: TarifbereichSchluessel,
+    /** 3-character string, see Sondertarife in ./codes.ts */
+    sondertarif: string,
     /** Heilmittelpositionsnummer. See ./codes.ts */
     positionsnummer: string,
     /** number of therapies used */
@@ -39,7 +39,10 @@ import { HeilmittelVerordnung } from "./types"
     kilometersDriven: number | undefined,
 ) => segment(
     "EHE",
-    leistungserbringergruppeCode(leistungserbringergruppe),
+    [
+        abrechnungscode,
+        tarifbereich + char(sondertarif, 3)
+    ],
     char(positionsnummer, 5),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),

@@ -9,14 +9,11 @@
   */
 
 import { segment } from "../../edifact/builder"
-import { decimal, int, varchar, date, duration, time } from "../../edifact/formatter"
+import { decimal, int, varchar, date, duration, time, char } from "../../edifact/formatter"
 import { 
     haeuslicheKrankenpflegePositionsnummerCode
 } from "./codes"
-import { 
-    leistungserbringergruppeCode, 
-    Verordnung
-} from "../types"
+import { Verordnung } from "../types"
 import { 
     HaeuslicheKrankenpflegeAbrechnungsposition,
     HaeuslicheKrankenpflegeEinzelposition
@@ -49,7 +46,10 @@ export const einzelfallnachweisSegment = (
     a: HaeuslicheKrankenpflegeAbrechnungsposition
 ) => segment(
     le == "C" ? "EHK" : "EHH",
-    leistungserbringergruppeCode(a.leistungserbringergruppe),
+    [
+        a.abrechnungscode,
+        a.tarifbereich + char(a.sondertarif, 3)
+    ],
     haeuslicheKrankenpflegePositionsnummerCode(a.positionsnummer),
     decimal(a.anzahl, 4, 2),
     decimal(a.einzelpreis, 10, 2),
