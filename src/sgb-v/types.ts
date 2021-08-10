@@ -5,9 +5,8 @@
   */
 
 import { RechnungsartSchluessel } from "../codes"
-import { LaenderkennzeichenSchluessel } from "../country_codes"
 import { char } from "../edifact/formatter"
-import { Institution } from "../types"
+import { Address, Institution } from "../types"
 import { 
     AbrechnungscodeEinzelschluessel,
     BeleginformationSchluessel,
@@ -18,7 +17,6 @@ import {
     UnfallSchluessel,
     VerordnungsbesonderheitenSchluessel,
 } from "./codes"
-import { HaeuslicheKrankenpflegePositionsnummer } from "./haeuslich/codes"
 import { HaeuslicheKrankenpflegeAbrechnungsposition } from "./haeuslich/types"
 
 export type Sammelrechung = Rechnung & {
@@ -91,17 +89,6 @@ export type Versicherter = {
     birthday: Date
     /** Mandatory if the versichertennummer or versichertenstatus is not known */
     address?: Address
-}
-
-export type Address = {
-    street: string,
-    houseNumber: string
-    /** Strings longer than 7 characters will be cut off. */
-    postalCode: string
-    /** Strings longer than 25 characters will be cut off. */
-    city: string
-    /** to be specified if the country is not Germany. */
-    countryCode?: LaenderkennzeichenSchluessel
 }
 
 export type Einsatz = {

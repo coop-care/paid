@@ -5,6 +5,7 @@
 import { 
     RechnungsartSchluessel
 } from "./codes";
+import { LaenderkennzeichenSchluessel } from "./country_codes";
 import { 
     AbrechnungscodeSchluessel,
     PflegegradSchluessel, 
@@ -100,18 +101,30 @@ export type Abrechnungsfall = {
 }
 
 export type Versicherter = {
-    pflegekasseIK: string;
-    kostentraegerIK: string;
-    versichertennummer: string;
-    pflegegrad: PflegegradSchluessel;
-    firstName: string;
-    lastName: string;
-    birthday: Date;
-    street?: string;
-    houseNumber?: string;
-    postalCode?: string;
-    city?: string;
+    pflegekasseIK: string
+    kostentraegerIK: string
+    versichertennummer?: string
+    pflegegrad: PflegegradSchluessel
+    firstName: string
+    lastName: string
+    birthday: Date
+    /** Mandatory if the versichertennummer or versichertenstatus is not known */
+    address?: Address
 };
+
+export type Address = {
+    /** street + housenumber longer than 30 characters (SGB V) will be cut off.
+     *  For SGB XI, streets longer than 46 characters will be cut off. */
+    street: string
+    /** housenumbers longer than 9 characters will be cut off (SGB XI) */
+    houseNumber: string
+    /** Strings longer than 7 characters (SGB V) or 10 characters (SGB XI) will be cut off. */
+    postalCode: string
+    /** Strings longer than 25 characters (SGB V) or 40 characters (SGB XI) will be cut off. */
+    city: string
+    /** to be specified if the country is not Germany. */
+    countryCode?: LaenderkennzeichenSchluessel
+}
 
 export type Einsatz = {
     leistungsBeginn?: Date;

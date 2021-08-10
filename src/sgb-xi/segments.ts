@@ -179,32 +179,24 @@ export const NAM = ({
 
 /** Information des Pflegebedürftigen */
 export const INV = (
-    versichertennummer: string,
-    belegNummer: number
+    versichertennummer?: string,
+    belegnummer: number
 ) => segment(
     "INV",
     mask(versichertennummer),
-    (belegNummer + 1).toString()
+    (belegnummer + 1).toString()
 );
 
 /** Name und Anschrift des Versicherten */
-export const NAD = ({
-    firstName,
-    lastName,
-    birthday,
-    street = "",
-    houseNumber = "",
-    postalCode = "",
-    city = ""
-}: Versicherter) => segment(
+export const NAD = (v: Versicherter) => segment(
     "NAD",
-    mask(firstName.substr(0, 45)),
-    mask(lastName.substr(0, 45)),
-    date(birthday),
-    mask(street.substr(0, 46)),
-    mask(houseNumber.substr(0, 9)),
-    mask(postalCode.substr(0, 10)),
-    mask(city.substr(0, 40))
+    mask(v.firstName.substr(0, 45)),
+    mask(v.lastName.substr(0, 45)),
+    date(v.birthday),
+    mask(v.address?.street?.substr(0, 46)),
+    mask(v.address?.houseNumber?.substr(0, 9)),
+    mask(v.address?.postalCode?.substr(0, 10)),
+    mask(v.address?.city?.substr(0, 40))
 );
 
 /** Monatskopf-Segment */
