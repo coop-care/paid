@@ -1,44 +1,72 @@
 /** based on document: Pflege, Technische Anlage 3, Schlüsselverzeichnisse
   * see docs/documents.md for more info
+  * 
+  * The keys are sorted by the order they appear in the documentation
   */
 
-// 2.2.1 Schlüssel Abrechnungscode
-export const abrechnungscodeSchluessel = {
-    // Abrechnungsstelle
+/** 2.2.1 Schlüssel Abrechnungscode */
+
+export const abrechnungsstelleAbrechnungscodeSchluessel = {
     "00": "Kennzeichen zur Identifizierung einer Abrechnungsstelle als Rechnungssteller",
-    // Leistungserbringer Pflegehilfsmittel
+}
+export type AbrechnungsstelleAbrechnungscodeSchluessel = keyof typeof abrechnungsstelleAbrechnungscodeSchluessel
+
+export const pflegehilfsmittelAbrechnungscodeSchluessel = {
     "11": "Pflegehilfsmittel: Apotheke (Vertrag gem. § 78 Abs. 1+2 SGB XI)",
     "15": "Pflegehilfsmittel: Orthopädiemechaniker, Bandagist, Sanitätshaus",
     "16": "Pflegehilfsmittel: Orthopädieschuhmacher",
     "17": "Pflegehilfsmittel: Orthopäde",
     "19": "Pflegehilfsmittel: sonstiger Hilfsmittellieferant, Pflegehilfsmittellieferant",
-    // Leistungserbringer ambulante Pflege
+}
+export type PflegehilfsmittelAbrechnungscodeSchluessel = keyof typeof pflegehilfsmittelAbrechnungscodeSchluessel
+
+export const ambulantePflegeAbrechnungscodeSchluessel = {
     "35": "ambulante Pflege: frei gemeinnütziger Anbieter (Sozialstation)",
     "36": "ambulante Pflege: privat gewerblicher Anbieter",
     "37": "ambulante Pflege: öffentlicher Anbieter",
-    "39": "ambulante Pflege: sonstiger Pflegedienst",
-    // Leistungserbringer Tagespflege
+    "39": "ambulante Pflege: sonstiger Pflegedienst"
+}
+export type AmbulantePflegeAbrechnungscodeSchluessel = keyof typeof ambulantePflegeAbrechnungscodeSchluessel
+
+export const tagespflegeAbrechnungscodeSchluessel = {
     "81": "Tagespflege: privat gewerblicher Anbieter",
     "82": "Tagespflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter)",
     "83": "Tagespflege: öffentlicher Anbieter",
     "84": "Tagespflege: sonstige Pflegeeinrichtung",
-    // Leistungserbringer Nachtpflege
+}
+export type TagespflegeAbrechnungscodeSchluessel = keyof typeof tagespflegeAbrechnungscodeSchluessel
+
+export const nachtpflegeAbrechnungscodeSchluessel = {
     "86": "Nachtpflege: privat gewerblicher Anbieter",
     "87": "Nachtpflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter)",
     "88": "Nachtpflege: öffentlicher Anbieter",
     "89": "Nachtpflege: sonstige Pflegeeinrichtung",
-    // Leistungserbringer Kurzzeitpflege
+}
+export type NachtpflegeAbrechnungscodeSchluessel = keyof typeof nachtpflegeAbrechnungscodeSchluessel
+
+export const kurzzeitpflegeAbrechnungscodeSchluessel = {
     "91": "Kurzzeitpflege: privat gewerblicher Anbieter",
     "92": "Kurzzeitpflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter)",
     "93": "Kurzzeitpflege: öffentlicher Anbieter",
     "94": "Kurzzeitpflege: sonstige Pflegeeinrichtung",
-    // Leistungserbringer vollstationäre Pflege
+}
+export type KurzzeitpflegeAbrechnungscodeSchluessel = keyof typeof kurzzeitpflegeAbrechnungscodeSchluessel
+
+export const vollstationaerePflegeAbrechnungscodeSchluessel = {
     "96": "vollstationäre Pflege: privat gewerblicher Anbieter",
     "97": "vollstationäre Pflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter)",
     "98": "vollstationäre Pflege: öffentlicher Anbieter",
     "99": "vollstationäre Pflege: sonstige Pflegeeinrichtung",
 }
-export type AbrechnungscodeSchluessel = keyof typeof abrechnungscodeSchluessel;
+export type VollstationaerePflegeAbrechnungscodeSchluessel = keyof typeof vollstationaerePflegeAbrechnungscodeSchluessel
+
+export type AbrechnungscodeSchluessel = 
+    PflegehilfsmittelAbrechnungscodeSchluessel |
+    AmbulantePflegeAbrechnungscodeSchluessel |
+    TagespflegeAbrechnungscodeSchluessel |
+    NachtpflegeAbrechnungscodeSchluessel |
+    KurzzeitpflegeAbrechnungscodeSchluessel |
+    VollstationaerePflegeAbrechnungscodeSchluessel
 
 // 2.2.2 & 2.14.1 Schlüssel Tarifkennzeichen: Tarifbereich
 export const tarifbereichSchluessel = {
