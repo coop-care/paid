@@ -2,15 +2,16 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, Abrechnungsfall, Invoice, MessageIdentifiers, BillingFile, Pflegehilfsmittel, Einsatz, Leistung, TestIndicator } from "../types";
+import { BillingData, Abrechnungsfall, Invoice, MessageIdentifiers, BillingFile, Einsatz, TestIndicator } from "../types";
 import { valuesGroupedBy } from "../utils";
 import { LeistungsartSchluessel, MehrwertsteuerSchluessel } from "./codes";
 import { makeAnwendungsreferenz, makeDateiname } from "./filenames";
 import { KassenartSchluessel as KostentraegerKassenartSchluessel } from "../kostentraeger/filename/codes"
-import { ELS, ESK, FKT, GES, HIL, IAF, INV, MAN, NAD, NAM, REC, SRD, UNB, UNH, UNT, UNZ, UST, ZUS } from "./segments";
+import { ELS, ESK, FKT, GES, HIL, IAF, INV, MAN, NAD, NAM, REC, SRD,  UST, ZUS } from "./segments";
 import { RechnungsartSchluessel } from "../codes";
 import { char, date, fixedInt, time } from "../edifact/formatter";
 import { elements } from "../edifact/builder";
+import { Leistung } from "./types";
 
 export const makeInterchangeHeader = (
     /** IK of the sender (creator) of this bill */
