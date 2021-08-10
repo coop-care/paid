@@ -102,10 +102,19 @@ export type Abrechnungsfall = {
 
 export type Versicherter = {
     pflegekasseIK: string
+    // TODO: this field cannot be correct here, because different Kostenträger are possible even for the same Pflegekasse (for different Leistungen)
     kostentraegerIK: string
+    /** Mandatory if known. If not known, full address must be specified.
+     *  On prescription or health insurance card listed in field "Versicherten-Nr." */
     versichertennummer?: string
-    pflegegrad: PflegegradSchluessel
+    /** Mandatory if known when billing with SGB V. If not known, full address must be specified.
+     *  On prescription, listed in field "Status" */
+    versichertenstatus?: string
+    /** Mandatory for billing with SGB XI */
+    pflegegrad?: PflegegradSchluessel
+    /** first names longer than 30 characters (SGB V) or 45 characters (SGB XI) will be cut off. */
     firstName: string
+    /** last names longer than 47 characters (SGB V) or 45 characters (SGB XI) will be cut off. */
     lastName: string
     birthday: Date
     /** Mandatory if the versichertennummer or versichertenstatus is not known */
@@ -118,11 +127,11 @@ export type Address = {
     street: string
     /** housenumbers longer than 9 characters will be cut off (SGB XI) */
     houseNumber: string
-    /** Strings longer than 7 characters (SGB V) or 10 characters (SGB XI) will be cut off. */
+    /** Postal codes longer than 7 characters (SGB V) or 10 characters (SGB XI) will be cut off. */
     postalCode: string
-    /** Strings longer than 25 characters (SGB V) or 40 characters (SGB XI) will be cut off. */
+    /** City names longer than 25 characters (SGB V) or 40 characters (SGB XI) will be cut off. */
     city: string
-    /** to be specified if the country is not Germany. */
+    /** to be specified if the country is not Germany. Ignored for SGB XI */
     countryCode?: LaenderkennzeichenSchluessel
 }
 

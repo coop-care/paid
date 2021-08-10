@@ -9,7 +9,15 @@ import { segment } from "../edifact/builder"
 import { char, varchar, fixedInt, date, decimal } from "../edifact/formatter"
 import { VerarbeitungskennzeichenSchluessel } from "./codes"
 import { REC as SLGA_REC } from "./segments_slga"
-import { Abrechnungsfall, Diagnose, Kostenzusage, Einzelrechnung, Versicherter } from "./types"
+import { 
+    Abrechnungsfall,
+    Diagnose,
+    Kostenzusage,
+    Einzelrechnung
+} from "./types"
+import { 
+    Versicherter
+} from "../types"
 
 /** Base-Segments for SLLA message 
  *  

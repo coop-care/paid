@@ -1,10 +1,9 @@
 import { 
     Abrechnungsfall,
-    Address,
     Diagnose,
     Einsatz,
     Kostenzusage,
-    Verordnung, Versicherter
+    Verordnung, 
 } from "./types"
 
 const constraintsAbrechnungsfall = (a: Abrechnungsfall) => [

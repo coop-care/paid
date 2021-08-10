@@ -6,7 +6,7 @@
 
 import { RechnungsartSchluessel } from "../codes"
 import { char } from "../edifact/formatter"
-import { Address, Institution } from "../types"
+import { Institution, Versicherter } from "../types"
 import { 
     AbrechnungscodeEinzelschluessel,
     BeleginformationSchluessel,
@@ -72,23 +72,6 @@ export type Abrechnungsfall = {
      *  übermitteln." https://www.gesetze-im-internet.de/sgb_5/__116b.html
      */
     besondereVersorgungsform?: string
-}
-
-export type Versicherter = {
-    pflegekasseIK: string
-    /** Mandatory if known. If not known, full address must be specified.
-     *  On prescription, listed in field "Versicherten-Nr." */
-    versichertennummer?: string
-    /** Mandatory if known. If not known, full address must be specified.
-     *  On prescription, listed in field "Status" */
-    versichertenstatus?: string
-    /** Strings longer than 30 characters will be cut off. */
-    firstName: string
-    /** Strings longer than 47 characters will be cut off. */
-    lastName: string
-    birthday: Date
-    /** Mandatory if the versichertennummer or versichertenstatus is not known */
-    address?: Address
 }
 
 export type Einsatz = {
