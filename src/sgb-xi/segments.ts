@@ -10,12 +10,12 @@ import {
     MessageIdentifiers, 
     messageIdentifierVersions, 
     Versicherter,
-    Hilfsmittel,
+    Pflegehilfsmittel,
     Zuschlag,
     Abrechnungsfall,
     Institution,
-    TestIndicator
-} from "../types";
+    Umsatzsteuer
+} from "../types"
 import {
     PflegegradSchluessel,
     TarifbereichSchluessel, 
@@ -139,14 +139,11 @@ export const SRD = (
 );
 
 /** Umsatzsteuer */
-export const UST = ({
-    umsatzsteuerOrdnungsnummer = "",
-    umsatzsteuerBefreiung,
-}: Leistungserbringer) => segment(
+export const UST = (u: Umsatzsteuer) => segment(
     "UST",
-    mask(umsatzsteuerOrdnungsnummer),
-    umsatzsteuerBefreiung.length ? "J" : "",
-    umsatzsteuerBefreiung
+    varchar(u.identifikationsnummer, 20),
+    u.befreiung ? "J" : "",
+    u.befreiung
 );
 
 /** Rechnungssummen  */

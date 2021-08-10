@@ -169,7 +169,7 @@ const makePLGA = (
     FKT("01", absenderAndRechnungssteller(billing, invoice), invoice.faelle[0].versicherter, sammelrechnung),
     REC(billing, invoiceIndex, leistungserbringerIndex, sammelrechnung),
     SRD(invoice.leistungserbringer, invoice.faelle[0]),
-    UST(invoice.leistungserbringer),
+    UST(invoice.leistungserbringer.umsatzsteuer), // TODO not to be transmitted in Sammelrechnung PLGA!
     GES(calculateInvoice(invoice)),
     NAM(billing.rechnungsart != "3" || !billing.abrechnungsstelle ? invoice.leistungserbringer : billing.abrechnungsstelle)
 ];

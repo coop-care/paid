@@ -6,7 +6,7 @@
 
 import { RechnungsartSchluessel } from "../codes"
 import { char } from "../edifact/formatter"
-import { Institution, Versicherter } from "../types"
+import { Institution, Umsatzsteuer, Versicherter } from "../types"
 import { 
     AbrechnungscodeEinzelschluessel,
     BeleginformationSchluessel,
@@ -49,13 +49,6 @@ export type Einzelrechnung = Rechnung & {
     abrechnungsfaelle: Abrechnungsfall[]
 }
 
-export type Umsatzsteuer = {
-    /** Steuernummer (according to §14 Abs. 1a) OR Umsatzsteuer-Identifikationsnummer */
-    identifikationsnummer?: string
-    /** whether it is Umsatzsteuer excempt (according to §4 UStG) */
-    befreit?: boolean
-}
-
 export type Abrechnungsfall = {
     versicherter: Versicherter
     einsaetze: Einsatz[]
@@ -87,6 +80,10 @@ export type Einsatz = {
  *  For each (supported) LeistungserbringerSammelgruppe, there is a (slightly) different data
  *  structure.
  *  (Currently, only one is supported)
+ * 
+ *  NOTE: When extending support for other LeistungserbringerSammelgruppen, check if the
+ *        implementation of any function that takes a Abrechnungsposition needs to be updated. F.e.
+ *        calculateZuzahlungUndEigentanteilBetrag
  */
 export type Abrechnungsposition = 
     HaeuslicheKrankenpflegeAbrechnungsposition // for "C" and "D"
@@ -110,18 +107,14 @@ export type BaseAbrechnungsposition = {
     gefahreneKilometer?: number
     /** Explanatory text */
     text?: string
-
-// TODO below not used for häusliche krankenpflege...
-    gesetzlicheZuzahlungBetrag?: number,
-    /** amount of co-payment by the insuree */
-    eigenanteilBetrag?: number,
 }
 
 export const calculateBruttobetrag = (p: Abrechnungsposition): number =>
     Math.round(100 * p.einzelpreis * p.anzahl) / 100
 
 export const calculateZuzahlungUndEigentanteilBetrag = (p: Abrechnungsposition): number =>
-    (p.gesetzlicheZuzahlungBetrag ?? 0) + (p.eigenanteilBetrag ?? 0)
+    // currently supported Abrechnungsposition don't include any Zuzahlung or Eigenanteil
+    0
 
 export const getAbrechnungsfallPositionen = (abrechnungsfall: Abrechnungsfall): Abrechnungsposition[] =>
     abrechnungsfall.einsaetze.flatMap(einsatz => einsatz.abrechnungspositionen)

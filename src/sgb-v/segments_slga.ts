@@ -7,12 +7,12 @@
 import { segment } from "../edifact/builder"
 import { char, decimal, int, varchar, date } from "../edifact/formatter"
 import { Segment } from "../edifact/types"
-import { Ansprechpartner, Institution } from "../types"
+import { Institution, Umsatzsteuer } from "../types"
 import { 
     SummenstatusSchluessel,
     VerarbeitungskennzeichenSchluessel
 } from "./codes"
-import { Einzelrechnung, Sammelrechung, Skonto, Umsatzsteuer } from "./types"
+import { Einzelrechnung, Sammelrechung, Skonto } from "./types"
 
 /** Segments for SLGA message */
 
@@ -70,7 +70,7 @@ export const REC_Sammelrechnung = (r: Sammelrechung) => segment(
  export const UST = (u: Umsatzsteuer) => segment(
     "UST",
     varchar(u.identifikationsnummer, 20),
-    u.befreit ? "J" : undefined
+    u.befreiung ? "J" : undefined
 )
 
 /** Skonto */

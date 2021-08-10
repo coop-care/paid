@@ -19,7 +19,7 @@ import {
     ZuschlagSchluessel,
     ZuschlagszuordnungSchluessel,
     MehrwertsteuerSchluessel,
-    PflegehilfsmittelSchluessel,
+    PflegehilfsmittelKennzeichenSchluessel,
 } from "./sgb-xi/codes";
 
 
@@ -91,9 +91,22 @@ export type Leistungserbringer = Institution & {
     abrechnungscode: AbrechnungscodeSchluessel;
     tarifbereich: TarifbereichSchluessel;
     sondertarifJeKostentraegerIK: Record<string, string>;
-    umsatzsteuerBefreiung: UmsatzsteuerBefreiungSchluessel;
-    umsatzsteuerOrdnungsnummer?: string;
+    /** to be specified if care provider is income tax excempt */
+    umsatzsteuer?: Umsatzsteuer
 };
+
+export type Umsatzsteuer = {
+    /** Steuernummer (according to §14 Abs. 1a) OR Umsatzsteuer-Identifikationsnummer.
+     *  Mandatory if umsatzsteuerbefreit.
+     * 
+     *  ASK: documentation is vague on when it is mandatory or not. Also, in SGB XI it is called
+     *  "Ordnungsnummer", in SGB V it is called Steuernummer / Umsatzsteuer-Identifikationsnummer.
+     *  Is this the same thing?
+     */
+    identifikationsnummer?: string
+    /** specified if income tax excempt */
+    befreiung?: UmsatzsteuerBefreiungSchluessel
+}
 
 export type Abrechnungsfall = {
     versicherter: Versicherter;
@@ -110,7 +123,7 @@ export type Versicherter = {
     /** Mandatory if known when billing with SGB V. If not known, full address must be specified.
      *  On prescription, listed in field "Status" */
     versichertenstatus?: string
-    /** Mandatory for billing with SGB XI */
+    /** Mandatory for being able to bill with SGB XI */
     pflegegrad?: PflegegradSchluessel
     /** first names longer than 30 characters (SGB V) or 45 characters (SGB XI) will be cut off. */
     firstName: string
@@ -141,46 +154,67 @@ export type Einsatz = {
 };
 
 export type Leistung = {
-    leistungsart: LeistungsartSchluessel;
-    verguetungsart: VerguetungsartSchluessel;
-    qualifikationsabhaengigeVerguetung: QualifikationsabhaengigeVerguetungSchluessel,
-    leistung: string,
-    einzelpreis: number,
-    anzahl: number,
-    leistungsBeginn?: Date,
-    leistungsEnde?: Date, // for verguetungsart 01, 02, 03, 04
-    gefahreneKilometer?: number, // for verguetungsart 06 with leistung 04
-    punktwert?: number,
-    punktzahl?: number,
-    zuschlaege: Zuschlag[];
-    hilfsmittel?: Hilfsmittel;
-};
+    leistungsart: LeistungsartSchluessel
+    verguetungsart: VerguetungsartSchluessel
+    qualifikationsabhaengigeVerguetung: QualifikationsabhaengigeVerguetungSchluessel
+
+    /** The service provided TODO type! */
+    leistung: string
+    /** Price of one service provided */
+    einzelpreis: number
+    /** Number of things done, f.e. 3x check blood pressure, 3x 15 minutes etc. */
+    anzahl: number
+
+    leistungsBeginn?: Date // for verguetungsart 04
+    leistungsEnde?: Date // for verguetungsart 01, 02, 03, 04
+    gefahreneKilometer?: number // for verguetungsart 06 with leistung 04
+
+    punktwert?: number
+    punktzahl?: number
+
+    zuschlaege: Zuschlag[]
+    hilfsmittel?: Pflegehilfsmittel
+}
 
 export type Zuschlag = {
-    zuschlagsart: ZuschlagsartSchluessel;
-    zuschlag: ZuschlagSchluessel;
-    beschreibungZuschlagsart?: string;
-    zuschlagszuordnung: ZuschlagszuordnungSchluessel;
-    zuschlagsberechnung: ZuschlagsberechnungSchluessel;
-    istAbzugStattZuschlag: boolean;
-    wert: number;
-};
+    zuschlagsart: ZuschlagsartSchluessel
+    zuschlag: ZuschlagSchluessel
+    beschreibungZuschlagsart?: string
+    zuschlagszuordnung: ZuschlagszuordnungSchluessel
+    zuschlagsberechnung: ZuschlagsberechnungSchluessel
+    istAbzugStattZuschlag: boolean
+    /** value depends on the field zuschlagsberechnung */
+    wert: number
+}
 
-export type Hilfsmittel = {
-    mehrwertsteuerart?: MehrwertsteuerSchluessel;
-    zuzahlungsbetrag?: number; // gem. § 40 SGB XI
-    genehmigungskennzeichen?: string;
-    genehmigungsdatum?: Date;
-    kennzeichenPflegehilfsmittel?: PflegehilfsmittelSchluessel;
-    bezeichnungPflegehilfsmittel?: string;
-    produktbesonderheitenPflegehilfsmittel?: string; // siehe Schlüssel Positionsnummer für Produktbesonderheiten von Pflegehilfsmitteln Anlage 3, Abschnitt 2.12
-    inventarnummerPflegehilfsmittel?: string;
-};
+export type Pflegehilfsmittel = {
+    /** Only to be specified if there is any Mehrwertsteuer on it */
+    mehrwertsteuerart?: MehrwertsteuerSchluessel
+    /** according to § 40 SGB XI */
+    gesetzlicheZuzahlungBetrag?: number
+    /** Bei der Kostenzusage vergebene Genehmigungsnummer. Required only for "technische Hilfsmittel" */
+    genehmigungskennzeichen?: string
+    genehmigungsDatum?: Date
+    /** Required only for "technische Hilfsmittel" (see § 40 Abs. 3 SGB XI) */
+    kennzeichenPflegehilfsmittel?: PflegehilfsmittelKennzeichenSchluessel
+    /** Only to be specified if for the adjuvant used, there is no Pflegehilfsmittelpositionsnummer yet */
+    bezeichnungPflegehilfsmittel?: string
+    /** siehe Schlüssel Positionsnummer für Produktbesonderheiten von Pflegehilfsmitteln Anlage 3, Abschnitt 2.12 */
+    produktbesonderheitenPflegehilfsmittel?: string
+    /** Inventory number of the adjuvant used (if applicable) */
+    inventarnummerPflegehilfsmittel?: string
+}
 
 export type Amounts = {
-    gesamtbruttobetrag: number, // = rechnungsbetrag + zuzahlungsbetrag + beihilfebetrag + mwst
-    rechnungsbetrag: number, // max. bis zum Höchstleistungsanspruch
-    zuzahlungsbetrag: number, // bei Pflegehilfsmitteln oder wenn Bruttobetrag über Höchstleistungsanspruch liegt
-    beihilfebetrag: number, // gem. §28 Abs. 2 SGB XI
-    mehrwertsteuerbetrag: number,
-};
+    /** = sum of all(rechnungsbetrag + zuzahlungsbetrag + beihilfebetrag + mwst) */
+    gesamtbruttobetrag: number
+    /** max. bis zum Höchstleistungsanspruch */
+    rechnungsbetrag: number // 
+    /** = sum of all(zuzahlungen + eigenanteil)
+     * 
+     * bei Pflegehilfsmitteln oder wenn Bruttobetrag über Höchstleistungsanspruch liegt */
+    zuzahlungsbetrag: number
+    /** gem. §28 Abs. 2 SGB XI */
+    beihilfebetrag: number
+    mehrwertsteuerbetrag: number
+}
