@@ -1,4 +1,4 @@
-import { mask, price, datetime, segment } from "../src/formatter"
+import { mask, price, segment } from "../src/formatter"
 
 describe("formatter", () => {
 
@@ -24,14 +24,6 @@ describe("formatter", () => {
 
     it("price format: undefined", () => {
         expect(price(undefined)).toEqual("");
-    });
-
-    it("date time format", () => {
-        expect(datetime(new Date(2021, 2, 8, 13, 37))).toEqual("20210308:1337");
-    });
-
-    it("date time format: midnight", () => {
-        expect(datetime(new Date(2021, 2, 8, 0, 0))).toEqual("20210308:0000");
     });
 
     it("omit + sepearator on optional values at the end of a segment", () => {

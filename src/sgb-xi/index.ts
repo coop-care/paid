@@ -2,16 +2,41 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, Abrechnungsfall, Invoice, MessageIdentifiers, BillingFile, Hilfsmittel, Einsatz, Leistung } from "../types";
+import { BillingData, Abrechnungsfall, Invoice, MessageIdentifiers, BillingFile, Pflegehilfsmittel, Einsatz, Leistung, TestIndicator } from "../types";
 import { valuesGroupedBy } from "../utils";
 import { LeistungsartSchluessel, MehrwertsteuerSchluessel } from "./codes";
 import { makeAnwendungsreferenz, makeDateiname } from "./filenames";
 import { KassenartSchluessel as KostentraegerKassenartSchluessel } from "../kostentraeger/filename/codes"
 import { ELS, ESK, FKT, GES, HIL, IAF, INV, MAN, NAD, NAM, REC, SRD, UNB, UNH, UNT, UNZ, UST, ZUS } from "./segments";
 import { RechnungsartSchluessel } from "../codes";
+import { char, date, fixedInt, time } from "../edifact/formatter";
+import { elements } from "../edifact/builder";
+
+export const makeInterchangeHeader = (
+    /** IK of the sender (creator) of this bill */
+    absenderIK: string,
+    /** IK of the designated recipient of this file (who decrypts the file) */
+    empfaengerIK: string,
+    /** date at which this file has been created */
+    dateCreated: Date,
+    /** serial number that should increased by one for each transmission to the recipient. 
+     *  A value from 00001-99999. It should loop back to 00001 before 100000 is reached. */
+    datenaustauschreferenz: number,
+    /** AKA "logischer Dateneiname" */
+    anwendungsreferenz: string,
+    /** Whether this bill is just a test or its real data */
+    testIndicator: TestIndicator
+) => elements(
+    ["UNOC", "3"],
+    char(absenderIK, 9),
+    char(empfaengerIK, 9),
+    [date(dateCreated), time(dateCreated)],
+    fixedInt(datenaustauschreferenz, 5),
+    char(anwendungsreferenz, 11),
+    testIndicator
+)
 
 const mehrwertsteuersaetze: Record<MehrwertsteuerSchluessel, number> = {
-    "": 0,
     "1": 0.19,
     "2": 0.07
 };
@@ -202,7 +227,7 @@ const makePLAA = (
                 ...leistung.hilfsmittel 
                     ? [HIL(
                         leistung.hilfsmittel, 
-                        calculateHilfsmittel(leistung.einzelpreis, leistung.hilfsmittel)
+                        calculateMwSt(leistung.einzelpreis, leistung.hilfsmittel?.mehrwertsteuerart)
                     )] : []
             ])
         ]),
@@ -261,9 +286,9 @@ export const calculateFall = (fall: Abrechnungsfall) => fall.einsaetze
     .flatMap(einsatz => einsatz.leistungen)
     .reduce((result, {einzelpreis, anzahl, hilfsmittel}) => {
         const value = einzelpreis * anzahl;
-        const zuzahlungsbetrag = (hilfsmittel?.zuzahlungsbetrag || 0);
+        const zuzahlungsbetrag = (hilfsmittel?.gesetzlicheZuzahlungBetrag || 0);
         const beihilfebetrag = 0;
-        const mehrwertsteuer = calculateHilfsmittel(einzelpreis, hilfsmittel);
+        const mehrwertsteuer = calculateMwSt(einzelpreis, hilfsmittel?.mehrwertsteuerart);
         const gesamtbruttobetrag = value + mehrwertsteuer;
         result.gesamtbruttobetrag += gesamtbruttobetrag;
         result.rechnungsbetrag += gesamtbruttobetrag - zuzahlungsbetrag - beihilfebetrag;
@@ -273,10 +298,13 @@ export const calculateFall = (fall: Abrechnungsfall) => fall.einsaetze
         return result;
     }, makeAmounts());
 
-const calculateHilfsmittel = (
+const calculateMwSt = (
     einzelpreis: number,
-    hilfsmittel?: Hilfsmittel
-) => einzelpreis * mehrwertsteuersaetze[hilfsmittel?.mehrwertsteuerart || ""];
+    mehrwehrtsteuerSchluessel?: MehrwertsteuerSchluessel
+) => {
+    if (mehrwehrtsteuerSchluessel == undefined) return 0
+    return einzelpreis * mehrwertsteuersaetze[mehrwehrtsteuerSchluessel]
+}
 
 const makeAmounts = () => ({
     gesamtbruttobetrag: 0,

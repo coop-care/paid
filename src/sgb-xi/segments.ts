@@ -7,8 +7,6 @@ import {
     BillingData, 
     Leistungserbringer, 
     Leistung, 
-    MessageIdentifiers, 
-    messageIdentifierVersions, 
     Versicherter,
     Pflegehilfsmittel,
     Zuschlag,
@@ -20,55 +18,11 @@ import {
     PflegegradSchluessel,
     TarifbereichSchluessel, 
     VerarbeitungskennzeichenSchluessel,
-} from "./codes";
-import { mask, number, price, day, month, date, time, datetime, segment } from "../formatter";
+} from "./codes"
+import { day, month, date, time, varchar, decimal, int } from "../edifact/formatter"
+import { segment } from "../edifact/builder"
 
-const Syntax_Version = "UNOC:3";
 const DefaultCurrency = "EUR";
-
-export const UNB = (
-    absenderIK: string, 
-    empfaengerIK: string, 
-    datenaustauschreferenz: number,
-    anwendungsreferenz: string, 
-    dateiindikator: TestIndicator
-) => segment(
-    "UNB", 
-    Syntax_Version,
-    absenderIK,
-    empfaengerIK,
-    datetime(new Date()),
-    datenaustauschreferenz.toString().substr(0, 5),
-    anwendungsreferenz,
-    dateiindikator
-);
-
-export const UNZ = (
-    numberOfMessages: number,
-    datenaustauschreferenz: number,
-) => segment(
-    "UNZ",
-    numberOfMessages.toString(),
-    datenaustauschreferenz.toString().substr(0, 5),
-);
-
-export const UNH = (
-    messageReferenceNumber: number, // = index of message (starting with UNH)
-    messageIdentifier: MessageIdentifiers,
-) => segment(
-    "UNH",
-    messageReferenceNumber.toString().substr(0, 5),
-    messageIdentifierVersions[messageIdentifier]
-);
-
-export const UNT = (
-    numberOfSegments: number, // Control count including UNH and UNT
-    messageReferenceNumber: number // = index of message
-) => segment(
-    "UNT",
-    numberOfSegments.toString(),
-    messageReferenceNumber.toString().substr(0, 5),
-);
 
 /** Funktion */
 export const FKT = (
@@ -93,12 +47,12 @@ export const FKT = (
         ? undefined
         : sammelrechnung
         ? "J"
-        : "",
+        : undefined,
     rechnungssteller.ik,
     kostentraegerIK,
-    sammelrechnung !== true ? pflegekasseIK : "",
+    sammelrechnung !== true ? pflegekasseIK : undefined,
     sammelrechnung !== undefined ? absender.ik : rechnungssteller.ik
-);
+)
 
 /** Rechnung / Zahlung */
 export const REC = (
@@ -113,30 +67,27 @@ export const REC = (
     currency = DefaultCurrency
 ) => segment(
     "REC",
-    mask(rechnungsnummerprefix + "-" + (invoiceIndex + 1)) + ":" +
-        (sammelrechnung || rechnungsart == "1" ? 0 : (leistungserbringerIndex + 1)),
+    [
+        rechnungsnummerprefix + "-" + (invoiceIndex + 1),
+        sammelrechnung || rechnungsart == "1" ? "0" : (leistungserbringerIndex + 1).toString()
+    ],
     date(rechnungsdatum),
     rechnungsart,
     currency
-);
+)
 
 /** Rechnungsdaten */
 export const SRD = (
-    {
-        abrechnungscode,
-        tarifbereich,
-        sondertarifJeKostentraegerIK,
-    }: Leistungserbringer,
-    {
-        versicherter,
-        einsaetze,
-    }: Abrechnungsfall
+    l: Leistungserbringer,
+    a: Abrechnungsfall
 ) => segment(
     "SRD",
-    abrechnungscode + ":" + tarifbereich 
-        + (sondertarifJeKostentraegerIK[versicherter.kostentraegerIK] || "000"),
-    einsaetze[0].leistungen[0].leistungsart
-);
+    [
+        l.abrechnungscode,
+        l.tarifbereich + (l.sondertarifJeKostentraegerIK[a.versicherter.kostentraegerIK] || "000")
+    ],
+    a.einsaetze[0].leistungen[0].leistungsart
+)
 
 /** Umsatzsteuer */
 export const UST = (u: Umsatzsteuer) => segment(
@@ -147,20 +98,14 @@ export const UST = (u: Umsatzsteuer) => segment(
 );
 
 /** Rechnungssummen  */
-export const GES = ({
-    gesamtbruttobetrag,
-    rechnungsbetrag,
-    zuzahlungsbetrag,
-    beihilfebetrag,
-    mehrwertsteuerbetrag,
-}: Amounts) => segment(
+export const GES = (a: Amounts) => segment(
     "GES",
-    price(gesamtbruttobetrag),
-    price(zuzahlungsbetrag || undefined),
-    price(beihilfebetrag || undefined),
-    price(rechnungsbetrag),
-    price(mehrwertsteuerbetrag || undefined)
-);
+    decimal(a.gesamtbruttobetrag, 10, 2),
+    decimal(a.zuzahlungsbetrag || undefined, 10, 2),
+    decimal(a.beihilfebetrag || undefined, 10, 2),
+    decimal(a.rechnungsbetrag, 10, 2),
+    decimal(a.mehrwertsteuerbetrag || undefined, 10, 2)
+)
 
 /** Namen */
 export const NAM = ({
@@ -168,162 +113,157 @@ export const NAM = ({
     ansprechpartner
 }: Institution) => segment(
     "NAM",
-    mask(name.substr(0, 30)),
+    name.substr(0, 30),
     ...ansprechpartner.slice(0, 3).map(ansprechpartner =>
+        // f.e. {name: "John", phone: "123"} becomes "John, 123"
         Object.values(ansprechpartner).filter(Boolean).join(", ").substr(0, 30)
     )
-);
+)
 
 /** Information des Pflegebedürftigen */
 export const INV = (
-    versichertennummer?: string,
+    versichertennummer: string | undefined,
     belegnummer: number
 ) => segment(
     "INV",
-    mask(versichertennummer),
-    (belegnummer + 1).toString()
-);
+    varchar(versichertennummer, 20),
+    varchar((belegnummer + 1).toString(), 10)
+)
 
-/** Name und Anschrift des Versicherten */
+/** Name und Adresse Versicherter
+ * 
+ *  Contains additional information about the insuree */
 export const NAD = (v: Versicherter) => segment(
     "NAD",
-    mask(v.firstName.substr(0, 45)),
-    mask(v.lastName.substr(0, 45)),
+    v.firstName.substr(0, 45),
+    v.lastName.substr(0, 45),
     date(v.birthday),
-    mask(v.address?.street?.substr(0, 46)),
-    mask(v.address?.houseNumber?.substr(0, 9)),
-    mask(v.address?.postalCode?.substr(0, 10)),
-    mask(v.address?.city?.substr(0, 40))
-);
+    v.address?.street?.substr(0, 46),
+    v.address?.houseNumber?.substr(0, 9),
+    v.address?.postalCode?.substr(0, 10),
+    v.address?.city?.substr(0, 40)
+)
 
 /** Monatskopf-Segment */
 export const MAN = (
     monatLeistungserbringung: Date,
-    pflegegrad: PflegegradSchluessel,
+    pflegegrad: PflegegradSchluessel
 ) => segment(
     "MAN",
     monatLeistungserbringung.getFullYear() + month(monatLeistungserbringung),
-    "", // "Pflegestufe", obsolete
-    "", // "Pflegeklasse", obsolete
+    undefined, // "Pflegestufe", obsolete
+    undefined, // "Pflegeklasse", obsolete
     pflegegrad
-);
+)
 
 /** Einsatzkopf-Segment */
 export const ESK = (
-    leistungsBeginn?: Date,
+    /** Day of month and time when health care service was provided.
+     * 
+     *  Undefined only for fixed per-month fixed rates (Monatspauschale), f.e. "stationär"
+     */
+    leistungsBeginn?: Date
 ) => segment(
     "ESK",
     leistungsBeginn ? day(leistungsBeginn) : "99",
-    leistungsBeginn ? time(leistungsBeginn) : ""
-);
+    leistungsBeginn ? time(leistungsBeginn) : undefined
+)
 
-// ELS is insanely complex: leistung and several parameters depend on verguetungsart
-/** Einzelleistungen */
-export const ELS = ({
-    leistungsart,
-    verguetungsart,
-    qualifikationsabhaengigeVerguetung,
-    leistung,
-    einzelpreis,
-    anzahl,
-    leistungsBeginn, // for verguetungsart 04
-    leistungsEnde, // for verguetungsart 01, 02, 03, 04
-    gefahreneKilometer, // for verguetungsart 06 with leistung 04
-    punktwert,
-    punktzahl,
-}: Leistung) => {
-    let details = "00";
+/** Einzelleistungen 
+ * 
+ *  This is insanely complex: leistung and several parameters depend on verguetungsart
+*/
+export const ELS = (l: Leistung) => {
 
-    if (verguetungsart == "01") {
-        details = leistungsEnde ? time(leistungsEnde) : "00";
-    } else if (verguetungsart == "02" && leistungsEnde) {
-        details = time(leistungsEnde);
-    } else if (verguetungsart == "03" && leistungsEnde) {
-        details = time(leistungsEnde);
-    } else if (verguetungsart == "04" && leistungsBeginn && leistungsEnde) {
-        details = day(leistungsBeginn) + day(leistungsEnde);
-    } else if (verguetungsart == "06" && leistung == "04"
-            && gefahreneKilometer != undefined) {
-        details = number(gefahreneKilometer, 0)
+    /** documentation reads:
+     * 
+     *  Einzutragen ist bei Vergütungsart s. Schlüsselverzeichnis Anlage 3, Abschnitt 2.5. 
+     * 
+     *  01 => 00 bzw. Uhrzeit der Beendigung der Leistungserbringung (Uhrzeit), in der Form: hhmm
+     *  02 => die Uhrzeit der Beendigung der Leistungserbringung (Uhrzeit), in der Form: hhmm
+     *  03 => der Bis-Zeitraum (Uhrzeit). In der Form: hhmm
+     *  04 => der Vom/Bis-Zeitraum (Von/Tag und Bis/Tag). In der Form: TTTT
+     *  05 => 00
+     *  06 => Wegegebühren-/Beförderungsentgeltart = 04 nach Schlüssel 2.7.5, die Anzahl der gefahrenen Kilometer, (es sind nur ganze Kilometer zu melden und kaufmännisch zu runden z. B. 3,40 Km, zu melden 3), sonst = 00 (bei SC 01-03),
+     *  07 => frei
+     *  08 => 00
+     *  99 => 00
+     */
+    let details = "00"
+    if (l.verguetungsart == "01") {
+        details = l.leistungsEnde ? time(l.leistungsEnde) : "00"
+    } else if (l.verguetungsart == "02" && l.leistungsEnde) {
+        details = time(l.leistungsEnde)
+    } else if (l.verguetungsart == "03" && l.leistungsEnde) {
+        details = time(l.leistungsEnde)
+    } else if (l.verguetungsart == "04" && l.leistungsBeginn && l.leistungsEnde) {
+        details = day(l.leistungsBeginn) + day(l.leistungsEnde)
+    } else if (l.verguetungsart == "06" && l.leistung == "04" && l.gefahreneKilometer != undefined) {
+        details = Math.round(l.gefahreneKilometer).toString()
     }
 
     return segment(
         "ELS",
         [
-            leistungsart,
-            verguetungsart,
-            qualifikationsabhaengigeVerguetung,
-            leistung
-        ].join(":"),
-        price(einzelpreis),
-        number(punktwert, 5),
-        number(punktzahl, 0),
+            l.leistungsart,
+            l.verguetungsart,
+            l.qualifikationsabhaengigeVerguetung,
+            l.leistung
+        ],
+        decimal(l.einzelpreis, 10, 2),
+        decimal(l.punktwert, 1, 5),
+        int(l.punktzahl, 0, 9999),
         details,
-        number(anzahl, 2)
+        decimal(l.anzahl, 4, 2)
     )
-};
+}
 
 /** Zuschläge/Abzüge */
 export const ZUS = (
+    /** Whether this is the last ZUS belonging to a previous ELS segment */
     isLast: boolean,
     tarifbereich: TarifbereichSchluessel,
-    {
-        zuschlagsart, 
-        zuschlag, 
-        zuschlagszuordnung,
-        zuschlagsberechnung,
-        istAbzugStattZuschlag,
-        wert,
-        beschreibungZuschlagsart,
-    }: Zuschlag,
+    z: Zuschlag,
+    /** "Betrag, wie er sich zum Basispreis verhält (Zwischenbetr., wenn Ende-Kennzeichen=0, 
+     *  Endergebnis, wenn Ende-Kennzeichen = 1, und Berechnung 05, 06, 07, 13, 15, 16)"" */
     ergebnis: number,
 ) => segment(
     "ZUS",
-    [tarifbereich, zuschlagsart, zuschlag].join(":"),
-    mask(beschreibungZuschlagsart?.substr(0, 50) || ""),
-    zuschlagszuordnung,
-    zuschlagsberechnung,
-    istAbzugStattZuschlag ? "0" : "1",
-    number(wert, 5),
-    price(ergebnis),
+    [tarifbereich, z.zuschlagsart, z.zuschlag],
+    z.beschreibungZuschlagsart?.substr(0, 50),
+    z.zuschlagszuordnung,
+    z.zuschlagsberechnung,
+    z.istAbzugStattZuschlag ? "0" : "1",
+    decimal(z.wert, 4, 5),
+    decimal(ergebnis, 5, 2),
     isLast? "1" : "0"
-);
+)
 
-/** Einzelleistungen */
-export const HIL = ({
-    mehrwertsteuerart = "",
-    zuzahlungsbetrag,
-    genehmigungskennzeichen = "",
-    genehmigungsdatum,
-    kennzeichenPflegehilfsmittel = "",
-    bezeichnungPflegehilfsmittel = "",
-    produktbesonderheitenPflegehilfsmittel = "",
-    inventarnummerPflegehilfsmittel = "",
-}: Hilfsmittel,
+/** Hilfsmittel */
+export const HIL = (
+    h: Pflegehilfsmittel,
     mehrwertsteuerbetrag?: number
 ) => segment(
     "HIL",
-    mehrwertsteuerart,
-    price(mehrwertsteuerbetrag),
-    price(zuzahlungsbetrag),
-    mask(genehmigungskennzeichen.substr(0, 15)),
-    genehmigungsdatum ? date(genehmigungsdatum) : "",
-    kennzeichenPflegehilfsmittel,
-    mask(bezeichnungPflegehilfsmittel.substr(0, 30)),
-    mask(produktbesonderheitenPflegehilfsmittel.substr(0, 10)),
-    mask(inventarnummerPflegehilfsmittel.substr(0, 20)),
-);
+    h.mehrwertsteuerart,
+    decimal(mehrwertsteuerbetrag, 10, 2),
+    decimal(h.gesetzlicheZuzahlungBetrag, 10, 2),
+    varchar(h.genehmigungskennzeichen, 15),
+    h.genehmigungsDatum ? date(h.genehmigungsDatum) : undefined,
+    h.kennzeichenPflegehilfsmittel,
+    h.bezeichnungPflegehilfsmittel?.substr(0, 30),
+    varchar(h.produktbesonderheitenPflegehilfsmittel, 10),
+    varchar(h.inventarnummerPflegehilfsmittel, 20),
+)
 
-/** Abrechnungsfall-Endesegment  */
-export const IAF = ({ // is calculcated from all ELS / ZUS / HIL segments for one INV segment
-    gesamtbruttobetrag,
-    rechnungsbetrag,
-    zuzahlungsbetrag,
-    beihilfebetrag
-}: Amounts) => segment(
+/** Abrechnungsfall-Endesegment 
+ *  
+ *  is calculcated from all ELS / ZUS / HIL segments for one INV segment
+ */
+export const IAF = (a: Amounts) => segment(
     "IAF",
-    price(gesamtbruttobetrag),
-    price(zuzahlungsbetrag || undefined),
-    price(beihilfebetrag || undefined),
-    price(rechnungsbetrag),
-);
+    decimal(a.gesamtbruttobetrag, 10, 2),
+    decimal(a.zuzahlungsbetrag || undefined, 10, 2),
+    decimal(a.beihilfebetrag || undefined, 10, 2),
+    decimal(a.rechnungsbetrag, 10, 2),
+)

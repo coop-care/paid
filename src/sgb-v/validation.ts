@@ -54,7 +54,7 @@ const error = (code: ValidationCode, property: string, params?: Record<string, s
     code, type: ValidationResultType.Error, path: [property], params
 })
 
-export const notEmpty = (obj: any, key: string): ValidationResult | true => 
+export const notEmpty = <T>(obj: T, key: keyof T): ValidationResult | true => 
     obj[key] === undefined || obj[key].length > 0 || 
     error("arrayIsEmpty", key)
 
