@@ -136,7 +136,7 @@ export const getAbrechnungsfallPositionen = (abrechnungsfall: Abrechnungsfall): 
  *     Tarifbereich
  * ```
  */
- export type Leistungserbringergruppe = {
+export type Leistungserbringergruppe = {
     abrechnungscode: AbrechnungscodeEinzelschluessel
     tarifbereich: TarifbereichSchluessel
     /** 3-character string, see Sondertarife in ./codes.ts */
