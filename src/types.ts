@@ -4,31 +4,26 @@
 
 import { 
     RechnungsartSchluessel
-} from "./codes";
-import { LaenderkennzeichenSchluessel } from "./country_codes";
+} from "./codes"
+import { LaenderkennzeichenSchluessel } from "./country_codes"
 import { 
-    AbrechnungscodeSchluessel,
+    AbrechnungscodeSchluessel as SGBXIAbrechnungscodeSchluessel,
+    TarifbereichSchluessel as SGBXITarifbereichSchluessel, 
     PflegegradSchluessel, 
-    TarifbereichSchluessel, 
     UmsatzsteuerBefreiungSchluessel,
-} from "./sgb-xi/codes";
-import { Leistung as SGBXILeistung } from "./sgb-xi/types";
-import { Abrechnungsposition as SGBVAbrechnungsposition, Verordnung } from "./sgb-v/types";
-import { BeleginformationSchluessel } from "./sgb-v/codes";
-
-export const messageIdentifiers = {
-    "PLGA": "Pflegeleistungserbringer Gesamtaufstellung der Abrechnung",
-    "PLAA": "Pflegeleistungserbringer Abrechnungsdaten je Abrechnungsfall",
-    "SLGA": "Sonstige Leistungserbringer Gesamtaufstellung der Abrechnung",
-    "SLLA": "Sonstige Leistungserbringer Abrechnungsdaten je Abrechnungsfall",
-}
-export const messageIdentifierVersions = {
-    "PLGA": "PLGA:2",
-    "PLAA": "PLAA:3",
-    "SLGA": "SLGA:16:0:0",
-    "SLLA": "SLLA:16:0:0"
-}
-export type MessageIdentifiers = keyof typeof messageIdentifiers;
+} from "./sgb-xi/codes"
+import { 
+    AbrechnungscodeEinzelschluessel as SGBVAbrechnungscodeEinzelschluessel, 
+    TarifbereichSchluessel as SGBVTarifbereichSchluessel,
+    BeleginformationSchluessel, 
+} from "./sgb-v/codes"
+import { 
+    Leistung as SGBXILeistung
+} from "./sgb-xi/types"
+import { 
+    Abrechnungsposition as SGBVAbrechnungsposition,
+    Verordnung
+} from "./sgb-v/types"
 
 export const testIndicator = {
     "0": "Testdatei",
@@ -63,9 +58,9 @@ export type BillingFile = {
 }
 
 export type Invoice = {
-    leistungserbringer: Leistungserbringer;
-    faelle: Abrechnungsfall[];
-};
+    leistungserbringer: Leistungserbringer
+    faelle: Abrechnungsfall[]
+}
 
 export type Institution = {
     name: string
@@ -80,9 +75,17 @@ export type Ansprechpartner = {
 }
 
 export type Leistungserbringer = Institution & {
-    abrechnungscode: AbrechnungscodeSchluessel;
-    tarifbereich: TarifbereichSchluessel;
-    sondertarifJeKostentraegerIK: Record<string, string>;
+    sgbxiAbrechnungscode: SGBXIAbrechnungscodeSchluessel
+    sgbxiTarifbereich: SGBXITarifbereichSchluessel
+
+    sgbvAbrechnungscode: SGBVAbrechnungscodeEinzelschluessel
+    sgbvTarifbereich: SGBVTarifbereichSchluessel
+
+    /** Per Kostenträger IK a 3-character id for the SGB XI Sondertarif, see sgb-xi/codes.ts */
+    sgbxiSondertarifJeKostentraegerIK: Record<string, string>
+    /** Per Kostenträger IK a 3-character id for the SGB V Sondertarif, see sgb-v/codes.ts */
+    sgbvSondertarifJeKostentraegerIK: Record<string, string>
+
     /** to be specified if care provider is income tax excempt */
     umsatzsteuer?: Umsatzsteuer
 };
@@ -122,8 +125,6 @@ export type Abrechnungsfall = {
 
 export type Versicherter = {
     pflegekasseIK: string
-    // TODO: this field cannot be correct here, because different Kostenträger are possible even for the same Pflegekasse (for different Leistungen)
-    kostentraegerIK: string
     /** Mandatory if known. If not known, full address must be specified.
      *  On prescription or health insurance card listed in field "Versicherten-Nr." */
     versichertennummer?: string
@@ -139,7 +140,7 @@ export type Versicherter = {
     birthday: Date
     /** Mandatory if the versichertennummer or versichertenstatus is not known */
     address?: Address
-};
+}
 
 export type Address = {
     /** street + housenumber longer than 30 characters (SGB V) will be cut off.

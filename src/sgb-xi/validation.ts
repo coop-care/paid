@@ -185,10 +185,10 @@ export const validate = (invoices: Invoice[], billing: BillingData) => {
           (invoice?.leistungserbringer?.umsatzsteuerBefreiung == "01"
             || !!invoice?.leistungserbringer?.umsatzsteuerOrdnungsnummer)
             || requiredValueMissing("umsatzsteuerOrdnungsnummer"),
-          Object.keys(invoice?.leistungserbringer?.sondertarifJeKostentraegerIK || {})
+          Object.keys(invoice?.leistungserbringer?.sgbxiSondertarifJeKostentraegerIK || {})
             .every(ik => !failingIK(ik))
             || institutionskennzeichenIncorrect("sondertarifJeKostentraegerIK"),
-          Object.values(invoice?.leistungserbringer?.sondertarifJeKostentraegerIK || {})
+          Object.values(invoice?.leistungserbringer?.sgbxiSondertarifJeKostentraegerIK || {})
             .every(value => value.length == 3)
             || textHasIncorrectLength("sondertarifJeKostentraegerIK", 3),
         ], ["invoices", invoiceIndex, "leistungserbringer"])

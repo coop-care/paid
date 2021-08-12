@@ -21,6 +21,7 @@ import {
 } from "./codes"
 import { day, month, date, time, varchar, decimal, int } from "../edifact/formatter"
 import { segment } from "../edifact/builder"
+import { leistungserbringergruppeCode } from "./types";
 
 const DefaultCurrency = "EUR";
 
@@ -82,10 +83,7 @@ export const SRD = (
     a: Abrechnungsfall
 ) => segment(
     "SRD",
-    [
-        l.abrechnungscode,
-        l.tarifbereich + (l.sondertarifJeKostentraegerIK[a.versicherter.kostentraegerIK] || "000")
-    ],
+    leistungserbringergruppeCode(l, a.versicherter.kostentraegerIK),
     a.einsaetze[0].leistungen[0].leistungsart
 )
 

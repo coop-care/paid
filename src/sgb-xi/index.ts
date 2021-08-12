@@ -2,7 +2,7 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, Abrechnungsfall, Invoice, MessageIdentifiers, BillingFile, Einsatz, TestIndicator } from "../types";
+import { BillingData, Abrechnungsfall, Invoice, BillingFile, Einsatz, TestIndicator } from "../types";
 import { valuesGroupedBy } from "../utils";
 import { LeistungsartSchluessel, MehrwertsteuerSchluessel } from "./codes";
 import { makeAnwendungsreferenz, makeDateiname } from "./filenames";
@@ -165,7 +165,7 @@ const mergeInvoices = (invoices: Invoice[]): Invoice => ({
 
 
 const makeMessage = (
-    messageIdentifier: MessageIdentifiers,
+    messageIdentifier: "PLAA" | "PLGA",
     sammelrechnung: boolean,
     invoice: Invoice,
     billing: BillingData,
@@ -220,7 +220,7 @@ const makePLAA = (
                 ...leistung.zuschlaege.map((zuschlag, index) =>
                     ZUS(
                         index == leistung.zuschlaege.length - 1,
-                        invoice.leistungserbringer.tarifbereich, 
+                        invoice.leistungserbringer.sgbxiTarifbereich, 
                         zuschlag,
                         0 // todo: calculate ergebnis
                     )

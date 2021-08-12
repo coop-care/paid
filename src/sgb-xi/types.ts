@@ -1,8 +1,12 @@
+import { char } from "../edifact/formatter"
+import { Leistungserbringer } from "../types"
 import { 
+    AbrechnungscodeSchluessel,
     LeistungsartSchluessel,
     MehrwertsteuerSchluessel, 
     PflegehilfsmittelKennzeichenSchluessel,
     QualifikationsabhaengigeVerguetungSchluessel,
+    TarifbereichSchluessel,
     VerguetungsartSchluessel,
     ZuschlagsartSchluessel,
     ZuschlagsberechnungSchluessel,
@@ -10,6 +14,39 @@ import {
     ZuschlagszuordnungSchluessel
 } from "./codes"
 
+/* 2.2 Schlüssel Leistungserbringergruppe
+ * 
+ * 7-character code:
+ *  
+ * ```
+ * Abrechnungscode
+ *  │  Tarifkennzeichen
+ * ┌┴─┐┌─┴─────┐
+ *  XX  XX  XXX
+ *     └┬─┘└─┬─┘
+ *      │   Sondertarif
+ *     Tarifbereich
+ * ```
+ */
+export type Leistungserbringergruppe = {
+    abrechnungscode: AbrechnungscodeSchluessel,
+    tarifbereich: TarifbereichSchluessel,
+    sondertarif: string
+}
+
+export const createLeistungserbringergruppe = (
+    le: Leistungserbringer,
+    kostentraegerIK: string
+): Leistungserbringergruppe => ({
+    abrechnungscode: le.sgbxiAbrechnungscode,
+    tarifbereich: le.sgbxiTarifbereich,
+    sondertarif: le.sgbxiSondertarifJeKostentraegerIK[kostentraegerIK] || "000"
+})
+
+export const leistungserbringergruppeCode = (le: Leistungserbringergruppe): string[] => [
+    le.abrechnungscode,
+    le.tarifbereich + char(le.sondertarif, 3)
+]
 
 export type Leistung = {
     leistungsart: LeistungsartSchluessel

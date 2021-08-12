@@ -5,7 +5,8 @@
   */
 
 import { RechnungsartSchluessel } from "../codes"
-import { Abrechnungsfall, Institution, Umsatzsteuer, Versicherter } from "../types"
+import { char } from "../edifact/formatter"
+import { Abrechnungsfall, Institution, Leistungserbringer, Umsatzsteuer, Versicherter } from "../types"
 import { 
     AbrechnungscodeEinzelschluessel,
     KostenzusageGenehmigung,
@@ -16,6 +17,42 @@ import {
     VerordnungsbesonderheitenSchluessel,
 } from "./codes"
 import { HaeuslicheKrankenpflegeAbrechnungsposition } from "./haeuslich/types"
+
+/* Schlüssel Leistungserbringergruppe
+ * 
+ * documented in (a) 8.1.5
+ * 
+ * 7-character code
+ * 
+ * ```
+ * Abrechnungscode
+ *  │  Tarifkennzeichen
+ * ┌┴─┐┌─┴─────┐
+ *  XX  XX  XXX
+ *     └┬─┘└─┬─┘
+ *      │   Sondertarif
+ *     Tarifbereich
+ * ```
+ */
+export type Leistungserbringergruppe = {
+    abrechnungscode: AbrechnungscodeEinzelschluessel,
+    tarifbereich: TarifbereichSchluessel,
+    sondertarif: string
+}
+
+export const createLeistungserbringergruppe = (
+    le: Leistungserbringer,
+    kostentraegerIK: string
+): Leistungserbringergruppe => ({
+    abrechnungscode: le.sgbvAbrechnungscode,
+    tarifbereich: le.sgbvTarifbereich,
+    sondertarif: le.sgbvSondertarifJeKostentraegerIK[kostentraegerIK] || "000"
+})
+
+export const leistungserbringergruppeCode = (le: Leistungserbringergruppe): string[] => [
+    le.abrechnungscode,
+    le.tarifbereich + char(le.sondertarif, 3)
+]
 
 export type Sammelrechung = Rechnung & {
     rechnungen: Einzelrechnung[]
@@ -37,7 +74,7 @@ export type Einzelrechnung = Rechnung & {
      *  Einzel-Rechnungsnummer. This is effectively an index, starting with 1.
      *  */
     einzelRechnungsnummer?: string
-    leistungserbringer: Institution
+    leistungserbringer: Leistungserbringer
     pflegekasseIK: string
 
     umsatzsteuer?: Umsatzsteuer
@@ -67,10 +104,6 @@ export type BaseAbrechnungsposition = {
     /** to tell apart the different types */
     leistungserbringerSammelgruppe: LeistungserbringerSammelgruppenSchluessel,
 
-    abrechnungscode: AbrechnungscodeEinzelschluessel
-    tarifbereich: TarifbereichSchluessel
-    /** 3-character string, see Sondertarife in ./codes.ts */
-    sondertarif: string
     /** Price of one service provided */
     einzelpreis: number
     /** Number of things done, f.e. 3x check blood pressure, 3x 15 minutes etc. */

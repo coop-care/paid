@@ -7,7 +7,7 @@
 
 import { segment } from "../../edifact/builder"
 import { char, decimal, int, varchar, date, duration, time } from "../../edifact/formatter"
-import { AbrechnungscodeEinzelschluessel, TarifbereichSchluessel } from "../codes"
+import { Leistungserbringergruppe, leistungserbringergruppeCode } from "../types"
 import { SAPVVerordnung } from "./types"
 
 /** Segments for SLLA O message (SAPV - Spezialisierte ambulante Palliativversorgung) 
@@ -26,10 +26,7 @@ export const ERS = (
 
 /** Einzelfallnachweis SAPV */
 export const ESP = (
-    abrechnungscode: AbrechnungscodeEinzelschluessel,
-    tarifbereich: TarifbereichSchluessel,
-    /** 3-character string, see Sondertarife in ./codes.ts */
-    sondertarif: string,
+    le: Leistungserbringergruppe,
     /** Which service was provided. If a "Leistungspauschale" is specified here, ZZL segments need
      *  to be specified. */
     positionsnummer: string,
@@ -41,10 +38,7 @@ export const ESP = (
     kilometersDriven: number | undefined
 ) => segment(
     "ESP",
-    [
-        abrechnungscode,
-        tarifbereich + char(sondertarif, 3)
-    ],
+    leistungserbringergruppeCode(le),
     char(positionsnummer, 10),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),

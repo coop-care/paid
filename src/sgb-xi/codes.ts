@@ -4,21 +4,6 @@
   * The keys are sorted by the order they appear in the documentation
   */
 
-/* 2.2 Schlüssel Leistungserbringergrupp
- * 
- * 7-character code:
- *  
- * ```
- * Abrechnungscode
- *  │  Tarifkennzeichen
- * ┌┴─┐┌─┴─────┐
- *  XX  XX  XXX
- *     └┬─┘└─┬─┘
- *      │   Sondertarif
- *     Tarifbereich
- * ```
- */
-
 export const abrechnungsstelleAbrechnungscodeSchluessel = {
     "00": "Kennzeichen zur Identifizierung einer Abrechnungsstelle als Rechnungssteller",
 }

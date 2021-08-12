@@ -11,10 +11,9 @@ import { char, decimal, int, varchar, date, duration, time } from "../../edifact
 import { 
     HilfsmittelKennzeichenSchluessel,
     AnwendungsortSchluessel,
-    ZuzahlungsartSchluessel,
-    AbrechnungscodeEinzelschluessel,
-    TarifbereichSchluessel
+    ZuzahlungsartSchluessel
 } from "../codes"
+import { Leistungserbringergruppe, leistungserbringergruppeCode } from "../types"
 import { Hilfsmittelverordnung } from "./types"
 
 /** Segments for SLLA B message (Hilfsmittel) */
@@ -29,10 +28,7 @@ import { Hilfsmittelverordnung } from "./types"
  * 
  *  Contains information about the adjuvant used */
 export const EHI = (
-    abrechnungscode: AbrechnungscodeEinzelschluessel,
-    tarifbereich: TarifbereichSchluessel,
-    /** 3-character string, see Sondertarife in ./codes.ts */
-    sondertarif: string,
+    le: Leistungserbringergruppe,
     /** Hilfsmittelpositionsnummer. See ./codes.ts */
     positionsnummer: string,
     /** number of adjuvants used */
@@ -59,10 +55,7 @@ export const EHI = (
     endDateTime?: Date | undefined
 ) => segment(
     "EHI",
-    [
-        abrechnungscode,
-        tarifbereich + char(sondertarif, 3)
-    ],
+    leistungserbringergruppeCode(le),
     char(positionsnummer, 10),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),

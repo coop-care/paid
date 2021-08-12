@@ -12,8 +12,18 @@ import { elements } from "../../edifact/builder"
 import { Message, Segment } from "../../edifact/types"
 import { sum } from "../../utils"
 import { INV, NAD, TXT, DIA, SKZ, FKT, REC } from "../segments_slla"
-import { getAbrechnungsfallPositionen, calculateBruttobetrag } from "../types"
-import { einsatzSegment, BES, ELP, einzelfallnachweisSegment, verordnungSegment } from "./segments"
+import { 
+    getAbrechnungsfallPositionen, 
+    calculateBruttobetrag, 
+    createLeistungserbringergruppe
+} from "../types"
+import { 
+    einsatzSegment,
+    BES,
+    ELP,
+    einzelfallnachweisSegment,
+    verordnungSegment
+} from "./segments"
 import { 
     HaeuslicheKrankenpflegeAbrechnungsposition,
     HaeuslicheKrankenpflegePauschaleAbrechnungsposition,
@@ -127,7 +137,9 @@ export const makeMessage = (rechnung: HaeuslicheKrankenpflegeRechnung): Message 
         a.leistungsBeginn.getTime() - b.leistungsBeginn.getTime()
     )})
 
-    const le = rechnung.leistungserbringerSammelgruppe
+    const leGruppe = createLeistungserbringergruppe(rechnung.leistungserbringer, rechnung.kostentraegerIK)
+
+    const type = rechnung.leistungserbringerSammelgruppe
 
     return {
         header: elements(["SLLA", "16", "0", "0"]),
@@ -138,9 +150,13 @@ export const makeMessage = (rechnung: HaeuslicheKrankenpflegeRechnung): Message 
                 INV(fall),
                 NAD(fall.versicherter),
                 ...fall.einsaetze.flatMap(einsatz => [
-                    einsatzSegment(le, einsatz.leistungsBeginn, einsatz.leistungsEnde),
+                    einsatzSegment(type, einsatz.leistungsBeginn, einsatz.leistungsEnde),
                     ...einsatz.abrechnungspositionen.flatMap(position => [
-                        einzelfallnachweisSegment(le, position as HaeuslicheKrankenpflegeAbrechnungsposition),
+                        einzelfallnachweisSegment(
+                            type,
+                            position as HaeuslicheKrankenpflegeAbrechnungsposition,
+                            leGruppe
+                        ),
                         // add TXT segment only if there is any text
                         position.text ? TXT(position.text) : undefined,
                         // add ELP segments only if there are any einzelpositionen (= position is a Pauschale)
@@ -151,7 +167,7 @@ export const makeMessage = (rechnung: HaeuslicheKrankenpflegeRechnung): Message 
                     ])
                 ]),
                 ...fall.verordnungen.flatMap(verordnung => [
-                    verordnungSegment(le, verordnung),
+                    verordnungSegment(type, verordnung),
                     ...verordnung.diagnosen.map(d => DIA(d)),
                     ...verordnung.kostenzusagen.map(k => SKZ(k))
                 ]),

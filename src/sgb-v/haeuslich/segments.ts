@@ -9,11 +9,11 @@
   */
 
 import { segment } from "../../edifact/builder"
-import { decimal, int, varchar, date, duration, time, char } from "../../edifact/formatter"
+import { decimal, int, varchar, date, duration, time } from "../../edifact/formatter"
 import { 
     haeuslicheKrankenpflegePositionsnummerCode
 } from "./codes"
-import { Verordnung } from "../types"
+import { Leistungserbringergruppe, leistungserbringergruppeCode, Verordnung } from "../types"
 import { 
     HaeuslicheKrankenpflegeAbrechnungsposition,
     HaeuslicheKrankenpflegeEinzelposition
@@ -27,13 +27,13 @@ import { HaeuslicheLeistungserbringerSammelgruppenSchluessel } from "../codes"
 
 /** Informationen zum Einsatz/Hausbesuch für häusliche Krankenpflege / Haushaltshilfe */
 export const einsatzSegment = (
-    le: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
+    type: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
     /** Date and time at which the health care service started */
     startDateTime: Date,
     /** Date and time at which the health care service ended */
     endDateTime: Date
 ) => segment(
-    le == "C" ? "ESK" : "ESH",
+    type == "C" ? "ESK" : "ESH",
     date(startDateTime),
     time(startDateTime),
     time(endDateTime),
@@ -42,14 +42,12 @@ export const einsatzSegment = (
 
 /** Einzelfallnachweis Häusliche Krankenpflege / Haushaltshilfe */
 export const einzelfallnachweisSegment = (
-    le: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
-    a: HaeuslicheKrankenpflegeAbrechnungsposition
+    type: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
+    a: HaeuslicheKrankenpflegeAbrechnungsposition,
+    le: Leistungserbringergruppe
 ) => segment(
-    le == "C" ? "EHK" : "EHH",
-    [
-        a.abrechnungscode,
-        a.tarifbereich + char(a.sondertarif, 3)
-    ],
+    type == "C" ? "EHK" : "EHH",
+    leistungserbringergruppeCode(le),
     haeuslicheKrankenpflegePositionsnummerCode(a.positionsnummer),
     decimal(a.anzahl, 4, 2),
     decimal(a.einzelpreis, 10, 2),
@@ -69,10 +67,10 @@ export const ELP = (e: HaeuslicheKrankenpflegeEinzelposition) => segment(
 
 /** Zusatzinfo Verordnung für Häusliche Krankenpflege / Haushaltshilfe */
 export const verordnungSegment = (
-    le: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
+    type: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
     v: Verordnung
 ) => segment(
-    le == "C" ? "ZHK" : "ZHH",
+    type == "C" ? "ZHK" : "ZHH",
     varchar(v.betriebsstaettennummer ?? "999999999", 9),
     varchar(v.vertragsarztnummer ?? "999999999", 9),
     date(v.verordnungsDatum),
