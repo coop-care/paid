@@ -5,11 +5,9 @@
   */
 
 import { RechnungsartSchluessel } from "../codes"
-import { char } from "../edifact/formatter"
-import { Institution, Umsatzsteuer, Versicherter } from "../types"
+import { Abrechnungsfall, Institution, Umsatzsteuer, Versicherter } from "../types"
 import { 
     AbrechnungscodeEinzelschluessel,
-    BeleginformationSchluessel,
     KostenzusageGenehmigung,
     LeistungserbringerSammelgruppenSchluessel,
     SonstigeEntschaedigungSchluessel,
@@ -47,32 +45,6 @@ export type Einzelrechnung = Rechnung & {
     leistungserbringerSammelgruppe: LeistungserbringerSammelgruppenSchluessel
 
     abrechnungsfaelle: Abrechnungsfall[]
-}
-
-export type Abrechnungsfall = {
-    versicherter: Versicherter
-    einsaetze: Einsatz[]
-    verordnungen: Verordnung[]
-    /** Unique number within the whole bill. 
-     * 
-     *  ASK Belegnummer: Docs mention "siehe § 4 des Richtlinientextes". Neither §4 of 
-     *  Heilmittelrichtlinie nor §4 Hilfsmittelrichtlinie seem to be related here.
-     */
-    belegnummer: string
-    beleginformation?: BeleginformationSchluessel
-    /** "Vertragskennzeichen für besondere Versorgungsformen gemäß der vertraglichen Vereinbarungen.
-     *  Für Verordnungen im Rahmen der Versorgung nach §116b Abs. 1 SGB V ist eine "1" zu 
-     *  übermitteln." https://www.gesetze-im-internet.de/sgb_5/__116b.html
-     */
-    besondereVersorgungsform?: string
-}
-
-export type Einsatz = {
-    /** Date and time at which the health care service started */
-    leistungsBeginn: Date
-    /** Date and time at which the health care service ended */
-    leistungsEnde: Date
-    abrechnungspositionen: Abrechnungsposition[] 
 }
 
 /** An Abrechnungsposition as defined in SGB V could be any of the given types

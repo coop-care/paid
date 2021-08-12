@@ -222,7 +222,7 @@ const makePLAA = (
                         index == leistung.zuschlaege.length - 1,
                         invoice.leistungserbringer.tarifbereich, 
                         zuschlag,
-                        0 // todo: calculate ergebis
+                        0 // todo: calculate ergebnis
                     )
                 ),
                 ...leistung.hilfsmittel 

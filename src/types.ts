@@ -12,7 +12,9 @@ import {
     TarifbereichSchluessel, 
     UmsatzsteuerBefreiungSchluessel,
 } from "./sgb-xi/codes";
-import { Leistung } from "./sgb-xi/types";
+import { Leistung as SGBXILeistung } from "./sgb-xi/types";
+import { Abrechnungsposition as SGBVAbrechnungsposition, Verordnung } from "./sgb-v/types";
+import { BeleginformationSchluessel } from "./sgb-v/codes";
 
 export const messageIdentifiers = {
     "PLGA": "Pflegeleistungserbringer Gesamtaufstellung der Abrechnung",
@@ -99,8 +101,23 @@ export type Umsatzsteuer = {
 }
 
 export type Abrechnungsfall = {
-    versicherter: Versicherter;
-    einsaetze: Einsatz[];
+    versicherter: Versicherter
+    einsaetze: Einsatz[]
+    /** Prescription(s) allocated to this Abrechnungsfall. Billing via SGB V is only possible with
+     *  a prescription. */
+    verordnungen: Verordnung[]
+    /** Unique number within the whole bill. 
+     * 
+     *  ASK Belegnummer: Docs mention "siehe § 4 des Richtlinientextes". Neither §4 of 
+     *  Heilmittelrichtlinie nor §4 Hilfsmittelrichtlinie seem to be related here.
+     */
+     belegnummer: string
+     beleginformation?: BeleginformationSchluessel
+     /** "Vertragskennzeichen für besondere Versorgungsformen gemäß der vertraglichen Vereinbarungen.
+      *  Für Verordnungen im Rahmen der Versorgung nach §116b Abs. 1 SGB V ist eine "1" zu 
+      *  übermitteln." https://www.gesetze-im-internet.de/sgb_5/__116b.html
+      */
+     besondereVersorgungsform?: string
 }
 
 export type Versicherter = {
@@ -138,10 +155,20 @@ export type Address = {
     countryCode?: LaenderkennzeichenSchluessel
 }
 
+/** One health care service provided. Either a 
+ *  - "Leistung" (SGB XI). It always has "leistungsart" defined
+ *  - or a "Abrechnungsposition" (SGB V). It always has a "leistungserbringerSammelgruppe" defined */
+export type Leistung = SGBXILeistung | SGBVAbrechnungsposition
+
 export type Einsatz = {
-    leistungsBeginn?: Date;
-    leistungen: Leistung[];
-};
+    /** Date and time at which the health care service started. 
+     *  Mandatory for billing with SGB V and for SGB XI with Vergütungsart 01, 02, 03 and 06. */
+    leistungsBeginn?: Date
+    /** Date and time at which the health care service ended.
+     *  Mandatory for billing with SGB V.  */
+    leistungsEnde?: Date
+    leistungen: Leistung[]
+}
 
 export type Amounts = {
     /** = sum of all(rechnungsbetrag + zuzahlungsbetrag + beihilfebetrag + mwst) */

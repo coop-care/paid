@@ -4,7 +4,10 @@
   * see docs/documents.md for more info
   */
 
-import { TestIndicator } from "../types"
+import { 
+    TestIndicator,
+    Abrechnungsfall
+} from "../types"
 import { 
     getSummenstatus,
     LeistungserbringerSammelgruppenSchluessel,
@@ -31,7 +34,6 @@ import {
     Einzelrechnung, 
     Sammelrechung, 
     calculateZuzahlungUndEigentanteilBetrag, 
-    Abrechnungsfall, 
     Skonto
 } from "./types"
 import { sum } from "../utils"
