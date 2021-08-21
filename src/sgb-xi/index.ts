@@ -2,7 +2,7 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, Abrechnungsfall, Invoice, BillingFile, Einsatz, TestIndicator } from "../types";
+import { BillingData, BillingFile, TestIndicator } from "../types";
 import { valuesGroupedBy } from "../utils";
 import { LeistungsartSchluessel, MehrwertsteuerSchluessel } from "./codes";
 import { makeAnwendungsreferenz, makeDateiname } from "./filenames";
@@ -11,7 +11,57 @@ import { ELS, ESK, FKT, GES, HIL, IAF, INV, MAN, NAD, NAM, REC, SRD,  UST, ZUS }
 import { RechnungsartSchluessel } from "../codes";
 import { char, date, fixedInt, time } from "../edifact/formatter";
 import { elements } from "../edifact/builder";
-import { Leistung } from "./types";
+import { Abrechnungsfall, Einsatz, Invoice, Leistung } from "./types";
+
+/** 
+ * # Structure
+ * 
+ * Depends on Rechnungsart (1,2,3) and Sammelrechnung (yes or no)
+ * 
+ * ### Rechnungsart 1
+ * Used for health care service providers that do accounting themselves, have one Institutionskennzeichen
+ * 
+ * ```txt
+ * for each Kostenträger:
+ *   PLGA Sammelrechnung (mandatory if more than one Pflegekasse)
+ *   for each Pflegekasse:
+ *     PLGA Gesamtrechnung
+ *     PLAA
+ * ```
+ * 
+ * ### Rechnungsart 2
+ * Used for 
+ * - health care service providers that do accounting themselves but have multiple Institutionskennzeichen
+ * - accounting centers without collecting power (Abrechnungsstelle ohne Inkassovollmacht)
+ * 
+ * Same structure as for Rechnungsart 1, only that the invoices for each Leistungserbringer are
+ * listed one after another.
+ * 
+ * ```txt
+ * for each Leistungserbringer:
+ *   for each Kostenträger:
+ *     PLGA Sammelrechnung (mandatory if more than one Pflegekasse)
+ *     for each Pflegekasse:
+ *       PLGA Gesamtrechnung
+ *       PLAA
+ * ```
+ * 
+ * ### Rechnungsart 3
+ * Used for accounting centers with collecting power (Abrechnungsstelle mit Inkassovollmacht), i.e.
+ * manages accounting for multiple health care service providers (Leistungserbringer).
+ * 
+ * Note that the structure is different from Rechnungsart 1 and 2. Leistungserbringer are grouped by
+ * Kostenträgers, not the other way round!
+ * 
+ * ```txt
+ * for each Kostenträger:
+ *   PLGA Sammelrechnung (always mandatory)
+ *   for each Leistungserbringer:
+ *     for each Pflegekasse:
+ *       PLGA Gesamtrechnung
+ *       PLAA
+ * ```
+ */
 
 export const makeInterchangeHeader = (
     /** IK of the sender (creator) of this bill */
@@ -59,7 +109,7 @@ export const makeBillingFile = (
         rechnungsart
     } = billing;
     const absenderIK = absender(billing, invoices[0]).ik;
-    const datenaustauschreferenz = datenaustauschreferenzJeEmpfaengerIK[empfaengerIK] || 1;
+    const datenaustauschreferenz = datenaustauschreferenzJeEmpfaengerIK[empfaengerIK] || 1
     const laufendeDatenannahmeImJahr = laufendeDatenannahmeImJahrJeEmpfaengerIK[empfaengerIK] || 1;
     const anwendungsreferenz = makeAnwendungsreferenz(kassenart, laufendeDatenannahmeImJahr, billing);
     const dateiname = makeDateiname(dateiindikator, datenaustauschreferenz - 1);
@@ -194,7 +244,11 @@ const makePLGA = (
 ) => [
     FKT("01", absenderAndRechnungssteller(billing, invoice), invoice.faelle[0].versicherter, sammelrechnung),
     REC(billing, invoiceIndex, leistungserbringerIndex, sammelrechnung),
-    SRD(invoice.leistungserbringer, invoice.faelle[0]),
+    SRD(
+        invoice.leistungserbringer,
+        kostentraegerIK,
+        invoice.faelle[0].einsaetze[0].leistungen[0].leistungsart
+    ),
     UST(invoice.leistungserbringer.umsatzsteuer), // TODO not to be transmitted in Sammelrechnung PLGA!
     GES(calculateInvoice(invoice)),
     NAM(billing.rechnungsart != "3" || !billing.abrechnungsstelle ? invoice.leistungserbringer : billing.abrechnungsstelle)
@@ -220,7 +274,7 @@ const makePLAA = (
                 ...leistung.zuschlaege.map((zuschlag, index) =>
                     ZUS(
                         index == leistung.zuschlaege.length - 1,
-                        invoice.leistungserbringer.sgbxiTarifbereich, 
+                        invoice.leistungserbringer.tarifbereich, 
                         zuschlag,
                         0 // todo: calculate ergebnis
                     )

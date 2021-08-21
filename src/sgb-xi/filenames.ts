@@ -28,10 +28,10 @@ export const makeAnwendungsreferenz = (
 
 /** A.k.a "Verfahrenskennung" */
 export const makeDateiname = (
-    dateiindikator: TestIndicator,
+    testIndicator: TestIndicator,
     transferNumber: number
 ) => [
-    dateiindikator == "2" ? "E" : "T",
+    testIndicator == "2" ? "E" : "T",
     // "PFL" stands for "Pflege-Leistungserbringer"
     "PFL",
     // Verfahrensversion. Always 0

@@ -1,13 +1,20 @@
 import { char } from "../edifact/formatter"
-import { Leistungserbringer } from "../types"
+import { Institution, Umsatzsteuer, Versicherter } from "../types"
 import { 
     AbrechnungscodeSchluessel,
+    BeratungsbesuchPauschaleLeistungSchluessel,
     LeistungsartSchluessel,
     MehrwertsteuerSchluessel, 
+    NichtPauschaleWegegebuehrenSchluessel, 
+    PauschaleWegegebuehrenSchluessel, 
     PflegehilfsmittelKennzeichenSchluessel,
+    PflegesatzSchluessel,
     QualifikationsabhaengigeVerguetungSchluessel,
     TarifbereichSchluessel,
     VerguetungsartSchluessel,
+    WegegebuehrenSchluessel,
+    ZeitartSchluessel,
+    ZeiteinheitSchluessel,
     ZuschlagsartSchluessel,
     ZuschlagsberechnungSchluessel,
     ZuschlagSchluessel,
@@ -38,9 +45,9 @@ export const createLeistungserbringergruppe = (
     le: Leistungserbringer,
     kostentraegerIK: string
 ): Leistungserbringergruppe => ({
-    abrechnungscode: le.sgbxiAbrechnungscode,
-    tarifbereich: le.sgbxiTarifbereich,
-    sondertarif: le.sgbxiSondertarifJeKostentraegerIK[kostentraegerIK] || "000"
+    abrechnungscode: le.abrechnungscode,
+    tarifbereich: le.tarifbereich,
+    sondertarif: le.sondertarifJeKostentraegerIK[kostentraegerIK] || "000"
 })
 
 export const leistungserbringergruppeCode = (le: Leistungserbringergruppe): string[] => [
@@ -48,32 +55,122 @@ export const leistungserbringergruppeCode = (le: Leistungserbringergruppe): stri
     le.tarifbereich + char(le.sondertarif, 3)
 ]
 
-export type Leistung = {
+export type Invoice = {
+    leistungserbringer: Leistungserbringer
+    faelle: Abrechnungsfall[]
+}
+
+export type Leistungserbringer = Institution & {
+    abrechnungscode: AbrechnungscodeSchluessel
+    tarifbereich: TarifbereichSchluessel
+
+    /** Per Kostenträger IK a 3-character id for the SGB XI Sondertarif, see sgb-xi/codes.ts */
+    sondertarifJeKostentraegerIK: Record<string, string>
+
+    /** to be specified if care provider is income tax excempt */
+    umsatzsteuer?: Umsatzsteuer
+}
+
+export type Abrechnungsfall = {
+    versicherter: Versicherter
+    einsaetze: Einsatz[]
+}
+
+export type Einsatz = {
+    /** Date and time at which the health care service started. 
+     *  Mandatory for billing with Vergütungsart 01, 02, 03 and 06. */
+    leistungsBeginn?: Date
+    leistungen: Leistung[]
+}
+
+export type Leistung = 
+    LeistungskomplexverguetungLeistung |
+    ZeitverguetungLeistung |
+    TeilstationaerLeistung |
+    VollstationaerOderKurzzeitpflegeLeistung |
+    PflegehilfsmittelLeistung |
+    WegegebuehrenLeistung |
+    PauschaleLeistung |
+    SonstigeLeistung
+
+export type BaseLeistung = {
     leistungsart: LeistungsartSchluessel
     verguetungsart: VerguetungsartSchluessel
     qualifikationsabhaengigeVerguetung: QualifikationsabhaengigeVerguetungSchluessel
 
-    /** The service provided TODO type! */
-    leistung: string
     /** Price of one service provided */
     einzelpreis: number
     /** Number of things done, f.e. 3x check blood pressure, 3x 15 minutes etc. */
     anzahl: number
-
-    leistungsBeginn?: Date // for verguetungsart 04
-    leistungsEnde?: Date // for verguetungsart 01, 02, 03, 04
-    gefahreneKilometer?: number // for verguetungsart 06 with leistung 04
-
     punktwert?: number
     punktzahl?: number
 
     zuschlaege: Zuschlag[]
-    hilfsmittel?: Pflegehilfsmittel
+}
+
+export type LeistungskomplexverguetungLeistung = BaseLeistung & {
+    verguetungsart: "01"
+    leistungsEnde?: Date
+    /** 3-character current number of Leistungskomplex */
+    leistungskomplex: string
+}
+
+export type ZeitverguetungLeistung = BaseLeistung & {
+    verguetungsart: "02"
+    leistungsEnde: Date
+    zeiteinheit: ZeiteinheitSchluessel
+    zeitart: ZeitartSchluessel
+}
+
+export type TeilstationaerLeistung = BaseLeistung & {
+    verguetungsart: "03"
+    leistungsEnde: Date
+    pflegesatz: PflegesatzSchluessel
+}
+
+export type VollstationaerOderKurzzeitpflegeLeistung = BaseLeistung & {
+    verguetungsart: "04"
+    leistungsBeginn: Date
+    leistungsEnde: Date
+    pflegesatz: PflegesatzSchluessel
+}
+
+export type PflegehilfsmittelLeistung = BaseLeistung & {
+    verguetungsart: "05"
+    hilfsmittel: Pflegehilfsmittel
+    /** Hilfsmittelpositionsnummer, see /hilfsmittelverzeichnis/types.ts  */
+    positionsnummer: string
+}
+
+export type WegegebuehrenLeistung = 
+    PauschaleWegegebuehrenLeistung |
+    WegegebuehrenNachKilometerLeistung
+
+export type PauschaleWegegebuehrenLeistung = BaseLeistung & {
+    verguetungsart: "06"
+    wegegebuehren: PauschaleWegegebuehrenSchluessel
+}
+
+export type WegegebuehrenNachKilometerLeistung = BaseLeistung & {
+    verguetungsart: "06"
+    wegegebuehren: NichtPauschaleWegegebuehrenSchluessel
+    gefahreneKilometer: number
+}
+
+export type PauschaleLeistung = BaseLeistung & {
+    verguetungsart: "08"
+    // there is only one code for Pauschale: "Einsatzspauschale" = "1", see codes.ts 2.7.7
+}
+
+export type SonstigeLeistung = BaseLeistung & {
+    verguetungsart: "99"
+    // there is only one code for Pauschale: "Sonstiges" = "99", see codes.ts 2.7.8
 }
 
 export type Zuschlag = {
     zuschlagsart: ZuschlagsartSchluessel
     zuschlag: ZuschlagSchluessel
+    /** Mandatory if zuschlagsart == "00" */
     beschreibungZuschlagsart?: string
     zuschlagszuordnung: ZuschlagszuordnungSchluessel
     zuschlagsberechnung: ZuschlagsberechnungSchluessel

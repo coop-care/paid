@@ -179,13 +179,20 @@ export const pflegesatzSchluessel = {
 export type PflegesatzSchluessel = keyof typeof pflegesatzSchluessel
 
 /** 2.7.5 Schlüssel Wegegebühren/Beförderungsentgelt-Art */
-export const wegegebuehrenSchluessel = {
+export const pauschaleWegegebuehrenSchluessel = {
     "01": "Tagespauschale",
     "02": "Monatspauschale",
-    "03": "Einsatz- / Fahrtkostenpauschale",
+    "03": "Einsatz- / Fahrtkostenpauschale"
+}
+export type PauschaleWegegebuehrenSchluessel = keyof typeof pauschaleWegegebuehrenSchluessel
+
+export const nichtPauschaleWegegebuehrenSchluessel = {
     "04": "gefahrene Kilometer",
 }
-export type WegegebuehrenSchluessel = keyof typeof wegegebuehrenSchluessel
+export type NichtPauschaleWegegebuehrenSchluessel = keyof typeof nichtPauschaleWegegebuehrenSchluessel
+
+export type WegegebuehrenSchluessel = 
+    PauschaleWegegebuehrenSchluessel | NichtPauschaleWegegebuehrenSchluessel
 
 /** 2.7.7 Schlüssel Leistung: Pauschale (Beratungsbesuch nach § 37 Abs. 3) */
 export const beratungsbesuchPauschaleLeistungSchluessel = {

@@ -5,54 +5,61 @@
 import { 
     Amounts, 
     BillingData, 
-    Leistungserbringer, 
-    Leistung, 
     Versicherter,
-    Pflegehilfsmittel,
-    Zuschlag,
-    Abrechnungsfall,
     Institution,
     Umsatzsteuer
 } from "../types"
 import {
+    LeistungsartSchluessel,
     PflegegradSchluessel,
     TarifbereichSchluessel, 
-    VerarbeitungskennzeichenSchluessel,
+    VerarbeitungskennzeichenSchluessel
 } from "./codes"
-import { day, month, date, time, varchar, decimal, int } from "../edifact/formatter"
+import { day, month, date, time, varchar, decimal, int, char } from "../edifact/formatter"
 import { segment } from "../edifact/builder"
-import { leistungserbringergruppeCode } from "./types";
+import { 
+    createLeistungserbringergruppe,
+    Leistung, 
+    Leistungserbringer,
+    leistungserbringergruppeCode,
+    Pflegehilfsmittel,
+    Zuschlag
+} from "./types"
 
-const DefaultCurrency = "EUR";
+const DefaultCurrency = "EUR"
 
 /** Funktion */
 export const FKT = (
-    /** identical in PLGA.FKT and PLAA.FKT */
     verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel,
-    {
-        absender, // PLGA: Absender der Datei, identisch zu Absender in UNB; PLAA: wie RechnungsstellerIK (?)
-        rechnungssteller, // Leistungserbringer oder Abrechnungsstelle mit Inkassovollmacht bei Sammelrechnung; PLAA == PLGA
-    }: {
-        absender: Institution,
-        rechnungssteller: Institution,
-    },
-    {
-        kostentraegerIK, // Institution die die Rechnung begleicht laut Kostenträgerdatei; PLAA == PLGA
-        pflegekasseIK, // Pflegekasse des Leistungs- bzw. Bewilligungsbescheids; falls angegeben gilt: PLAA == PLGA
-    }: Versicherter,
-    sammelrechnung?: boolean, // only for PLGA, undefined for PLAA
+    leistungserbringerIK: string,
+    kostentraegerIK: string,
+    pflegekasseIK: string,
+    absenderIK: string
 ) => segment(
     "FKT",
     verarbeitungskennzeichen,
-    sammelrechnung === undefined
-        ? undefined
-        : sammelrechnung
-        ? "J"
-        : undefined,
-    rechnungssteller.ik,
-    kostentraegerIK,
-    sammelrechnung !== true ? pflegekasseIK : undefined,
-    sammelrechnung !== undefined ? absender.ik : rechnungssteller.ik
+    undefined,
+    char(leistungserbringerIK, 9), 
+    char(kostentraegerIK, 9),
+    char(pflegekasseIK, 9),
+    char(absenderIK, 9)
+)
+
+export const FKT_Sammelrechnung = (
+    verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel,
+    /** For rechnungsart == 3: the Abrechnungsstelle.
+     *  Otherwise: The Leistungserbringer */
+    rechnungsstellerIK: string,
+    kostentraegerIK: string,
+    absenderIK: string,
+) => segment(
+    "FKT",
+    verarbeitungskennzeichen,
+    "J",
+    char(rechnungsstellerIK, 9),
+    char(kostentraegerIK, 9),
+    undefined,
+    char(absenderIK, 9)
 )
 
 /** Rechnung / Zahlung */
@@ -79,12 +86,13 @@ export const REC = (
 
 /** Rechnungsdaten */
 export const SRD = (
-    l: Leistungserbringer,
-    a: Abrechnungsfall
+    le: Leistungserbringer,
+    kostentraegerIK: string,
+    leistungsart: LeistungsartSchluessel
 ) => segment(
     "SRD",
-    leistungserbringergruppeCode(l, a.versicherter.kostentraegerIK),
-    a.einsaetze[0].leistungen[0].leistungsart
+    leistungserbringergruppeCode(createLeistungserbringergruppe(le, kostentraegerIK)),
+    leistungsart
 )
 
 /** Umsatzsteuer */
@@ -167,53 +175,75 @@ export const ESK = (
     leistungsBeginn ? time(leistungsBeginn) : undefined
 )
 
-/** Einzelleistungen 
- * 
- *  This is insanely complex: leistung and several parameters depend on verguetungsart
-*/
-export const ELS = (l: Leistung) => {
+/** Einzelleistungen */
+export const ELS = (l: Leistung) => segment(
+    "ELS",
+    [
+        l.leistungsart,
+        l.verguetungsart,
+        l.qualifikationsabhaengigeVerguetung,
+        getLeistungSchluessel(l)
+    ],
+    decimal(l.einzelpreis, 10, 2),
+    decimal(l.punktwert, 1, 5),
+    int(l.punktzahl, 0, 9999),
+    getLeistungDetails(l),
+    decimal(l.anzahl, 4, 2)
+)
 
-    /** documentation reads:
-     * 
-     *  Einzutragen ist bei Vergütungsart s. Schlüsselverzeichnis Anlage 3, Abschnitt 2.5. 
-     * 
-     *  01 => 00 bzw. Uhrzeit der Beendigung der Leistungserbringung (Uhrzeit), in der Form: hhmm
-     *  02 => die Uhrzeit der Beendigung der Leistungserbringung (Uhrzeit), in der Form: hhmm
-     *  03 => der Bis-Zeitraum (Uhrzeit). In der Form: hhmm
-     *  04 => der Vom/Bis-Zeitraum (Von/Tag und Bis/Tag). In der Form: TTTT
-     *  05 => 00
-     *  06 => Wegegebühren-/Beförderungsentgeltart = 04 nach Schlüssel 2.7.5, die Anzahl der gefahrenen Kilometer, (es sind nur ganze Kilometer zu melden und kaufmännisch zu runden z. B. 3,40 Km, zu melden 3), sonst = 00 (bei SC 01-03),
-     *  07 => frei
-     *  08 => 00
-     *  99 => 00
-     */
-    let details = "00"
-    if (l.verguetungsart == "01") {
-        details = l.leistungsEnde ? time(l.leistungsEnde) : "00"
-    } else if (l.verguetungsart == "02" && l.leistungsEnde) {
-        details = time(l.leistungsEnde)
-    } else if (l.verguetungsart == "03" && l.leistungsEnde) {
-        details = time(l.leistungsEnde)
-    } else if (l.verguetungsart == "04" && l.leistungsBeginn && l.leistungsEnde) {
-        details = day(l.leistungsBeginn) + day(l.leistungsEnde)
-    } else if (l.verguetungsart == "06" && l.leistung == "04" && l.gefahreneKilometer != undefined) {
-        details = Math.round(l.gefahreneKilometer).toString()
+/** see codes.ts - 2.7 Schlüssel Leistung */
+const getLeistungSchluessel = (l: Leistung): string | undefined => {
+    switch(l.verguetungsart) {
+        case "01": 
+            return char(l.leistungskomplex, 3)
+        case "02":
+            return l.zeiteinheit + l.zeitart
+        case "03":
+        case "04":
+            return l.pflegesatz
+        case "05":
+            return varchar(l.positionsnummer, 10)
+        case "06":
+            return l.wegegebuehren
+        case "08":
+            return "1" // see codes.ts - 2.7.7
+        case "99":
+            return "99" // see codes.ts - 2.7.8
     }
+}
 
-    return segment(
-        "ELS",
-        [
-            l.leistungsart,
-            l.verguetungsart,
-            l.qualifikationsabhaengigeVerguetung,
-            l.leistung
-        ],
-        decimal(l.einzelpreis, 10, 2),
-        decimal(l.punktwert, 1, 5),
-        int(l.punktzahl, 0, 9999),
-        details,
-        decimal(l.anzahl, 4, 2)
-    )
+/** documentation reads:
+ * 
+ *  Einzutragen ist bei Vergütungsart s. Schlüsselverzeichnis Anlage 3, Abschnitt 2.5. 
+ * 
+ *  01 => 00 bzw. Uhrzeit der Beendigung der Leistungserbringung (Uhrzeit), in der Form: hhmm
+ *  02 => die Uhrzeit der Beendigung der Leistungserbringung (Uhrzeit), in der Form: hhmm
+ *  03 => der Bis-Zeitraum (Uhrzeit). In der Form: hhmm
+ *  04 => der Vom/Bis-Zeitraum (Von/Tag und Bis/Tag). In der Form: TTTT
+ *  05 => 00
+ *  06 => Wegegebühren-/Beförderungsentgeltart = 04 nach Schlüssel 2.7.5, die Anzahl der gefahrenen Kilometer, (es sind nur ganze Kilometer zu melden und kaufmännisch zu runden z. B. 3,40 Km, zu melden 3), sonst = 00 (bei SC 01-03),
+ *  07 => frei
+ *  08 => 00
+ *  99 => 00
+ */
+const getLeistungDetails = (l: Leistung): string | undefined => {
+    switch(l.verguetungsart) {
+        case "01": 
+            return l.leistungsEnde ? time(l.leistungsEnde) : "00"
+        case "02":
+        case "03":
+            return time(l.leistungsEnde)
+        case "04":
+            return day(l.leistungsBeginn) + day(l.leistungsEnde)
+        case "06":
+            if (l.wegegebuehren == "04") {
+                return int(Math.round(l.gefahreneKilometer), 0, 9999)
+            } else {
+                return "00"
+            }
+        default:
+            return "00"
+    }
 }
 
 /** Zuschläge/Abzüge */
