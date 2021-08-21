@@ -1,7 +1,7 @@
 import { makeMessage } from "../../../src/sgb-v/haeuslich/message"
 import { segment } from "../../../src/edifact/builder"
 import { Kostenzusage, Verordnung } from "../../../src/sgb-v/types"
-import { HaeuslicheKrankenpflegeEinzelAbrechnungsposition } from "../../../src/sgb-v/haeuslich/types"
+import { Abrechnungsposition } from "../../../src/sgb-v/haeuslich/types"
 
 describe("Häusliche Krankenpflege message", () => {
     it("constructs correct message", () => {
@@ -9,10 +9,16 @@ describe("Häusliche Krankenpflege message", () => {
             rechnungsart: "1",
             kostentraegerIK: "000000003",
             pflegekasseIK: "000000004",
+            senderIK: "000000005",
+            leistungsbereich: "C",
             leistungserbringer: {
                 name: "LE",
                 ik: "000000001",
-                ansprechpartner: []
+                ansprechpartner: [],
+                abrechnungscode: "16",
+                location: "HH",
+                tarifbereich: "24",
+                sondertarifJeKostentraegerIK: {"000000003": "XXX"}
             },
             rechnungssteller: {
                 name: "RS",
@@ -21,9 +27,8 @@ describe("Häusliche Krankenpflege message", () => {
             },
             sammelRechnungsnummer: "123",
             einzelRechnungsnummer: "321",
-            rechnungsdatum: new Date("2021-12-12"),
-            leistungserbringerSammelgruppe: "C",
-            abrechnungsfaelle: [{
+            rechnungsdatum: new Date("2021-12-12")
+        }, [{
                 versicherter: {
                     pflegekasseIK: "000000004",
                     firstName: "Zaphod",
@@ -44,12 +49,6 @@ describe("Häusliche Krankenpflege message", () => {
                     leistungsBeginn: new Date("2000-10-10 13:37:00"),
                     leistungsEnde: new Date("2000-10-10 13:37:01"),
                     abrechnungspositionen: [{
-                        leistungserbringerSammelgruppe: "C",
-                        leistungserbringergruppe: {
-                            abrechnungscode: "16",
-                            tarifbereich: "24",
-                            sondertarif: "XXX"
-                        },
                         positionsnummer: {
                             gesetzlicheLebensgrundlage: "11",
                             versorgungsArt: "6",
@@ -122,7 +121,7 @@ describe("Häusliche Krankenpflege message", () => {
                 }],
                 verordnungen: [minVerordnung]
             }]
-        })).toEqual({
+        )).toEqual({
             header: [["SLLA", "16", "0", "0"]],
             segments: [
                 // general information
@@ -184,13 +183,7 @@ describe("Häusliche Krankenpflege message", () => {
     })
 })
 
-const minAbrechnungsposition: HaeuslicheKrankenpflegeEinzelAbrechnungsposition = {
-    leistungserbringerSammelgruppe: "C",
-    leistungserbringergruppe: {
-        abrechnungscode: "33",
-        tarifbereich: "68",
-        sondertarif: "A11"
-    },
+const minAbrechnungsposition: Abrechnungsposition = {
     positionsnummer: {
         gesetzlicheLebensgrundlage: "11",
         versorgungsArt: "6",
@@ -199,7 +192,7 @@ const minAbrechnungsposition: HaeuslicheKrankenpflegeEinzelAbrechnungsposition =
     einzelpreis: 1,
     anzahl: 1
 }
-const minEHK = segment("EHK", ["33","68A11"], "116201", "1,00", "1,00", undefined)
+const minEHK = segment("EHK", ["16","24XXX"], "116201", "1,00", "1,00", undefined)
 
 const minKostenzusage: Kostenzusage = {
     genehmigungsKennzeichen: "kennz",

@@ -12,7 +12,11 @@ import {
     SummenstatusSchluessel,
     VerarbeitungskennzeichenSchluessel
 } from "./codes"
-import { Einzelrechnung, Sammelrechung, Skonto } from "./types"
+import { 
+    Einzelrechnung, 
+    Sammelrechnung, 
+    Skonto
+} from "./types"
 
 /** Segments for SLGA message */
 
@@ -29,13 +33,13 @@ import { Einzelrechnung, Sammelrechung, Skonto } from "./types"
     char(r.leistungserbringer.ik, 9), 
     char(r.kostentraegerIK, 9), 
     char(r.pflegekasseIK, 9),
-    char(r.rechnungssteller.ik, 9)
+    char(r.senderIK, 9)
 )
 
 /** FKT in Sammelrechnungs-SLGA */
 export const FKT_Sammelrechnung = (
     verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel,
-    r: Sammelrechung
+    r: Sammelrechnung
 ) => segment(
     "FKT",
     verarbeitungskennzeichen,
@@ -43,7 +47,7 @@ export const FKT_Sammelrechnung = (
     char(r.rechnungssteller.ik, 9),
     char(r.kostentraegerIK, 9),
     undefined,
-    char(r.rechnungssteller.ik, 9)
+    char(r.senderIK, 9)
 )
 
 /** Rechnung / Zahlung
@@ -56,7 +60,7 @@ export const FKT_Sammelrechnung = (
     r.rechnungsart
 )
 
-export const REC_Sammelrechnung = (r: Sammelrechung) => segment(
+export const REC_Sammelrechnung = (r: Sammelrechnung) => segment(
     "REC",
     [varchar(r.sammelRechnungsnummer, 14), "0"],
     date(r.rechnungsdatum),

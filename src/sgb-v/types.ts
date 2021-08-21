@@ -6,9 +6,11 @@
 
 import { RechnungsartSchluessel } from "../codes"
 import { char } from "../edifact/formatter"
-import { Abrechnungsfall, Institution, Leistungserbringer, Umsatzsteuer, Versicherter } from "../types"
+import { CareProviderLocationSchluessel } from "../kostentraeger/types"
+import { Institution, Umsatzsteuer, Versicherter } from "../types"
 import { 
     AbrechnungscodeEinzelschluessel,
+    BeleginformationSchluessel,
     KostenzusageGenehmigung,
     LeistungserbringerSammelgruppenSchluessel,
     SonstigeEntschaedigungSchluessel,
@@ -16,7 +18,6 @@ import {
     UnfallSchluessel,
     VerordnungsbesonderheitenSchluessel,
 } from "./codes"
-import { HaeuslicheKrankenpflegeAbrechnungsposition } from "./haeuslich/types"
 
 /* Schlüssel Leistungserbringergruppe
  * 
@@ -44,9 +45,9 @@ export const createLeistungserbringergruppe = (
     le: Leistungserbringer,
     kostentraegerIK: string
 ): Leistungserbringergruppe => ({
-    abrechnungscode: le.sgbvAbrechnungscode,
-    tarifbereich: le.sgbvTarifbereich,
-    sondertarif: le.sgbvSondertarifJeKostentraegerIK[kostentraegerIK] || "000"
+    abrechnungscode: le.abrechnungscode,
+    tarifbereich: le.tarifbereich,
+    sondertarif: le.sondertarifJeKostentraegerIK[kostentraegerIK] || "000"
 })
 
 export const leistungserbringergruppeCode = (le: Leistungserbringergruppe): string[] => [
@@ -54,12 +55,11 @@ export const leistungserbringergruppeCode = (le: Leistungserbringergruppe): stri
     le.tarifbereich + char(le.sondertarif, 3)
 ]
 
-export type Sammelrechung = Rechnung & {
-    rechnungen: Einzelrechnung[]
-}
+export type Sammelrechnung = Rechnung
 
 export type Rechnung = {
     rechnungsart: RechnungsartSchluessel
+    senderIK: string
     kostentraegerIK: string
     sammelRechnungsnummer: string
     rechnungsdatum: Date
@@ -74,36 +74,45 @@ export type Einzelrechnung = Rechnung & {
      *  Einzel-Rechnungsnummer. This is effectively an index, starting with 1.
      *  */
     einzelRechnungsnummer?: string
-    leistungserbringer: Leistungserbringer
+
     pflegekasseIK: string
 
-    umsatzsteuer?: Umsatzsteuer
-
-    leistungserbringerSammelgruppe: LeistungserbringerSammelgruppenSchluessel
-
-    abrechnungsfaelle: Abrechnungsfall[]
+    leistungsbereich: LeistungserbringerSammelgruppenSchluessel
+    leistungserbringer: Leistungserbringer
 }
 
-/** An Abrechnungsposition as defined in SGB V could be any of the given types
- * 
- *  For each (supported) LeistungserbringerSammelgruppe, there is a (slightly) different data
- *  structure.
- *  (Currently, only one is supported)
- * 
- *  NOTE: When extending support for other LeistungserbringerSammelgruppen, check if the
- *        implementation of any function that takes a Abrechnungsposition needs to be updated. F.e.
- *        calculateZuzahlungUndEigentanteilBetrag
- */
-export type Abrechnungsposition = 
-    HaeuslicheKrankenpflegeAbrechnungsposition // for "C" and "D"
+export type Leistungserbringer = Institution & {
+    abrechnungscode: AbrechnungscodeEinzelschluessel
+    tarifbereich: TarifbereichSchluessel
+    /** Location of care provider. Necessary to know where to send bills to */
+    location: CareProviderLocationSchluessel
+    /** Per Kostenträger IK a 3-character id for the Sondertarif, see sgb-v/codes.ts */
+    sondertarifJeKostentraegerIK: Record<string, string>
+
+    /** to be specified if care provider is income tax excempt */
+    umsatzsteuer?: Umsatzsteuer
+}
+
+export type BaseAbrechnungsfall = {
+    versicherter: Versicherter
+    /** Unique number within the whole bill. 
+     * 
+     *  ASK Belegnummer: Docs mention "siehe § 4 des Richtlinientextes". Neither §4 of 
+     *  Heilmittelrichtlinie nor §4 Hilfsmittelrichtlinie seem to be related here.
+     */
+    belegnummer: string
+    beleginformation?: BeleginformationSchluessel
+    /** "Vertragskennzeichen für besondere Versorgungsformen gemäß der vertraglichen Vereinbarungen.
+     *  Für Verordnungen im Rahmen der Versorgung nach §116b Abs. 1 SGB V ist eine "1" zu 
+     *  übermitteln." https://www.gesetze-im-internet.de/sgb_5/__116b.html
+     */
+    besondereVersorgungsform?: string
+}
 
 /** Fields common to all types of Abrechnungsposition for the different subgroups (Heilmittel-
  *  erbringer, Hilfsmittelerbringer, häusliche Krankenpfleger, etc etc...)
  * */
 export type BaseAbrechnungsposition = {
-    /** to tell apart the different types */
-    leistungserbringerSammelgruppe: LeistungserbringerSammelgruppenSchluessel,
-
     /** Price of one service provided */
     einzelpreis: number
     /** Number of things done, f.e. 3x check blood pressure, 3x 15 minutes etc. */
@@ -114,15 +123,8 @@ export type BaseAbrechnungsposition = {
     text?: string
 }
 
-export const calculateBruttobetrag = (p: Abrechnungsposition): number =>
+export const calculateBruttobetrag = (p: BaseAbrechnungsposition): number =>
     Math.round(100 * p.einzelpreis * p.anzahl) / 100
-
-export const calculateZuzahlungUndEigentanteilBetrag = (p: Abrechnungsposition): number =>
-    // currently supported Abrechnungsposition don't include any Zuzahlung or Eigenanteil
-    0
-
-export const getAbrechnungsfallPositionen = (abrechnungsfall: Abrechnungsfall): Abrechnungsposition[] =>
-    abrechnungsfall.einsaetze.flatMap(einsatz => einsatz.abrechnungspositionen)
 
 /** Represents a prescription/voucher (Verordnung, Beleg) from a doctor */
 export type Verordnung = {
@@ -172,4 +174,9 @@ export type Skonto = {
     skontoPercent: number
     /** skonto is granted if payment is settled within the given number of days */
     zahlungsziel: number
+}
+
+export type Gesamtsummen = {
+    gesamtbruttobetrag: number,
+    zuzahlungUndEigenanteilBetrag: number
 }

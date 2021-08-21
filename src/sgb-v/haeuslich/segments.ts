@@ -13,10 +13,14 @@ import { decimal, int, varchar, date, duration, time } from "../../edifact/forma
 import { 
     haeuslicheKrankenpflegePositionsnummerCode
 } from "./codes"
-import { Leistungserbringergruppe, leistungserbringergruppeCode, Verordnung } from "../types"
 import { 
-    HaeuslicheKrankenpflegeAbrechnungsposition,
-    HaeuslicheKrankenpflegeEinzelposition
+    Leistungserbringergruppe,
+    leistungserbringergruppeCode,
+    Verordnung
+} from "../types"
+import { 
+    Abrechnungsposition,
+    Einzelposition
 } from "./types"
 import { HaeuslicheLeistungserbringerSammelgruppenSchluessel } from "../codes"
 
@@ -43,7 +47,7 @@ export const einsatzSegment = (
 /** Einzelfallnachweis Häusliche Krankenpflege / Haushaltshilfe */
 export const einzelfallnachweisSegment = (
     type: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
-    a: HaeuslicheKrankenpflegeAbrechnungsposition,
+    a: Abrechnungsposition,
     le: Leistungserbringergruppe
 ) => segment(
     type == "C" ? "EHK" : "EHH",
@@ -59,7 +63,7 @@ export const einzelfallnachweisSegment = (
  *  To be specified X times if EHK.positionsnummer was a "Leistungspauschale". Each the single 
  *  services provided need to be listed here then.
 */
-export const ELP = (e: HaeuslicheKrankenpflegeEinzelposition) => segment(
+export const ELP = (e: Einzelposition) => segment(
     "ELP",
     haeuslicheKrankenpflegePositionsnummerCode(e.positionsnummer),
     decimal(e.anzahl, 4, 2)

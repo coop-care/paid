@@ -12,11 +12,11 @@ import { REC as SLGA_REC } from "./segments_slga"
 import { 
     Diagnose,
     Kostenzusage,
-    Einzelrechnung
+    Einzelrechnung,
+    BaseAbrechnungsfall
 } from "./types"
 import { 
     Versicherter,
-    Abrechnungsfall,
 } from "../types"
 
 /** Base-Segments for SLLA message 
@@ -49,7 +49,7 @@ export const REC = SLGA_REC
 /** Information Versicherte
  * 
  *  Contains information about insuree */
-export const INV = (a: Abrechnungsfall) => segment(
+export const INV = (a: BaseAbrechnungsfall) => segment(
     "INV",
     varchar(a.versicherter.versichertennummer, 12),
     /* only those digits of the status are specified that are visible on the prescription. I.e. 
