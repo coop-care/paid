@@ -7,23 +7,10 @@ import {
 } from "./codes"
 import { LaenderkennzeichenSchluessel } from "./country_codes"
 import { 
-    AbrechnungscodeSchluessel as SGBXIAbrechnungscodeSchluessel,
-    TarifbereichSchluessel as SGBXITarifbereichSchluessel, 
     PflegegradSchluessel, 
     UmsatzsteuerBefreiungSchluessel,
 } from "./sgb-xi/codes"
-import { 
-    AbrechnungscodeEinzelschluessel as SGBVAbrechnungscodeEinzelschluessel, 
-    TarifbereichSchluessel as SGBVTarifbereichSchluessel,
-    BeleginformationSchluessel, 
-} from "./sgb-v/codes"
-import { 
-    Leistung as SGBXILeistung
-} from "./sgb-xi/types"
-import { 
-    Abrechnungsposition as SGBVAbrechnungsposition,
-    Verordnung
-} from "./sgb-v/types"
+
 
 export const testIndicator = {
     "0": "Testdatei",
@@ -33,33 +20,35 @@ export const testIndicator = {
 export type TestIndicator = keyof typeof testIndicator;
 
 export type BillingData = {
-    datenaustauschreferenzJeEmpfaengerIK: Record<string, number>;
-    testIndicator: TestIndicator;
-    rechnungsart: RechnungsartSchluessel;
-    rechnungsnummerprefix: string;
-    rechnungsdatum?: Date;
-    abrechnungsmonat: Date;
+    /** Running number per recipient for each bill transmitted */
+    datenaustauschreferenzJeEmpfaengerIK: Record<string, number>
+    /** Indicate whether this bill is a test or if it is real data */
+    testIndicator: TestIndicator
+    /** Kind of bill, see documentation of RechnungsartSchluessel */
+    rechnungsart: RechnungsartSchluessel
+
+    rechnungsnummerprefix: string
+    /** Date the bill was created. If not specified, the date is "now" */
+    rechnungsdatum?: Date
+    /** For which month this bill is. Bills are transmitted by month. */
+    abrechnungsmonat: Date
     /** An ascending number indicating a correction of an earlier version of this same bill.
      *  0 or undefined if this is not a correction. */
-    korrekturlieferung?: number;
-    abrechnungsstelle?: Institution;
-    laufendeDatenannahmeImJahrJeEmpfaengerIK: Record<string, number>;
+    korrekturlieferung?: number
+    abrechnungsstelle?: Institution
+    laufendeDatenannahmeImJahrJeEmpfaengerIK: Record<string, number>
 }
 
 export type BillingFile = {
     dateiname: string;
-    absenderIK: string;
+    /** Sender of this bill. This would either be an Abrechnungszentrum or a Leistungserbringer */
+    absenderIK: string
     empfaengerIK: string;
     datenaustauschreferenz: number;
     anwendungsreferenz: string;
     dateiindikator: string;
     nutzdaten: string;
     rechnungsbetrag: number;
-}
-
-export type Invoice = {
-    leistungserbringer: Leistungserbringer
-    faelle: Abrechnungsfall[]
 }
 
 export type Institution = {
@@ -74,22 +63,6 @@ export type Ansprechpartner = {
     phone?: string
 }
 
-export type Leistungserbringer = Institution & {
-    sgbxiAbrechnungscode: SGBXIAbrechnungscodeSchluessel
-    sgbxiTarifbereich: SGBXITarifbereichSchluessel
-
-    sgbvAbrechnungscode: SGBVAbrechnungscodeEinzelschluessel
-    sgbvTarifbereich: SGBVTarifbereichSchluessel
-
-    /** Per Kostenträger IK a 3-character id for the SGB XI Sondertarif, see sgb-xi/codes.ts */
-    sgbxiSondertarifJeKostentraegerIK: Record<string, string>
-    /** Per Kostenträger IK a 3-character id for the SGB V Sondertarif, see sgb-v/codes.ts */
-    sgbvSondertarifJeKostentraegerIK: Record<string, string>
-
-    /** to be specified if care provider is income tax excempt */
-    umsatzsteuer?: Umsatzsteuer
-};
-
 export type Umsatzsteuer = {
     /** Steuernummer (according to §14 Abs. 1a) OR Umsatzsteuer-Identifikationsnummer.
      *  Mandatory if umsatzsteuerbefreit.
@@ -103,26 +76,6 @@ export type Umsatzsteuer = {
     befreiung?: UmsatzsteuerBefreiungSchluessel
 }
 
-export type Abrechnungsfall = {
-    versicherter: Versicherter
-    einsaetze: Einsatz[]
-    /** Prescription(s) allocated to this Abrechnungsfall. Billing via SGB V is only possible with
-     *  a prescription. */
-    verordnungen: Verordnung[]
-    /** Unique number within the whole bill. 
-     * 
-     *  ASK Belegnummer: Docs mention "siehe § 4 des Richtlinientextes". Neither §4 of 
-     *  Heilmittelrichtlinie nor §4 Hilfsmittelrichtlinie seem to be related here.
-     */
-     belegnummer: string
-     beleginformation?: BeleginformationSchluessel
-     /** "Vertragskennzeichen für besondere Versorgungsformen gemäß der vertraglichen Vereinbarungen.
-      *  Für Verordnungen im Rahmen der Versorgung nach §116b Abs. 1 SGB V ist eine "1" zu 
-      *  übermitteln." https://www.gesetze-im-internet.de/sgb_5/__116b.html
-      */
-     besondereVersorgungsform?: string
-}
-
 export type Versicherter = {
     pflegekasseIK: string
     /** Mandatory if known. If not known, full address must be specified.
@@ -131,7 +84,7 @@ export type Versicherter = {
     /** Mandatory if known when billing with SGB V. If not known, full address must be specified.
      *  On prescription, listed in field "Status" */
     versichertenstatus?: string
-    /** Mandatory for being able to bill with SGB XI */
+    /** Mandatory for billing with SGB XI */
     pflegegrad?: PflegegradSchluessel
     /** first names longer than 30 characters (SGB V) or 45 characters (SGB XI) will be cut off. */
     firstName: string
@@ -154,21 +107,6 @@ export type Address = {
     city: string
     /** to be specified if the country is not Germany. Ignored for SGB XI */
     countryCode?: LaenderkennzeichenSchluessel
-}
-
-/** One health care service provided. Either a 
- *  - "Leistung" (SGB XI). It always has "leistungsart" defined
- *  - or a "Abrechnungsposition" (SGB V). It always has a "leistungserbringerSammelgruppe" defined */
-export type Leistung = SGBXILeistung | SGBVAbrechnungsposition
-
-export type Einsatz = {
-    /** Date and time at which the health care service started. 
-     *  Mandatory for billing with SGB V and for SGB XI with Vergütungsart 01, 02, 03 and 06. */
-    leistungsBeginn?: Date
-    /** Date and time at which the health care service ended.
-     *  Mandatory for billing with SGB V.  */
-    leistungsEnde?: Date
-    leistungen: Leistung[]
 }
 
 export type Amounts = {
