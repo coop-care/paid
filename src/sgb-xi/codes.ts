@@ -4,68 +4,43 @@
   * The keys are sorted by the order they appear in the documentation
   */
 
-export const abrechnungsstelleAbrechnungscodeSchluessel = {
+/** 2.2.1 Schlüssel Abrechnungscode */
+export const abrechnungscodeSchluessel = {
     "00": "Kennzeichen zur Identifizierung einer Abrechnungsstelle als Rechnungssteller",
-}
-export type AbrechnungsstelleAbrechnungscodeSchluessel = keyof typeof abrechnungsstelleAbrechnungscodeSchluessel
 
-export const pflegehilfsmittelAbrechnungscodeSchluessel = {
     "11": "Pflegehilfsmittel: Apotheke (Vertrag gem. § 78 Abs. 1+2 SGB XI)",
     "15": "Pflegehilfsmittel: Orthopädiemechaniker, Bandagist, Sanitätshaus",
     "16": "Pflegehilfsmittel: Orthopädieschuhmacher",
     "17": "Pflegehilfsmittel: Orthopäde",
     "19": "Pflegehilfsmittel: sonstiger Hilfsmittellieferant, Pflegehilfsmittellieferant",
-}
-export type PflegehilfsmittelAbrechnungscodeSchluessel = keyof typeof pflegehilfsmittelAbrechnungscodeSchluessel
 
-export const ambulantePflegeAbrechnungscodeSchluessel = {
     "35": "ambulante Pflege: frei gemeinnütziger Anbieter (Sozialstation)",
     "36": "ambulante Pflege: privat gewerblicher Anbieter",
     "37": "ambulante Pflege: öffentlicher Anbieter",
-    "39": "ambulante Pflege: sonstiger Pflegedienst"
-}
-export type AmbulantePflegeAbrechnungscodeSchluessel = keyof typeof ambulantePflegeAbrechnungscodeSchluessel
-
-export const tagespflegeAbrechnungscodeSchluessel = {
+    "39": "ambulante Pflege: sonstiger Pflegedienst",
+    
     "81": "Tagespflege: privat gewerblicher Anbieter",
     "82": "Tagespflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter)",
     "83": "Tagespflege: öffentlicher Anbieter",
     "84": "Tagespflege: sonstige Pflegeeinrichtung",
-}
-export type TagespflegeAbrechnungscodeSchluessel = keyof typeof tagespflegeAbrechnungscodeSchluessel
-
-export const nachtpflegeAbrechnungscodeSchluessel = {
+    
     "86": "Nachtpflege: privat gewerblicher Anbieter",
     "87": "Nachtpflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter)",
     "88": "Nachtpflege: öffentlicher Anbieter",
     "89": "Nachtpflege: sonstige Pflegeeinrichtung",
-}
-export type NachtpflegeAbrechnungscodeSchluessel = keyof typeof nachtpflegeAbrechnungscodeSchluessel
-
-export const kurzzeitpflegeAbrechnungscodeSchluessel = {
+    
     "91": "Kurzzeitpflege: privat gewerblicher Anbieter",
     "92": "Kurzzeitpflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter)",
     "93": "Kurzzeitpflege: öffentlicher Anbieter",
     "94": "Kurzzeitpflege: sonstige Pflegeeinrichtung",
-}
-export type KurzzeitpflegeAbrechnungscodeSchluessel = keyof typeof kurzzeitpflegeAbrechnungscodeSchluessel
-
-export const vollstationaerePflegeAbrechnungscodeSchluessel = {
+    
     "96": "vollstationäre Pflege: privat gewerblicher Anbieter",
     "97": "vollstationäre Pflege: frei gemeinnütziger Anbieter (gemeinnützige private Anbieter)",
     "98": "vollstationäre Pflege: öffentlicher Anbieter",
     "99": "vollstationäre Pflege: sonstige Pflegeeinrichtung",
 }
-export type VollstationaerePflegeAbrechnungscodeSchluessel = keyof typeof vollstationaerePflegeAbrechnungscodeSchluessel
 
-/** 2.2.1 Schlüssel Abrechnungscode */
-export type AbrechnungscodeSchluessel = 
-    PflegehilfsmittelAbrechnungscodeSchluessel |
-    AmbulantePflegeAbrechnungscodeSchluessel |
-    TagespflegeAbrechnungscodeSchluessel |
-    NachtpflegeAbrechnungscodeSchluessel |
-    KurzzeitpflegeAbrechnungscodeSchluessel |
-    VollstationaerePflegeAbrechnungscodeSchluessel
+export type AbrechnungscodeSchluessel = keyof typeof abrechnungscodeSchluessel
 
 /** 2.2.2 & 2.14.1 Schlüssel Tarifkennzeichen: Tarifbereich (1-2 Stelle des Tarifkennzeichens)  */
 export const tarifbereichSchluessel = {
@@ -168,7 +143,7 @@ export type QualifikationsabhaengigeVerguetungSchluessel = keyof typeof qualifik
  * 
  *  08:    2.7.7 Schlüssel Pauschale (Beratungsbesuch nach § 37 Abs. 3) 
  *
- *  99:    2.7.8 Sonstige (Keine Vertragspreisregelung
+ *  99:    2.7.8 Sonstige (Keine Vertragspreisregelung)
  */
 
 /** 2.7.2.1 Schlüsselkennzeichen Zeiteinheit */
