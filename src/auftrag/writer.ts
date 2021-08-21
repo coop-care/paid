@@ -1,4 +1,3 @@
-import { VerfahrenKennung } from "./codes";
 import { Auftrag } from "./types";
 
 /** based on documents: 
