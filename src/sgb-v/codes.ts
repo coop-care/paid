@@ -64,7 +64,7 @@ export type AbrechnungscodeEinzelschluessel =
     RehasportAbrechnungscodeSchluessel |
     FunktionstrainingAbrechnungscodeSchluessel | 
     SonstigeAbrechnungscodeSchluessel |
-    PraeventationAbrechnungscodeSchluessel |
+    PraeventionAbrechnungscodeSchluessel |
     ErgaenzendeRehaAbrechnungscodeSchluessel |
     SozialpaediatrikAbrechnungscodeSchluessel |
     SozioTherapeutikAbrechnungscodeSchluessel |
@@ -151,10 +151,10 @@ export const sonstigeAbrechnungscodeSchluessel = {
 }
 export type SonstigeAbrechnungscodeSchluessel = keyof typeof sonstigeAbrechnungscodeSchluessel
 
-export const praeventationAbrechnungscodeSchluessel = {
+export const praeventionAbrechnungscodeSchluessel = {
     "66": "Leistungserbringer von Präventions- und Gesundheitsförderungsmaßnahmen im Rahmen von ambulanten Vorsorgeleistungen",
 }
-export type PraeventationAbrechnungscodeSchluessel = keyof typeof praeventationAbrechnungscodeSchluessel
+export type PraeventionAbrechnungscodeSchluessel = keyof typeof praeventionAbrechnungscodeSchluessel
 
 export const ergaenzendeRehaAbrechnungscodeSchluessel = {
     "63": "Leistungserbringer für ergänzende Rehabilitationsmaßnahmen",
@@ -493,7 +493,7 @@ const leistungserbringerSammelgruppenschluesselToEinzelSchluessel =
         ["H", Object.keys(rehasportAbrechnungscodeSchluessel)],
         ["I", Object.keys(funktionstrainingAbrechnungscodeSchluessel)],
         ["J", Object.keys(sonstigeAbrechnungscodeSchluessel)],
-        ["K", Object.keys(praeventationAbrechnungscodeSchluessel)],
+        ["K", Object.keys(praeventionAbrechnungscodeSchluessel)],
         ["L", Object.keys(ergaenzendeRehaAbrechnungscodeSchluessel)],
         ["M", Object.keys(sozialpaediatrikAbrechnungscodeSchluessel)],
         ["N", Object.keys(sozioTherapeutikAbrechnungscodeSchluessel)],
@@ -748,7 +748,7 @@ export const abrechnungscodeSchluessel = {
     ...rehasportAbrechnungscodeSchluessel,
     ...funktionstrainingAbrechnungscodeSchluessel,
     ...sonstigeAbrechnungscodeSchluessel,
-    ...praeventationAbrechnungscodeSchluessel,
+    ...praeventionAbrechnungscodeSchluessel,
     ...ergaenzendeRehaAbrechnungscodeSchluessel,
     ...sozialpaediatrikAbrechnungscodeSchluessel,
     ...sozioTherapeutikAbrechnungscodeSchluessel,
