@@ -1,5 +1,5 @@
-import { segment } from "./builder";
-import { Interchange, Segment, Element, ServiceStringAdvice, Message } from "./types";
+import { segment } from "./builder"
+import { Interchange, Segment, Element, ServiceStringAdvice, Message } from "./types"
 
 /** Writes an EDIFACT interchange.
  *  
