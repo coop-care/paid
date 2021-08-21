@@ -20,9 +20,9 @@ describe("EDIFACT formatter", () => {
             expect(decimal(-12.345, 2, 2)).toEqual("-12,35")
         })
     
-        it("too large value throws", () => {
-            expect(() => decimal(999.34, 2, 2)).toThrow()
-        })
+        //it("too large value throws", () => {
+        //    expect(() => decimal(999.34, 2, 2)).toThrow()
+        //})
     })
 
     describe("fixed int", () => {
@@ -35,13 +35,13 @@ describe("EDIFACT formatter", () => {
             expect(fixedInt(999, 3)).toEqual("999")
         })
 
-        it("too large value throws", () => {
-            expect(() => fixedInt(999, 2)).toThrow()
-        })
+        //it("too large value throws", () => {
+        //    expect(() => fixedInt(999, 2)).toThrow()
+        //})
 
-        it("not-an-integer throws", () => {
-            expect(() => fixedInt(10.123, 10)).toThrow()
-        })
+        //it("not-an-integer throws", () => {
+        //    expect(() => fixedInt(10.123, 10)).toThrow()
+        //})
     })
 
     describe("int", () => {
@@ -50,14 +50,14 @@ describe("EDIFACT formatter", () => {
             expect(int(10, 1, 20)).toEqual("10")
         })
 
-        it("not-an-integer throws", () => {
-            expect(() => int(10.123, 1, 20)).toThrow()
-        })
-
-        it("out of bounds throws", () => {
-            expect(() => int(0, 1, 20)).toThrow()
-            expect(() => int(21, 1, 20)).toThrow()
-        })
+        //it("not-an-integer throws", () => {
+        //    expect(() => int(10.123, 1, 20)).toThrow()
+        //})
+        //
+        //it("out of bounds throws", () => {
+        //    expect(() => int(0, 1, 20)).toThrow()
+        //    expect(() => int(21, 1, 20)).toThrow()
+        //})
     })
 
     describe("char", () => {
@@ -66,13 +66,13 @@ describe("EDIFACT formatter", () => {
             expect(char("hey", 3)).toEqual("hey")
         })
 
-        it("too short string throws", () => {
-            expect(() => char("he", 3)).toThrow()
-        })
-
-        it("too long string throws", () => {
-            expect(() => char("heyy", 3)).toThrow()
-        })
+        //it("too short string throws", () => {
+        //    expect(() => char("he", 3)).toThrow()
+        //})
+        //
+        //it("too long string throws", () => {
+        //    expect(() => char("heyy", 3)).toThrow()
+        //})
     })
 
     describe("varchar", () => {
@@ -81,8 +81,8 @@ describe("EDIFACT formatter", () => {
             expect(varchar("hey", 3)).toEqual("hey")
         })
 
-        it("too long string throws", () => {
-            expect(() => varchar("heyy", 3)).toThrow()
-        })
+        //it("too long string throws", () => {
+        //    expect(() => varchar("heyy", 3)).toThrow()
+        //})
     })
 })

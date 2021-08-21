@@ -3,7 +3,7 @@ export const varchar = (str: string | undefined, maxLength: number): string | un
     if (str === undefined) return undefined
 
     if (str.length > maxLength) {
-        throw new Error(`"${str}" exceeds maximum field length of ${maxLength}`)
+        console.error(`"${str}" exceeds maximum field length of ${maxLength}`)
     }
     return str
 }
@@ -13,7 +13,7 @@ export const char = (str: string | undefined, length: number): string | undefine
     if (str === undefined) return undefined
 
     if (str.length != length) {
-        throw new Error(`"${str}" did not match required length of ${length}`)
+        console.error(`"${str}" did not match required length of ${length}`)
     }
     return str
 }
@@ -23,10 +23,10 @@ export const int = (value: number | undefined, min: number, max: number): string
     if (value === undefined) return undefined
 
     if (!Number.isInteger(value)) {
-        throw new Error(`"${value}" must be an integer`)
+        console.error(`"${value}" must be an integer`)
     }
     if (value < min || value > max) {
-        throw new Error(`"${value}" is out of bounds of ${min}..${max}`)
+        console.error(`"${value}" is out of bounds of ${min}..${max}`)
     }
     return value.toString()
 }
@@ -36,10 +36,10 @@ export const fixedInt = (value: number | undefined, length: number): string | un
     if (value === undefined) return undefined
 
     if (!Number.isInteger(value)) {
-        throw new Error(`"${value}" must be an integer`)
+        console.error(`"${value}" must be an integer`)
     }
     if (value.toString().length > length) {
-        throw new Error(`"${value}" must be not longer than ${length}`)
+        console.error(`"${value}" must be not longer than ${length}`)
     }
     return value.toString().padStart(length, "0")
 }
@@ -53,7 +53,7 @@ export const decimal = (value: number | undefined, preDecimalPlaceCount: number,
         useGrouping: false
     })
     if (num.length > preDecimalPlaceCount + decimalPlaceCount + 1 + (value < 0 ? 1 : 0)) {
-        throw new Error(`"${value}" must be not longer than ${preDecimalPlaceCount},${decimalPlaceCount}`)
+        console.error(`"${value}" must be not longer than ${preDecimalPlaceCount},${decimalPlaceCount}`)
     }
     return num
 }
