@@ -27,7 +27,7 @@ import {
 /** Funktion
  * 
  *  Contains information about care provider, IK of health insurance card */
- export const FKT = (
+export const FKT = (
     verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel, 
     r: Einzelrechnung
 ) => segment(
@@ -89,7 +89,7 @@ export const URI = (
 /** Name und Adresse Versicherter
  * 
  *  Contains additional information about the insuree */
- export const NAD = (v: Versicherter) => segment(
+export const NAD = (v: Versicherter) => segment(
     "NAD",
     v.lastName.substr(0, 47),
     v.firstName.substr(0, 30),
@@ -113,7 +113,7 @@ function concatStreetAndHousenumber(street: string, houseNumber: string, maxLeng
 /** Imagename 
  * 
  *  Contains information about image name when transferring image archives */
- export const IMG = (
+export const IMG = (
     year: number,
     month: number,
     /** IK of the office that created the image and the dataset */
@@ -135,7 +135,7 @@ function concatStreetAndHousenumber(street: string, houseNumber: string, maxLeng
 export const TXT = (description: string) => segment("TXT", description.substr(0, 70))
 
 /** Diagnose */
- export const DIA = (d: Diagnose) => segment(
+export const DIA = (d: Diagnose) => segment(
     "DIA",
     varchar(d.diagnoseschluessel, 12),
     d.diagnosetext?.substr(0, 70)
@@ -153,7 +153,7 @@ export const SKZ = (k: Kostenzusage) => segment(
  * 
  *  Must be added only if the price in EHI/EHE/EKT is plus VAT
  */
- export const MWS = (
+export const MWS = (
     mehrwertsteuersatz: number,
     /** (EHI/EHE/EKT, depending on the message)
      *  = round(EHI.abrechnungspositionPrice * EHI.amount * mehrwertsteuersatz) */

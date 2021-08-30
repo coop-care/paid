@@ -41,7 +41,7 @@ export const makeInterchangeHeader = (
     encryptedForIK: string,
     /** date at which this file has been created */
     dateCreated: Date,
-    /** serial number that should increased by one for each transmission to the recipient
+    /** serial number that should be increased by one for each transmission to the recipient
      *  (encryptedForIK). A value from 00001-99999. It should loop back to 00001 before 100000 is 
      *  reached. */
     datenaustauschreferenz: number,
