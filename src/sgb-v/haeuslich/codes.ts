@@ -15,11 +15,9 @@
  *  XX  X  XXX
  * ```
  */
-export type HaeuslicheKrankenpflegePositionsnummer = {
-    gesetzlicheLebensgrundlage: GesetzlicheLebensgrundlageSchluessel,
-    versorgungsArt: VersorgungsArtSchluessel,
-    verguetungsArt: VerguetungsArtSchluessel,
-}
+export type HaeuslicheKrankenpflegePositionsnummer = 
+    HaeuslicheKrankenpflegeEinzelPositionsnummer | 
+    HaeuslicheKrankenpflegePauschalePositionsnummer
 
 /** We need to differentate between positionsnummern that are pauschale and that are not because
  *  they are handled very differently when transferring
