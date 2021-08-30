@@ -136,7 +136,7 @@ const versicherte: Versicherter[] = [{
     city: "Musterstadt",
 }, {
     pflegekasseIK: "000000040",
-    kostentraegerIK: "000000040",
+    kostentraegerIK: "000000031",
     versichertennummer: "0123456789",
     pflegegrad: "1",
     firstName: "Ingeborg",
@@ -587,6 +587,19 @@ export const payload3 = {
                         leistungsEnde: new Date("2021-04-10T11:30")
                     },
                     { ...wegegebuehrenEinsatzpauschale },
+                ]
+            }]
+        }, {
+            versicherter: { ...versicherte[4] },
+            eindeutigeBelegnummer: "2021-0235",
+            einsaetze: [{
+                leistungsBeginn: new Date("2021-04-03T12:00"),
+                leistungen: [
+                    {
+                        ...kurzzeitpflege,
+                        leistungsBeginn: new Date("2021-04-03T12:00"),
+                        leistungsEnde: new Date("2021-04-11T12:00")
+                    },
                 ]
             }]
         }, {

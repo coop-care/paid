@@ -53,12 +53,10 @@ export const makeBillingFile = (
         UNB(absenderIK, empfaengerIK, datenaustauschreferenz, anwendungsreferenz, dateiindikator),
         ...mapEachKostentraeger(invoices, rechnungsart).flatMap(invoices => [
             ...mapEachLeistungserbringerAndPflegekasse(invoices).flatMap((invoicesByPflegekasse, index) => [
-                ...(invoicesByPflegekasse.length > 1 || rechnungsart == "3"
-                    ? makeMessage("PLGA", true, mergeInvoices(invoices), billing, ++messageNumber, invoiceIndex, index)
-                    : []),
-                ...invoicesByPflegekasse.flatMap(invoice => [
-                    ...makeMessage("PLGA", false, invoice, billing, ++messageNumber, invoiceIndex, index),
-                    ...makeMessage("PLAA", false, invoice, billing, ++messageNumber, invoiceIndex++, index)
+                ...makeMessage("PLGA", true, mergeInvoices(invoicesByPflegekasse), billing, ++messageNumber, ++invoiceIndex, index),
+                ...invoicesByPflegekasse.flatMap((invoice, leistungserbringerIndex) => [
+                    ...makeMessage("PLGA", false, invoice, billing, ++messageNumber, invoiceIndex, leistungserbringerIndex),
+                    ...makeMessage("PLAA", false, invoice, billing, ++messageNumber, invoiceIndex, leistungserbringerIndex)
                 ])
             ])
         ]),
@@ -162,12 +160,15 @@ const makePLGA = (
     billing: BillingData,
     invoiceIndex: number,
     leistungserbringerIndex: number,
-    sammelrechnung: boolean
+    isSammelrechnungPLGA: boolean
 ) => [
-    FKT("01", absenderAndRechnungssteller(billing, invoice), invoice.faelle[0].versicherter, sammelrechnung),
-    REC(billing, invoiceIndex, leistungserbringerIndex, sammelrechnung),
+    FKT("01", absenderAndRechnungssteller(billing, invoice), invoice.faelle[0].versicherter, isSammelrechnungPLGA),
+    REC(billing, invoiceIndex, leistungserbringerIndex, isSammelrechnungPLGA),
     SRD(invoice.leistungserbringer, invoice.faelle[0]),
-    UST(invoice.leistungserbringer),
+    ...(isSammelrechnungPLGA
+        ? []
+        : [UST(invoice.leistungserbringer)]
+    ),
     GES(calculateInvoice(invoice)),
     NAM(billing.rechnungsart != "3" || !billing.abrechnungsstelle ? invoice.leistungserbringer : billing.abrechnungsstelle)
 ];
