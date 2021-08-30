@@ -1,5 +1,4 @@
-import { VerfahrenKennung } from "./codes";
-import { Auftrag } from "./types";
+import { Auftrag } from "./types"
 
 /** based on documents: 
  *  - Pflege, Technische Anlage 1, Anhang 1: Struktur Auftragsdatei

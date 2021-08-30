@@ -14,14 +14,16 @@ export const makeAnwendungsreferenz = (
         korrekturlieferung = 0
     }: BillingData
 ) => [
+    // "Absenderklassifikation". "PL" stands for "Pflege-Leistungserbringer"
     "PL",
     (abrechnungsmonat.getMonth() + 1).toString().padStart(2, "0") +
     abrechnungsmonat.getFullYear().toString().substr(3, 1),
     korrekturlieferung,
     laufendeDatenannahmeImJahr.toString().slice(0, 2).padStart(2, "0"),
+    // Who sends this bill: "S" stands for "Selbstabrechner", "A" stands for "Abrechnungszentrum"
     rechnungsart == "1" ? "S" : "A",
     kassenart
-].join("");
+].join("")
 
 /** A.k.a "Verfahrenskennung" */
 export const makeDateiname = (
@@ -32,4 +34,4 @@ export const makeDateiname = (
     "PFL",
     "0", // verfahrensversion. Always 0
     transferNumber.toString().slice(0, 3).padStart(3, "0")
-].join("");
+].join("")
