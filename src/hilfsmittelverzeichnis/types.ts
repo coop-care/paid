@@ -44,7 +44,30 @@ export type HilfsmittelProduct = {
 }
 
 /** Returns the Positionsnummer (aka Pos.-Nr.) of a Hilfsmittel product */
-export function getPositionsnummer(product: HilfsmittelProduct) : string {
+export const getPositionsnummer = (product: HilfsmittelProduct) : string =>
     // yes, there is no dot between Art and Produkt
-    return product.groupId + "." + product.bodyPartId + "." + product.subgroupId + "." + product.typeId + product.productId
-}
+    product.groupId.toString() + "." + 
+    product.bodyPartId.toString() + "." + 
+    product.subgroupId.toString() + "." + 
+    product.typeId.toString() + 
+    product.productId.toString()
+
+/** Returns the Positionsnummer (aka Pos.-Nr.) of a Hilfsmittel product, without dots.
+ * 
+ * Format is
+ *  ```
+ * groupId
+ *  │  bodyPartId
+ *  │   │  subgroupId
+ *  │   │   │  typeId
+ *  │   │   │   │  productId
+ * ┌┴─┐┌┴─┐┌┴─┐┌┴┐┌─┴─┐
+ *  XX  XX  XX  X  XXX
+ *  ```
+ */
+export const getPositionsnummerNoDots = (product: HilfsmittelProduct) : string =>
+    product.groupId.toString() +  
+    product.bodyPartId.toString() + 
+    product.subgroupId.toString() + 
+    product.typeId.toString() + 
+    product.productId.toString().padStart(3, "0")
