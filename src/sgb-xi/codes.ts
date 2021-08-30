@@ -9,7 +9,7 @@
  *  Whether this is a bill by the health care provider himself or by an accounting center (with or
  *  without power to collect)
  */
- export const rechnungsartSchluessel =  {
+export const rechnungsartSchluessel =  {
     "1": "Abrechnung von Leistungserbringer und Zahlung an IK Leistungserbringer",
     // note: also used if Leistungserbringer has several IKs
     "2": "Abrechnung über Abrechnungsstelle (ohne Inkassovollmacht) und Zahlung an IK Leistungserbringer",

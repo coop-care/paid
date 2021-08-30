@@ -10,7 +10,7 @@
 
 import { elements } from "../../edifact/builder"
 import { Message, Segment } from "../../edifact/types"
-import { sum } from "../../utils"
+import { sumBy } from "../../utils"
 import { HaeuslicheLeistungserbringerSammelgruppenSchluessel } from "../codes"
 import { INV, NAD, TXT, DIA, SKZ, FKT, REC } from "../segments_slla"
 import { 
@@ -79,9 +79,9 @@ export const makeMessage = (
                     ...verordnung.diagnosen.map(d => DIA(d)),
                     ...verordnung.kostenzusagen.map(k => SKZ(k))
                 ]),
-                BES(sum(fall.einsaetze
-                    .flatMap(einsatz => einsatz.abrechnungspositionen)
-                    .map(calculateBruttobetrag)
+                BES(sumBy(
+                    fall.einsaetze.flatMap(einsatz => einsatz.abrechnungspositionen),
+                    calculateBruttobetrag
                 ))
             ])
         // some segments are left out conditionally (by returning undefined), so we need to filter those out
@@ -96,7 +96,7 @@ export const calculateGesamtsummen = (abrechnungsfaelle: Abrechnungsfall[]) => {
         .flatMap(einsatz => einsatz.abrechnungspositionen)
 
     return {
-        gesamtbruttobetrag: sum(abrechnungspositionen.map(calculateBruttobetrag)),
+        gesamtbruttobetrag: sumBy(abrechnungspositionen, calculateBruttobetrag),
         zuzahlungUndEigenanteilBetrag: 0 // no Zuzahlung, Eigenanteil etc. for häusliche Krankenpflege
     }
 }

@@ -33,3 +33,7 @@ export const entriesGroupedBy2 = <T, K>(
 
 /** Sum the numbers in the given array. Just a shorthand for that awkward reduce function. */
 export const sum = (items: number[]) => items.reduce((a, b) => a + b, 0)
+
+/** Sum the the items in the given array by the given function */
+export const sumBy = <T>(items: T[], toNumber: (item: T) => number): number => 
+    items.reduce((a, b) => a + toNumber(b), 0)
