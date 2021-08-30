@@ -2,11 +2,22 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, Abrechnungsfall, Invoice, MessageIdentifiers, BillingFile, Hilfsmittel, Einsatz, Leistung } from "../types";
+import {
+    BillingData,
+    BillingFile,
+    MessageIdentifiers,
+    Invoice,
+    Abrechnungsfall, 
+    Einsatz,
+    Leistung,
+    Pflegehilfsmittel
+} from "./types"
+import { KassenartSchluessel } from "../kostentraeger/filename/codes"
 import { valuesGroupedBy } from "../utils";
 import { LeistungsartSchluessel, MehrwertsteuerSchluessel, RechnungsartSchluessel } from "./codes";
 import { makeAnwendungsreferenz, makeDateiname } from "./filenames";
 import { ELS, ESK, FKT, GES, HIL, IAF, INV, MAN, NAD, NAM, REC, SRD, UNB, UNH, UNT, UNZ, UST, ZUS } from "./segments";
+
 
 const mehrwertsteuersaetze: Record<MehrwertsteuerSchluessel, number> = {
     "": 0,
@@ -18,23 +29,72 @@ const sortByLeistungsBeginn = (a: Einsatz | Leistung, b: Einsatz | Leistung) =>
     (a?.leistungsBeginn?.getTime() || Number.MAX_VALUE)
     - (b?.leistungsBeginn?.getTime() || Number.MAX_VALUE);
 
+/** 
+ * # Structure
+ * 
+ * Depends on Rechnungsart (1,2,3) and Sammelrechnung (yes or no)
+ * 
+ * ### Rechnungsart 1
+ * Used for health care service providers that do accounting themselves, have one Institutionskennzeichen
+ * 
+ * ```txt
+ * for each Kostenträger:
+ *   PLGA Sammelrechnung (mandatory if more than one Pflegekasse)
+ *   for each Pflegekasse:
+ *     PLGA Gesamtrechnung
+ *     PLAA
+ * ```
+ * 
+ * ### Rechnungsart 2
+ * Used for 
+ * - health care service providers that do accounting themselves but have multiple Institutionskennzeichen
+ * - accounting centers without collecting power (Abrechnungsstelle ohne Inkassovollmacht)
+ * 
+ * Same structure as for Rechnungsart 1, only that the invoices for each Leistungserbringer are
+ * listed one after another.
+ * 
+ * ```txt
+ * for each Leistungserbringer:
+ *   for each Kostenträger:
+ *     PLGA Sammelrechnung (mandatory if more than one Pflegekasse)
+ *     for each Pflegekasse:
+ *       PLGA Gesamtrechnung
+ *       PLAA
+ * ```
+ * 
+ * ### Rechnungsart 3
+ * Used for accounting centers with collecting power (Abrechnungsstelle mit Inkassovollmacht), i.e.
+ * manages accounting for multiple health care service providers (Leistungserbringer).
+ * 
+ * Note that the structure is different from Rechnungsart 1 and 2. Leistungserbringer are grouped by
+ * Kostenträgers, not the other way round!
+ * 
+ * ```txt
+ * for each Kostenträger:
+ *   PLGA Sammelrechnung (always mandatory)
+ *   for each Leistungserbringer:
+ *     for each Pflegekasse:
+ *       PLGA Gesamtrechnung
+ *       PLAA
+ * ```
+ */
 export const makeBillingFile = (
     empfaengerIK: string, 
-    kassenart: string,
+    kassenart: KassenartSchluessel,
     invoices: Invoice[], 
     billing: BillingData
 ) => {
     const {
         datenaustauschreferenzJeEmpfaengerIK,
         laufendeDatenannahmeImJahrJeEmpfaengerIK,
-        dateiindikator,
+        testIndicator,
         rechnungsart
     } = billing;
     const absenderIK = absender(billing, invoices[0]).ik;
     const datenaustauschreferenz = datenaustauschreferenzJeEmpfaengerIK[empfaengerIK] || 1;
     const laufendeDatenannahmeImJahr = laufendeDatenannahmeImJahrJeEmpfaengerIK[empfaengerIK] || 1;
     const anwendungsreferenz = makeAnwendungsreferenz(kassenart, laufendeDatenannahmeImJahr, billing);
-    const dateiname = makeDateiname(dateiindikator, datenaustauschreferenz - 1); // todo: resaearch „verfahrensversion”, maybe in Auftragsdatei documentation?
+    const dateiname = makeDateiname(testIndicator, datenaustauschreferenz - 1); // todo: resaearch „verfahrensversion”, maybe in Auftragsdatei documentation?
     let messageNumber = 0;
     let invoiceIndex = 0;
 
@@ -50,7 +110,7 @@ export const makeBillingFile = (
 
     // according to section 4.2 Struktur der Datei, grouped for all three Rechnungsarten
     const nutzdaten = [
-        UNB(absenderIK, empfaengerIK, datenaustauschreferenz, anwendungsreferenz, dateiindikator),
+        UNB(absenderIK, empfaengerIK, datenaustauschreferenz, anwendungsreferenz, testIndicator),
         ...mapEachKostentraeger(invoices, rechnungsart).flatMap(invoices => [
             ...mapEachLeistungserbringerAndPflegekasse(invoices).flatMap((invoicesByPflegekasse, index) => [
                 ...makeMessage("PLGA", true, mergeInvoices(invoicesByPflegekasse), billing, ++messageNumber, ++invoiceIndex, index),
@@ -71,7 +131,7 @@ export const makeBillingFile = (
         empfaengerIK,
         datenaustauschreferenz,
         anwendungsreferenz,
-        dateiindikator,
+        testIndicator,
         nutzdaten
     } as BillingFile;
 };
@@ -167,7 +227,7 @@ const makePLGA = (
     SRD(invoice.leistungserbringer, invoice.faelle[0]),
     ...(isSammelrechnungPLGA
         ? []
-        : [UST(invoice.leistungserbringer)]
+        : [UST(invoice.leistungserbringer.umsatzsteuer!)]
     ),
     GES(calculateInvoice(invoice)),
     NAM(billing.rechnungsart != "3" || !billing.abrechnungsstelle ? invoice.leistungserbringer : billing.abrechnungsstelle)
@@ -185,7 +245,7 @@ const makePLAA = (
     ...groupByMonth(invoice.faelle).flatMap((fall, belegNummer) => [
         INV(fall.versicherter.versichertennummer, belegNummer),
         NAD(fall.versicherter),
-        MAN(fall.einsaetze[0].leistungsBeginn || billing.abrechnungsmonat, fall.versicherter.pflegegrad),
+        MAN(fall.einsaetze[0].leistungsBeginn || billing.abrechnungsmonat, fall.versicherter.pflegegrad!),
         ...fall.einsaetze.flatMap(einsatz => [
             ESK(einsatz.leistungsBeginn),
             ...einsatz.leistungen.flatMap(leistung => [
@@ -195,7 +255,7 @@ const makePLAA = (
                         index == leistung.zuschlaege.length - 1,
                         invoice.leistungserbringer.tarifbereich, 
                         zuschlag,
-                        0 // todo: calculate ergebis
+                        0 // todo: calculate ergebnis
                     )
                 ),
                 ...leistung.hilfsmittel 
@@ -260,7 +320,7 @@ export const calculateFall = (fall: Abrechnungsfall) => fall.einsaetze
     .flatMap(einsatz => einsatz.leistungen)
     .reduce((result, {einzelpreis, anzahl, hilfsmittel}) => {
         const value = einzelpreis * anzahl;
-        const zuzahlungsbetrag = (hilfsmittel?.zuzahlungsbetrag || 0);
+        const zuzahlungsbetrag = (hilfsmittel?.gesetzlicheZuzahlungBetrag || 0);
         const beihilfebetrag = 0;
         const mehrwertsteuer = calculateHilfsmittel(einzelpreis, hilfsmittel);
         const gesamtbruttobetrag = value + mehrwertsteuer;
@@ -274,7 +334,7 @@ export const calculateFall = (fall: Abrechnungsfall) => fall.einsaetze
 
 const calculateHilfsmittel = (
     einzelpreis: number,
-    hilfsmittel?: Hilfsmittel
+    hilfsmittel?: Pflegehilfsmittel
 ) => einzelpreis * mehrwertsteuersaetze[hilfsmittel?.mehrwertsteuerart || ""];
 
 const makeAmounts = () => ({

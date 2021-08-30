@@ -46,6 +46,7 @@ describe("SGB V messages", () => {
         }, [{
             versicherter: {
                 pflegekasseIK: "000000004",
+                kostentraegerIK: "999999999",
                 versichertennummer: "versicherter",
                 versichertenstatus: "30000123456",
                 firstName: "Arthur",
@@ -58,6 +59,7 @@ describe("SGB V messages", () => {
         }, {
             versicherter: {
                 pflegekasseIK: "000000004",
+                kostentraegerIK: "999999999",
                 versichertennummer: "versicherter",
                 versichertenstatus: "50000123456",
                 firstName: "Zaphod",

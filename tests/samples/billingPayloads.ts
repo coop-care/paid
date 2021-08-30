@@ -1,11 +1,13 @@
 import {
-    BillingData,
     Institution,
+    Versicherter,
+} from "../../src/types"
+import {
+    BillingData,
     Invoice,
     Leistung, 
     Leistungserbringer, 
-    Versicherter,
-} from "../../src/types";
+} from "../../src/sgb-xi/types"
 
 const leistungserbringer: Leistungserbringer[] = [{
     name: "Pflegedienst Musterstadt GmbH",
@@ -16,7 +18,9 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "36",
     tarifbereich: "00",
-    umsatzsteuerBefreiung: "01",
+    umsatzsteuer: {
+        befreiung: "01"
+    },
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Nachbarschaftspflege in Wilhelmsburg gGmbH",
@@ -27,7 +31,9 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "35",
     tarifbereich: "05",
-    umsatzsteuerBefreiung: "01",
+    umsatzsteuer: {
+        befreiung: "01"
+    },
     sondertarifJeKostentraegerIK: {
         "000000010": "011"
     },
@@ -40,8 +46,9 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "36",
     tarifbereich: "02",
-    umsatzsteuerBefreiung: "",
-    umsatzsteuerOrdnungsnummer: "123/456/78900",
+    umsatzsteuer: {
+        identifikationsnummer: "123/456/78900",
+    },
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Von Mensch zu Mensch gGmbH",
@@ -52,7 +59,9 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "35",
     tarifbereich: "01",
-    umsatzsteuerBefreiung: "01",
+    umsatzsteuer: {
+        befreiung: "01"
+    },
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Pflegedienst Neukölln GmbH",
@@ -63,8 +72,9 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "36",
     tarifbereich: "23",
-    umsatzsteuerOrdnungsnummer: "012/345/67890",
-    umsatzsteuerBefreiung: "",
+    umsatzsteuer: {
+        identifikationsnummer: "012/345/67890"
+    },
     sondertarifJeKostentraegerIK: {},
 }];
 
@@ -94,10 +104,12 @@ const versicherte: Versicherter[] = [{
     firstName: "Gertrud",
     lastName: "Fischer",
     birthday: new Date("1938-03-01"),
-    street: "Musterstraße",
-    houseNumber: "1",
-    postalCode: "12345",
-    city: "Musterstadt",
+    address: {
+        street: "Musterstraße",
+        houseNumber: "1",
+        postalCode: "12345",
+        city: "Musterstadt",
+    }
 }, {
     pflegekasseIK: "000000010",
     kostentraegerIK: "000000010",
@@ -106,10 +118,12 @@ const versicherte: Versicherter[] = [{
     firstName: "Jürgen",
     lastName: "Weber",
     birthday: new Date("1941-09-02"),
-    street: "Musterstraße",
-    houseNumber: "2",
-    postalCode: "12345",
-    city: "Musterstadt",
+    address: {
+        street: "Musterstraße",
+        houseNumber: "2",
+        postalCode: "12345",
+        city: "Musterstadt",
+    }
 }, {
     pflegekasseIK: "000000020",
     kostentraegerIK: "000000021",
@@ -118,10 +132,12 @@ const versicherte: Versicherter[] = [{
     firstName: "Paul",
     lastName: "Hofmann",
     birthday: new Date("1932-11-03"),
-    street: "Musterstraße",
-    houseNumber: "3",
-    postalCode: "12345",
-    city: "Musterstadt",
+    address: {
+        street: "Musterstraße",
+        houseNumber: "3",
+        postalCode: "12345",
+        city: "Musterstadt",
+    }
 }, {
     pflegekasseIK: "000000030",
     kostentraegerIK: "000000031",
@@ -130,10 +146,12 @@ const versicherte: Versicherter[] = [{
     firstName: "Sabine",
     lastName: "Schwarz",
     birthday: new Date("1942-10-04"),
-    street: "Musterstraße",
-    houseNumber: "4",
-    postalCode: "12345",
-    city: "Musterstadt",
+    address: {
+        street: "Musterstraße",
+        houseNumber: "4",
+        postalCode: "12345",
+        city: "Musterstadt",
+    }
 }, {
     pflegekasseIK: "000000040",
     kostentraegerIK: "000000031",
@@ -142,10 +160,12 @@ const versicherte: Versicherter[] = [{
     firstName: "Ingeborg",
     lastName: "Wagner",
     birthday: new Date("1936-02-05"),
-    street: "Musterstraße",
-    houseNumber: "5",
-    postalCode: "12345",
-    city: "Musterstadt",
+    address: {
+        street: "Musterstraße",
+        houseNumber: "5",
+        postalCode: "12345",
+        city: "Musterstadt",
+    }
 }, {
     pflegekasseIK: "000000030",
     kostentraegerIK: "000000031",
@@ -154,10 +174,12 @@ const versicherte: Versicherter[] = [{
     firstName: "Robert",
     lastName: "Schäfer",
     birthday: new Date("1937-06-06"),
-    street: "Musterstraße",
-    houseNumber: "6",
-    postalCode: "12345",
-    city: "Musterstadt",
+    address: {
+        street: "Musterstraße",
+        houseNumber: "6",
+        postalCode: "12345",
+        city: "Musterstadt",
+    }
 }, {
     pflegekasseIK: "000000050",
     kostentraegerIK: "000000050",
@@ -241,9 +263,9 @@ const pflegehilfsmittel: Leistung = {
     zuschlaege: [],
     hilfsmittel: {
         mehrwertsteuerart: "1",
-        zuzahlungsbetrag: 10.12,
+        gesetzlicheZuzahlungBetrag: 10.12,
         genehmigungskennzeichen: "genehmigt_123",
-        genehmigungsdatum: new Date("2021-03-01"),
+        genehmigungsDatum: new Date("2021-03-01"),
         kennzeichenPflegehilfsmittel: "00",
         bezeichnungPflegehilfsmittel: "Rollator",
     },
@@ -286,7 +308,7 @@ const kurzzeitpflege: Leistung = {
 
 export const payload1 = {
     billingData: {
-        dateiindikator: "0",
+        testIndicator: "0",
         rechnungsart: "1",
         rechnungsnummerprefix: "2021-0087",
         rechnungsdatum: new Date("2021-05-03"),
@@ -383,7 +405,7 @@ export const payload1 = {
 
 export const payload2 = {
     billingData: {
-        dateiindikator: "0",
+        testIndicator: "0",
         rechnungsart: "2",
         rechnungsnummerprefix: "2021-0267",
         abrechnungsmonat: new Date("2021-04-01"),
@@ -491,7 +513,7 @@ export const payload2 = {
 
 export const payload3 = {
     billingData: {
-        dateiindikator: "0",
+        testIndicator: "0",
         rechnungsart: "3",
         rechnungsnummerprefix: "2021-0398",
         rechnungsdatum: new Date("2021-05-03"),

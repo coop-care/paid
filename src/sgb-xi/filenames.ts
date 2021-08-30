@@ -2,11 +2,13 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, TestIndicator } from "../types"
+import { TestIndicator } from "../types"
+import { BillingData } from "./types"
+import { KassenartSchluessel } from "../kostentraeger/filename/codes"
 
 /** A.k.a. "logischer Dateiname" */
 export const makeAnwendungsreferenz = (
-    kassenart: string,
+    kassenart: KassenartSchluessel,
     laufendeDatenannahmeImJahr: number,
     {
         rechnungsart,

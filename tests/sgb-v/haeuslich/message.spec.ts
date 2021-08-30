@@ -31,6 +31,7 @@ describe("Häusliche Krankenpflege message", () => {
         }, [{
                 versicherter: {
                     pflegekasseIK: "000000004",
+                    kostentraegerIK: "999999999",
                     firstName: "Zaphod",
                     lastName: "Beeblebrox",
                     birthday: new Date("1337-01-23"),
@@ -107,6 +108,7 @@ describe("Häusliche Krankenpflege message", () => {
             }, {
                 versicherter: {
                     pflegekasseIK: "000000004",
+                    kostentraegerIK: "999999999",
                     versichertennummer: "versicherter",
                     versichertenstatus: "31000123456",
                     firstName: "Arthur",
