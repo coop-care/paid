@@ -4,13 +4,18 @@
   * The keys are sorted by the order they appear in the documentation
   */
 
-// 2.1 Schlüssel Rechnungsart
-export const rechnungsartSchluessel =  {
+/** 2.1 Schlüssel Rechnungsart for Pflege
+ * 
+ *  Whether this is a bill by the health care provider himself or by an accounting center (with or
+ *  without power to collect)
+ */
+ export const rechnungsartSchluessel =  {
     "1": "Abrechnung von Leistungserbringer und Zahlung an IK Leistungserbringer",
+    // note: also used if Leistungserbringer has several IKs
     "2": "Abrechnung über Abrechnungsstelle (ohne Inkassovollmacht) und Zahlung an IK Leistungserbringer",
     "3": "Abrechnung über Abrechnungsstelle (mit Inkassovollmacht) und Zahlung an IK Abrechnungsstelle",
 }
-export type RechnungsartSchluessel = keyof typeof rechnungsartSchluessel;
+export type RechnungsartSchluessel = keyof typeof rechnungsartSchluessel
 
 /** 2.2.1 Schlüssel Abrechnungscode */
 export const abrechnungscodeSchluessel = {

@@ -51,6 +51,19 @@ export const zuzahlungSchluessel = {
 }
 export type ZuzahlungSchluessel = keyof typeof zuzahlungSchluessel
 
+/** Whether this is a bill by the health care provider himself or by an accounting center (with or
+ *  without power to collect)
+ * 
+ *  documented in 8.1.4 Schlüssel Rechnungsart for Sonstige Leistungserbringer
+ */
+ export const rechnungsartSchluessel =  {
+    "1": "Abrechnung von Leistungserbringer und Zahlung an IK Leistungserbringer",
+    // note: also used if Leistungserbringer has several IKs
+    "2": "Abrechnung über Abrechnungsstelle (ohne Inkassovollmacht) und Zahlung an IK Leistungserbringer",
+    "3": "Abrechnung über Abrechnungsstelle (mit Inkassovollmacht) und Zahlung an IK Abrechnungsstelle",
+}
+export type RechnungsartSchluessel = keyof typeof rechnungsartSchluessel
+
 /** Abrechnungscode für Leistungen nach § 302 Abs. 2 SGB V
  * 
  *  documented in (a) 8.1.5.1, (b) 8.14 */
