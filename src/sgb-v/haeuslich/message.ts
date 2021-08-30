@@ -46,7 +46,7 @@ export const makeMessage = (
     // all Einsaetze must be sorted chronologically
     abrechnungsfaelle.forEach(abrechnungsfall => {
         abrechnungsfall.einsaetze.sort((a, b) => 
-        a.leistungsBeginn.getTime() - b.leistungsBeginn.getTime()
+            a.leistungsBeginn.getTime() - b.leistungsBeginn.getTime()
     )})
 
     const leGruppe = createLeistungserbringergruppe(rechnung.leistungserbringer, rechnung.kostentraegerIK)
