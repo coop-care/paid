@@ -138,8 +138,8 @@ export const arrayConstraints = <T>(
         const results = perItemConstraints(item)
         results.forEach(result => {
             if (result != undefined) {
-                result.path.unshift(key)
                 result.path.unshift(i)
+                result.path.unshift(key)
             }
         })
         return results

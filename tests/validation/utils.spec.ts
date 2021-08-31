@@ -2,7 +2,7 @@ import { ValidationResultType } from "../../src/validation/index"
 import { 
     error,
     isDate, isNumber, isVarchar, isInt, isArray, isRequired, isChar, 
-    isIK, isRechnungsnummer, isTruncatedIfTooLong
+    isIK, isRechnungsnummer, isTruncatedIfTooLong, arrayConstraints, valueConstraints
 } from "../../src/validation/utils"
 
 describe("validation utils", () => {
@@ -95,4 +95,41 @@ describe("validation utils", () => {
             isTruncatedIfTooLong(isVarchar({ a: "ab" }, "a", 2))
         ).toEqual(undefined)
     })
+
+    it("arrayConstraints", () => {
+        const test: TestObject = {
+            a: [{c: "hey"}, {c: "ho"}, {c: "let's go"}]
+        }
+
+        expect(
+            arrayConstraints<NestedTestObject>(test, "a", it => [isChar(it, "c", 2)])
+            .map(error => error?.path)
+        ).toEqual([
+            ["a", 0, "c"], // adds to the front of path array...
+            undefined,     // but doesn't touch non-error
+            ["a", 2, "c"]
+        ])
+    })
+
+    it("valueConstraints", () => {
+        const test: TestObject = {
+            b: {c: "hey"}
+        }
+
+        expect(
+            valueConstraints<NestedTestObject>(test, "b", it => [isChar(it, "c", 2), undefined])
+            .map(error => error?.path)
+        ).toEqual([
+            ["b", "c"], // adds to the front of path array...
+            undefined,  // but doesn't touch non-error
+        ])
+    })
 })
+
+type TestObject = {
+    a?: NestedTestObject[]
+    b?: NestedTestObject
+}
+type NestedTestObject = {
+    c: string
+}
