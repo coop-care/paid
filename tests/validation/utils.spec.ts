@@ -102,7 +102,7 @@ describe("validation utils", () => {
         }
 
         expect(
-            arrayConstraints<NestedTestObject>(test, "a", it => [isChar(it, "c", 2)])
+            arrayConstraints<NestedTestObject>(test, "a", item => [isChar(item, "c", 2)])
             .map(error => error?.path)
         ).toEqual([
             ["a", 0, "c"], // adds to the front of path array...
@@ -117,7 +117,7 @@ describe("validation utils", () => {
         }
 
         expect(
-            valueConstraints<NestedTestObject>(test, "b", it => [isChar(it, "c", 2), undefined])
+            valueConstraints<NestedTestObject>(test, "b", item => [isChar(item, "c", 2), undefined])
             .map(error => error?.path)
         ).toEqual([
             ["b", "c"], // adds to the front of path array...

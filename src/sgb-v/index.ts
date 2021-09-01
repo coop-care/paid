@@ -67,8 +67,8 @@ const groupByLeistungserbringer = <T extends BaseAbrechnungsfall>(
 ): [Leistungserbringer, T[]][] => 
     entriesGroupedBy2(invoices,
         invoice => invoice.leistungserbringer,
-        it => it.ik
-    ).map(([le, invoices]) => [le, invoices.flatMap(it => it.abrechnungsfaelle)])
+        institution => institution.ik
+    ).map(([le, invoices]) => [le, invoices.flatMap(invoice => invoice.abrechnungsfaelle)])
 
 /** Returns an array of tuples of [Pflegekasse IK, Abrechnungsfaelle[]] */
 const groupByPflegekasseIK = <T extends BaseAbrechnungsfall>(faelle: T[]): [string, T[]][] => 
@@ -82,7 +82,7 @@ const groupByKostentraeger = <T extends BaseAbrechnungsfall>(
 ): [KostentraegerInstitution, T[]][] => 
     entriesGroupedBy2(faelle, 
         fall => getKostentraeger(institutionsIndex, leistungserbringer, fall)!.kostentraeger,
-        it => it.ik
+        institution => institution.ik
     )
 
 /** Returns an array of tuples of [EncryptTo, Abrechnungsfaelle[]] */
@@ -93,7 +93,7 @@ const groupByEncryptTo = <T extends BaseAbrechnungsfall>(
 ): [KostentraegerInstitution, T[]][] => 
     entriesGroupedBy2(faelle, 
         fall => getKostentraeger(institutionsIndex, leistungserbringer, fall)!.encryptTo,
-        it => it.ik
+        institution => institution.ik
     )
 
 /** Returns an array of tuples of [Datenannahmestelle, Abrechnungsfaelle[]] */
@@ -104,7 +104,7 @@ const groupBySendTo = <T extends BaseAbrechnungsfall>(
 ): [KostentraegerInstitution, T[]][] => 
     entriesGroupedBy2(faelle, 
         fall => getKostentraeger(institutionsIndex, leistungserbringer, fall)!.sendTo,
-        it => it.ik
+        institution => institution.ik
     )
 
 const getKostentraeger = (
