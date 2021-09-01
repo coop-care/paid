@@ -112,8 +112,8 @@ const calculateGESList = <T extends BaseAbrechnungsfall>(
     calculateGesamtsummen: (abrechnungsfaelle: T[]) => Gesamtsummen
 ): Segment[] => {
     // ensure that 00 is always first
-    const strs = Object.keys(summenstatusSchluessel).sort()
-    return strs.map(str => {
+    const summenstatuses = Object.keys(summenstatusSchluessel).sort()
+    return summenstatuses.map(str => {
         const summenstatus = str as SummenstatusSchluessel
         const abrechnungsfalleForSummenstatus = getAbrechnungsfaelleBySummenstatus(abrechnungsfaelle, summenstatus)
         // we only want GES segments for non-empty groups
