@@ -49,7 +49,7 @@ export const makeMessage = (
             a.leistungsBeginn.getTime() - b.leistungsBeginn.getTime()
     )})
 
-    const leGruppe = createLeistungserbringergruppe(rechnung.leistungserbringer, rechnung.kostentraegerIK)
+    const leistungserbringerGruppe = createLeistungserbringergruppe(rechnung.leistungserbringer, rechnung.kostentraegerIK)
 
     const type = rechnung.leistungsbereich as HaeuslicheLeistungserbringerSammelgruppenSchluessel
 
@@ -64,7 +64,7 @@ export const makeMessage = (
                 ...fall.einsaetze.flatMap(einsatz => [
                     einsatzSegment(type, einsatz.leistungsBeginn, einsatz.leistungsEnde),
                     ...einsatz.abrechnungspositionen.flatMap(position => [
-                        einzelfallnachweisSegment(type, position, leGruppe),
+                        einzelfallnachweisSegment(type, position, leistungserbringerGruppe),
                         // add TXT segment only if there is any text
                         position.text ? TXT(position.text) : undefined,
                         // add ELP segments only if there are any einzelpositionen (= position is a Pauschale)
