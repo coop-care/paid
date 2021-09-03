@@ -1,7 +1,7 @@
 import { RechnungsartSchluessel } from "./codes"
 import { InstitutionListsIndex } from "../kostentraeger"
 import { TestIndicator } from "../types"
-import { entriesGroupedBy, entriesGroupedBy2 } from "../utils"
+import { entriesGroupedBy, entriesGroupedByAnyKey } from "../utils"
 import { LeistungserbringerSammelgruppenSchluessel } from "./codes"
 import { 
     BaseAbrechnungsfall,
@@ -65,7 +65,7 @@ import {
 const groupByLeistungserbringer = <T extends BaseAbrechnungsfall>(
     invoices: Invoice<T>[]
 ): [Leistungserbringer, T[]][] => 
-    entriesGroupedBy2(invoices,
+    entriesGroupedByAnyKey(invoices,
         invoice => invoice.leistungserbringer,
         institution => institution.ik
     ).map(([le, invoices]) => [le, invoices.flatMap(invoice => invoice.abrechnungsfaelle)])
@@ -80,7 +80,7 @@ const groupByKostentraeger = <T extends BaseAbrechnungsfall>(
     leistungserbringer: Leistungserbringer,
     faelle: T[]
 ): [KostentraegerInstitution, T[]][] => 
-    entriesGroupedBy2(faelle, 
+    entriesGroupedByAnyKey(faelle, 
         fall => getKostentraeger(institutionsIndex, leistungserbringer, fall)!.kostentraeger,
         institution => institution.ik
     )
@@ -91,7 +91,7 @@ const groupByEncryptTo = <T extends BaseAbrechnungsfall>(
     leistungserbringer: Leistungserbringer,
     faelle: T[]
 ): [KostentraegerInstitution, T[]][] => 
-    entriesGroupedBy2(faelle, 
+    entriesGroupedByAnyKey(faelle, 
         fall => getKostentraeger(institutionsIndex, leistungserbringer, fall)!.encryptTo,
         institution => institution.ik
     )
@@ -102,7 +102,7 @@ const groupBySendTo = <T extends BaseAbrechnungsfall>(
     leistungserbringer: Leistungserbringer,
     faelle: T[]
 ): [KostentraegerInstitution, T[]][] => 
-    entriesGroupedBy2(faelle, 
+    entriesGroupedByAnyKey(faelle, 
         fall => getKostentraeger(institutionsIndex, leistungserbringer, fall)!.sendTo,
         institution => institution.ik
     )

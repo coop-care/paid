@@ -17,7 +17,7 @@ export const entriesGroupedBy = <T, K extends string>(items: T[], getKey: (item:
     Object.entries(groupBy(items, getKey)) as [K, T[]][]
 
 /** Same as entriesGroupedBy but allows non-strings as first element (key) in the tuples */
-export const entriesGroupedBy2 = <T, K>(
+export const entriesGroupedByAnyKey = <T, K>(
     items: T[],
     getKey: (item: T) => K,
     getKeyToString: (key: K) => string
