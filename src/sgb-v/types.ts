@@ -6,7 +6,8 @@
 
 import { char } from "../edifact/formatter"
 import { CareProviderLocationSchluessel } from "../kostentraeger/types"
-import { Institution, Umsatzsteuer, Versicherter } from "../types"
+import { UmsatzsteuerBefreiungSchluessel } from "../sgb-xi/codes"
+import { Institution, Versicherter } from "../types"
 import { 
     AbrechnungscodeEinzelschluessel,
     BeleginformationSchluessel,
@@ -89,8 +90,11 @@ export type Leistungserbringer = Institution & {
     /** Per Kostenträger IK a 3-character id for the Sondertarif, see sgb-v/codes.ts */
     sondertarifJeKostentraegerIK: Record<string, string>
 
-    /** to be specified if care provider is income tax excempt */
-    umsatzsteuer?: Umsatzsteuer
+    /** Steuernummer (according to §14 Abs. 1a) OR Umsatzsteuer-Identifikationsnummer.
+     *  Mandatory if umsatzsteuerbefreit. */
+     umsatzsteuerOrdnungsnummer?: string
+     /** specified if income tax excempt */
+     umsatzsteuerBefreiung: UmsatzsteuerBefreiungSchluessel
 }
 
 export type BaseAbrechnungsfall = {

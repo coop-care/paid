@@ -27,19 +27,6 @@ export type Ansprechpartner = {
     phone?: string
 }
 
-export type Umsatzsteuer = {
-    /** Steuernummer (according to §14 Abs. 1a) OR Umsatzsteuer-Identifikationsnummer.
-     *  Mandatory if umsatzsteuerbefreit.
-     * 
-     *  ASK: documentation is vague on when it is mandatory or not. Also, in SGB XI it is called
-     *  "Ordnungsnummer", in SGB V it is called Steuernummer / Umsatzsteuer-Identifikationsnummer.
-     *  Is this the same thing?
-     */
-    identifikationsnummer?: string
-    /** specified if income tax excempt */
-    befreiung?: UmsatzsteuerBefreiungSchluessel
-}
-
 export type Versicherter = {
     pflegekasseIK: string
     /** DEPRECATED - TODO: The Kostenträger selection is not only dependent on the Pflegekasse! */

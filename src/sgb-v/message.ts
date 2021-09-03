@@ -90,7 +90,7 @@ export const makeSLGAMessage = <T extends BaseAbrechnungsfall>(
                  GES needs to be adjusted */ 
         FKT("01", r), 
         REC(r),
-        r.leistungserbringer.umsatzsteuer ? UST(r.leistungserbringer.umsatzsteuer) : undefined,
+        UST(r.leistungserbringer),
         ...createSkontoList(r.skontos),
         ...calculateGESList(abrechnungsfaelle, calculateGesamtsummen),
         NAM(r.leistungserbringer)

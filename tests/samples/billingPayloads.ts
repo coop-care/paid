@@ -18,9 +18,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "36",
     tarifbereich: "00",
-    umsatzsteuer: {
-        befreiung: "01"
-    },
+    umsatzsteuerBefreiung: "01",
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Nachbarschaftspflege in Wilhelmsburg gGmbH",
@@ -31,9 +29,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "35",
     tarifbereich: "05",
-    umsatzsteuer: {
-        befreiung: "01"
-    },
+    umsatzsteuerBefreiung: "01",
     sondertarifJeKostentraegerIK: {
         "000000010": "011"
     },
@@ -46,9 +42,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "36",
     tarifbereich: "02",
-    umsatzsteuer: {
-        identifikationsnummer: "123/456/78900",
-    },
+    umsatzsteuerOrdnungsnummer: "123/456/78900",
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Von Mensch zu Mensch gGmbH",
@@ -59,9 +53,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "35",
     tarifbereich: "01",
-    umsatzsteuer: {
-        befreiung: "01"
-    },
+    umsatzsteuerBefreiung: "01",
     sondertarifJeKostentraegerIK: {},
 }, {
     name: "Pflegedienst Neukölln GmbH",
@@ -72,9 +64,7 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "36",
     tarifbereich: "23",
-    umsatzsteuer: {
-        identifikationsnummer: "012/345/67890"
-    },
+    umsatzsteuerOrdnungsnummer: "012/345/67890",
     sondertarifJeKostentraegerIK: {},
 }];
 

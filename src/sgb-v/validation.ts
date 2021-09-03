@@ -1,11 +1,9 @@
 import { 
-    Umsatzsteuer,
     Versicherter
 } from "../types"
 import { 
     constraintsInstitution, 
     constraintsVersicherter, 
-    constraintsUmsatzsteuer, 
     constraintsIKToSondertarif
 } from "../validation"
 import { 
@@ -33,7 +31,8 @@ export const constraintsLeistungserbringer = (l: Leistungserbringer) => [
     isRequired(l, "location"),
     isRequired(l, "sondertarifJeKostentraegerIK"),
     ...valueConstraints<Record<string, string>>(l, "sondertarifJeKostentraegerIK", constraintsIKToSondertarif),
-    ...valueConstraints<Umsatzsteuer>(l, "umsatzsteuer", constraintsUmsatzsteuer)
+    isOptionalVarchar(l, "umsatzsteuerOrdnungsnummer", 20),
+    // umsatzsteuerBefreiung is optional
 ]
 
 export const constraintsBaseAbrechnungsfall = (a: BaseAbrechnungsfall) => [

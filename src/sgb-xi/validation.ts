@@ -185,8 +185,8 @@ export const validate = (invoices: Invoice[], billing: BillingData) => {
         isFailing([
           !failingIK(invoice?.leistungserbringer?.ik)
             || institutionskennzeichenIncorrect("leistungserbringerIK"),
-          (invoice?.leistungserbringer?.umsatzsteuer?.befreiung == "01"
-            || !!invoice?.leistungserbringer?.umsatzsteuer?.identifikationsnummer)
+          (invoice?.leistungserbringer?.umsatzsteuerBefreiung == "01"
+            || !!invoice?.leistungserbringer?.umsatzsteuerOrdnungsnummer)
             || requiredValueMissing("umsatzsteuerOrdnungsnummer"),
           Object.keys(invoice?.leistungserbringer?.sondertarifJeKostentraegerIK || {})
             .every(ik => !failingIK(ik))

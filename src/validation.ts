@@ -1,4 +1,4 @@
-import { Address, Ansprechpartner, Institution, Umsatzsteuer, Versicherter } from "./types"
+import { Address, Ansprechpartner, Institution, Versicherter } from "./types"
 import { 
     arrayConstraints, valueConstraints,
     isArray, isChar, isVarchar, isDate, isIK, isInt, isRequired,
@@ -47,10 +47,6 @@ const constraintsAnsprechpartner = (a: Ansprechpartner) => {
         isTruncatedIfTooLong(isVarchar(a, "name", 30 - phoneNumberLength))
     ]
 }
-
-export const constraintsUmsatzsteuer = (u: Umsatzsteuer) => [
-    isOptionalVarchar(u, "identifikationsnummer", 20)
-]
 
 export const constraintsVersicherter = (v: Versicherter) => [
     isIK(v, "pflegekasseIK"),

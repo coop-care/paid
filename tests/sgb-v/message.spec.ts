@@ -29,10 +29,8 @@ describe("SGB V messages", () => {
                 location: "HH",
                 tarifbereich: "24",
                 sondertarifJeKostentraegerIK: {"000000003": "XXX"},
-                umsatzsteuer: {
-                    identifikationsnummer: "111222333",
-                    befreiung: "01"
-                }
+                umsatzsteuerOrdnungsnummer: "111222333",
+                umsatzsteuerBefreiung: "01"
             },
             rechnungssteller: {
                 name: "RS",

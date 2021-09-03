@@ -1,7 +1,6 @@
 import { 
     Institution, 
     TestIndicator, 
-    Umsatzsteuer, 
     Versicherter
 } from "../types"
 import { 
@@ -12,6 +11,7 @@ import {
     QualifikationsabhaengigeVerguetungSchluessel,
     RechnungsartSchluessel,
     TarifbereichSchluessel,
+    UmsatzsteuerBefreiungSchluessel,
     VerguetungsartSchluessel,
     ZuschlagsartSchluessel,
     ZuschlagsberechnungSchluessel,
@@ -73,12 +73,11 @@ export type Leistungserbringer = Institution & {
     /** Per Kostenträger IK a 3-character id for the SGB XI Sondertarif, see sgb-xi/codes.ts */
     sondertarifJeKostentraegerIK: Record<string, string>
 
-    /** to be specified if care provider is income tax excempt. Apparently not optional for SGB XI
-     * 
-     *  ASK: SGB-V documentation notes that it must only be specified if income is tax-excempt. 
-     *  SGB XI documentation sounds like it is never optional. So, what now?
-     */
-    umsatzsteuer?: Umsatzsteuer
+    /** Steuernummer (according to §14 Abs. 1a) OR Umsatzsteuer-Identifikationsnummer.
+     *  Mandatory if umsatzsteuerbefreit. */
+    umsatzsteuerOrdnungsnummer?: string
+    /** specified if income tax excempt */
+    umsatzsteuerBefreiung?: UmsatzsteuerBefreiungSchluessel
 }
 
 export type Abrechnungsfall = {

@@ -6,8 +6,7 @@ import {
     Amounts, 
     Versicherter,
     Institution,
-    TestIndicator,
-    Umsatzsteuer
+    TestIndicator
 } from "../types";
 import {
     BillingData, 
@@ -138,9 +137,9 @@ export const SRD = (
 );
 
 export const UST = ({
-    identifikationsnummer = "",
-    befreiung = "",
-}: Umsatzsteuer) => segment(
+    umsatzsteuerOrdnungsnummer: identifikationsnummer = "",
+    umsatzsteuerBefreiung: befreiung = "",
+}: Leistungserbringer) => segment(
     "UST",
     mask(identifikationsnummer),
     befreiung.length ? "J" : "",
