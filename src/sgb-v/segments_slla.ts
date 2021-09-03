@@ -100,8 +100,11 @@ export const NAD = (v: Versicherter) => segment(
     v.address?.countryCode
 )
 
-function concatStreetAndHousenumber(street: string, houseNumber: string, maxLength: number): string {
-    if (houseNumber.length == 0) {
+function concatStreetAndHousenumber(street: string | undefined, houseNumber: string | undefined, maxLength: number): string | undefined {
+    if (!street || street.length == 0) {
+        return undefined
+    }
+    else if (!houseNumber || houseNumber.length == 0) {
         return street.substr(0, maxLength)
     } else {
         /** If we have to cut, we should cut the street, not the housenumber - if possible */

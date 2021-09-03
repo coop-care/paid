@@ -56,16 +56,29 @@ export const constraintsVersicherter = (v: Versicherter) => [
     isTruncatedIfTooLong(isVarchar(v, "firstName", 30)), // 45 for SGB XI 
     isTruncatedIfTooLong(isVarchar(v, "lastName", 45)), // 47 for SGB V
     isDate(v, "birthday"),
-    // if versichertennummer or versichertenstatus is not specified, address is mandatory
-    !v.versichertennummer || !v.versichertenstatus ? isRequired(v, "address") : undefined,
+    /* if versichertennummer or versichertenstatus is not specified, address is mandatory and every
+       field in address is mandatory (except country) */
+    ...(!v.versichertennummer || !v.versichertenstatus ? [
+            isRequired(v, "address"),
+            ...valueConstraints<Address>(v, "address", constraintsWhenAddressIsMandatory),
+        ] : []
+    ),
+    // otherwise, if specified, the fields in address must just be not too long
     ...valueConstraints<Address>(v, "address", constraintsAddress),
 ]
 
+const constraintsWhenAddressIsMandatory = (a: Address) => [
+    isRequired(a, "street"),
+    isRequired(a, "houseNumber"),
+    isRequired(a, "postalCode"),
+    isRequired(a, "city")
+]
+
 const constraintsAddress = (a: Address) => [
-    isTruncatedIfTooLong(isVarchar(a, "street", 24)), // street + housenumber is max 30, 46 for SGB XI
-    isTruncatedIfTooLong(isVarchar(a, "houseNumber", 5)), // 9 for SGB XI
-    isTruncatedIfTooLong(isVarchar(a, "postalCode", 7)), // 10 for SGB XI
-    isTruncatedIfTooLong(isVarchar(a, "city", 25)), // 40 for SGB XI
+    isTruncatedIfTooLong(isOptionalVarchar(a, "street", 24)), // street + housenumber is max 30, 46 for SGB XI
+    isTruncatedIfTooLong(isOptionalVarchar(a, "houseNumber", 5)), // 9 for SGB XI
+    isTruncatedIfTooLong(isOptionalVarchar(a, "postalCode", 7)), // 10 for SGB XI
+    isTruncatedIfTooLong(isOptionalVarchar(a, "city", 25)), // 40 for SGB XI
     /* SGB XI in general allows for longer address strings, but when both are used, I guess a 
        warning should be emitted when the string is too long for any SGB ...*/
 ]

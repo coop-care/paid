@@ -51,13 +51,13 @@ export type Versicherter = {
 export type Address = {
     /** street + housenumber longer than 30 characters (SGB V) will be cut off.
      *  For SGB XI, streets longer than 46 characters will be cut off. */
-    street: string
+    street?: string
     /** housenumbers longer than 9 characters will be cut off (SGB XI) */
-    houseNumber: string
+    houseNumber?: string
     /** Postal codes longer than 7 characters (SGB V) or 10 characters (SGB XI) will be cut off. */
-    postalCode: string
+    postalCode?: string
     /** City names longer than 25 characters (SGB V) or 40 characters (SGB XI) will be cut off. */
-    city: string
+    city?: string
     /** to be specified if the country is not Germany. Ignored for SGB XI */
     countryCode?: LaenderkennzeichenSchluessel
 }

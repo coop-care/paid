@@ -192,9 +192,9 @@ export const NAD = ({
     mask(lastName.substr(0, 45)),
     date(birthday),
     mask(address?.street?.substr(0, 46) || ""),
-    mask(address?.houseNumber.substr(0, 9) || ""),
-    mask(address?.postalCode.substr(0, 10) || ""),
-    mask(address?.city.substr(0, 40) || "")
+    mask(address?.houseNumber?.substr(0, 9) || ""),
+    mask(address?.postalCode?.substr(0, 10) || ""),
+    mask(address?.city?.substr(0, 40) || "")
 );
 
 export const MAN = (
