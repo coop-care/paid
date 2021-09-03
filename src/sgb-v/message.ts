@@ -70,7 +70,7 @@ export const makeSLGA_SammelrechnungMessage = <T extends BaseAbrechnungsfall>(
     header: elements(["SLGA", "16", "0", "0"]),
     segments: [
         /* NOTE: if any other verarbeitungskennzeichen than "01" is supported, the calculation of 
-                GES needs to be adjusted */ 
+                GES needs to be adjusted, which only applies to Heilmittelerbringer right now */ 
         FKT_Sammelrechnung("01", rechnung),
         REC_Sammelrechnung(rechnung),
         ...createSkontoList(rechnung.skontos),
