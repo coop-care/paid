@@ -14,10 +14,10 @@ import { sumBy } from "../../utils"
 import { HaeuslicheLeistungserbringerSammelgruppenSchluessel } from "../codes"
 import { INV, NAD, TXT, DIA, SKZ, FKT, REC } from "../segments_slla"
 import { 
-    calculateBruttobetrag, 
     createLeistungserbringergruppe,
     Einzelrechnung
 } from "../types"
+import { calculateBruttobetrag } from "../calculations"
 import { 
     einsatzSegment,
     BES,

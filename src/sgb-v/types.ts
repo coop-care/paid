@@ -127,9 +127,6 @@ export type BaseAbrechnungsposition = {
     text?: string
 }
 
-export const calculateBruttobetrag = (p: BaseAbrechnungsposition): number =>
-    Math.round(100 * p.einzelpreis * p.anzahl) / 100
-
 /** Represents a prescription/voucher (Verordnung, Beleg) from a doctor */
 export type Verordnung = {
     /** Content of the field "Betriebsstätten-Nr." from the prescription, if specified */
