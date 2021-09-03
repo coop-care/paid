@@ -47,15 +47,15 @@ export const einsatzSegment = (
 /** Einzelfallnachweis Häusliche Krankenpflege / Haushaltshilfe */
 export const einzelfallnachweisSegment = (
     type: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
-    a: Abrechnungsposition,
-    le: Leistungserbringergruppe
+    { positionsnummer, anzahl,  einzelpreis, gefahreneKilometer }: Abrechnungsposition,
+    leistungserbringergruppe: Leistungserbringergruppe
 ) => segment(
     type == "C" ? "EHK" : "EHH",
-    leistungserbringergruppeCode(le),
-    haeuslicheKrankenpflegePositionsnummerCode(a.positionsnummer),
-    decimal(a.anzahl, 4, 2),
-    decimal(a.einzelpreis, 10, 2),
-    int(a.gefahreneKilometer, 0, 999999)
+    leistungserbringergruppeCode(leistungserbringergruppe),
+    haeuslicheKrankenpflegePositionsnummerCode(positionsnummer),
+    decimal(anzahl, 4, 2),
+    decimal(einzelpreis, 10, 2),
+    int(gefahreneKilometer, 0, 999999)
 )
 
 /** Erbrachte unterschiedliche Leistungen je Leistungspauschale 
@@ -63,24 +63,31 @@ export const einzelfallnachweisSegment = (
  *  To be specified X times if EHK.positionsnummer was a "Leistungspauschale". Each the single 
  *  services provided need to be listed here then.
 */
-export const ELP = (e: Einzelposition) => segment(
+export const ELP = ({ positionsnummer, anzahl }: Einzelposition) => segment(
     "ELP",
-    haeuslicheKrankenpflegePositionsnummerCode(e.positionsnummer),
-    decimal(e.anzahl, 4, 2)
+    haeuslicheKrankenpflegePositionsnummerCode(positionsnummer),
+    decimal(anzahl, 4, 2)
 )
 
 /** Zusatzinfo Verordnung für Häusliche Krankenpflege / Haushaltshilfe */
 export const verordnungSegment = (
     type: HaeuslicheLeistungserbringerSammelgruppenSchluessel,
-    v: Verordnung
+    {
+        betriebsstaettennummer,
+        vertragsarztnummer,
+        verordnungsDatum,
+        unfall,
+        sonstigeEntschaedigung,
+        verordnungsBesonderheiten
+    }: Verordnung
 ) => segment(
     type == "C" ? "ZHK" : "ZHH",
-    varchar(v.betriebsstaettennummer ?? "999999999", 9),
-    varchar(v.vertragsarztnummer ?? "999999999", 9),
-    date(v.verordnungsDatum),
-    v.unfall,
-    v.sonstigeEntschaedigung,
-    v.verordnungsBesonderheiten
+    varchar(betriebsstaettennummer ?? "999999999", 9),
+    varchar(vertragsarztnummer ?? "999999999", 9),
+    date(verordnungsDatum),
+    unfall,
+    sonstigeEntschaedigung,
+    verordnungsBesonderheiten
 )
 
 /** Betrags-Summen 

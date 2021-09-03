@@ -13,7 +13,7 @@ import { Leistungserbringergruppe, leistungserbringergruppeCode } from "../types
 
 /** Einzelfallnachweis Kurzzeitpflege  */
 export const EHP = (
-    le: Leistungserbringergruppe,
+    leistungserbringergruppe: Leistungserbringergruppe,
     /** Abrechnungspositionsnummer für Kurzzeitpflege. See ./codes.ts */
     positionsnummer: string,
     amount: number,
@@ -25,7 +25,7 @@ export const EHP = (
     serviceEndDate: Date,
 ) => segment(
     "EHP",
-    leistungserbringergruppeCode(le),
+    leistungserbringergruppeCode(leistungserbringergruppe),
     char(positionsnummer, 7),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),

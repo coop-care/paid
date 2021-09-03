@@ -29,15 +29,21 @@ import {
  *  Contains information about care provider, IK of health insurance card */
 export const FKT = (
     verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel, 
-    r: Einzelrechnung
+    {
+        leistungserbringer,
+        kostentraegerIK,
+        pflegekasseIK,
+        rechnungsart,
+        rechnungssteller
+    }: Einzelrechnung
 ) => segment(
     "FKT",
     verarbeitungskennzeichen,
     undefined,
-    char(r.leistungserbringer.ik, 9),
-    char(r.kostentraegerIK, 9),
-    char(r.pflegekasseIK, 9),
-    char(r.rechnungsart == "3" ? r.rechnungssteller.ik : undefined, 9)
+    char(leistungserbringer.ik, 9),
+    char(kostentraegerIK, 9),
+    char(pflegekasseIK, 9),
+    char(rechnungsart == "3" ? rechnungssteller.ik : undefined, 9)
 )
 
 
@@ -49,16 +55,21 @@ export const REC = SLGA_REC
 /** Information Versicherte
  * 
  *  Contains information about insuree */
-export const INV = (a: BaseAbrechnungsfall) => segment(
+export const INV = ({
+    versicherter,
+    beleginformation,
+    belegnummer,
+    besondereVersorgungsform
+}: BaseAbrechnungsfall) => segment(
     "INV",
-    varchar(a.versicherter.versichertennummer, 12),
+    varchar(versicherter.versichertennummer, 12),
     /* only those digits of the status are specified that are visible on the prescription. I.e. 
        there could be more or less than 5 characters. If it is less than 5, they are padded with 
        "0"s at the END, if it is more than 5, the digits at the end are cut off */
-    char(a.versicherter.versichertenstatus?.substring(0, 5)?.padEnd(5, "0"), 5),
-    a.beleginformation,
-    varchar(a.belegnummer, 10),
-    varchar(a.besondereVersorgungsform, 25)
+    char(versicherter.versichertenstatus?.substring(0, 5)?.padEnd(5, "0"), 5),
+    beleginformation,
+    varchar(belegnummer, 10),
+    varchar(besondereVersorgungsform, 25)
 )
 
 /** ursprüngliche Rechnung/Zahlung
@@ -89,18 +100,27 @@ export const URI = (
 /** Name und Adresse Versicherter
  * 
  *  Contains additional information about the insuree */
-export const NAD = (v: Versicherter) => segment(
+export const NAD = ({
+    lastName,
+    firstName,
+    birthday,
+    address
+}: Versicherter) => segment(
     "NAD",
-    v.lastName.substr(0, 47),
-    v.firstName.substr(0, 30),
-    date(v.birthday),
-    v.address ? concatStreetAndHousenumber(v.address.street, v.address.houseNumber, 30) : undefined,
-    v.address?.postalCode?.substr(0, 7),
-    v.address?.city?.substr(0, 25),
-    v.address?.countryCode
+    lastName.substr(0, 47),
+    firstName.substr(0, 30),
+    date(birthday),
+    address ? concatStreetAndHousenumber(address.street, address.houseNumber, 30) : undefined,
+    address?.postalCode?.substr(0, 7),
+    address?.city?.substr(0, 25),
+    address?.countryCode
 )
 
-function concatStreetAndHousenumber(street: string | undefined, houseNumber: string | undefined, maxLength: number): string | undefined {
+function concatStreetAndHousenumber(
+    street: string | undefined,
+    houseNumber: string | undefined,
+    maxLength: number
+): string | undefined {
     if (!street || street.length == 0) {
         return undefined
     }
@@ -138,18 +158,22 @@ export const IMG = (
 export const TXT = (description: string) => segment("TXT", description.substr(0, 70))
 
 /** Diagnose */
-export const DIA = (d: Diagnose) => segment(
+export const DIA = ({ diagnoseschluessel, diagnosetext }: Diagnose) => segment(
     "DIA",
-    varchar(d.diagnoseschluessel, 12),
-    d.diagnosetext?.substr(0, 70)
+    varchar(diagnoseschluessel, 12),
+    diagnosetext?.substr(0, 70)
 )
 
 /** Kostenzusage */
-export const SKZ = (k: Kostenzusage) => segment(
+export const SKZ = ({
+    genehmigungsKennzeichen,
+    genehmigungsDatum,
+    kostenzusageGenehmigung
+}: Kostenzusage) => segment(
     "SKZ",
-    varchar(k.genehmigungsKennzeichen, 20),
-    date(k.genehmigungsDatum),
-    k.kostenzusageGenehmigung
+    varchar(genehmigungsKennzeichen, 20),
+    date(genehmigungsDatum),
+    kostenzusageGenehmigung
 )
 
 /** Mehrwertsteuer

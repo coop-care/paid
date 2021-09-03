@@ -63,7 +63,7 @@ export const makeInterchangeHeader = (
 )
 
 export const makeSLGA_SammelrechnungMessage = <T extends BaseAbrechnungsfall>(
-    s: Sammelrechnung,
+    rechnung: Sammelrechnung,
     abrechnungsfaelle: T[],
     calculateGesamtsummen: (abrechnungsfaelle: T[]) => Gesamtsummen
 ): Message => ({
@@ -71,16 +71,16 @@ export const makeSLGA_SammelrechnungMessage = <T extends BaseAbrechnungsfall>(
     segments: [
         /* NOTE: if any other verarbeitungskennzeichen than "01" is supported, the calculation of 
                 GES needs to be adjusted */ 
-        FKT_Sammelrechnung("01", s),
-        REC_Sammelrechnung(s),
-        ...createSkontoList(s.skontos),
+        FKT_Sammelrechnung("01", rechnung),
+        REC_Sammelrechnung(rechnung),
+        ...createSkontoList(rechnung.skontos),
         ...calculateGESList(abrechnungsfaelle, calculateGesamtsummen),
-        NAM(s.rechnungssteller)
+        NAM(rechnung.rechnungssteller)
     ]
 })
 
 export const makeSLGAMessage = <T extends BaseAbrechnungsfall>(
-    r: Einzelrechnung,
+    rechnung: Einzelrechnung,
     abrechnungsfaelle: T[],
     calculateGesamtsummen: (abrechnungsfaelle: T[]) => Gesamtsummen
 ): Message => ({
@@ -88,12 +88,12 @@ export const makeSLGAMessage = <T extends BaseAbrechnungsfall>(
     segments: [
         /* NOTE: if any other verarbeitungskennzeichen than "01" is supported, the calculation of 
                  GES needs to be adjusted */ 
-        FKT("01", r), 
-        REC(r),
-        UST(r.leistungserbringer),
-        ...createSkontoList(r.skontos),
+        FKT("01", rechnung), 
+        REC(rechnung),
+        UST(rechnung.leistungserbringer),
+        ...createSkontoList(rechnung.skontos),
         ...calculateGESList(abrechnungsfaelle, calculateGesamtsummen),
-        NAM(r.leistungserbringer)
+        NAM(rechnung.leistungserbringer)
     // filter out undefined (left out segments)
     ].filter(segment => segment !== undefined) as Segment[]
 })

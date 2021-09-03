@@ -3,10 +3,7 @@
   */
 
 import { LaenderkennzeichenSchluessel } from "./country_codes"
-import { 
-    PflegegradSchluessel, 
-    UmsatzsteuerBefreiungSchluessel,
-} from "./sgb-xi/codes"
+import { PflegegradSchluessel } from "./sgb-xi/codes"
 
 export const testIndicator = {
     "0": "Testdatei",

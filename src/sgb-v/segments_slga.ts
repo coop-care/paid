@@ -26,63 +26,84 @@ import {
  *  FKT in SGLA that accompanies an SLLA */
  export const FKT = (
     verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel,
-    r: Einzelrechnung
+    {
+        leistungserbringer,
+        kostentraegerIK,
+        pflegekasseIK,
+        senderIK
+    }: Einzelrechnung
 ) => segment(
     "FKT",
     verarbeitungskennzeichen, 
     undefined, 
-    char(r.leistungserbringer.ik, 9), 
-    char(r.kostentraegerIK, 9), 
-    char(r.pflegekasseIK, 9),
-    char(r.senderIK, 9)
+    char(leistungserbringer.ik, 9), 
+    char(kostentraegerIK, 9), 
+    char(pflegekasseIK, 9),
+    char(senderIK, 9)
 )
 
 /** FKT in Sammelrechnungs-SLGA */
 export const FKT_Sammelrechnung = (
     verarbeitungskennzeichen: VerarbeitungskennzeichenSchluessel,
-    r: Sammelrechnung
+    {
+        rechnungssteller,
+        kostentraegerIK,
+        senderIK
+    }: Sammelrechnung
 ) => segment(
     "FKT",
     verarbeitungskennzeichen,
     "J",
-    char(r.rechnungssteller.ik, 9),
-    char(r.kostentraegerIK, 9),
+    char(rechnungssteller.ik, 9),
+    char(kostentraegerIK, 9),
     undefined,
-    char(r.senderIK, 9)
+    char(senderIK, 9)
 )
 
 /** Rechnung / Zahlung
  * 
  *  Contains information about bill number and date */
- export const REC = (r: Einzelrechnung) => segment(
+export const REC = ({
+     sammelRechnungsnummer,
+     einzelRechnungsnummer,
+     rechnungsdatum,
+     rechnungsart
+}: Einzelrechnung) => segment(
     "REC",
-    [varchar(r.sammelRechnungsnummer, 14), varchar(r.einzelRechnungsnummer ?? "0", 6)],
-    date(r.rechnungsdatum),
-    r.rechnungsart
+    [varchar(sammelRechnungsnummer, 14), varchar(einzelRechnungsnummer ?? "0", 6)],
+    date(rechnungsdatum),
+    rechnungsart
 )
 
-export const REC_Sammelrechnung = (r: Sammelrechnung) => segment(
+export const REC_Sammelrechnung = ({
+    sammelRechnungsnummer,
+    rechnungsdatum,
+    rechnungsart
+}: Sammelrechnung) => segment(
     "REC",
-    [varchar(r.sammelRechnungsnummer, 14), "0"],
-    date(r.rechnungsdatum),
-    r.rechnungsart
+    [varchar(sammelRechnungsnummer, 14), "0"],
+    date(rechnungsdatum),
+    rechnungsart
 )
 
 
 /** Umsatzsteuer
  * 
  *  Not to be used in Sammelrechnung-SLGA */
- export const UST = (l: Leistungserbringer) => segment(
+ export const UST = ({
+    umsatzsteuerOrdnungsnummer,
+    umsatzsteuerBefreiung
+}: Leistungserbringer) => segment(
     "UST",
-    varchar(l.umsatzsteuerOrdnungsnummer, 20),
-    l.umsatzsteuerBefreiung ? "J" : undefined
+    varchar(umsatzsteuerOrdnungsnummer, 20),
+    umsatzsteuerBefreiung ? "J" : undefined
 )
 
 /** Skonto */
- export const SKO = (s: Skonto) => segment(
+ export const SKO = ({ skontoPercent, zahlungsziel }: Skonto) => segment(
     "SKO",
-    decimal(s.skontoPercent, 2, 2),
-    int(s.zahlungsziel, 0, 999)
+    decimal(skontoPercent, 2, 2),
+    int(zahlungsziel, 0, 999)
 )
 
 
@@ -154,10 +175,10 @@ export const NAM = (institution: Institution): Segment => {
     // we need exactly 3 Ansprechpartner - the rest is filled with undefined 
     const ansprechpartner3: Array<string | undefined> = [undefined, undefined, undefined]
     for (let i = 0; i < 3; i++) {
-        const a = institution.ansprechpartner[i]
-        if (a) {
+        const ansprechnpartner = institution.ansprechpartner[i]
+        if (ansprechnpartner) {
             // f.e. {name: "John", phone: "123"} becomes "John, 123"
-            ansprechpartner3[i] = Object.values(a).filter(Boolean).join(", ").substr(0, 30)
+            ansprechpartner3[i] = Object.values(ansprechnpartner).filter(Boolean).join(", ").substr(0, 30)
         }
     }
 

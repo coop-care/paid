@@ -69,15 +69,17 @@ export const makeMessage = (
                         position.text ? TXT(position.text) : undefined,
                         // add ELP segments only if there are any einzelpositionen (= position is a Pauschale)
                         ...("einzelpositionen" in position ? 
-                            (position as PauschaleAbrechnungsposition).einzelpositionen.map(e => ELP(e)) : 
-                            []
+                            (position as PauschaleAbrechnungsposition)
+                              .einzelpositionen
+                              .map(einzelposition => ELP(einzelposition))
+                            : []
                         )
                     ])
                 ]),
                 ...fall.verordnungen.flatMap(verordnung => [
                     verordnungSegment(type, verordnung),
-                    ...verordnung.diagnosen.map(d => DIA(d)),
-                    ...verordnung.kostenzusagen.map(k => SKZ(k))
+                    ...verordnung.diagnosen.map(diagnose => DIA(diagnose)),
+                    ...verordnung.kostenzusagen.map(kostenzusage => SKZ(kostenzusage))
                 ]),
                 BES(sumBy(
                     fall.einsaetze.flatMap(einsatz => einsatz.abrechnungspositionen),

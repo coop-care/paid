@@ -20,53 +20,53 @@ import {
     Einzelposition
 } from "./types"
 
-export const constraintsAbrechnungsfall = (a: Abrechnungsfall) => [
-    ...constraintsBaseAbrechnungsfall(a),
-    isArray(a, "einsaetze", 1),
-    ...arrayConstraints<Einsatz>(a, "einsaetze", constraintsEinsatz),
-    isArray(a, "verordnungen", 1),
-    ...arrayConstraints<Verordnung>(a, "verordnungen", constraintsVerordnung),
+export const constraintsAbrechnungsfall = (fall: Abrechnungsfall) => [
+    ...constraintsBaseAbrechnungsfall(fall),
+    isArray(fall, "einsaetze", 1),
+    ...arrayConstraints<Einsatz>(fall, "einsaetze", constraintsEinsatz),
+    isArray(fall, "verordnungen", 1),
+    ...arrayConstraints<Verordnung>(fall, "verordnungen", constraintsVerordnung),
 ]
 
-const constraintsEinsatz = (e: Einsatz) => [
-    isDate(e, "leistungsBeginn"),
-    isDate(e, "leistungsEnde"),
-    isArray(e, "abrechnungspositionen", 1),
-    ...arrayConstraints<Abrechnungsposition>(e, "abrechnungspositionen", constraintsAbrechnungsposition)
+const constraintsEinsatz = (einsatz: Einsatz) => [
+    isDate(einsatz, "leistungsBeginn"),
+    isDate(einsatz, "leistungsEnde"),
+    isArray(einsatz, "abrechnungspositionen", 1),
+    ...arrayConstraints<Abrechnungsposition>(einsatz, "abrechnungspositionen", constraintsAbrechnungsposition)
 ]
 
-const constraintsAbrechnungsposition = (p: Abrechnungsposition) => {
-    if ("einzelpositionen" in p) {
+const constraintsAbrechnungsposition = (position: Abrechnungsposition) => {
+    if ("einzelpositionen" in position) {
         return [
-            ...constraintsBaseAbrechnungsposition(p), 
-            isRequired(p, "positionsnummer"),
-            ...valueConstraints<PauschalePositionsnummer>(p, "positionsnummer", constraintsPauschalePositionsnummer),
-            isArray(p, "einzelpositionen", 1),
-            ...arrayConstraints<Einzelposition>(p, "einzelpositionen", constraintsEinzelposition)
+            ...constraintsBaseAbrechnungsposition(position), 
+            isRequired(position, "positionsnummer"),
+            ...valueConstraints<PauschalePositionsnummer>(position, "positionsnummer", constraintsPauschalePositionsnummer),
+            isArray(position, "einzelpositionen", 1),
+            ...arrayConstraints<Einzelposition>(position, "einzelpositionen", constraintsEinzelposition)
         ]
     } else {
         return [
-            ...constraintsBaseAbrechnungsposition(p), 
-            isRequired(p, "positionsnummer"),
-            ...valueConstraints<EinzelPositionsnummer>(p, "positionsnummer", constraintsEinzelPositionsnummer),
+            ...constraintsBaseAbrechnungsposition(position), 
+            isRequired(position, "positionsnummer"),
+            ...valueConstraints<EinzelPositionsnummer>(position, "positionsnummer", constraintsEinzelPositionsnummer),
         ]
     }
 }
 
-const constraintsEinzelposition = (e: Einzelposition) => [
-    isNumber(e, "anzahl", 1, 1e4),
-    isRequired(e, "positionsnummer"),
-    ...valueConstraints<EinzelPositionsnummer>(e, "positionsnummer", constraintsEinzelPositionsnummer),
+const constraintsEinzelposition = (position: Einzelposition) => [
+    isNumber(position, "anzahl", 1, 1e4),
+    isRequired(position, "positionsnummer"),
+    ...valueConstraints<EinzelPositionsnummer>(position, "positionsnummer", constraintsEinzelPositionsnummer),
 ]
 
-const constraintsPauschalePositionsnummer = (p: PauschalePositionsnummer) => [
-    isRequired(p, "gesetzlicheLebensgrundlage"),
-    isRequired(p, "verguetungsArt"),
-    isRequired(p, "versorgungsArt")
+const constraintsPauschalePositionsnummer = (position: PauschalePositionsnummer) => [
+    isRequired(position, "gesetzlicheLebensgrundlage"),
+    isRequired(position, "verguetungsArt"),
+    isRequired(position, "versorgungsArt")
 ]
 
-const constraintsEinzelPositionsnummer = (p: EinzelPositionsnummer) => [
-    isRequired(p, "gesetzlicheLebensgrundlage"),
-    isRequired(p, "verguetungsArt"),
-    isRequired(p, "versorgungsArt")
+const constraintsEinzelPositionsnummer = (position: EinzelPositionsnummer) => [
+    isRequired(position, "gesetzlicheLebensgrundlage"),
+    isRequired(position, "verguetungsArt"),
+    isRequired(position, "versorgungsArt")
 ]

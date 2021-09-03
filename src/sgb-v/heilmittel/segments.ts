@@ -17,7 +17,7 @@ import { HeilmittelVerordnung } from "./types"
  * 
  *  Contains information about the therapies used */
  export const EHE = (
-    le: Leistungserbringergruppe,
+    leistungserbringergruppe: Leistungserbringergruppe,
     /** Heilmittelpositionsnummer. See ./codes.ts */
     positionsnummer: string,
     /** number of therapies used */
@@ -36,7 +36,7 @@ import { HeilmittelVerordnung } from "./types"
     kilometersDriven: number | undefined,
 ) => segment(
     "EHE",
-    leistungserbringergruppeCode(le),
+    leistungserbringergruppeCode(leistungserbringergruppe),
     char(positionsnummer, 5),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),
@@ -52,31 +52,48 @@ import { HeilmittelVerordnung } from "./types"
  *    Informationen zu Heilmittel-Verordnungen
  *   for how it looks like
  */
-export const ZHE = (v: HeilmittelVerordnung) => segment(
+export const ZHE = ({
+    betriebsstaettennummer,
+    vertragsarztnummer,
+    verordnungsDatum,
+    zuzahlung,
+    diagnosegruppe,
+    verordnungsart,
+    verordnungsBesonderheiten,
+    unfall,
+    sonstigeEntschaedigung,
+    therapiebericht,
+    hausbesuch,
+    leitsymptomatik,
+    patientenindividuelleLeitsymptomatik,
+    dringlicherBehandlungsbedarf,
+    heilmittelBereich,
+    therapieFrequenz
+}: HeilmittelVerordnung) => segment(
     "ZHE",
-    varchar(v.betriebsstaettennummer ?? "999999999", 9),
-    varchar(v.vertragsarztnummer ?? "999999999", 9),
-    date(v.verordnungsDatum),
-    v.zuzahlung,
-    varchar(v.diagnosegruppe ?? "9999", 4),
-    v.verordnungsart ?? "99",
-    v.verordnungsBesonderheiten,
-    v.unfall,
-    v.sonstigeEntschaedigung,
+    varchar(betriebsstaettennummer ?? "999999999", 9),
+    varchar(vertragsarztnummer ?? "999999999", 9),
+    date(verordnungsDatum),
+    zuzahlung,
+    varchar(diagnosegruppe ?? "9999", 4),
+    verordnungsart ?? "99",
+    verordnungsBesonderheiten,
+    unfall,
+    sonstigeEntschaedigung,
     // ex start date of therapy. Not used anymore
     undefined,
-    v.therapiebericht ? "1" : undefined,
-    v.hausbesuch ? "1" : undefined,
-    v.leitsymptomatik ? (
-        v.leitsymptomatik.a ? "1" : "0" + 
-        v.leitsymptomatik.b ? "1" : "0" + 
-        v.leitsymptomatik.c ? "1" : "0" +
-        v.leitsymptomatik.patientenindividuell ? "1" : "0"
+    therapiebericht ? "1" : undefined,
+    hausbesuch ? "1" : undefined,
+    leitsymptomatik ? (
+        leitsymptomatik.a ? "1" : "0" + 
+        leitsymptomatik.b ? "1" : "0" + 
+        leitsymptomatik.c ? "1" : "0" +
+        leitsymptomatik.patientenindividuell ? "1" : "0"
     ) : "9999",
-    v.patientenindividuelleLeitsymptomatik?.substr(0, 70),
-    v.dringlicherBehandlungsbedarf ? "1" : "0",
-    v.heilmittelBereich,
-    char(v.therapieFrequenz, 1)
+    patientenindividuelleLeitsymptomatik?.substr(0, 70),
+    dringlicherBehandlungsbedarf ? "1" : "0",
+    heilmittelBereich,
+    char(therapieFrequenz, 1)
 )
 
 /** Betrags-Summen 

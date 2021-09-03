@@ -24,55 +24,55 @@ import {
 // Einzelrechnung, Rechnung, Sammelrechnung are not validated because they will be just intermediate
 // data structures, not exposed to the user of the library
 
-export const constraintsLeistungserbringer = (l: Leistungserbringer) => [
-    ...constraintsInstitution(l),
-    isRequired(l, "abrechnungscode"),
-    isRequired(l, "tarifbereich"),
-    isRequired(l, "location"),
-    isRequired(l, "sondertarifJeKostentraegerIK"),
-    ...valueConstraints<Record<string, string>>(l, "sondertarifJeKostentraegerIK", constraintsIKToSondertarif),
-    isOptionalVarchar(l, "umsatzsteuerOrdnungsnummer", 20),
+export const constraintsLeistungserbringer = (leistungserbringer: Leistungserbringer) => [
+    ...constraintsInstitution(leistungserbringer),
+    isRequired(leistungserbringer, "abrechnungscode"),
+    isRequired(leistungserbringer, "tarifbereich"),
+    isRequired(leistungserbringer, "location"),
+    isRequired(leistungserbringer, "sondertarifJeKostentraegerIK"),
+    ...valueConstraints<Record<string, string>>(leistungserbringer, "sondertarifJeKostentraegerIK", constraintsIKToSondertarif),
+    isOptionalVarchar(leistungserbringer, "umsatzsteuerOrdnungsnummer", 20),
     // umsatzsteuerBefreiung is optional
 ]
 
-export const constraintsBaseAbrechnungsfall = (a: BaseAbrechnungsfall) => [
-    isRequired(a, "versicherter"), 
-    ...valueConstraints<Versicherter>(a, "versicherter", constraintsVersicherter),
-    isVarchar(a, "belegnummer", 10),
+export const constraintsBaseAbrechnungsfall = (fall: BaseAbrechnungsfall) => [
+    isRequired(fall, "versicherter"), 
+    ...valueConstraints<Versicherter>(fall, "versicherter", constraintsVersicherter),
+    isVarchar(fall, "belegnummer", 10),
     // beleginformation is optional
-    isOptionalVarchar(a, "besondereVersorgungsform", 25)
+    isOptionalVarchar(fall, "besondereVersorgungsform", 25)
 ]
 
-export const constraintsBaseAbrechnungsposition = (a: BaseAbrechnungsposition) => [
-    isNumber(a, "einzelpreis", 0, 1e10),
-    isNumber(a, "anzahl", 1, 1e4),
-    isOptionalInt(a, "gefahreneKilometer", 0, 1e6),
-    isTruncatedIfTooLong(isOptionalVarchar(a, "text", 70))
+export const constraintsBaseAbrechnungsposition = (position: BaseAbrechnungsposition) => [
+    isNumber(position, "einzelpreis", 0, 1e10),
+    isNumber(position, "anzahl", 1, 1e4),
+    isOptionalInt(position, "gefahreneKilometer", 0, 1e6),
+    isTruncatedIfTooLong(isOptionalVarchar(position, "text", 70))
 ]
 
-export const constraintsVerordnung = (v: Verordnung) => [
-    isOptionalVarchar(v, "betriebsstaettennummer", 9),
-    isOptionalVarchar(v, "vertragsarztnummer", 9),
-    isDate(v, "verordnungsDatum"),
+export const constraintsVerordnung = (verordnung: Verordnung) => [
+    isOptionalVarchar(verordnung, "betriebsstaettennummer", 9),
+    isOptionalVarchar(verordnung, "vertragsarztnummer", 9),
+    isDate(verordnung, "verordnungsDatum"),
     // unfall, sonstigeEntschaedigung, verordnungsBesonderheiten are optional
-    isArray(v, "diagnosen", 0),
-    ...arrayConstraints<Diagnose>(v, "diagnosen", constraintsDiagnose),
-    isArray(v, "kostenzusagen", 1),
-    ...arrayConstraints<Kostenzusage>(v, "kostenzusagen", constraintsKostenzusage),
+    isArray(verordnung, "diagnosen", 0),
+    ...arrayConstraints<Diagnose>(verordnung, "diagnosen", constraintsDiagnose),
+    isArray(verordnung, "kostenzusagen", 1),
+    ...arrayConstraints<Kostenzusage>(verordnung, "kostenzusagen", constraintsKostenzusage),
 ]
 
-const constraintsDiagnose = (d: Diagnose) => [
-    isOptionalVarchar(d, "diagnoseschluessel", 12),
-    isTruncatedIfTooLong(isOptionalVarchar(d, "diagnosetext", 70))
+const constraintsDiagnose = (diagnose: Diagnose) => [
+    isOptionalVarchar(diagnose, "diagnoseschluessel", 12),
+    isTruncatedIfTooLong(isOptionalVarchar(diagnose, "diagnosetext", 70))
 ]
 
-const constraintsKostenzusage = (k: Kostenzusage) => [
-    isVarchar(k, "genehmigungsKennzeichen", 20),
-    isDate(k, "genehmigungsDatum"),
-    isRequired(k, "kostenzusageGenehmigung")
+const constraintsKostenzusage = (kostenzusage: Kostenzusage) => [
+    isVarchar(kostenzusage, "genehmigungsKennzeichen", 20),
+    isDate(kostenzusage, "genehmigungsDatum"),
+    isRequired(kostenzusage, "kostenzusageGenehmigung")
 ]
 
-export const constraintsSkonto = (s: Skonto) => [
-    isNumber(s, "skontoPercent", 0, 100),
-    isInt(s, "skontoPercent", 0, 1000)
+export const constraintsSkonto = (skonto: Skonto) => [
+    isNumber(skonto, "skontoPercent", 0, 100),
+    isInt(skonto, "skontoPercent", 0, 1000)
 ]

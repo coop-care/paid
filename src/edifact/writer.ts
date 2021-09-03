@@ -14,7 +14,7 @@ export default function stringify(interchange: Interchange) {
         throw new Error("decimalNotation must be one character (usually ',' or '.'")
     }
     // no need to allow users to define custom separators (not used) but it would be easy to support
-    const ssa = {
+    const serviceStringAdvice = {
         componentSeparator: ":",
         elementSeparator: "+",
         decimalNotation: interchange.decimalNotation, 
@@ -35,8 +35,8 @@ export default function stringify(interchange: Interchange) {
     ]
 
     return [
-        stringifyServiceStringAdvice(ssa),
-        ...allSegments.map(segment => stringifySegment(segment, ssa))
+        stringifyServiceStringAdvice(serviceStringAdvice),
+        ...allSegments.map(segment => stringifySegment(segment, serviceStringAdvice))
     ].join("\r\n")
 }
 
@@ -68,10 +68,10 @@ const stringifySegment = (segment: Segment, ssa: ServiceStringAdvice): string =>
     stringifyElements(segment.elements, ssa) +
     ssa.segmentTerminator
 
-const stringifyElements = (elements: Element[], ssa: ServiceStringAdvice): string => {
-    const esc = escapeCharacters(ssa)
-    const trailingComponentsRegex = new RegExp("[" + ssa.componentSeparator + "]*$")
-    const trailingElementsRegex = new RegExp("[" + ssa.elementSeparator + "]*$")
+const stringifyElements = (elements: Element[], serviceStringAdvice: ServiceStringAdvice): string => {
+    const esc = escapeCharacters(serviceStringAdvice)
+    const trailingComponentsRegex = new RegExp("[" + serviceStringAdvice.componentSeparator + "]*$")
+    const trailingElementsRegex = new RegExp("[" + serviceStringAdvice.elementSeparator + "]*$")
     /* elements are basically a string[][] and the control characters in each string need to be 
        escaped.
        Furthermore, the EDIFACT standard allows omitting empty components/elements at the end, maybe
@@ -79,10 +79,10 @@ const stringifyElements = (elements: Element[], ssa: ServiceStringAdvice): strin
     return elements
         .map(element => element
             .map(component => escape(component, esc))
-            .join(ssa.componentSeparator)
+            .join(serviceStringAdvice.componentSeparator)
             .replace(trailingComponentsRegex, "")
         )
-        .join(ssa.elementSeparator)
+        .join(serviceStringAdvice.elementSeparator)
         .replace(trailingElementsRegex, "")
 }
 
@@ -106,5 +106,10 @@ const escape = (str: string, characters: string): string =>
    > Dezimalzeichen vorgesehen, aber nicht als Trennzeichen im Sinne der EDIFACT-Syntax. Somit ist
    > das Komma nicht zu maskieren. Zu maskieren sind nur die Zeichen Doppelpunkt, Plus und Apostroph.
 */
-const escapeCharacters = (ssa: ServiceStringAdvice): string =>
-    ssa.componentSeparator + ssa.elementSeparator + ssa.releaseCharacter + ssa.segmentTerminator
+const escapeCharacters = ({
+    componentSeparator,
+    elementSeparator,
+    releaseCharacter,
+    segmentTerminator
+}: ServiceStringAdvice): string =>
+    componentSeparator + elementSeparator + releaseCharacter + segmentTerminator

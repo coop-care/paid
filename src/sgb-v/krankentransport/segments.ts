@@ -53,7 +53,7 @@ export const KTL = (
 
 /** Einzelfallnachweis Krankentransport  */
 export const EKT = (
-    le: Leistungserbringergruppe,
+    leistungserbringergruppe: Leistungserbringergruppe,
     /** Which service was provided */
     positionsnummer: string,
     /** If the "pauschale is used", "kilometersDriven" must be specified too */
@@ -68,7 +68,7 @@ export const EKT = (
     endDateTime: Date
 ) => segment(
     "EKT",
-    leistungserbringergruppeCode(le),
+    leistungserbringergruppeCode(leistungserbringergruppe),
     char(positionsnummer, 6),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),
@@ -110,14 +110,21 @@ export const EKT = (
  *    Verordnungsformular für Krankenhauseinweisung: Muster 2
  *  for how the prescription looks
 */
-export const ZKT = (v: KrankentransportVerordnung) => segment(
+export const ZKT = ({
+    betriebsstaettennummer,
+    vertragsarztnummer,
+    zuzahlung,
+    verordnungsDatum,
+    unfall,
+    sonstigeEntschaedigung
+}: KrankentransportVerordnung) => segment(
     "ZKT",
-    varchar(v.betriebsstaettennummer ?? "999999999", 9),
-    varchar(v.vertragsarztnummer ?? "999999999", 9),
-    v.zuzahlung,
-    v.verordnungsDatum ? date(v.verordnungsDatum) : undefined,
-    v.unfall,
-    v.sonstigeEntschaedigung,
+    varchar(betriebsstaettennummer ?? "999999999", 9),
+    varchar(vertragsarztnummer ?? "999999999", 9),
+    zuzahlung,
+    verordnungsDatum ? date(verordnungsDatum) : undefined,
+    unfall,
+    sonstigeEntschaedigung,
 )
 
 /** Betrags-Summen 

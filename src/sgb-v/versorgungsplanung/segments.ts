@@ -14,7 +14,7 @@ import { Leistungserbringergruppe, leistungserbringergruppeCode } from "../types
 
 /** Einzelfallnachweis gesundheitliche Versorgungsplanung  */
 export const EGV = (
-    le: Leistungserbringergruppe,
+    leistungserbringergruppe: Leistungserbringergruppe,
     /** Abrechnungspositionsnummer für sonstige Leistungen. See ./codes.ts */
     positionsnummer: string,
     amount: number,
@@ -28,7 +28,7 @@ export const EGV = (
     serviceEndDate: Date | undefined,
 ) => segment(
     "EGV",
-    leistungserbringergruppeCode(le),
+    leistungserbringergruppeCode(leistungserbringergruppe),
     char(positionsnummer, 7),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),

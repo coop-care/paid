@@ -28,7 +28,7 @@ import { Hilfsmittelverordnung } from "./types"
  * 
  *  Contains information about the adjuvant used */
 export const EHI = (
-    le: Leistungserbringergruppe,
+    leistungserbringergruppe: Leistungserbringergruppe,
     /** Hilfsmittelpositionsnummer. See ./codes.ts */
     positionsnummer: string,
     /** number of adjuvants used */
@@ -55,7 +55,7 @@ export const EHI = (
     endDateTime?: Date | undefined
 ) => segment(
     "EHI",
-    leistungserbringergruppeCode(le),
+    leistungserbringergruppeCode(leistungserbringergruppe),
     char(positionsnummer, 10),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),
@@ -124,15 +124,23 @@ export const MEH = (
  *    Verordnungsformulare für Hilfsmittel: Muster 8, 8A, 15, 16
  *  for how they look
  */
-export const ZHI = (v : Hilfsmittelverordnung) => segment(
+export const ZHI = ({
+    betriebsstaettennummer,
+    vertragsarztnummer,
+    verordnungsDatum,
+    zuzahlung,
+    unfall,
+    sonstigeEntschaedigung,
+    verordnungsBesonderheiten
+} : Hilfsmittelverordnung) => segment(
     "ZHI",
-    varchar(v.betriebsstaettennummer ?? "999999999", 9),
-    varchar(v.vertragsarztnummer ?? "999999999", 9),
-    date(v.verordnungsDatum),
-    v.zuzahlung,
-    v.unfall,
-    v.sonstigeEntschaedigung,
-    v.verordnungsBesonderheiten
+    varchar(betriebsstaettennummer ?? "999999999", 9),
+    varchar(vertragsarztnummer ?? "999999999", 9),
+    date(verordnungsDatum),
+    zuzahlung,
+    unfall,
+    sonstigeEntschaedigung,
+    verordnungsBesonderheiten
 )
 
 /** Betrags-Summen 

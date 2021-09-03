@@ -26,7 +26,7 @@ export const ERS = (
 
 /** Einzelfallnachweis SAPV */
 export const ESP = (
-    le: Leistungserbringergruppe,
+    leistungserbringergruppe: Leistungserbringergruppe,
     /** Which service was provided. If a "Leistungspauschale" is specified here, ZZL segments need
      *  to be specified. */
     positionsnummer: string,
@@ -38,7 +38,7 @@ export const ESP = (
     kilometersDriven: number | undefined
 ) => segment(
     "ESP",
-    leistungserbringergruppeCode(le),
+    leistungserbringergruppeCode(leistungserbringergruppe),
     char(positionsnummer, 10),
     decimal(amount, 4, 2),
     decimal(abrechnungspositionPrice, 10, 2),
@@ -68,15 +68,23 @@ export const ZZL = (
  *    Verordnungsformular für SAPV: Muster 63
  *  for how the prescription looks
 */
-export const ZSP = (v: SAPVVerordnung) => segment(
+export const ZSP = ({
+    betriebsstaettennummer,
+    vertragsarztnummer,
+    verordnungsDatum,
+    unfall,
+    verordnungsBeginn,
+    verordnungsEnde,
+    verordnungsBesonderheiten
+}: SAPVVerordnung) => segment(
     "ZSP",
-    varchar(v.betriebsstaettennummer ?? "999999999", 9),
-    varchar(v.vertragsarztnummer ?? "999999999", 9),
-    date(v.verordnungsDatum),
-    v.unfall,
-    date(v.verordnungsBeginn),
-    date(v.verordnungsEnde),
-    v.verordnungsBesonderheiten
+    varchar(betriebsstaettennummer ?? "999999999", 9),
+    varchar(vertragsarztnummer ?? "999999999", 9),
+    date(verordnungsDatum),
+    unfall,
+    date(verordnungsBeginn),
+    date(verordnungsEnde),
+    verordnungsBesonderheiten
 )
 
 /** Betrags-Summen 
