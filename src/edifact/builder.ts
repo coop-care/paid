@@ -16,7 +16,11 @@ export const elements = (
     ...values: Array<Array<string | undefined> | string | undefined>
 ): Element[] => 
     values.map(value => {
-        if (Array.isArray(value)) return value.map(component => component ?? "")
-        else if (typeof value === 'string') return [value]
-        else return [""]
+        if (Array.isArray(value)) {
+            return value.map(component => component ?? "")
+        } else if (typeof value === 'string') {
+            return [value]
+        } else {
+            return [""]
+        }
     })
