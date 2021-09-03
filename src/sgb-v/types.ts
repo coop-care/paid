@@ -91,7 +91,7 @@ export type Leistungserbringer = Institution & {
     sondertarifJeKostentraegerIK: Record<string, string>
 
     /** Steuernummer (according to §14 Abs. 1a) OR Umsatzsteuer-Identifikationsnummer.
-     *  Mandatory if umsatzsteuerbefreit. */
+     *  Mandatory if not VAT excempt. */
      umsatzsteuerOrdnungsnummer?: string
      /** specified if income tax excempt */
      umsatzsteuerBefreiung: UmsatzsteuerBefreiungSchluessel
