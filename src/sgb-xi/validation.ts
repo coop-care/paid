@@ -2,7 +2,10 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, Invoice } from "../types";
+import {
+  Invoice,
+  BillingData
+} from "./types"
 
 const messages = {
   "requiredValueMissing": "The property \"{key}\" is required.",
@@ -122,7 +125,7 @@ export const validate = (invoices: Invoice[], billing: BillingData) => {
   errors = errors.concat(
     isMissing(billing, [
       "datenaustauschreferenzJeEmpfaengerIK",
-      "dateiindikator",
+      "testIndicator",
       "rechnungsart",
       "rechnungsnummerprefix",
       "abrechnungsmonat",
@@ -214,7 +217,8 @@ export const validate = (invoices: Invoice[], billing: BillingData) => {
                 || institutionskennzeichenIncorrect("pflegekasseIK"),
               !failingIK(fall?.versicherter?.kostentraegerIK)
                 || institutionskennzeichenIncorrect("kostentraegerIK"),
-              fall?.versicherter?.versichertennummer.length <= 20
+              !(fall?.versicherter?.versichertennummer)
+              || fall?.versicherter?.versichertennummer?.length <= 20
                 || textIsTooLong("versichertennummer", 20),
             ], ["invoices", invoiceIndex, "faelle", fallIndex, "versicherter"])
           ).concat(
@@ -302,11 +306,17 @@ export const validate = (invoices: Invoice[], billing: BillingData) => {
           isTruncated(fall?.versicherter, [
             ["firstName", 45],
             ["lastName", 45],
-            ["street", 46],
-            ["houseNumber", 9],
-            ["postalCode", 10],
-            ["city", 40],
           ], ["invoices", invoiceIndex, "faelle", fallIndex, "versicherter"])
+          .concat(
+            !fall?.versicherter?.address
+            ? []
+            : isTruncated(fall?.versicherter?.address, [
+              ["street", 46],
+              ["houseNumber", 9],
+              ["postalCode", 10],
+              ["city", 40],
+            ], ["invoices", invoiceIndex, "faelle", fallIndex, "versicherter", "address"])
+          )
           .concat(
             fall?.einsaetze?.flatMap((einsatz, einsatzIndex) =>
               einsatz?.leistungen?.flatMap((leistung, leistungIndex) =>

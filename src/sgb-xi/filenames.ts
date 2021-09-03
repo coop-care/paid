@@ -2,11 +2,13 @@
   * see docs/documents.md for more info
   */
 
-import { BillingData, FileType } from "../types";
+import { TestIndicator } from "../types"
+import { BillingData } from "./types"
+import { KassenartSchluessel } from "../kostentraeger/filename/codes"
 
 /** A.k.a. "logischer Dateiname" */
 export const makeAnwendungsreferenz = (
-    kassenart: string,
+    kassenart: KassenartSchluessel,
     laufendeDatenannahmeImJahr: number,
     {
         rechnungsart,
@@ -27,10 +29,11 @@ export const makeAnwendungsreferenz = (
 
 /** A.k.a "Verfahrenskennung" */
 export const makeDateiname = (
-    dateiindikator: FileType,
+    testIndicator: TestIndicator,
     transferNumber: number
 ) => [
-    dateiindikator == "2" ? "E" : "T",
+    testIndicator == "2" ? "E" : "T",
+    // "PFL" stands for "Pflege-Leistungserbringer"
     "PFL",
     "0", // verfahrensversion. Always 0
     transferNumber.toString().slice(0, 3).padStart(3, "0")

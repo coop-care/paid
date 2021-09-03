@@ -45,12 +45,12 @@ describe("Institution lists with public keys JSON serializer", () => {
 
 function arrayBufferEquals (buf1: ArrayBuffer, buf2: ArrayBuffer)
 {
-    if (buf1.byteLength != buf2.byteLength) return false
+    if (buf1.byteLength != buf2.byteLength) { return false }
     var bytes1 = new Int8Array(buf1)
     var bytes2 = new Int8Array(buf2)
     for (var i = 0; i != buf1.byteLength; i++)
     {
-        if (bytes1[i] != bytes2[i]) return false
+        if (bytes1[i] != bytes2[i]) { return false }
     }
     return true
 }

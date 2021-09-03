@@ -392,7 +392,7 @@ function findApplicableInstitutionLinks<L extends InstitutionLink>(
     location: CareProviderLocationSchluessel
 ): L[] {
     const result: L[] = []
-    if (!links) return result
+    if (!links) { return result }
 
     for (const link of links) {
         if (isInstitutionLinkApplicable(link, leistungsart, location, false)) {

@@ -4,18 +4,20 @@
 
 import { 
     Amounts, 
+    Versicherter,
+    Institution,
+    TestIndicator
+} from "../types";
+import {
     BillingData, 
-    Leistungserbringer, 
-    Leistung, 
     MessageIdentifiers, 
     messageIdentifierVersions, 
-    Versicherter,
-    Hilfsmittel,
-    Zuschlag,
+    Leistungserbringer, 
     Abrechnungsfall,
-    Institution,
-    FileType
-} from "../types";
+    Leistung, 
+    Pflegehilfsmittel,
+    Zuschlag,
+} from "./types"
 import {
     PflegegradSchluessel,
     TarifbereichSchluessel, 
@@ -31,7 +33,7 @@ export const UNB = (
     empfaengerIK: string, 
     datenaustauschreferenz: number,
     anwendungsreferenz: string, 
-    dateiindikator: FileType
+    testIndicator: TestIndicator
 ) => segment(
     "UNB", 
     Syntax_Version,
@@ -40,7 +42,7 @@ export const UNB = (
     datetime(new Date()),
     datenaustauschreferenz.toString().substr(0, 5),
     anwendungsreferenz,
-    dateiindikator
+    testIndicator
 );
 
 export const UNZ = (
@@ -135,13 +137,13 @@ export const SRD = (
 );
 
 export const UST = ({
-    umsatzsteuerOrdnungsnummer = "",
-    umsatzsteuerBefreiung,
+    umsatzsteuerOrdnungsnummer: identifikationsnummer = "",
+    umsatzsteuerBefreiung: befreiung = "",
 }: Leistungserbringer) => segment(
     "UST",
-    mask(umsatzsteuerOrdnungsnummer),
-    umsatzsteuerBefreiung.length ? "J" : "",
-    umsatzsteuerBefreiung
+    mask(identifikationsnummer),
+    befreiung.length ? "J" : "",
+    befreiung
 );
 
 export const GES = ({
@@ -171,7 +173,7 @@ export const NAM = ({
 );
 
 export const INV = (
-    versichertennummer: string,
+    versichertennummer: string | undefined = "",
     belegNummer: number
 ) => segment(
     "INV",
@@ -183,19 +185,16 @@ export const NAD = ({
     firstName,
     lastName,
     birthday,
-    street = "",
-    houseNumber = "",
-    postalCode = "",
-    city = ""
+    address
 }: Versicherter) => segment(
     "NAD",
     mask(firstName.substr(0, 45)),
     mask(lastName.substr(0, 45)),
     date(birthday),
-    mask(street.substr(0, 46)),
-    mask(houseNumber.substr(0, 9)),
-    mask(postalCode.substr(0, 10)),
-    mask(city.substr(0, 40))
+    mask(address?.street?.substr(0, 46) || ""),
+    mask(address?.houseNumber?.substr(0, 9) || ""),
+    mask(address?.postalCode?.substr(0, 10) || ""),
+    mask(address?.city?.substr(0, 40) || "")
 );
 
 export const MAN = (
@@ -289,22 +288,22 @@ export const ZUS = (
 
 export const HIL = ({
     mehrwertsteuerart = "",
-    zuzahlungsbetrag,
+    gesetzlicheZuzahlungBetrag,
     genehmigungskennzeichen = "",
-    genehmigungsdatum,
+    genehmigungsDatum,
     kennzeichenPflegehilfsmittel = "",
     bezeichnungPflegehilfsmittel = "",
     produktbesonderheitenPflegehilfsmittel = "",
     inventarnummerPflegehilfsmittel = "",
-}: Hilfsmittel,
+}: Pflegehilfsmittel,
     mehrwertsteuerbetrag?: number
 ) => segment(
     "HIL",
     mehrwertsteuerart,
     price(mehrwertsteuerbetrag),
-    price(zuzahlungsbetrag),
+    price(gesetzlicheZuzahlungBetrag),
     mask(genehmigungskennzeichen.substr(0, 15)),
-    genehmigungsdatum ? date(genehmigungsdatum) : "",
+    genehmigungsDatum ? date(genehmigungsDatum) : "",
     kennzeichenPflegehilfsmittel,
     mask(bezeichnungPflegehilfsmittel.substr(0, 30)),
     mask(produktbesonderheitenPflegehilfsmittel.substr(0, 10)),
