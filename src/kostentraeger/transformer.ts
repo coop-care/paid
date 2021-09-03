@@ -330,12 +330,12 @@ function createInstitutionLink(vkg: VKG): InstitutionLink {
 }
 
 function createReceiptTransmission(uemList: UEM[], dfuList: DFU[]): ReceiptTransmission | undefined {
-    if (uemList.length == 0 || dfuList.length == 0) return undefined
+    if (uemList.length == 0 || dfuList.length == 0) { return undefined }
 
     const zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
     const email = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
 
-    if (!email) return undefined
+    if (!email) { return undefined }
 
     return {
         email: email,

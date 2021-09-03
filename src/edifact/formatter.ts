@@ -1,6 +1,6 @@
 /** asserts that the given string does not exceed the given length and returns the string */
 export const varchar = (str: string | undefined, maxLength: number): string | undefined => {
-    if (str === undefined) return undefined
+    if (str === undefined) { return undefined }
 
     if (str.length > maxLength) {
         console.error(`"${str}" exceeds maximum field length of ${maxLength}`)
@@ -10,7 +10,7 @@ export const varchar = (str: string | undefined, maxLength: number): string | un
 
 /** asserts that the given string exactly matches the given length and returns the string */
 export const char = (str: string | undefined, length: number): string | undefined => {
-    if (str === undefined) return undefined
+    if (str === undefined) { return undefined }
 
     if (str.length != length) {
         console.error(`"${str}" did not match required length of ${length}`)
@@ -20,7 +20,7 @@ export const char = (str: string | undefined, length: number): string | undefine
 
 /** asserts that the given value is an int in the given range and returns the value as a string */
 export const int = (value: number | undefined, min: number, max: number): string | undefined => {
-    if (value === undefined) return undefined
+    if (value === undefined) { return undefined }
 
     if (!Number.isInteger(value)) {
         console.error(`"${value}" must be an integer`)
@@ -33,7 +33,7 @@ export const int = (value: number | undefined, min: number, max: number): string
 
 /** asserts that the given value is an int and returns the value as a string of fixed length (prefixes value with 0s if necessary) */
 export const fixedInt = (value: number | undefined, length: number): string | undefined => {
-    if (value === undefined) return undefined
+    if (value === undefined) { return undefined }
 
     if (!Number.isInteger(value)) {
         console.error(`"${value}" must be an integer`)
@@ -45,7 +45,7 @@ export const fixedInt = (value: number | undefined, length: number): string | un
 }
 
 export const decimal = (value: number | undefined, preDecimalPlaceCount: number, decimalPlaceCount: number): string | undefined => {
-    if (value === undefined) return undefined
+    if (value === undefined) { return undefined }
 
     const num = value.toLocaleString("de-DE", {
         minimumFractionDigits: decimalPlaceCount,

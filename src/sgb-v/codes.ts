@@ -327,7 +327,7 @@ const versichertenstatusToSummenstatus = new Map<string, SummenstatusSchluessel>
 
 /** Returns Summenstatus by Versichertenstatus */
 export function getSummenstatus(versichertenStatus?: string): SummenstatusSchluessel {
-    if (versichertenStatus == undefined) return "99"
+    if (versichertenStatus == undefined) { return "99" }
     return versichertenstatusToSummenstatus.get(versichertenStatus.substr(0,1)) ?? "99"
 }
 
