@@ -3,6 +3,9 @@ AO06Q321.ke0
   message 186 - skipped invalid UEM 1: Refers to a non-existing DFU
   IK 103411401 (AOK Westfalen-Lippe) links to IK 102114819 for data but that IK does not accept data
 
+IK06Q321.ke1
+  Message 37 - Unsupported transmission zeichensatz "I7"
+
 BN06Q318.ke0
   message 29 - skipped invalid DFU 1: Unknown DFUProtokollSchluessel "002"
   message 29 - skipped invalid DFU 2: Unknown DFUProtokollSchluessel "011"

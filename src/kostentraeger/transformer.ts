@@ -220,7 +220,7 @@ function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage,
         ?.uebermittlungszeichensatzSchluessel
 
     if (transmissionZeichensatz && transmissionZeichensatz != "I8" && transmissionZeichensatz != "99") {
-        throw new Error(`${messageTxt} Unsupported transmission zeichensatz ${transmissionZeichensatz}`)
+        throw new Error(`${messageTxt} Unsupported transmission zeichensatz "${transmissionZeichensatz}"`)
     }
 
     const kostentraegerLinks = msg.vkgList
