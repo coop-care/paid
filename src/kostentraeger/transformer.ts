@@ -4,7 +4,8 @@ import {
     KostentraegerSGBVAbrechnungscodeSchluessel,
     KostentraegerSGBXILeistungsartSchluessel,
     KVBezirkSchluessel, 
-    LeistungserbringergruppeSchluessel
+    LeistungserbringergruppeSchluessel,
+    UebermittlungszeichensatzSchluessel
 } from "./edifact/codes"
 import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, UEM, VKG } from "./edifact/segments"
 import { VerfahrenSchluessel } from "./filename/codes"
@@ -17,8 +18,7 @@ import {
     InstitutionListParseResult,
     KVLocationSchluessel,
     PaperDataType,
-    PapierannahmestelleLink,
-    ReceiptTransmission
+    PapierannahmestelleLink
 } from "./types"
 
 
@@ -100,7 +100,7 @@ export default function transform(pkeys: Map<string, PublicKeyInfo[]>, interchan
 }
 
 function validateLinks(institutions: Institution[]): string[] {
-    const errors: string[] = []
+    const warnings: string[] = []
     const institutionsByIK = new Map<string, Institution>()
     institutions.forEach((institution) => {
         institutionsByIK.set(institution.ik, institution)
@@ -112,22 +112,22 @@ function validateLinks(institutions: Institution[]): string[] {
             either accept email themselves or lead to one that does in one link-step */
         institution.datenannahmestelleLinks?.forEach((link) => {
             const da = institutionsByIK.get(link.ik)
-            if (!da?.transmission) {
+            if (!da?.transmissionEmail) {
                 const butALinkAcceptsData = da?.untrustedDatenannahmestelleLinks?.some((link2) => {
                     const uda = institutionsByIK.get(link2.ik)
-                    return !!(uda?.transmission)
+                    return !!(uda?.transmissionEmail)
                 })
                 if (!butALinkAcceptsData) {
-                    errors.push(`${errMsg} links to IK ${link.ik} for data but neither that IK nor an IK it links to accepts SMTP (email)`)
+                    warnings.push(`${errMsg} links to IK ${link.ik} for data but neither that IK nor an IK it links to accepts SMTP (email)`)
                 }
             }
             /** each Datenannahme with capacity to decrypt must have a public key */
             if (!da?.publicKeys) {
-                errors.push(`${errMsg} links to IK ${link.ik} for data but there is not any public key for encryption`)
+                warnings.push(`${errMsg} links to IK ${link.ik} for data but there is not any public key for encryption`)
             }
         })
     })
-    return errors
+    return warnings
 }
 
 
@@ -215,6 +215,14 @@ function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage,
         }
     })
 
+    const transmissionZeichensatz = msg.uemList
+        .find((uem) => uem.uebermittlungsmediumSchluessel == "1")
+        ?.uebermittlungszeichensatzSchluessel
+
+    if (transmissionZeichensatz && transmissionZeichensatz != "I8" && transmissionZeichensatz != "99") {
+        throw new Error(`${messageTxt} Unsupported transmission zeichensatz ${transmissionZeichensatz}`)
+    }
+
     const kostentraegerLinks = msg.vkgList
         .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "01")
         .map((vkg) => createInstitutionLink(vkg))
@@ -233,6 +241,7 @@ function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage,
 
     const publicKeys = pkeys.get(msg.idk.ik)
 
+    const transmissionEmail = msg.dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
     return {
         ik: msg.idk.ik,
         name: msg.nam.names.join(" "),
@@ -245,7 +254,7 @@ function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage,
 
         contacts: contacts.length > 0 ? contacts : undefined,
         addresses: msg.ansList.map((ans) => createAddress(ans)),
-        transmission: createReceiptTransmission(msg.uemList, msg.dfuList),
+        transmissionEmail: transmissionEmail,
         publicKeys: publicKeys,
         kostentraegerLinks: kostentraegerLinks.length > 0 ? kostentraegerLinks : undefined,
         datenannahmestelleLinks: datenannahmestelleLinks.length > 0 ? datenannahmestelleLinks : undefined,
@@ -326,20 +335,6 @@ function createInstitutionLink(vkg: VKG): InstitutionLink {
         location: kvLocationSchluessel,
         sgbvAbrechnungscode: sgbvAbrechnungscode,
         sgbxiLeistungsart: sgbxiLeistungsart
-    }
-}
-
-function createReceiptTransmission(uemList: UEM[], dfuList: DFU[]): ReceiptTransmission | undefined {
-    if (uemList.length == 0 || dfuList.length == 0) { return undefined }
-
-    const zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
-    const email = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
-
-    if (!email) { return undefined }
-
-    return {
-        email: email,
-        zeichensatz: zeichensatzSchluessel!
     }
 }
 
