@@ -24574,6 +24574,3910 @@
     ]
   },
   {
+    "issuerIK": "109979990",
+    "leistungserbringerGruppeSchluessel": "6",
+    "kassenart": "EK",
+    "validityStartDate": "2021-06-30T22:00:00.000Z",
+    "institutions": [
+      {
+        "ik": "100167999",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100171007",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100175502",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100177504",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100180008",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100186801",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100567993",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100571001",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100575506",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100577508",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100580002",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100586805",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100967997",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100971005",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100975500",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100977502",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100980006",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "100986809",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101367993",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101371001",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101375506",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101377508",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101380002",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101386805",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101520103",
+        "name": "DAK-Gesundheit Ihre Axel Springer Krankenkasse",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20355,
+            "streetAndHousenumber": "Caffamacherreihe 1"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101520147",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101520352",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101532301",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101560000",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "publicKeys": [
+          {
+            "validityFrom": "2018-11-14T00:00:00.000Z",
+            "validityTo": "2021-12-31T23:59:59.000Z",
+            "publicKey": "MIICCgKCAgEAgAXz7q9s0INm3+PzRqT8pgqBPd/TzTpQ6uhvgxCge5huy6p3bkAqfjqYHlzgArc6mgkKPHrdiAGO4eS18NcjoBUsTNMrWq2kqa1IB8SR+D9FkGMmeKcdnAcOkh+bBCuuzMiTj5oFmjcPCMCsiNSCS43LnKWAHtoI+25VzpOQsGmOsdgdTSuFmoDkhCgZH4RIyPSQ2NX2XVuiuVuHxXEjtzNFyjNUlQngnNvqs19rG+I/Ah8MntcQXv6LFr8PF3rOrKGyg/JRqdw8548ZcQCtBoDiXKxTO6GqLy6IXF1LiOSKxbXnJlX9qvhkqGLJdAkCEeDfcNw3FK5kT56cYHEe1HO2a0WQYgin7L6NSuBJ2I6OdAj3MQ/fKH9TV5mIkgECCinS84GCiUmI+91exCcME8ldt758uYparGEk3R0NKPzV7GrxnpSuvbCBftgROzP948CE4EqEMiGTw4JpU6iB/FVKCBEQW7SIjV+hFK2zQuoeEn/vCgIHMddvlMAWuRUsfz5bWDJuBXeUXQpZQCmBaxM126nN6oED6iBm98reQMi/MvwUwOW9K+EvUu0sD5Lcdn7TCIYJcWVFcyDrYklOnjaThJej6Pwb92rSFJlXptYAilIob1aTwdygMoV/ccvrLlGl7+RfIMdxYR9xuJl8kDOpi3ql6rAbSr2aBwEBwzECAwEAAQ=="
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101567314",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-Gesundheit",
+        "contacts": [
+          {
+            "phone": "040-325325 855",
+            "name": "Entlastungsl. gem § 45b SGB XI"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22788
+          }
+        ]
+      },
+      {
+        "ik": "101567677",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-Gesundheit",
+        "contacts": [
+          {
+            "phone": "040-325325 855",
+            "name": "Entlastungsl. Gem § 45b SGB XI"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22777
+          }
+        ]
+      },
+      {
+        "ik": "101567995",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101571003",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101575508",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101577500",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101580004",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101586807",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101767997",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101771005",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101775500",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101777502",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101780006",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "101786809",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "102400510",
+        "name": "hkk",
+        "abbreviatedName": "IKK Weser-Ems",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103067994",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103071002",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103075507",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103077509",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103080003",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103086806",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103467998",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103471006",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103475501",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103477503",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103480007",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "103486800",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "104067996",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "104071004",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "104075509",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "104077501",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "104080005",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "104086808",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "104593971",
+        "name": "BITMARCK SERVICE GMBH ESSEN",
+        "abbreviatedName": "BITMARCK SERVICE GMBH ESSEN",
+        "contacts": [
+          {
+            "phone": "0800 24862725",
+            "fax": "080024862725329",
+            "fieldOfWork": "servicedesk@bitmarck.de"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Essen",
+            "postcode": 45145,
+            "streetAndHousenumber": "Kruppstr. 64"
+          },
+          {
+            "place": "Essen",
+            "postcode": 45004,
+            "poBox": "Postfach 100453"
+          }
+        ],
+        "transmission": {
+          "email": "le-dak@bitmarck-daten.de",
+          "zeichensatz": "99"
+        },
+        "publicKeys": [
+          {
+            "validityFrom": "2018-11-14T00:00:00.000Z",
+            "validityTo": "2021-12-31T23:59:59.000Z",
+            "publicKey": "MIICCgKCAgEAgCLhF5LBNHyHnFtlLFOqF9iwu+9nW+IltoKVLMiQU3fhdotisUjG58EHC82lSQXUSgxBhro87KJxF2Vq9PJxtoBBf44Pf6LNtp6IfQCt0318jUIbHx5dWswSGeXHtTdgZ/NlYjvy6ipCeOFH9PDzg0s/lN7OfzvKQE5NyAh8+MWSsY3hbXkZXcm1PhuymLjGrQ1Y+4yzmXDkZeW6UiFFCXXozg4f/x9BwF5Mpa7iLjVOOclytWO2P1tQ4JOXbxhoGvST12NL2MGmu+S3xBskgUv6DcAp31UcX5oudkX4k9JOKtC7cc1ooQnei+eWtHy4c4WCcPQi3lBKpL9VhaLFakig+ERr3PBuqqVvT25z+RyT9uZAykUfQVem7tmGUqvr9OR8JhnMfCVCmD1UwvCwU3cmKJ+ki50FBS2sJD7vK2qEHO52SE7wBeTLFSCYshwZJA82f3VTaag5K8Qm1jPflZLasyR7M7WZZkL8YJ+os7tJJNYKIKQA+4oq7N5oZfLZkMl2NElefbGpfa7pJST9lOahey5fKXn43bsvH3K2E2KxV/Ac11GGAd63Yz8xEk6bXgl6uFSA67vs6u0N6VQyUFrimBVwKRdtYPEfu2nqTl1bN1Sl+To1ipNJLSaX4eaWhvcxZJV5c1DIjdBf0AbnffOWl3Y0SsxGUGdgYI0r/MECAwEAAQ=="
+          }
+        ]
+      },
+      {
+        "ik": "105067999",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105071007",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105075502",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105077504",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105080008",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105086801",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105167990",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105171008",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105175503",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105177505",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105180009",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105186802",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105830016",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "105836717",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106267993",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106271001",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106275506",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106277508",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106280002",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106286805",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106367994",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106371002",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106375507",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106377509",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106380003",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106386806",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106467995",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106471003",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106475508",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106477500",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106480004",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106486807",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106567996",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106571004",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106575509",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106577501",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106580005",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106586808",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106767998",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106771006",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106775501",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106777503",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106780007",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "106786800",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107267995",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107271003",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107275508",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107277500",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107280004",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107286807",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107367996",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107371004",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107375509",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107377501",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107380005",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107386808",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107436557",
+        "name": "Abrechnungszentrum Emmendingen",
+        "abbreviatedName": "ARZ-Emmendingen",
+        "contacts": [
+          {
+            "phone": "07641 9201-315",
+            "fax": "07641 9201-506",
+            "name": "Herr Goldschmidt",
+            "fieldOfWork": "Abrechnungszentrum Emmendingen; dale@arz-emmendingen.de"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Emmendingen",
+            "postcode": 79312,
+            "streetAndHousenumber": "An der B3 Haus Nr. 6"
+          }
+        ],
+        "transmission": {
+          "email": "inbox@tp5.arz-emmendingen.de",
+          "zeichensatz": "I8"
+        },
+        "publicKeys": [
+          {
+            "validityFrom": "2018-11-14T00:00:00.000Z",
+            "validityTo": "2021-12-31T23:59:59.000Z",
+            "publicKey": "MIICCgKCAgEA3fGASrm4x+yKYBxW5hDa/7udVxCnPgx3bjNi5wNa6m2V3v7bkGZwglypR5HwLczVZBzw2bG37VYssGej0A/a0XVNm9glo4nwEPSZVqzwOX7d6DZTUNbv2e0Z505IEt3Azgs/gAgpA8GF/WMuN38zc265oirvNyVt/A/aLJe8+9uDipZm5Eihkynr7YBfgo88rye7jfUpKCoPOJlmF+xbnYFVFaOqJzcYpjT1SIT2MPikubzrElfxSUrc9N5SPb+tYo7vOafalF/ddk/Ngys1JA3ilMhmryuwy7488+2VKDANn5fHmYAfAZtC37FS1wOkY4uYwL/iN0qLM7b7YoHsZV+nVP6PnDLdZ0cqqyg1I4JvJJCfLq+cx8vEp+RxOmcP9QnUEyZnn29oq977vlVLwf0zka1C0B4Uaf7Gf74k4ZnQ2DH/RJIs+ToSXzY8q07grc3an+T7nBEcnnV9EiY1loRtXvIqDMxQfYyEiQ5PEhpCLBLqFSZU4R7n/aYdrisIGBF82YByDwSDneE7C89ugrzUtDQCGPTnuGxxwqWBW/6/XcxgghvdZd32jeeC6UzpHUE5NVbj+PPn3rZe8Kawhya8QLFDnnD6ZHgfbfcMfYBMIQgWuJmKOw2e1CyOgOUveF6lscPuYCyxcTAHl5FKOrTQMOqpvkCDSS4Dqz/Mul8CAwEAAQ=="
+          }
+        ]
+      },
+      {
+        "ik": "107535396",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107829712",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107829723",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107867991",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107871009",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107875504",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107877506",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107880000",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "107886803",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108067995",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108071003",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108075508",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108077500",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108080004",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108086807",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108353709",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108367998",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108371006",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108375501",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108377013",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108377503",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108380007",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "108386800",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109367990",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109371008",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109375503",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109377505",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109380009",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109386802",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109567992",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109571000",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109575505",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109577006",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109577507",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109580001",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109580012",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109586804",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109767994",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109771002",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109777509",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22305,
+            "streetAndHousenumber": "Bramfelder Str. 140"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109780003",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109786806",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "109989162",
+        "name": "T-Systems International GmbH DTV Datenträgerannahme und Verteilstelle",
+        "abbreviatedName": "T-Systems International GmbH",
+        "contacts": [
+          {
+            "phone": "0800 3324785",
+            "name": "EDI-Customer Services",
+            "fieldOfWork": "www.dav-online.com, Reiter \"DAV-Informationen/Anmeldeverfahren\""
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Leinfelden-Echterdingen",
+            "postcode": 70771,
+            "streetAndHousenumber": "Fasanenweg 5"
+          }
+        ],
+        "transmission": {
+          "email": "dav01@b2b.mailorbit.de",
+          "zeichensatz": "I8"
+        }
+      },
+      {
+        "ik": "181570104",
+        "name": "HEK - Hanseatische Krankenkasse Pflegezentrum",
+        "abbreviatedName": "HEK",
+        "contacts": [
+          {
+            "phone": "0800 0213213",
+            "name": "Team Direkt"
+          },
+          {
+            "phone": "0341 25920-37",
+            "name": "DAVASO GmbH",
+            "fieldOfWork": "Abrechnungsverfahren Abrechnungscode 01, 06, 09"
+          },
+          {
+            "phone": "0341 25920-66",
+            "name": "DAVASO GmbH",
+            "fieldOfWork": "Datenaustausch"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 22041,
+            "streetAndHousenumber": "Wandsbeker Zollstr. 86-90"
+          },
+          {
+            "place": "Hamburg",
+            "postcode": 22039
+          }
+        ],
+        "datenannahmestelleLinks": [
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "01"
+          },
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "06"
+          },
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "09"
+          }
+        ],
+        "papierannahmestelleLinks": [
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "01",
+            "paperTypes": 15
+          },
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "06",
+            "paperTypes": 15
+          },
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "09",
+            "paperTypes": 15
+          },
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "02",
+            "paperTypes": 15
+          },
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "03",
+            "paperTypes": 15
+          },
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "04",
+            "paperTypes": 15
+          },
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "05",
+            "paperTypes": 15
+          },
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "07",
+            "paperTypes": 15
+          },
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "08",
+            "paperTypes": 15
+          },
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "10",
+            "paperTypes": 15
+          },
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "11",
+            "paperTypes": 15
+          },
+          {
+            "ik": "181570104",
+            "sgbxiLeistungsart": "12",
+            "paperTypes": 15
+          }
+        ]
+      },
+      {
+        "ik": "181575519",
+        "name": "Techniker Krankenkasse",
+        "abbreviatedName": "TK",
+        "contacts": [
+          {
+            "phone": "040 6909-3812",
+            "name": "TK Team Pflege",
+            "fieldOfWork": "Fachlicher Ansprechpartner"
+          },
+          {
+            "name": "TK Customer Service",
+            "fieldOfWork": "Technischer Ansprechpartner CCITP1@tk.de"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20902
+          }
+        ],
+        "publicKeys": [
+          {
+            "validityFrom": "2020-11-24T00:00:00.000Z",
+            "validityTo": "2021-12-31T23:59:59.000Z",
+            "publicKey": "MIICCgKCAgEAgCDSIIhz8oOuyCxl/ihBnXPGtfvEKIVoGgf+r6MosDNHGsIGiSRpTFjUkjsu6EzS9ds4QCUCO1zFH5V6cJN7ZifK0+rj8G+D4Xm9wLYtcZKoJ0Hc6HrF2a0tsc5l6K7PosINokWt+wy8okXvp6WH4tD7oSiLxv4wxWfa+KuohkVhrHKvbTPwBWcNnkiCz0bDOxhO0o/3qBTm2Ft2tt66IVG4BCdMEWleNI5aOr9B87crrVztGgBdkYqpngM1c33fTqS5TA03WOG/EOvxCYN4y41C04BamSqUNf2B/dBGtCMoTqU52SpS/aRVU+h9KS0H28CfGLcfLsYWyrIOOGz07PMPxx4SU6wLngiy3fWuzn2l5BHjW1YyHjUKus6G0+RCtjqI+m2deTxI5OpCNMa3JuZ+cdwgfyQirwnhjFxB1ek+wzjq6vgsSjEQKMH9rg4HQL2OP2jtzq5ub/amF3Dp4rv1Rxo2e4r1hRC9ePFN86MSGNVyDDw5OBI3hHoOGaHuWcmfcPnXuIatBb5n4Iu4AFu/WaxTyvjybEh6KrZdUDqqv/phS+kkY9DnR6CybB+PvWDikpHrgsgVLYholY3xkLlXEcW1iJFHfUPB10X5dJCguAQ4PdMe0CQdZGOVT462kfJxuJumau6IefCavNdBAflkHdKUa8QBXY3JJBkVtTECAwEAAQ=="
+          }
+        ],
+        "datenannahmestelleLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "01"
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "02"
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "03"
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "06"
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "07"
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "09"
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "10"
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "14"
+          }
+        ],
+        "untrustedDatenannahmestelleLinks": [
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "01"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "02"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "03"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "06"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "07"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "09"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "10"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "14"
+          }
+        ],
+        "papierannahmestelleLinks": [
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "01",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "02",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "03",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "04",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "05",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "06",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "07",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "08",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "09",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "10",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "11",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "12",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "13",
+            "paperTypes": 13
+          },
+          {
+            "ik": "181575519",
+            "sgbxiLeistungsart": "14",
+            "paperTypes": 13
+          }
+        ]
+      },
+      {
+        "ik": "181775500",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "182171012",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "182171012",
+        "name": "Pflegekasse bei der KKH",
+        "abbreviatedName": "KKH",
+        "contacts": [
+          {
+            "phone": "0511 2802-3702",
+            "fax": "0511 2802-3799",
+            "name": "Stephan Schumacher",
+            "fieldOfWork": "Pflegeversicherung; Stephan.Schumacher@kkh.de"
+          },
+          {
+            "phone": "0511 2802-3579",
+            "fax": "0511 2802-3599",
+            "name": "Marco Fuhrmann",
+            "fieldOfWork": "DTA; Marco.Fuhrmann@kkh.de"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Hannover",
+            "postcode": 30125
+          },
+          {
+            "place": "Hannover",
+            "postcode": 30144
+          }
+        ],
+        "datenannahmestelleLinks": [
+          {
+            "ik": "107436557",
+            "sgbxiLeistungsart": "00"
+          }
+        ],
+        "papierannahmestelleLinks": [
+          {
+            "ik": "107436557",
+            "sgbxiLeistungsart": "00",
+            "paperTypes": 15
+          }
+        ]
+      },
+      {
+        "ik": "183170002",
+        "name": "hkk",
+        "abbreviatedName": "hkk",
+        "contacts": [
+          {
+            "phone": "0421 3655-1760",
+            "fax": "0421 3655-1797",
+            "name": "Kareen Otto",
+            "fieldOfWork": "Pflegeversicherung; Kareen.Otto@hkk.de"
+          },
+          {
+            "phone": "0421 3655-3194",
+            "fax": "0421 3655993194",
+            "name": "Rebecca Runte",
+            "fieldOfWork": "Datenaustausch; Rebecca.Runte@hkk.de"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Bremen",
+            "postcode": 28195,
+            "streetAndHousenumber": "Martinistr. 26"
+          },
+          {
+            "place": "Bremen",
+            "postcode": 28185
+          }
+        ],
+        "datenannahmestelleLinks": [
+          {
+            "ik": "661430046",
+            "sgbxiLeistungsart": "01"
+          },
+          {
+            "ik": "661430046",
+            "sgbxiLeistungsart": "02"
+          },
+          {
+            "ik": "661430046",
+            "sgbxiLeistungsart": "03"
+          },
+          {
+            "ik": "661430046",
+            "sgbxiLeistungsart": "09"
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "04"
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "05"
+          },
+          {
+            "ik": "107436557",
+            "sgbxiLeistungsart": "06"
+          },
+          {
+            "ik": "661430046",
+            "sgbxiLeistungsart": "07"
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "08"
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "10"
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "11"
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "12"
+          }
+        ],
+        "untrustedDatenannahmestelleLinks": [
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "04"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "05"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "08"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "10"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "11"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "12"
+          }
+        ],
+        "papierannahmestelleLinks": [
+          {
+            "ik": "661430046",
+            "sgbxiLeistungsart": "01",
+            "paperTypes": 15
+          },
+          {
+            "ik": "661430046",
+            "sgbxiLeistungsart": "02",
+            "paperTypes": 15
+          },
+          {
+            "ik": "661430046",
+            "sgbxiLeistungsart": "03",
+            "paperTypes": 15
+          },
+          {
+            "ik": "661430046",
+            "sgbxiLeistungsart": "09",
+            "paperTypes": 15
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "04",
+            "paperTypes": 15
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "05",
+            "paperTypes": 15
+          },
+          {
+            "ik": "107436557",
+            "sgbxiLeistungsart": "06",
+            "paperTypes": 15
+          },
+          {
+            "ik": "661430046",
+            "sgbxiLeistungsart": "07",
+            "paperTypes": 15
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "08",
+            "paperTypes": 15
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "10",
+            "paperTypes": 15
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "11",
+            "paperTypes": 15
+          },
+          {
+            "ik": "183170002",
+            "sgbxiLeistungsart": "12",
+            "paperTypes": 15
+          }
+        ]
+      },
+      {
+        "ik": "184239915",
+        "name": "BKK Essanelle",
+        "abbreviatedName": "BKK Essanelle",
+        "addresses": [
+          {
+            "place": "Augsburg",
+            "postcode": 86165,
+            "streetAndHousenumber": "Zugspitzstr. 181"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "184239926",
+        "name": "BKK Essanelle-Ost",
+        "abbreviatedName": "BKK Essanelle-Ost",
+        "addresses": [
+          {
+            "place": "Augsburg",
+            "postcode": 86165,
+            "streetAndHousenumber": "Zugspitzstr. 181"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "184940005",
+        "name": "BARMER - Pflegekasse",
+        "abbreviatedName": "BARMER",
+        "contacts": [
+          {
+            "phone": "0800 332060-0",
+            "name": "Ingrid Drolshagen",
+            "fieldOfWork": "Ingrid.Drolshagen@barmer.de"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Wuppertal",
+            "postcode": 42285,
+            "streetAndHousenumber": "Lichtscheider Str. 89"
+          }
+        ],
+        "datenannahmestelleLinks": [
+          {
+            "ik": "660510336",
+            "sgbxiLeistungsart": "01"
+          },
+          {
+            "ik": "660510336",
+            "sgbxiLeistungsart": "06"
+          },
+          {
+            "ik": "660510336",
+            "sgbxiLeistungsart": "09"
+          }
+        ],
+        "untrustedDatenannahmestelleLinks": [
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "02"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "03"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "04"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "05"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "07"
+          },
+          {
+            "ik": "109989162",
+            "sgbxiLeistungsart": "08"
+          }
+        ],
+        "papierannahmestelleLinks": [
+          {
+            "ik": "660510336",
+            "sgbxiLeistungsart": "01",
+            "paperTypes": 15
+          },
+          {
+            "ik": "660510336",
+            "sgbxiLeistungsart": "06",
+            "paperTypes": 15
+          },
+          {
+            "ik": "660510336",
+            "sgbxiLeistungsart": "09",
+            "paperTypes": 15
+          },
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "02",
+            "paperTypes": 15
+          },
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "03",
+            "paperTypes": 15
+          },
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "04",
+            "paperTypes": 15
+          },
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "05",
+            "paperTypes": 15
+          },
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "07",
+            "paperTypes": 15
+          },
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "08",
+            "paperTypes": 15
+          }
+        ]
+      },
+      {
+        "ik": "185830016",
+        "name": "DAK-Gesundheit",
+        "abbreviatedName": "DAK-G",
+        "addresses": [
+          {
+            "place": "Hamburg",
+            "postcode": 20097,
+            "streetAndHousenumber": "Nagelsweg 27 - 31"
+          },
+          {
+            "place": "Hamburg",
+            "postcode": 20009,
+            "poBox": "Postfach 10 14 44"
+          }
+        ],
+        "datenannahmestelleLinks": [
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "01"
+          },
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "02"
+          },
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "03"
+          },
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "06"
+          },
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "09"
+          },
+          {
+            "ik": "104593971",
+            "sgbxiLeistungsart": "10"
+          }
+        ],
+        "papierannahmestelleLinks": [
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "01",
+            "paperTypes": 15
+          },
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "02",
+            "paperTypes": 15
+          },
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "03",
+            "paperTypes": 15
+          },
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "04",
+            "paperTypes": 3
+          },
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "05",
+            "paperTypes": 3
+          },
+          {
+            "ik": "661430035",
+            "sgbxiLeistungsart": "06",
+            "paperTypes": 13
+          },
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "07",
+            "paperTypes": 3
+          },
+          {
+            "ik": "185830016",
+            "sgbxiLeistungsart": "08",
+            "paperTypes": 3
+          },
+          {
+            "ik": "101567314",
+            "location": "SH",
+            "sgbxiLeistungsart": "09",
+            "paperTypes": 15
+          },
+          {
+            "ik": "101567677",
+            "location": "NW",
+            "sgbxiLeistungsart": "09",
+            "paperTypes": 15
+          },
+          {
+            "ik": "101567314",
+            "location": "SH",
+            "sgbxiLeistungsart": "10",
+            "paperTypes": 15
+          },
+          {
+            "ik": "101567677",
+            "location": "NW",
+            "sgbxiLeistungsart": "10",
+            "paperTypes": 15
+          }
+        ]
+      },
+      {
+        "ik": "189921296",
+        "name": "Deutsche BKK-Ost",
+        "abbreviatedName": "Deutsche BKK-Ost",
+        "addresses": [
+          {
+            "place": "Wolfsburg",
+            "postcode": 38401,
+            "poBox": "Postfach 100143"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "189939003",
+        "name": "Deutsche BKK",
+        "abbreviatedName": "Deutsche BKK",
+        "addresses": [
+          {
+            "place": "Wolfsburg",
+            "postcode": 38401,
+            "poBox": "Postfach 100143"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "189991291",
+        "name": "Deutsche BKK-Ost",
+        "abbreviatedName": "Deutsche BKK-Ost Mitarbeit.",
+        "addresses": [
+          {
+            "place": "Wolfsburg",
+            "postcode": 38401,
+            "poBox": "Postfach 100143"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "189991304",
+        "name": "Deutsche BKK-West",
+        "abbreviatedName": "Deutsche BKK-West Mitarbeit.",
+        "addresses": [
+          {
+            "place": "Wolfsburg",
+            "postcode": 38401,
+            "poBox": "Postfach 100143"
+          }
+        ],
+        "kostentraegerLinks": [
+          {
+            "ik": "184940005",
+            "sgbxiLeistungsart": "00"
+          }
+        ]
+      },
+      {
+        "ik": "660510336",
+        "name": "Deutsches Dienstleistungs zentrum für das Gesundheits wesen GmbH",
+        "abbreviatedName": "DDG GmbH",
+        "contacts": [
+          {
+            "phone": "0201 8998-620",
+            "fax": "0201 8998-600",
+            "fieldOfWork": "Hotline Rechnungsbearbeitung"
+          },
+          {
+            "phone": "0201 8998-619",
+            "fax": "0201 8998-600",
+            "fieldOfWork": "Hotline Datenaustausch"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Essen",
+            "postcode": 45141,
+            "streetAndHousenumber": "Grabenstr. 100-104"
+          },
+          {
+            "place": "Essen",
+            "postcode": 45120,
+            "poBox": "Postfach"
+          }
+        ],
+        "transmission": {
+          "email": "dta302@ddg-online.de",
+          "zeichensatz": "I8"
+        },
+        "publicKeys": [
+          {
+            "validityFrom": "2018-11-14T00:00:00.000Z",
+            "validityTo": "2021-12-31T23:59:59.000Z",
+            "publicKey": "MIICCgKCAgEAof1E+n2LhYrMeGm1QOqwRvUcVi1lABchZWx+vmPtwLPxTWrlF2jhu9CfL6ldDAJ2Fts1VakkV7JNqE0jvI9A64ZUU+Be9i32IkPcFQY7yP2q4Z9HonI9HURHcEflmUimC9Hd/J9KOYQx4BjzQKqKDS0pWqaiEzkWwdsxvoaQI+OHKR8+sz9xv9YjREkZojd/lCv4NkFMGQb9rD5lxuhCNJ+LEzswVe+MFfUOk+IEu3GJC87vDeSf6MAScQtUw4KU3pDUk46LfeANRdWraSvoss9UhqEfpPkK5NeyLffqfz90wuPOJAzt489YL4yA2/azXubFTGvxvPl7oSqwdky00K3kuH3ghNDNu8qRmGp1LtvJn0dgkDnR5ueTqDJQJ5yO9tKxonnjz+bY/2gB3GgXe1KEvFUHhqMjzDqIusDArVLHZcSJaBD8lUd3CshsgaSSGgSv9ZY1maZ7EYEHZRB0OS9dShuVqD/l67eXNbISfesYGG1ruN0aEAG15/jiCoL/823FsqSx57xGBOCJFLD8VOK/YQF90qtELQWSRyqEf73YCZXZSdhCthWkhNkBvwTMnkKghO9r6hJTZ8dtdBDhoSWD5gvxzKLHA0aDLQmkTxScSuL0KVoVCBG1Nl0DVCXVq0OjV4UcYYd8zqduKs54xPGw1wbcnvAm+yFCZu/oHMkCAwEAAQ=="
+          }
+        ]
+      },
+      {
+        "ik": "661430035",
+        "name": "DAVASO GmbH",
+        "abbreviatedName": "DAVASO",
+        "contacts": [
+          {
+            "phone": "0341 25920-37",
+            "fax": "0341 25920-20",
+            "fieldOfWork": "Service-Telefon Abrechnungsverfahren"
+          },
+          {
+            "phone": "0341 25920-66",
+            "fieldOfWork": "Service-Telefon Datenaustausch"
+          },
+          {
+            "fieldOfWork": "info302@davaso.de"
+          },
+          {
+            "fieldOfWork": "Service-E-Mail Abrechnungsverfahren: info302@davaso.de"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Taucha",
+            "postcode": 4425,
+            "streetAndHousenumber": "Gärtnerweg 12"
+          },
+          {
+            "place": "Leipzig",
+            "postcode": 4310
+          }
+        ],
+        "transmission": {
+          "email": "edi302@inter-forum.de",
+          "zeichensatz": "I8"
+        },
+        "publicKeys": [
+          {
+            "validityFrom": "2018-11-14T00:00:00.000Z",
+            "validityTo": "2021-12-31T23:59:59.000Z",
+            "publicKey": "MIICCgKCAgEAmtiv3cbZdr+hGbdDrzyRrpkSYF7yQnIx5erlw6P2HKdbcP6i1WPmC8mWaCXQSVbo4Wlpz4nYtCur0KokMZH4/6KATUePWaMtgDtjtv13uF/iY+gZQwDvHrkLcVm3AqkQDlglPaVCiGMF8hYGZSfSOCrPBBKsL5IiK9rA8N0k2SIGua/Z4KHCt6UTpoS353/vyb/l8lIF3dyIkbGeyCN/2cOsU4g3loGZcXAjz/2GayqJjrXWhwbqokL8WdyHIyYPjRQumV8JP91oOcHipgZxcm/gGDXecxQVX+yqI/xn8eQECBTOCxqKrVoqaSP86T1Gp72hahhfyhqMsBPIKOtrsdzxImTb00tQ2n905g852Zeu2uG3xVrjP2gEqg3Pmo8rTtbjH3Li8G68BXmxL5+5BaU/TO8ItQY10v3K8IGW6cEGlzr99dxDkNgfnGD0lqkKe5CjCn5vrycOoMPD69J1trEE1iAJ50EzKsb5urLAwYkTntwD7BiEmzIRqWEYuq3uA3uSN5JF0qGMqaEbWhTnD5dOvXjNMOPc939uJmycbF97Fz27ZD41/UFwKPJyV7wpusUyWV4R4SvJ9gAGw5MI+tqLvVK0JO1rO2gR6RB10Kd7kfVuGWSk7K7jP2kW5IsRwYCxXMg8394rmbyQxDMtGKrKhM9CC+UCdk/tI08zSbMCAwEAAQ=="
+          }
+        ]
+      },
+      {
+        "ik": "661430046",
+        "name": "DAVASO GmbH",
+        "abbreviatedName": "DAVASO",
+        "contacts": [
+          {
+            "phone": "0341 25920-0",
+            "fax": "0341 25920-20",
+            "name": "Zentrale"
+          }
+        ],
+        "addresses": [
+          {
+            "place": "Taucha",
+            "postcode": 4425,
+            "streetAndHousenumber": "Otto-Schmidt-Str. 22"
+          },
+          {
+            "place": "Leipzig",
+            "postcode": 4311
+          }
+        ],
+        "transmission": {
+          "email": "da302@davaso.de",
+          "zeichensatz": "I8"
+        },
+        "publicKeys": [
+          {
+            "validityFrom": "2018-11-14T00:00:00.000Z",
+            "validityTo": "2021-12-31T23:59:59.000Z",
+            "publicKey": "MIICCgKCAgEA2ZC67uaToUkHep27azceRUE3AMeUKm5MDsg3569MztULhZ5ZT2oWoS/YXyd+FHLUxdUxMAzYPEEEEG5JpYHKuHLvzGFcZ2aIm0L+B/ENE/4Rn+VtKmDJSCFxqLodvbtwOnuj0+ZVQQ9mfRV+pxyPv2hxLMrq0d/j3mXLU/mfZC/wPucx5jzRynNgdZsmO4NUlSkr1gBEULN66UhbYe8WG2zxmv3HQmnXBe9lo2FO89R/jJOIhxdoWrIKwRxpakv7fvEF29jYHue9gP6EsD3G/otPV8M05f1EQyR1XVwGsdmgkDBCyLcrnqyu19OqQ6QKGg+7u4fFsRgg39dwQT5skWqfHIVkk0zWQ6bSd1kmpd1wMtM1RFfipQRgR1UqqxOQqp2qR2AsjlsQmsf81PbenZyeC5Kcjyg4XHyGC2ivlr+SC3GeUqbx4FznVK5DzghGMvomDLhGHNBf10bctfzJnHQzYVy6mbYGIOeRE0bMOmwgCvCn29X0vPZaxQEoQOlir4lJ+qnC32U3As4mIinbj1OmaCVzeeSEtWb7DG9sy3vZZ3VwOB14wcsg8AJKKbKqF9bwqTi+slGB6WKfx1kCXO2ZfuD5HvL+GFys/caz93a/n7xVdV9vi9ryi+tAm81lkXlwgMcYMxH0Dd2HCiM9eNzoNqEL/RnWNVDxaaa5gy8CAwEAAQ=="
+          }
+        ]
+      }
+    ]
+  },
+  {
     "issuerIK": "109910000",
     "leistungserbringerGruppeSchluessel": "5",
     "kassenart": "AO",

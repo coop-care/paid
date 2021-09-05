@@ -23,6 +23,14 @@ EK06Q221.ke3
   IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
   IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
 
+EK06Q321.ke0
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
+
 AO05Q321.ke0
   message 106 - skipped invalid DFU 1: Unknown DFUProtokollSchluessel "011"
   message 106 - skipped invalid DFU 2: Unknown DFUProtokollSchluessel "011"
