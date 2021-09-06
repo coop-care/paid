@@ -172,10 +172,7 @@ describe("kostentraeger transformer", () => {
                         fieldOfWork: "Schabernack"
                     }
                 ],
-                transmission: {
-                    email: "ok@go.de",
-                    zeichensatz: "I8"
-                },
+                transmissionEmail: "ok@go.de",
                 publicKeys: pkeyMap.get("999999999"),
                 kostentraegerLinks: [{
                     ik: "999999999",
@@ -472,6 +469,7 @@ describe("kostentraeger transformer", () => {
         // there should also not be any warnings parsing this
         expect(result.warnings).toHaveLength(1)
     })
+
 })
 
 /* need to compare the stringified and then parsed result because Javascript Date objects 

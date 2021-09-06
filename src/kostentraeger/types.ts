@@ -62,9 +62,9 @@ export type Institution = {
     contacts?: Contact[],
     /** Address(es). Contains one to three addresses, (max) one for each type */
     addresses: Address[],
-    /** Details on where to send receipts. Undefined if this institution does not accept any 
+    /** Email where to send receipts. Undefined if this institution does not accept any 
      *  receipts directly */
-    transmission?: ReceiptTransmission,
+    transmissionEmail?: string,
     /** Public key(s) to use for encrypting to this IK, if any. One institution may have several
      *  public keys, with overlapping validity dates
      */
@@ -165,14 +165,6 @@ export type KVLocationSchluessel =
  */
 export type CareProviderLocationSchluessel = 
     FederalStateSchluesselWithoutNRWSchluessel | NRWSubdivisionSchluessel
-
-/** Simplified data model of UEM+DFU from the Kostenträger file with legacy stuff removed */
-export type ReceiptTransmission = {
-    /** Email address to use to send receipts. */
-    email: string,
-    /** Charset in which the data must be transmitted */
-    zeichensatz: UebermittlungszeichensatzSchluessel
-}
 
 export type Contact = {
     /** Phone number. The dialing code and phone number usually separated with "/" or "-" */

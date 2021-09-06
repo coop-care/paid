@@ -24,10 +24,7 @@
             "streetAndHousenumber": "Lichtscheiderstraße 89"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        }
+        "transmissionEmail": "da@dta.aok.de"
       },
       {
         "ik": "100395611",
@@ -263,10 +260,7 @@
             "streetAndHousenumber": "Lichtscheiderstraße 89"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        }
+        "transmissionEmail": "da@dta.aok.de"
       },
       {
         "ik": "101097008",
@@ -285,10 +279,7 @@
             "postcode": 39084
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -396,10 +387,7 @@
             "streetAndHousenumber": "Edisonstr. 70"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -2159,10 +2147,7 @@
             "streetAndHousenumber": "Nortkirchenstr. 103 - 105"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -2289,10 +2274,7 @@
             "streetAndHousenumber": "Lichtscheiderstraße 89"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -2353,10 +2335,7 @@
             "streetAndHousenumber": "Bahnhofstraße 3"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -2407,10 +2386,7 @@
             "streetAndHousenumber": "Fröhliche-Mann-Straße 3A"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -2440,10 +2416,7 @@
             "streetAndHousenumber": "Bahnhofstraße 3"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -2655,10 +2628,7 @@
             "streetAndHousenumber": "Karl-Marx-Straße 7A"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -2705,10 +2675,7 @@
             "streetAndHousenumber": "Bahn hofstraße 3"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -3005,10 +2972,7 @@
             "postcode": 39084
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "kostentraegerLinks": [
           {
             "ik": "181097008",
@@ -5620,10 +5584,7 @@
             "postcode": 14456
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "kostentraegerLinks": [
           {
             "ik": "189519005",
@@ -5776,10 +5737,7 @@
             "postcode": 4425
           }
         ],
-        "transmission": {
-          "email": "edi302@inter-forum.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "edi302@inter-forum.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -6621,10 +6579,7 @@
             "poBox": "100453"
           }
         ],
-        "transmission": {
-          "email": "le@bitmarck-daten.de",
-          "zeichensatz": "99"
-        },
+        "transmissionEmail": "le@bitmarck-daten.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -7401,10 +7356,7 @@
             "poBox": "1167"
           }
         ],
-        "transmission": {
-          "email": "inbox@tp5.arz-emmendingen.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "inbox@tp5.arz-emmendingen.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -8208,10 +8160,7 @@
             "streetAndHousenumber": "Raiffeisenstr. 12"
           }
         ],
-        "transmission": {
-          "email": "dav@mobil-isc.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "dav@mobil-isc.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -12594,10 +12543,7 @@
             "streetAndHousenumber": "Heinrich-Nordhoff-Str. 69"
           }
         ],
-        "transmission": {
-          "email": "DTA@KV-Service-Plus-GmbH",
-          "zeichensatz": "I8"
-        }
+        "transmissionEmail": "DTA@KV-Service-Plus-GmbH"
       },
       {
         "ik": "660510336",
@@ -12717,10 +12663,7 @@
             "postcode": 4310
           }
         ],
-        "transmission": {
-          "email": "edi302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "edi302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -12744,10 +12687,7 @@
             "postcode": 4311
           }
         ],
-        "transmission": {
-          "email": "da302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -13134,10 +13074,7 @@
             "streetAndHousenumber": "Kutschenberg 1"
           }
         ],
-        "transmission": {
-          "email": "dta302@convema.com",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "dta302@convema.com",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -15051,10 +14988,7 @@
             "poBox": "1167"
           }
         ],
-        "transmission": {
-          "email": "inbox@tp5.arz-emmendingen.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "inbox@tp5.arz-emmendingen.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -15098,10 +15032,7 @@
             "poBox": "100453"
           }
         ],
-        "transmission": {
-          "email": "le@bitmarck-daten.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "le@bitmarck-daten.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -16097,29 +16028,6 @@
         ]
       },
       {
-        "ik": "661200093",
-        "name": "MEDENT GmbH Zweigstelle Eisenhüttenstadt Rechnungsprüfstelle BKK/IKK",
-        "abbreviatedName": "MEDENT Eisenhüttenstadt",
-        "contacts": [
-          {
-            "phone": "089-96177-511",
-            "fax": "089-96177-120",
-            "name": "Team Datenaustausch",
-            "fieldOfWork": "datenaustausch@medent.de"
-          }
-        ],
-        "addresses": [
-          {
-            "place": "Eisenhüttenstadt",
-            "postcode": 15887
-          }
-        ],
-        "transmission": {
-          "email": "sole@datenannahme.medent.de",
-          "zeichensatz": "I7"
-        }
-      },
-      {
         "ik": "661420011",
         "name": "GfS Gesellschaft für Statistik imGesund- heitswesen mbH",
         "abbreviatedName": "Gesellschaft für Statistik",
@@ -16161,10 +16069,7 @@
             "postcode": 4310
           }
         ],
-        "transmission": {
-          "email": "edi302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "edi302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -16188,10 +16093,7 @@
             "postcode": 4311
           }
         ],
-        "transmission": {
-          "email": "da302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -16223,10 +16125,7 @@
             "poBox": "Postfach 50 02 09"
           }
         ],
-        "transmission": {
-          "email": "dta302@condates.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "dta302@condates.de",
         "publicKeys": [
           {
             "validityFrom": "2019-09-16T00:00:00.000Z",
@@ -20038,10 +19937,7 @@
             "poBox": "100453"
           }
         ],
-        "transmission": {
-          "email": "le@bitmarck-daten.de",
-          "zeichensatz": "99"
-        },
+        "transmissionEmail": "le@bitmarck-daten.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -20773,10 +20669,7 @@
             "poBox": "Postfach 10 04 53"
           }
         ],
-        "transmission": {
-          "email": "le@bitmarck-daten.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "le@bitmarck-daten.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -21928,10 +21821,7 @@
             "poBox": "Postfach 100453"
           }
         ],
-        "transmission": {
-          "email": "le-dak@bitmarck-daten.de",
-          "zeichensatz": "99"
-        },
+        "transmissionEmail": "le-dak@bitmarck-daten.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -22958,10 +22848,7 @@
             "streetAndHousenumber": "An der B3 Haus Nr. 6"
           }
         ],
-        "transmission": {
-          "email": "inbox@tp5.arz-emmendingen.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "inbox@tp5.arz-emmendingen.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -23739,10 +23626,7 @@
             "streetAndHousenumber": "Fasanenweg 5"
           }
         ],
-        "transmission": {
-          "email": "dav01@b2b.mailorbit.de",
-          "zeichensatz": "I8"
-        }
+        "transmissionEmail": "dav01@b2b.mailorbit.de"
       },
       {
         "ik": "181570104",
@@ -24481,10 +24365,7 @@
             "poBox": "Postfach"
           }
         ],
-        "transmission": {
-          "email": "dta302@ddg-online.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "dta302@ddg-online.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -24525,10 +24406,7 @@
             "postcode": 4310
           }
         ],
-        "transmission": {
-          "email": "edi302@inter-forum.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "edi302@inter-forum.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -24559,10 +24437,7 @@
             "postcode": 4311
           }
         ],
-        "transmission": {
-          "email": "da302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -25714,10 +25589,7 @@
             "poBox": "Postfach 100453"
           }
         ],
-        "transmission": {
-          "email": "le-dak@bitmarck-daten.de",
-          "zeichensatz": "99"
-        },
+        "transmissionEmail": "le-dak@bitmarck-daten.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -26744,10 +26616,7 @@
             "streetAndHousenumber": "An der B3 Haus Nr. 6"
           }
         ],
-        "transmission": {
-          "email": "inbox@tp5.arz-emmendingen.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "inbox@tp5.arz-emmendingen.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -27525,10 +27394,7 @@
             "streetAndHousenumber": "Fasanenweg 5"
           }
         ],
-        "transmission": {
-          "email": "dav01@b2b.mailorbit.de",
-          "zeichensatz": "I8"
-        }
+        "transmissionEmail": "dav01@b2b.mailorbit.de"
       },
       {
         "ik": "181570104",
@@ -28385,10 +28251,7 @@
             "poBox": "Postfach"
           }
         ],
-        "transmission": {
-          "email": "dta302@ddg-online.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "dta302@ddg-online.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -28429,10 +28292,7 @@
             "postcode": 4310
           }
         ],
-        "transmission": {
-          "email": "edi302@inter-forum.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "edi302@inter-forum.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -28463,10 +28323,7 @@
             "postcode": 4311
           }
         ],
-        "transmission": {
-          "email": "da302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -28502,10 +28359,7 @@
             "streetAndHousenumber": "Lichtscheiderstraße 89"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        }
+        "transmissionEmail": "da@dta.aok.de"
       },
       {
         "ik": "100395611",
@@ -28522,10 +28376,7 @@
             "postcode": 14456
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -28655,10 +28506,7 @@
             "postcode": 14456
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -28792,10 +28640,7 @@
             "streetAndHousenumber": "Lichtscheiderstraße 89"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        }
+        "transmissionEmail": "da@dta.aok.de"
       },
       {
         "ik": "101097008",
@@ -28824,10 +28669,7 @@
             "postcode": 39084
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -29036,10 +28878,7 @@
             "streetAndHousenumber": "Edisonstr. 70"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -29475,10 +29314,7 @@
             "poBox": "101342"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -30100,10 +29936,7 @@
             "streetAndHousenumber": "Bürgermeister-Smidt-Str.95"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -31219,10 +31052,7 @@
             "streetAndHousenumber": "Bürgermeister-Smid-Str.95"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -31390,10 +31220,7 @@
             "streetAndHousenumber": "Kopenhagener Str. 1"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -31698,10 +31525,7 @@
             "postcode": 58079
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        }
+        "transmissionEmail": "da@dta.aok.de"
       },
       {
         "ik": "103711119",
@@ -31846,10 +31670,7 @@
             "streetAndHousenumber": "Lichtscheiderstraße 89"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -32446,10 +32267,7 @@
             "streetAndHousenumber": "Fünftenweg 31"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -32610,10 +32428,7 @@
             "streetAndHousenumber": "Fröhliche-Mann-Straße 3A"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -35869,10 +35684,7 @@
             "streetAndHousenumber": "Sternplatz 7"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -36101,10 +35913,7 @@
             "streetAndHousenumber": "Fünftenweg 31"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -36505,10 +36314,7 @@
             "streetAndHousenumber": "Fünftenweg 31"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -36761,10 +36567,7 @@
             "streetAndHousenumber": "Karl-Marx-Straße 7A"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -37867,10 +37670,7 @@
             "streetAndHousenumber": "Fünftenweg 31"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -37988,10 +37788,7 @@
             "streetAndHousenumber": "Behlertstr. 33A"
           }
         ],
-        "transmission": {
-          "email": "da@dta.aok.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da@dta.aok.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -38217,10 +38014,7 @@
             "postcode": 4425
           }
         ],
-        "transmission": {
-          "email": "edi302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "edi302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -38851,10 +38645,7 @@
             "streetAndHousenumber": "Kutschenberg 1"
           }
         ],
-        "transmission": {
-          "email": "dta302@convema.com",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "dta302@convema.com",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -51274,10 +51065,7 @@
             "poBox": "100453"
           }
         ],
-        "transmission": {
-          "email": "le@bitmarck-daten.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "le@bitmarck-daten.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -51302,10 +51090,7 @@
             "poBox": "1167"
           }
         ],
-        "transmission": {
-          "email": "inbox@tp5.arz-emmendingen.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "inbox@tp5.arz-emmendingen.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -51345,10 +51130,7 @@
             "streetAndHousenumber": "Otto-Schmidt-Str. 22"
           }
         ],
-        "transmission": {
-          "email": "da302@davaso.de",
-          "zeichensatz": "I8"
-        }
+        "transmissionEmail": "da302@davaso.de"
       },
       {
         "ik": "590311426",
@@ -51361,10 +51143,7 @@
             "streetAndHousenumber": "Heinrich-Nordhoff-Str. 69"
           }
         ],
-        "transmission": {
-          "email": "DTA@KV-Service-Plus-GmbH.de",
-          "zeichensatz": "I8"
-        }
+        "transmissionEmail": "DTA@KV-Service-Plus-GmbH.de"
       },
       {
         "ik": "660510336",
@@ -51381,10 +51160,7 @@
             "postcode": 45120
           }
         ],
-        "transmission": {
-          "email": "dta302@ddg-online.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "dta302@ddg-online.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -51458,10 +51234,7 @@
             "streetAndHousenumber": "Raiffeisenstr. 12"
           }
         ],
-        "transmission": {
-          "email": "dav@mobil-isc.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "dav@mobil-isc.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -51512,10 +51285,7 @@
             "postcode": 4310
           }
         ],
-        "transmission": {
-          "email": "edi302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "edi302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -51546,10 +51316,7 @@
             "postcode": 4311
           }
         ],
-        "transmission": {
-          "email": "da302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -55171,10 +54938,7 @@
             "postcode": 4311
           }
         ],
-        "transmission": {
-          "email": "da302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -55206,10 +54970,7 @@
             "postcode": 4310
           }
         ],
-        "transmission": {
-          "email": "edi302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "edi302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -55272,10 +55033,7 @@
             "poBox": "100453"
           }
         ],
-        "transmission": {
-          "email": "le@bitmarck-daten.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "le@bitmarck-daten.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -55622,10 +55380,7 @@
             "poBox": "1167"
           }
         ],
-        "transmission": {
-          "email": "inbox@tp5.arz-emmendingen.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "inbox@tp5.arz-emmendingen.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -57154,10 +56909,7 @@
             "streetAndHousenumber": "Hohmannstraße 7A"
           }
         ],
-        "transmission": {
-          "email": "dta302@condates.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "dta302@condates.de",
         "publicKeys": [
           {
             "validityFrom": "2019-09-16T00:00:00.000Z",
@@ -63889,10 +63641,7 @@
             "poBox": "100453"
           }
         ],
-        "transmission": {
-          "email": "le@bitmarck-daten.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "le@bitmarck-daten.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -64646,10 +64395,7 @@
             "poBox": "Postfach 10 04 53"
           }
         ],
-        "transmission": {
-          "email": "le@bitmarck-daten.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "le@bitmarck-daten.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -67225,10 +66971,7 @@
             "poBox": "100453"
           }
         ],
-        "transmission": {
-          "email": "le-dak@bitmarck-daten.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "le-dak@bitmarck-daten.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -67253,10 +66996,7 @@
             "postcode": 42271
           }
         ],
-        "transmission": {
-          "email": "DA302-barmer@gkvi.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "DA302-barmer@gkvi.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -69211,10 +68951,7 @@
             "streetAndHousenumber": "An der B3 Haus Nr. 6"
           }
         ],
-        "transmission": {
-          "email": "inbox@tp5.arz-emmendingen.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "inbox@tp5.arz-emmendingen.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -70528,10 +70265,7 @@
             "poBox": "Postfach"
           }
         ],
-        "transmission": {
-          "email": "dta302@ddg-online.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "dta302@ddg-online.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -70562,10 +70296,7 @@
             "postcode": 4310
           }
         ],
-        "transmission": {
-          "email": "edi302@inter-forum.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "edi302@inter-forum.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
@@ -70589,10 +70320,7 @@
             "postcode": 4311
           }
         ],
-        "transmission": {
-          "email": "da302@davaso.de",
-          "zeichensatz": "I8"
-        },
+        "transmissionEmail": "da302@davaso.de",
         "publicKeys": [
           {
             "validityFrom": "2018-11-14T00:00:00.000Z",
