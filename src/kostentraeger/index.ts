@@ -339,7 +339,7 @@ function findKostentraeger(
 
     // Step 3: Find if Datenannahmestelle has decryption authority and handle it if not
     let sendTo: Institution | undefined
-    if (encryptTo.transmission?.email) {
+    if (encryptTo.transmissionEmail) {
         /* if it accepts data itself, that's great! 
            The documentation is making it
            sound that even if this institution accepts data directly, one should look
