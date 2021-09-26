@@ -272,9 +272,9 @@ const getLeistungDetails = (leistung: Leistung): string | undefined => {
             return leistung.leistungsEnde ? time(leistung.leistungsEnde) : "00"
         case "02":
         case "03":
-            return time(leistung.leistungsEnde)
+            return time(leistung.leistungsEnde!!)
         case "04":
-            return day(leistung.leistungsBeginn) + day(leistung.leistungsEnde)
+            return day(leistung.leistungsBeginn!!) + day(leistung.leistungsEnde!!)
         case "06":
             if (leistung.wegegebuehren == "04") {
                 return Math.round(leistung.gefahreneKilometer).toString() // integer from 0-9999
