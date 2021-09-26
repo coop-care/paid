@@ -7,12 +7,17 @@ import {
     AbrechnungscodeSchluessel,
     LeistungsartSchluessel,
     MehrwertsteuerSchluessel, 
+    NichtPauschaleWegegebuehrenSchluessel, 
+    PauschaleWegegebuehrenSchluessel, 
     PflegehilfsmittelSchluessel,
+    PflegesatzSchluessel,
     QualifikationsabhaengigeVerguetungSchluessel,
     RechnungsartSchluessel,
     TarifbereichSchluessel,
     UmsatzsteuerBefreiungSchluessel,
     VerguetungsartSchluessel,
+    ZeitartSchluessel,
+    ZeiteinheitSchluessel,
     ZuschlagsartSchluessel,
     ZuschlagsberechnungSchluessel,
     ZuschlagSchluessel,
@@ -93,23 +98,91 @@ export type Einsatz = {
     leistungen: Leistung[]
 }
 
-export type Leistung = {
+/** A Leistung is subdivided into the following different subtypes, each told apart by the 
+ *  "verguetungsart" field. Each Leistung requires a different set of fields to be specified.
+ */
+export type Leistung = 
+    LeistungskomplexverguetungLeistung |
+    ZeitverguetungLeistung |
+    TeilstationaerLeistung |
+    VollstationaerOderKurzzeitpflegeLeistung |
+    PflegehilfsmittelLeistung |
+    WegegebuehrenLeistung |
+    PauschaleLeistung |
+    SonstigeLeistung
+
+type BaseLeistung = {
     leistungsart: LeistungsartSchluessel
     verguetungsart: VerguetungsartSchluessel
     qualifikationsabhaengigeVerguetung: QualifikationsabhaengigeVerguetungSchluessel
-    /** Depending on verguetungsart a completely different field */
-    leistung: string
+
     /** Price of one service provided */
     einzelpreis: number
     /** Number of things done, f.e. 3x check blood pressure, 3x 15 minutes etc. */
     anzahl: number
-    leistungsBeginn?: Date // for verguetungsart 04 only
-    leistungsEnde?: Date // for verguetungsart 01, 02, 03, 04
-    gefahreneKilometer?: number // for verguetungsart 06 with leistung 04
     punktwert?: number
     punktzahl?: number
+
+    /** only mandatory for verguetungsart 04 */
+    leistungsBeginn?: Date
+    /** mandatory for verguetungsart 01, 02, 03, 04 */
+    leistungsEnde?: Date
+
     zuschlaege: Zuschlag[]
-    hilfsmittel?: Pflegehilfsmittel // for verguetungsart 05 only
+}
+
+export type LeistungskomplexverguetungLeistung = BaseLeistung & {
+    verguetungsart: "01"
+    /** 3-character current number of Leistungskomplex */
+    leistungskomplex: string
+}
+
+export type ZeitverguetungLeistung = BaseLeistung & {
+    verguetungsart: "02"
+    zeiteinheit: ZeiteinheitSchluessel
+    zeitart: ZeitartSchluessel
+}
+
+export type TeilstationaerLeistung = BaseLeistung & {
+    verguetungsart: "03"
+    pflegesatz: PflegesatzSchluessel
+}
+
+export type VollstationaerOderKurzzeitpflegeLeistung = BaseLeistung & {
+    verguetungsart: "04"
+    pflegesatz: PflegesatzSchluessel
+}
+
+export type PflegehilfsmittelLeistung = BaseLeistung & {
+    verguetungsart: "05"
+    hilfsmittel: Pflegehilfsmittel
+    /** Hilfsmittelpositionsnummer, see /hilfsmittelverzeichnis/types.ts  */
+    positionsnummer: string
+}
+
+export type WegegebuehrenLeistung = 
+    PauschaleWegegebuehrenLeistung |
+    WegegebuehrenNachKilometerLeistung
+
+export type PauschaleWegegebuehrenLeistung = BaseLeistung & {
+    verguetungsart: "06"
+    wegegebuehren: PauschaleWegegebuehrenSchluessel
+}
+
+export type WegegebuehrenNachKilometerLeistung = BaseLeistung & {
+    verguetungsart: "06"
+    wegegebuehren: NichtPauschaleWegegebuehrenSchluessel
+    gefahreneKilometer: number
+}
+
+export type PauschaleLeistung = BaseLeistung & {
+    verguetungsart: "08"
+    // there is only one code for Pauschale: "Einsatzspauschale" = "1", see codes.ts 2.7.7
+}
+
+export type SonstigeLeistung = BaseLeistung & {
+    verguetungsart: "99"
+    // there is only one code for Pauschale: "Sonstiges" = "99", see codes.ts 2.7.8
 }
 
 export type Zuschlag = {
