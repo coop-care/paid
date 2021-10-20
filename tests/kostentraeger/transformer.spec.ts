@@ -1,5 +1,5 @@
+import { Certificate } from "@peculiar/asn1-x509"
 import { KOTRInterchange } from "../../src/kostentraeger/edifact/segments"
-import { PublicKeyInfo } from "../../src/kostentraeger/pki/types"
 import transform from "../../src/kostentraeger/transformer"
 import { InstitutionList, PaperDataType } from "../../src/kostentraeger/types"
 
@@ -141,12 +141,8 @@ describe("kostentraeger transformer", () => {
             }]
         }
 
-        const pkeyMap = new Map<string, PublicKeyInfo[]>()
-        pkeyMap.set("999999999", [{
-            validityFrom: new Date("2018-05-05"),
-            validityTo: new Date("2088-10-10"),
-            publicKey: new ArrayBuffer(8)
-        }])
+        const certificatesByIK = new Map<string, Certificate[]>()
+        certificatesByIK.set("999999999", [])
 
         const expectedInstitutionList: InstitutionList = {
             issuerIK: "123456789",
@@ -173,7 +169,7 @@ describe("kostentraeger transformer", () => {
                     }
                 ],
                 transmissionEmail: "ok@go.de",
-                publicKeys: pkeyMap.get("999999999"),
+                certificates: certificatesByIK.get("999999999"),
                 kostentraegerLinks: [{
                     ik: "999999999",
                     location: "HH",
@@ -200,7 +196,7 @@ describe("kostentraeger transformer", () => {
             }],
         }
 
-        const result = transform(pkeyMap, interchange)
+        const result = transform(certificatesByIK, interchange)
         // there should also not be any warnings parsing this
         expect(result.warnings).toEqual([])
 
@@ -458,14 +454,10 @@ describe("kostentraeger transformer", () => {
             }]
         }
 
-        const pkeyMap = new Map<string, PublicKeyInfo[]>()
-        pkeyMap.set("999999991", [{
-            validityFrom: new Date("2018-05-05"),
-            validityTo: new Date("2088-10-10"),
-            publicKey: new ArrayBuffer(8)
-        }])
+        const certificatesByIK = new Map<string, Certificate[]>()
+        certificatesByIK.set("999999991", [])
 
-        const result = transform(pkeyMap, interchange)
+        const result = transform(certificatesByIK, interchange)
         // there should also not be any warnings parsing this
         expect(result.warnings).toHaveLength(1)
     })

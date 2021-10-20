@@ -4,13 +4,15 @@ import {
     InstitutionListsIndex,
     Leistungsart
 } from "../../src/kostentraeger/index"
-import { PublicKeyInfo } from "../../src/kostentraeger/pki/types"
 import { 
     CareProviderLocationSchluessel,
     Institution,
     InstitutionList,
     PaperDataType
 } from "../../src/kostentraeger/types"
+import { base64ToArrayBuffer } from "../../src/kostentraeger/pki/utils"
+import { AsnParser } from "@peculiar/asn1-schema"
+import { Certificate, Time } from "@peculiar/asn1-x509"
 
 describe("Kostenträger index", () => {
 
@@ -26,7 +28,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kasse,
             encryptTo: kasse,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kasse 
         })
     })
@@ -44,7 +46,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kasse,
             encryptTo: kasse,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kasse 
         })
     })
@@ -73,7 +75,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse1,
             kostentraeger: kasse3,
             encryptTo: kasse3,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kasse3 
         })
     })
@@ -97,7 +99,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse1,
             kostentraeger: kasse2,
             encryptTo: kasse2,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kasse2 
         })
     })
@@ -120,15 +122,15 @@ describe("Kostenträger index", () => {
         const datenannahmestelle = {
             ...base, 
             ik: "00000003",
-            ...usesDefaultPublicKey
             transmissionEmail: "default@default.de",
+            ...usesDefaultCertificate
         } as Institution
 
         expect(findForData([institutionListOf([pflegekasse, kostentraeger, datenannahmestelle])], "00000001")).toEqual({
             pflegekasse: pflegekasse,
             kostentraeger: kostentraeger,
             encryptTo: datenannahmestelle,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: datenannahmestelle 
         })
     })
@@ -154,7 +156,7 @@ describe("Kostenträger index", () => {
             untrustedDatenannahmestelleLinks: [{
                 ik: "00000004"
             }],
-            ...usesDefaultPublicKey
+            ...usesDefaultCertificate
         } as Institution
         const untrustedDatenannahmestelle = {
             ...base, 
@@ -171,7 +173,7 @@ describe("Kostenträger index", () => {
             pflegekasse: pflegekasse,
             kostentraeger: kostentraeger,
             encryptTo: trustedDatenannahmestelle,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: untrustedDatenannahmestelle 
         })
     })
@@ -202,13 +204,13 @@ describe("Kostenträger index", () => {
         expect(findForData(
             [{
                 ...institutionListOf([simple]),
-                validityStartDate: new Date("2010-02-01"), // older
+                validityStartDate: new Date("2021-01-01"), // older
             },{
                 ...institutionListOf( [{...simple, name: "new name"}]),
-                validityStartDate: new Date("2011-02-01"), // newer
+                validityStartDate: new Date("2021-03-01"), // newer
             }], 
             defaultIK,
-            { date: new Date("2016-01-01") }
+            { date: new Date("2021-04-01") }
         )?.pflegekasse?.name).toEqual("new name")
     })
 
@@ -305,7 +307,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger2
         })
 
@@ -313,7 +315,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger3,
             encryptTo: kostentraeger3,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger3
         })
     })
@@ -343,7 +345,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger
         })
     })
@@ -381,7 +383,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger2
         })
 
@@ -389,7 +391,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger3,
             encryptTo: kostentraeger3,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger3
         })
     })
@@ -430,7 +432,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger2
         })
 
@@ -438,7 +440,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger3,
             encryptTo: kostentraeger3,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger3
         })
     })
@@ -469,14 +471,14 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger
         })
         expect(findForData(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "32" }})).toEqual({
             pflegekasse: kasse,
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger
         })
         expect(findForData(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "41" }})).toEqual(undefined)
@@ -522,7 +524,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger
         })
     })
@@ -563,7 +565,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger2
         })
 
@@ -576,7 +578,7 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
-            publicKey: defaultPublicKey,
+            certificate: defaultCertificate,
             sendTo: kostentraeger2
         })
     })
@@ -632,30 +634,28 @@ describe("Kostenträger index", () => {
         })
     })
 
-    it("excludes results for datenannahmestelle without public key", () => {
+    it("excludes results for datenannahmestelle without certificate", () => {
         const kasse = { 
             ...base, 
             ...acceptsData,
             ...linksPapierAndDatenannahmeTo("00000001"),
             ik: "00000001",
-            publicKeys: []
+            certificates: []
         } as Institution
 
         expect(findForData([institutionListOf([kasse])], "00000001")).toBeUndefined()
     })
 
-    it("excludes results for datenannahmestelle with expired public key", () => {
-        const expiredKeyInfo: PublicKeyInfo = {
-            validityFrom: new Date("2010-01-01"),
-            validityTo: new Date("2012-01-01"),
-            publicKey: new ArrayBuffer(8)
-        }
+    it("excludes results for datenannahmestelle with expired certificate", () => {
+        const expiredCertificate: Certificate = parseCertificate(certificatePEM)
+        expiredCertificate.tbsCertificate.validity.notBefore = new Time(new Date("2010-01-01"))
+        expiredCertificate.tbsCertificate.validity.notAfter = new Time(new Date("2012-01-01"))
 
         const kasse = { 
             ...base, 
             ...acceptsData,
             ...linksPapierAndDatenannahmeTo("00000001"),
-            publicKeys: [expiredKeyInfo],
+            certificates: [expiredCertificate],
             ik: "00000001"
         } as Institution
 
@@ -664,23 +664,20 @@ describe("Kostenträger index", () => {
         })).toBeUndefined()
     })
 
-    it("finds kostentraeger and uses the newer public key for result if there are several", () => {
-        const oldKeyInfo: PublicKeyInfo = {
-            validityFrom: new Date("2010-01-01"),
-            validityTo: new Date("2020-01-01"),
-            publicKey: new ArrayBuffer(8)
-        }
-        const newKeyInfo: PublicKeyInfo = {
-            validityFrom: new Date("2010-01-01"),
-            validityTo: new Date("2022-01-01"),
-            publicKey: new ArrayBuffer(9)
-        }
+    it("finds kostentraeger and uses the newer certificate for result if there are several", () => {
+        const oldCertificate: Certificate = parseCertificate(certificatePEM)
+        oldCertificate.tbsCertificate.validity.notBefore = new Time(new Date("2010-01-01"))
+        oldCertificate.tbsCertificate.validity.notAfter = new Time(new Date("2020-01-01"))
+        
+        const newCertificate: Certificate = parseCertificate(certificatePEM)
+        newCertificate.tbsCertificate.validity.notBefore = new Time(new Date("2010-01-01"))
+        newCertificate.tbsCertificate.validity.notAfter = new Time(new Date("2022-01-01"))
 
         const kasse = { 
             ...base, 
             ...acceptsData,
             ...linksPapierAndDatenannahmeTo("00000001"),
-            publicKeys: [oldKeyInfo, newKeyInfo],
+            certificates: [oldCertificate, newCertificate],
             ik: "00000001"
         } as Institution
 
@@ -690,14 +687,36 @@ describe("Kostenträger index", () => {
             pflegekasse: kasse,
             kostentraeger: kasse,
             encryptTo: kasse,
-            publicKey: newKeyInfo.publicKey,
+            certificate: newCertificate,
             sendTo: kasse 
         })
     })
 })
 
+const parseCertificate = (certPEM: string): Certificate =>
+    AsnParser.parse(base64ToArrayBuffer(certPEM), Certificate)
+
+const certificatePEM = `MIIDTjCCAjagAwIBAgIDAnxUMA0GCSqGSIb3DQEBCwUAMEkxCzAJBgNVBAYTAkRF
+MTowOAYDVQQKEzFJVFNHIFRydXN0Q2VudGVyIGZ1ZXIgc29uc3RpZ2UgTGVpc3R1
+bmdzZXJicmluZ2VyMB4XDTIwMTEyNDAwMDAwMFoXDTIzMDEwODIzNTk1OVowgYkx
+CzAJBgNVBAYTAkRFMTowOAYDVQQKEzFJVFNHIFRydXN0Q2VudGVyIGZ1ZXIgc29u
+c3RpZ2UgTGVpc3R1bmdzZXJicmluZ2VyMQ0wCwYDVQQLEwR2ZGVrMRQwEgYDVQQL
+EwtJSzEwOTk3OTk3ODEZMBcGA1UEAxMQRHIuIEhlaWtvIFN0YW1lcjCCASIwDQYJ
+KoZIhvcNAQEBBQADggEPADCCAQoCggEBAIAI9oynbhMHVe16zbUXGfdtNfC7a8WJ
+60nLaOXWnSvzCU81/gTz59jhi5i3y8lxR63hVeJuHl5/fY4z28tlMDQwX/V5z4iZ
+y8m75bo/SWu5kjmSETW0a0St5bq56kPTOJhxPvONF5nQfGuZGPw3Y6jsu2osCIVB
+ZQYWGihfL1hadbNQaalO0ZKYRu6FlUA6GfHtmzLnnQLVuAAUA6LMnaj0s9oBgwUQ
+oLuPrqe9pFdBKl+iEyg0/FC2fY7jy+dAgXsGQMDtY5sk0l0b7t7NFOzOwwPaeZrk
+u6oRKV9VSILMgSIHy7gLcBa8n4fuYM+4Bzf9oItMQQr+VuMjxe+UAWMCAwEAATAN
+BgkqhkiG9w0BAQsFAAOCAQEAOz8znqhmVw7g6RsENcOqu7UtjbdEitRd9aAW4hiz
+WJbbPv1rCU6+cFA8vCiQYdZagl8xrZrYyCpx+JUqQFkDUuq2kdQRgeAnQTggNV+K
+Xs702G+AMB3GmulPdlIPTN7YXQXoCiIJgsxn/CKveQYyYXuMdRJw/9GJJR9FatkJ
+xkG7EX7PaWOpimA/+U40PRyJ4etxclFNVuBbefQ/cWCHQhupY7hewdaK2yIXyXvd
+xAITd32OHKn7H/rEl220hwCPuGFUUvvoEtXn2i77dequl7BG3ceikkmjsdueqUxv
+3Ggt+TSxF2vu3ZXzDT1AjV7TFTLX7ClDQMXdUIn/nBF14g==`
+
 const defaultIK: string = "00000000"
-const defaultPublicKey: ArrayBuffer = new ArrayBuffer(111)
+const defaultCertificate = parseCertificate(certificatePEM)
 
 const institutionListOf = (institutions: Institution[]): InstitutionList => ({
     issuerIK: "00000000",
@@ -734,16 +753,12 @@ const linksPapierAndDatenannahmeTo = (ik: string) => ({
     }]
 })
 
-const usesDefaultPublicKey = {
-    publicKeys: [{
-        validityFrom: new Date("2010-01-01"),
-        validityTo: new Date("2090-01-01"),
-        publicKey: defaultPublicKey
-    }]
+const usesDefaultCertificate = {
+    certificates: [defaultCertificate]
 }
 
 const acceptsData = {
-    ...usesDefaultPublicKey,
+    ...usesDefaultCertificate,
     transmissionEmail: "default@default.de"
 }
 
