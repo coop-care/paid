@@ -120,8 +120,8 @@ describe("Kostenträger index", () => {
         const datenannahmestelle = {
             ...base, 
             ik: "00000003",
+            ...usesDefaultPublicKey,
             transmissionEmail: "default@default.de",
-            ...usesDefaultPublicKey
         } as Institution
 
         expect(findForData([institutionListOf([pflegekasse, kostentraeger, datenannahmestelle])], "00000001")).toEqual({
@@ -744,7 +744,7 @@ const usesDefaultPublicKey = {
 
 const acceptsData = {
     ...usesDefaultPublicKey,
-    transmissionEmail: "default@default.de",
+    transmissionEmail: "default@default.de"
 }
 
 const simple = { ...base, ...acceptsData, ...linksPapierAndDatenannahmeTo(defaultIK) } as Institution
