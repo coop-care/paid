@@ -1,11 +1,10 @@
 import { 
     KostentraegerSGBVAbrechnungscodeSchluessel,
     KostentraegerSGBXILeistungsartSchluessel,
-    LeistungserbringergruppeSchluessel, 
-    UebermittlungszeichensatzSchluessel 
+    LeistungserbringergruppeSchluessel
 } from "./edifact/codes"
 import { KassenartSchluessel } from "./filename/codes"
-import { PublicKeyInfo } from "./pki/types"
+import { Certificate } from '@peculiar/asn1-x509'
 
 /**
  * These types represent the data from Kostentraeger file(s) cast into a (more) accessible data model
@@ -65,10 +64,10 @@ export type Institution = {
     /** Email where to send receipts. Undefined if this institution does not accept any 
      *  receipts directly */
     transmissionEmail?: string,
-    /** Public key(s) to use for encrypting to this IK, if any. One institution may have several
-     *  public keys, with overlapping validity dates
+    /** Certificate(s) to use for encrypting to this IK, if any. One institution may have several
+     *  certificates, with overlapping validity dates
      */
-    publicKeys?: PublicKeyInfo[],
+    certificates?: Certificate[],
     /** Link(s) to Kostenträger (=institutions that pays the receipts). 
      *  The institution with the IK as printed on the health-insurance card is not necessarily the
      *  institution that manages paying the receipts. Usually such things are done by a central 

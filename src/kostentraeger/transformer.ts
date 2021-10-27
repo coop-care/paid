@@ -4,12 +4,10 @@ import {
     KostentraegerSGBVAbrechnungscodeSchluessel,
     KostentraegerSGBXILeistungsartSchluessel,
     KVBezirkSchluessel, 
-    LeistungserbringergruppeSchluessel,
-    UebermittlungszeichensatzSchluessel
+    LeistungserbringergruppeSchluessel
 } from "./edifact/codes"
 import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, UEM, VKG } from "./edifact/segments"
 import { VerfahrenSchluessel } from "./filename/codes"
-import { PublicKeyInfo } from "./pki/types"
 import { 
     Address, 
     Contact, 
@@ -20,6 +18,7 @@ import {
     PaperDataType,
     PapierannahmestelleLink
 } from "./types"
+import { Certificate } from '@peculiar/asn1-x509'
 
 
 const datenlieferungsartSchluesselToPaperType = 
@@ -72,7 +71,7 @@ const kvBezirkSchluesselToKVLocation =
     ])
 
 
-export default function transform(pkeys: Map<string, PublicKeyInfo[]>, interchange: KOTRInterchange): InstitutionListParseResult {
+export default function transform(pkeys: Map<string, Certificate[]>, interchange: KOTRInterchange): InstitutionListParseResult {
 
     const validityStartDate = interchange.filename.validityStartDate
 
@@ -121,9 +120,9 @@ function validateLinks(institutions: Institution[]): string[] {
                     warnings.push(`${errMsg} links to IK ${link.ik} for data but neither that IK nor an IK it links to accepts SMTP (email)`)
                 }
             }
-            /** each Datenannahme with capacity to decrypt must have a public key */
-            if (!da?.publicKeys) {
-                warnings.push(`${errMsg} links to IK ${link.ik} for data but there is not any public key for encryption`)
+            /** each Datenannahme with capacity to decrypt must have a certificate */
+            if (!da?.certificates) {
+                warnings.push(`${errMsg} links to IK ${link.ik} for data but there is not any certificate for encryption`)
             }
         })
     })
@@ -140,7 +139,11 @@ function verfahrenToLeistungserbringergruppeSchluessel(verfahren: VerfahrenSchlu
 }
 
 
-function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage, interchangeValidityStartDate: Date): Institution | null {
+function transformMessage(
+    certificatesByIK: Map<string, Certificate[]>,
+    msg: KOTRMessage, 
+    interchangeValidityStartDate: Date
+): Institution | null {
     /* Since the use of this field was unclear to us, we asked GKV-Spitzenverband.
        
        They answered that this field marks whether an entry was added, changed, not changed or 
@@ -238,8 +241,8 @@ function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage,
     const papierannahmestelleLinks = createPapierannahmestelleLinks(msg.vkgList)
 
     const contacts = msg.aspList.map((asp) => createContact(asp))
-
-    const publicKeys = pkeys.get(msg.idk.ik)
+    
+    const certificates = certificatesByIK.get(msg.idk.ik)
 
     const transmissionEmail = msg.dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
     return {
@@ -255,7 +258,7 @@ function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage,
         contacts: contacts.length > 0 ? contacts : undefined,
         addresses: msg.ansList.map((ans) => createAddress(ans)),
         transmissionEmail: transmissionEmail,
-        publicKeys: publicKeys,
+        certificates: certificates,
         kostentraegerLinks: kostentraegerLinks.length > 0 ? kostentraegerLinks : undefined,
         datenannahmestelleLinks: datenannahmestelleLinks.length > 0 ? datenannahmestelleLinks : undefined,
         untrustedDatenannahmestelleLinks: untrustedDatenannahmestelleLinks.length > 0 ? untrustedDatenannahmestelleLinks : undefined,

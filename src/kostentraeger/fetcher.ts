@@ -6,7 +6,7 @@ import parseKostentraegerUrls from './rssreader'
 import transform from "./transformer"
 import { InstitutionListFileParseResult, InstitutionListParseResult } from "./types"
 import { TextDecoder } from "util"
-import { PublicKeyInfo } from './pki/types'
+import { Certificate } from '@peculiar/asn1-x509'
 
 const kostentraegerRssUrls = [
     "https://gkv-datenaustausch.de/leistungserbringer/pflege/kostentraegerdateien_pflege/rss_kostentraegerdateien_pflege.xml",
@@ -21,15 +21,15 @@ const kostentraegerRssUrls = [
 const certificatesUrl = "https://trustcenter-data.itsg.de/dale/annahme-rsa4096.key"
 
 export default async function fetchInstitutionLists(): Promise<InstitutionListFileParseResult[]> {
-    const publicKeyInfos = await fetchPublicKeyInfos()
+    const certificatesByIK = await fetchCertificates()
     const fileUrls = await fetchKostentraegerUrls(kostentraegerRssUrls)
     const kostentraegerFiles = await fetchKostentraegerFiles(fileUrls)
     return kostentraegerFiles.map(([fileName, text]) => {
-        return { fileName: fileName, ...parseKostentraegerString(publicKeyInfos, text) }
+        return { fileName: fileName, ...parseKostentraegerString(certificatesByIK, text) }
     })
 }
 
-async function fetchPublicKeyInfos(): Promise<Map<string,PublicKeyInfo[]>> {
+async function fetchCertificates(): Promise<Map<string, Certificate[]>> {
     const pems = await (await fetch(certificatesUrl)).text()
     return parsePems(pems)
 }
@@ -64,7 +64,7 @@ async function fetchKostentraegerFile(url: string): Promise<[string, string]> {
     }
 }
 
-function parseKostentraegerString(pkeyMap: Map<string, PublicKeyInfo[]>, text: string): InstitutionListParseResult {
+function parseKostentraegerString(pkeyMap: Map<string, Certificate[]>, text: string): InstitutionListParseResult {
     const tokenizedEdifact = tokenize(text)
     const edifactParseResult = parse(tokenizedEdifact)
     const transformedResult = transform(pkeyMap, edifactParseResult.interchange)
