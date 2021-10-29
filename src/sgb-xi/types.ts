@@ -45,6 +45,7 @@ export type BillingData = {
     /** An ascending number indicating a correction of an earlier version of this same bill.
      *  0 or undefined if this is not a correction. */
     korrekturlieferung?: number
+    /** Mandatory if rechnungsart != "1" */
     abrechnungsstelle?: Institution
     laufendeDatenannahmeImJahrJeEmpfaengerIK: Record<string, number>
 }
