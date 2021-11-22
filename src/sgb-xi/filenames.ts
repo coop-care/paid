@@ -2,19 +2,19 @@
   * see docs/documents.md for more info
   */
 
-import { TestIndicator } from "../types"
-import { BillingData } from "./types"
+import { BillingData, TestIndicator } from "../types"
 import { KassenartSchluessel } from "../kostentraeger/filename/codes"
 
 /** A.k.a. "logischer Dateiname" */
 export const makeAnwendungsreferenz = (
-    kassenart: KassenartSchluessel,
-    laufendeDatenannahmeImJahr: number,
     {
         rechnungsart,
         abrechnungsmonat,
         korrekturlieferung = 0
-    }: BillingData
+    }: BillingData,
+    absenderIK: string,
+    kassenart: KassenartSchluessel,
+    laufendeDatenannahmeImJahr: number,
 ) => [
     // "Absenderklassifikation". "PL" stands for "Pflege-Leistungserbringer"
     "PL",
@@ -29,10 +29,10 @@ export const makeAnwendungsreferenz = (
 
 /** A.k.a "Verfahrenskennung" */
 export const makeDateiname = (
-    testIndicator: TestIndicator,
+    dateiindikator: TestIndicator,
     transferNumber: number
 ) => [
-    testIndicator == "2" ? "E" : "T",
+    dateiindikator == "2" ? "E" : "T",
     // "PFL" stands for "Pflege-Leistungserbringer"
     "PFL",
     "0", // verfahrensversion. Always 0

@@ -56,7 +56,17 @@ const messages = {
     "textTooLong": "String length must be at most {maxLength} characters.",
     "textHasIncorrectLength": "String must have exactly {length} characters.",
     "textTruncated": "String will be truncated because it is longer than {maxLength} characters.",
+    "textTransliterated": "String will be transliterated because it contains characters that are not available in the target encoding.",
 
     "institutionskennzeichenIncorrect": "An IK must be a string that consists of exactly 9 digits.",
     "rechnungsnummerIncorrect": "An invoice number may only contain the characters a-z, A-Z, 0-9 and the separators '-' and '/', though it may not begin or end with a separator.",
+
+    "certificateVerificationFailed": "",
+    "certificateExpired": "",
+    "certificateBeforeValidity": "",
+    "certificateWillExpire": "",
+
+    "unexpectedType": "",
+    "invalidCharacters": "",
+    "throwsError": "",
 }

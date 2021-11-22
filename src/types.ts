@@ -3,7 +3,55 @@
   */
 
 import { LaenderkennzeichenSchluessel } from "./country_codes"
-import { PflegegradSchluessel } from "./sgb-xi/codes"
+import { KassenartSchluessel } from "./kostentraeger/filename/codes"
+import { PflegegradSchluessel, RechnungsartSchluessel } from "./sgb-xi/codes"
+import { Invoice } from "./sgb-xi/types"
+import { ValidationError } from "./validation/index"
+import { CareProviderLocationSchluessel, Institution as KostentraegerInstitution, InstitutionLink } from "./kostentraeger/types"
+import { Leistungsart } from "./kostentraeger"
+
+export type ResultOrErrors<T> = {
+    result?: T
+    errors?: ValidationError[]
+    warnings?: ValidationError[]
+}
+
+export type Recipient = {
+    kassenart: KassenartSchluessel;
+    sendTo: KostentraegerInstitution;
+    encryptTo: KostentraegerInstitution;
+    certificate: ArrayBuffer;
+}
+export type InvoicesWithRecipient = {
+    invoices: Invoice[];
+    recipient: Recipient;
+}
+
+export type Transmission = {
+    email: Email;
+    payloadFile: File;
+    instructionFile: File;
+    unencryptedPayloadFile: File;
+}
+
+export type File = {
+    name: string;
+    data: ArrayBuffer;
+}
+
+export type EmailAddress = {
+    name?: string;
+    address: string;
+}
+
+export type Email = {
+    from: EmailAddress;
+    to: EmailAddress[];
+    date: string;
+    subject: string;
+    body: string;
+    attachments: File[];
+}
 
 export const testIndicator = {
     "0": "Testdatei",
@@ -12,11 +60,36 @@ export const testIndicator = {
 }
 export type TestIndicator = keyof typeof testIndicator;
 
+export type BillingData = {
+    /** Running number per recipient for each bill transmitted */
+    datenaustauschreferenzJeEmpfaengerIK: Record<string, number>
+    /** Indicate whether this bill is a test or if it is real data */
+    testIndicator: TestIndicator
+    /** Kind of bill, see documentation of RechnungsartSchluessel */
+    rechnungsart: RechnungsartSchluessel
+    /** X.509 Certificate including public key, ASN.1 Syntax in DER format */
+    senderCertificate: ArrayBuffer
+    /** corresponds to public key in senderCertificate, PKCS8 in DER format */
+    senderPrivateKey: ArrayBuffer
+
+    rechnungsnummerprefix: string
+    /** Date the bill was created. If not specified, the date is "now" */
+    rechnungsdatum?: Date
+    /** For which month this bill is. Bills are transmitted by month. */
+    abrechnungsmonat: Date
+    /** An ascending number indicating a correction of an earlier version of this same bill.
+     *  0 or undefined if this is not a correction. */
+    korrekturlieferung?: number
+    /** Mandatory if rechnungsart != "1" */
+    abrechnungsstelle?: Institution
+    laufendeDatenannahmeImJahrJeEmpfaengerIK: Record<string, number>
+}
+
 export type Institution = {
     name: string
     ik: string
     ansprechpartner: Ansprechpartner[]
-    email?: string
+    email: string
 }
 
 export type Ansprechpartner = {
@@ -27,7 +100,7 @@ export type Ansprechpartner = {
 export type Versicherter = {
     pflegekasseIK: string
     /** DEPRECATED - TODO: The Kostenträger selection is not only dependent on the Pflegekasse! */
-    kostentraegerIK: string
+    kostentraegerIK?: string
     /** Mandatory if known. If not known, full address must be specified.
      *  On prescription or health insurance card listed in field "Versicherten-Nr." */
     versichertennummer?: string
@@ -72,3 +145,16 @@ export type Amounts = {
     beihilfebetrag: number
     mehrwertsteuerbetrag: number
 }
+
+export type GroupInvoiceByRecipientMethod = (
+    invoice: Invoice,
+    findRecipient: (
+        pflegekasseIK: string,
+        leistungsart: Leistungsart,
+        location: CareProviderLocationSchluessel,
+    ) => {
+        key: string,
+        recipient?: Recipient,
+        kostentraegerIK?: string,
+    }
+) => Record<string, { recipient?: Recipient, invoice: Invoice }>;

@@ -5,9 +5,49 @@ import {
     ValidationResultType
 } from "./index"
 
-export const error = (code: ValidationCode, property?: string | number | symbol, params?: Record<string, string>): ValidationError => ({
-    code, type: ValidationResultType.Error, path: property ? [property] : [], params
+export const error = (
+    code: ValidationCode,
+    property?: string | number | symbol,
+    params?: Record<string, string>,
+    message?: string
+): ValidationError => ({
+    code,
+    type: ValidationResultType.Error,
+    path: property ? [property] : [],
+    message,
+    params
 })
+
+export const warning = (
+    code: ValidationCode,
+    property?: string | number | symbol,
+    params?: Record<string, string>,
+    message?: string
+): ValidationError => ({
+    code,
+    type: ValidationResultType.Warning,
+    path: property ? [property] : [],
+    message,
+    params
+})
+
+export const validationByType = (errorsAndWarnings: ValidationResult[]): {
+    errors: ValidationError[];
+    warnings: ValidationError[];
+} => {
+    const errors: ValidationError[] = [];
+    const warnings: ValidationError[] = [];
+
+    errorsAndWarnings.forEach(item => {
+        if (item?.type == ValidationResultType.Error) {
+            errors.push(item);
+        } else if (item?.type == ValidationResultType.Warning) {
+            warnings.push(item);
+        }
+    });
+
+    return { errors, warnings };
+}
 
 export const isRequired = <T>(obj: T, key: keyof T): ValidationResult => {
     if (obj[key] == undefined) {
@@ -73,7 +113,10 @@ export const isVarchar = <T>(obj: T, key: keyof T, maxLength: number): Validatio
            if a field is undefined. */
         return error("textEmpty", key)
     } else if(value.length > maxLength) {
-        return error("textTooLong", key, { maxLength: maxLength.toString() })
+        return error("textTooLong", key, {
+            maxLength: maxLength.toString(), 
+            truncatedValue: value.substring(0, maxLength)
+        })
     }
 }
 

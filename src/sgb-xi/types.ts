@@ -1,6 +1,6 @@
+import { CareProviderLocationSchluessel } from "../kostentraeger/types"
 import { 
     Institution, 
-    TestIndicator, 
     Versicherter
 } from "../types"
 import { 
@@ -9,7 +9,6 @@ import {
     MehrwertsteuerSchluessel, 
     PflegehilfsmittelSchluessel,
     QualifikationsabhaengigeVerguetungSchluessel,
-    RechnungsartSchluessel,
     TarifbereichSchluessel,
     UmsatzsteuerBefreiungSchluessel,
     VerguetungsartSchluessel,
@@ -29,39 +28,6 @@ export const messageIdentifierVersions = {
 }
 export type MessageIdentifiers = keyof typeof messageIdentifiers
 
-export type BillingData = {
-    /** Running number per recipient for each bill transmitted */
-    datenaustauschreferenzJeEmpfaengerIK: Record<string, number>
-    /** Indicate whether this bill is a test or if it is real data */
-    testIndicator: TestIndicator
-    /** Kind of bill, see documentation of RechnungsartSchluessel */
-    rechnungsart: RechnungsartSchluessel
-
-    rechnungsnummerprefix: string
-    /** Date the bill was created. If not specified, the date is "now" */
-    rechnungsdatum?: Date
-    /** For which month this bill is. Bills are transmitted by month. */
-    abrechnungsmonat: Date
-    /** An ascending number indicating a correction of an earlier version of this same bill.
-     *  0 or undefined if this is not a correction. */
-    korrekturlieferung?: number
-    /** Mandatory if rechnungsart != "1" */
-    abrechnungsstelle?: Institution
-    laufendeDatenannahmeImJahrJeEmpfaengerIK: Record<string, number>
-}
-
-export type BillingFile = {
-    dateiname: string
-    /** Sender of this bill. This would either be an Abrechnungszentrum or a Leistungserbringer */
-    absenderIK: string
-    empfaengerIK: string
-    datenaustauschreferenz: number
-    anwendungsreferenz: string
-    testIndicator: string
-    nutzdaten: string
-    rechnungsbetrag: number
-}
-
 export type Invoice = {
     leistungserbringer: Leistungserbringer
     faelle: Abrechnungsfall[]
@@ -69,6 +35,7 @@ export type Invoice = {
 
 export type Leistungserbringer = Institution & {
     abrechnungscode: AbrechnungscodeSchluessel
+    location: CareProviderLocationSchluessel
     tarifbereich: TarifbereichSchluessel
 
     /** Per Kostenträger IK a 3-character id for the SGB XI Sondertarif, see sgb-xi/codes.ts */

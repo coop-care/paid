@@ -1,9 +1,9 @@
 import {
     Institution,
     Versicherter,
+    BillingData,
 } from "../../src/types"
 import {
-    BillingData,
     Invoice,
     Leistung, 
     Leistungserbringer, 
@@ -18,8 +18,10 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "36",
     tarifbereich: "00",
+    location: "HE",
     umsatzsteuerBefreiung: "01",
     sondertarifJeKostentraegerIK: {},
+    email: "test@example.com",
 }, {
     name: "Nachbarschaftspflege in Wilhelmsburg gGmbH",
     ik: "000000120",
@@ -29,10 +31,12 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "35",
     tarifbereich: "05",
+    location: "HH",
     umsatzsteuerBefreiung: "01",
     sondertarifJeKostentraegerIK: {
         "000000010": "011"
     },
+    email: "test@example.com",
 }, {
     name: "Quartierspflege Neuhausen GmbH",
     ik: "000000130",
@@ -42,8 +46,10 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "36",
     tarifbereich: "02",
+    location: "BY",
     umsatzsteuerOrdnungsnummer: "123/456/78900",
     sondertarifJeKostentraegerIK: {},
+    email: "test@example.com",
 }, {
     name: "Von Mensch zu Mensch gGmbH",
     ik: "000000140",
@@ -53,8 +59,10 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "35",
     tarifbereich: "01",
+    location: "BW",
     umsatzsteuerBefreiung: "01",
     sondertarifJeKostentraegerIK: {},
+    email: "test@example.com",
 }, {
     name: "Pflegedienst Neukölln GmbH",
     ik: "000000150",
@@ -64,8 +72,10 @@ const leistungserbringer: Leistungserbringer[] = [{
     }],
     abrechnungscode: "36",
     tarifbereich: "23",
+    location: "BE",
     umsatzsteuerOrdnungsnummer: "012/345/67890",
     sondertarifJeKostentraegerIK: {},
+    email: "test@example.com",
 }];
 
 const abrechnungsstellen: Institution[] = [{
@@ -74,7 +84,8 @@ const abrechnungsstellen: Institution[] = [{
     ansprechpartner: [{
         name: "Peter Schmidt",
         phone: "0123 45678-90",
-    }]
+    }],
+    email: "test@example.com",
 }, {
     name: "PAID Abrechnungszentrum eG",
     ik: "000000310",
@@ -83,7 +94,8 @@ const abrechnungsstellen: Institution[] = [{
         phone: "01234 5678-9",
     }, {
         name: "Josef Klein"
-    }]
+    }],
+    email: "test@example.com",
 }]
 
 const versicherte: Versicherter[] = [{
@@ -310,6 +322,8 @@ export const payload1 = {
         rechnungsnummerprefix: "2021-0087",
         rechnungsdatum: new Date("2021-05-03"),
         abrechnungsmonat: new Date("2021-04-01"),
+        senderCertificate: new ArrayBuffer(0),
+        senderPrivateKey: new ArrayBuffer(0),
         datenaustauschreferenzJeEmpfaengerIK: {},
         laufendeDatenannahmeImJahrJeEmpfaengerIK: {}
     } as BillingData,
@@ -407,6 +421,8 @@ export const payload2 = {
         rechnungsnummerprefix: "2021-0267",
         abrechnungsmonat: new Date("2021-04-01"),
         abrechnungsstelle: abrechnungsstellen[0],
+        senderCertificate: new ArrayBuffer(0),
+        senderPrivateKey: new ArrayBuffer(0),
         datenaustauschreferenzJeEmpfaengerIK: {},
         laufendeDatenannahmeImJahrJeEmpfaengerIK: {}
     } as BillingData,
@@ -516,6 +532,8 @@ export const payload3 = {
         rechnungsdatum: new Date("2021-05-03"),
         abrechnungsmonat: new Date("2021-04-01"),
         abrechnungsstelle: abrechnungsstellen[1],
+        senderCertificate: new ArrayBuffer(0),
+        senderPrivateKey: new ArrayBuffer(0),
         datenaustauschreferenzJeEmpfaengerIK: {
             "123456789": 1
         },

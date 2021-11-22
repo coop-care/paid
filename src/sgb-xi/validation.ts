@@ -1,14 +1,13 @@
-import { 
-    constraintsIKToDatenaustauschreferenz,
-    constraintsIKToLfdDatenannahmeimJahr,
+import { Versicherter } from "../types"
+import {
     constraintsIKToSondertarif,
     constraintsInstitution,
     constraintsVersicherter
 } from "../validation"
 import { 
     arrayConstraints, valueConstraints, isTruncatedIfTooLong, 
-    isArray, isChar, isDate, isNumber, isVarchar, isRequired, 
-    isOptionalDate, isOptionalInt, isOptionalNumber, isOptionalVarchar, isRechnungsnummer,
+    isArray, isDate, isNumber, isVarchar, isRequired, 
+    isOptionalDate, isOptionalInt, isOptionalNumber, isOptionalVarchar,
 } from "../validation/utils"
 import { 
     Leistung,
@@ -18,24 +17,7 @@ import {
     Abrechnungsfall,
     Leistungserbringer,
     Invoice,
-    BillingData
 } from "./types"
-
-export const constraintsBillingData = (billing: BillingData) => [
-    isRequired(billing, "datenaustauschreferenzJeEmpfaengerIK"),
-    ...valueConstraints(billing, "datenaustauschreferenzJeEmpfaengerIK", constraintsIKToDatenaustauschreferenz),
-    isRequired(billing, "testIndicator"),
-    isRequired(billing, "rechnungsart"),
-    isVarchar(billing, "rechnungsnummerprefix", 9),
-    isRechnungsnummer(billing, "rechnungsnummerprefix"),
-    isOptionalDate(billing, "rechnungsdatum"),
-    isDate(billing, "abrechnungsmonat"),
-    isOptionalInt(billing, "korrekturlieferung", 0, 10),
-    billing.rechnungsart != "1" ? isRequired(billing, "abrechnungsstelle") : undefined, 
-    ...valueConstraints(billing, "abrechnungsstelle", constraintsInstitution),
-    isRequired(billing, "laufendeDatenannahmeImJahrJeEmpfaengerIK"), 
-    ...valueConstraints(billing, "laufendeDatenannahmeImJahrJeEmpfaengerIK", constraintsIKToLfdDatenannahmeimJahr),
-]
 
 export const constraintsInvoice = (invoice: Invoice) => [
     isRequired(invoice, "leistungserbringer"),
@@ -55,7 +37,7 @@ const constraintsLeistungserbringer = (leistungserbringer: Leistungserbringer) =
 
 const constraintsAbrechnungsfall = (fall: Abrechnungsfall) => [
     isRequired(fall, "versicherter"),
-    ...valueConstraints(fall, "versicherter", constraintsVersicherter),
+    ...valueConstraints<Versicherter>(fall, "versicherter", versicherter => constraintsVersicherter(versicherter, false)),
     isArray(fall, "einsaetze", 1),
     ...arrayConstraints(fall, "einsaetze", constraintsEinsatz)
 ]
@@ -83,7 +65,7 @@ const constraintsLeistungByVerguetungsart = (leistung: Leistung) => {
     switch(leistung.verguetungsart) {
         case "01": return [
             isOptionalDate(leistung, "leistungsEnde"),
-            isChar(leistung, "leistung", 3), // leistung = Leistungskomplex
+            isVarchar(leistung, "leistung", 3), // leistung = Leistungskomplex
         ]
         case "02": return [
             isDate(leistung, "leistungsEnde"),

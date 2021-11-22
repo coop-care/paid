@@ -16,6 +16,7 @@ import {
     PaperDataType
 } from "./types";
 import { Certificate } from '@peculiar/asn1-x509'
+import { AsnSerializer } from "@peculiar/asn1-schema";
 
 
 /** Result of a InstitutionListsIndex::findForPaper query */
@@ -25,7 +26,8 @@ export type KostentraegerForPaperFindResult = {
     /** Information on the instutition which shall be the Kostenträger of this receipt */
     kostentraeger: Institution,
     /** Information on the institution to which the receipt shall be sent */
-    sendTo: Institution 
+    sendTo: Institution,
+    kassenart: KassenartSchluessel,
 }
 
 /** Result of a InstitutionListsIndex::findForData query */
@@ -33,7 +35,7 @@ export type KostentraegerForDataFindResult = KostentraegerForPaperFindResult & {
     /** Information on the institution for which the receipt shall be encrypted */
     encryptTo: Institution,
     /** certificate to be used for encryption */
-    certificate: Certificate
+    certificate: ArrayBuffer
 }
 
 export type Leistungsart = SGBXILeistungsart | SGBVAbrechnungscode
@@ -106,7 +108,8 @@ export class InstitutionListsIndex {
         return this.find(pflegekasseIK, leistungsart, location, date, (
                 pflegekasse: Institution,
                 kostentraeger: Institution,
-                institutionsIndex: Map<string, Institution>
+                institutionsIndex: Map<string, Institution>,
+                kassenart: KassenartSchluessel,
             ) => {
                 const sendTo = findPapierannahmestelle(kostentraeger, institutionsIndex, paperDataType, leistungsart, location)
                 if (!sendTo) {
@@ -116,7 +119,8 @@ export class InstitutionListsIndex {
                 return {
                     pflegekasse: pflegekasse,
                     kostentraeger: kostentraeger,
-                    sendTo: sendTo
+                    sendTo: sendTo,
+                    kassenart
                 }
             }
         )
@@ -145,7 +149,8 @@ export class InstitutionListsIndex {
         return this.find(pflegekasseIK, leistungsart, location, date, (
                 pflegekasse: Institution,
                 kostentraeger: Institution,
-                institutionsIndex: Map<string, Institution>
+                institutionsIndex: Map<string, Institution>,
+                kassenart: KassenartSchluessel,
             ) => {
                 const datenannahmestelle = findDatenannahmestelle(kostentraeger, institutionsIndex, leistungsart, location)
                 if (!datenannahmestelle) {
@@ -167,7 +172,8 @@ export class InstitutionListsIndex {
                     kostentraeger: kostentraeger,
                     encryptTo: datenannahmestelle.encryptTo,
                     sendTo: datenannahmestelle.sendTo,
-                    certificate: certificate
+                    certificate: AsnSerializer.serialize(certificate),
+                    kassenart
                 }
             }
         )
@@ -181,7 +187,8 @@ export class InstitutionListsIndex {
         block: (
             pflegekasse: Institution,
             kostentraeger: Institution,
-            institutionsIndex: Map<string, Institution>
+            institutionsIndex: Map<string, Institution>,
+            kassenart: KassenartSchluessel,
         ) => T | undefined
     ): T | undefined {
         /* only comb through those which are for the right Leistungserbringergruppe */
@@ -209,7 +216,7 @@ export class InstitutionListsIndex {
 
             const kostentraeger = findKostentraeger(pflegekasse, institutionsIndex, leistungsart, location)
             
-            const result = block(pflegekasse, kostentraeger, institutionsIndex)
+            const result = block(pflegekasse, kostentraeger, institutionsIndex, kassenart)
             if (result) {
                 return result
             }

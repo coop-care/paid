@@ -2,14 +2,14 @@
   * see docs/documents.md for more info
   */
 
-import { 
+import {
+    BillingData,
     Amounts, 
     Versicherter,
     Institution,
     TestIndicator
 } from "../types";
 import {
-    BillingData, 
     MessageIdentifiers, 
     messageIdentifierVersions, 
     Leistungserbringer, 
@@ -82,8 +82,8 @@ export const FKT = (
         rechnungssteller: Institution,
     },
     {
-        kostentraegerIK, // Institution die die Rechnung begleicht laut Kostenträgerdatei; PLAA == PLGA
         pflegekasseIK, // Pflegekasse des Leistungs- bzw. Bewilligungsbescheids; falls angegeben gilt: PLAA == PLGA
+        kostentraegerIK, // Institution die die Rechnung begleicht laut Kostenträgerdatei; PLAA == PLGA
     }: Versicherter,
     isSammelrechnungPLGA?: boolean, // only for PLGA, undefined for PLAA
 ) => segment(
@@ -95,7 +95,7 @@ export const FKT = (
         ? "J"
         : "",
     rechnungssteller.ik,
-    kostentraegerIK,
+    kostentraegerIK || "",
     isSammelrechnungPLGA !== true ? pflegekasseIK : "",
     isSammelrechnungPLGA !== undefined ? absender.ik : rechnungssteller.ik
 );
@@ -128,11 +128,11 @@ export const SRD = (
     {
         versicherter,
         einsaetze,
-    }: Abrechnungsfall
+    }: Abrechnungsfall,
 ) => segment(
     "SRD",
     abrechnungscode + ":" + tarifbereich 
-        + (sondertarifJeKostentraegerIK[versicherter.kostentraegerIK] || "000"),
+        + (sondertarifJeKostentraegerIK[versicherter.kostentraegerIK || ""] || "000"),
     einsaetze[0].leistungen[0].leistungsart
 );
 
@@ -225,7 +225,7 @@ export const ELS = ({
     einzelpreis,
     anzahl,
     leistungsBeginn, // for verguetungsart 04
-    leistungsEnde, // for verguetungsart 01, 02, 03, 04
+    leistungsEnde, // for verguetungsart 01 (optional), 02, 03, 04
     gefahreneKilometer, // for verguetungsart 06 with leistung 04
     punktwert,
     punktzahl,
@@ -233,7 +233,11 @@ export const ELS = ({
     let details = "00";
 
     if (verguetungsart == "01") {
-        details = leistungsEnde ? time(leistungsEnde) : "00";
+        leistung = leistung.padStart(3, "0");
+    }
+
+    if (verguetungsart == "01" && leistungsEnde) {
+        details = time(leistungsEnde);
     } else if (verguetungsart == "02" && leistungsEnde) {
         details = time(leistungsEnde);
     } else if (verguetungsart == "03" && leistungsEnde) {

@@ -1,10 +1,14 @@
-import { Address, Ansprechpartner, Institution, Versicherter } from "./types"
+import { BillingData, Address, Ansprechpartner, Institution, InvoicesWithRecipient, Recipient, Versicherter } from "./types"
+import { Institution as KostentraegerInstitution } from "./kostentraeger/types"
 import { 
     arrayConstraints, valueConstraints,
     isArray, isChar, isVarchar, isDate, isIK, isInt, isRequired,
     isOptionalChar, isOptionalVarchar,
-    error, isTruncatedIfTooLong,
+    error, isTruncatedIfTooLong, isRechnungsnummer, isOptionalDate, isOptionalInt,
 } from "./validation/utils"
+import { isValidCertificate } from "./pki/validation"
+import { Invoice } from "./sgb-xi/types"
+import { ValidationResult } from "./validation/index"
 
 
 export const constraintsIKToSondertarif = (record: Record<string, string>) => 
@@ -36,7 +40,7 @@ export const constraintsInstitution = (institution: Institution) => [
     isIK(institution, "ik"),
     isTruncatedIfTooLong(isArray(institution, "ansprechpartner", 0, 3)),
     ...arrayConstraints(institution, "ansprechpartner", constraintsAnsprechpartner),
-    isTruncatedIfTooLong(isOptionalVarchar(institution, "email", 70))
+    isTruncatedIfTooLong(isVarchar(institution, "email", 70))
 ]
 
 const constraintsAnsprechpartner = (ansprechpartner: Ansprechpartner) => {
@@ -48,7 +52,7 @@ const constraintsAnsprechpartner = (ansprechpartner: Ansprechpartner) => {
     ]
 }
 
-export const constraintsVersicherter = (versicherter: Versicherter) => [
+export const constraintsVersicherter = (versicherter: Versicherter, requiresVersichertenStatus: boolean) => [
     isIK(versicherter, "pflegekasseIK"),
     // the visible immutable part of versichertennummer are always 10 characters long
     isOptionalChar(versicherter, "versichertennummer", 10),
@@ -56,13 +60,15 @@ export const constraintsVersicherter = (versicherter: Versicherter) => [
     isTruncatedIfTooLong(isVarchar(versicherter, "firstName", 30)), // 45 for SGB XI 
     isTruncatedIfTooLong(isVarchar(versicherter, "lastName", 45)), // 47 for SGB V
     isDate(versicherter, "birthday"),
-    /* if versichertennummer or versichertenstatus is not specified, address is mandatory and every
-       field in address is mandatory (except country) */
-    ...(!versicherter.versichertennummer || !versicherter.versichertenstatus ? [
-            isRequired(versicherter, "address"),
-            ...valueConstraints<Address>(versicherter, "address", constraintsWhenAddressIsMandatory),
-        ] : []
-    ),
+    /* If versichertennummer (plus versichertenstatus for SGB V) is not specified, 
+       address is mandatory and every field in address is mandatory (except country).
+       As SGB XI is not based on Verordnungen, the versichertenstatus is likely unknown and 
+       a full address is only mandatory if versichertennummer is unknown in this case.  */
+    ...(!versicherter.versichertennummer || (requiresVersichertenStatus && !versicherter.versichertenstatus) ? [
+        isRequired(versicherter, "address"),
+        ...valueConstraints<Address>(versicherter, "address", constraintsWhenAddressIsMandatory),
+    ] : []
+),
     // otherwise, if specified, the fields in address must just be not too long
     ...valueConstraints<Address>(versicherter, "address", constraintsAddress),
 ]
@@ -82,3 +88,58 @@ const constraintsAddress = (address: Address) => [
     /* SGB XI in general allows for longer address strings, but when both are used, I guess a 
        warning should be emitted when the string is too long for any SGB ...*/
 ]
+
+export const constraintsRecipient = (recipient: Recipient) => [
+    isChar(recipient, "kassenart", 2),
+    isRequired(recipient, "sendTo"),
+    ...valueConstraints<KostentraegerInstitution>(recipient, "sendTo", sendTo => [
+        isIK(sendTo, "ik"),
+        isVarchar(sendTo, "transmissionEmail", 254),
+    ]),
+    isRequired(recipient, "encryptTo"),
+    ...valueConstraints<KostentraegerInstitution>(recipient, "encryptTo", encryptTo => [
+        isIK(encryptTo, "ik"),
+    ]),
+];
+
+export const constraintsBillingData = (billing: BillingData) => [
+    isRequired(billing, "datenaustauschreferenzJeEmpfaengerIK"),
+    ...valueConstraints(billing, "datenaustauschreferenzJeEmpfaengerIK", constraintsIKToDatenaustauschreferenz),
+    isRequired(billing, "testIndicator"),
+    isRequired(billing, "rechnungsart"),
+    isVarchar(billing, "rechnungsnummerprefix", 9),
+    isRechnungsnummer(billing, "rechnungsnummerprefix"),
+    isOptionalDate(billing, "rechnungsdatum"),
+    isRequired(billing, "senderCertificate"),
+    isRequired(billing, "senderPrivateKey"),
+    isDate(billing, "abrechnungsmonat"),
+    isOptionalInt(billing, "korrekturlieferung", 0, 10),
+    billing.rechnungsart != "1" ? isRequired(billing, "abrechnungsstelle") : undefined,
+    ...valueConstraints(billing, "abrechnungsstelle", constraintsInstitution),
+    isRequired(billing, "laufendeDatenannahmeImJahrJeEmpfaengerIK"),
+    ...valueConstraints(billing, "laufendeDatenannahmeImJahrJeEmpfaengerIK", constraintsIKToLfdDatenannahmeimJahr),
+]
+
+export const constraintsForTransmission = async (
+    billingData: BillingData,
+    invoicesWithRecipient: InvoicesWithRecipient,
+    constraintsInvoice: (invoice: Invoice) => ValidationResult[]
+) => {
+    const recipientCertificateResult = await isValidCertificate(invoicesWithRecipient.recipient, "certificate");
+    const senderCertificateResult = await isValidCertificate(billingData, "senderCertificate");
+
+    return [
+        ...valueConstraints<BillingData>({ billingData }, "billingData", billingData => [
+            ...constraintsBillingData(billingData),
+            ...senderCertificateResult
+        ]),
+        ...valueConstraints<InvoicesWithRecipient>({ invoicesWithRecipient }, "invoicesWithRecipient", invoicesWithRecipient => [
+            isArray(invoicesWithRecipient, "invoices", 1),
+            ...arrayConstraints<Invoice>(invoicesWithRecipient, "invoices", constraintsInvoice),
+            ...valueConstraints<Recipient>(invoicesWithRecipient, "recipient", recipient => [
+                ...constraintsRecipient(recipient),
+                ...recipientCertificateResult,
+            ])
+        ]),
+    ];
+};

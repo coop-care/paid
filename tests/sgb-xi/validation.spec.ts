@@ -1,8 +1,10 @@
 import { validate, ValidationResultType } from "../../src/validation/index"
-import { BillingData, Invoice } from "../../src/sgb-xi/types"
-import { constraintsBillingData, constraintsInvoice } from "../../src/sgb-xi/validation"
+import { Invoice } from "../../src/sgb-xi/types"
+import { constraintsInvoice } from "../../src/sgb-xi/validation"
 import { payload1, payload2, payload3 } from "../samples/billingPayloads";
 import { arrayConstraints, valueConstraints } from "../../src/validation/utils";
+import { BillingData } from "../../src/types";
+import { constraintsBillingData } from "../../src/validation";
 
 describe("validation", () => {
 
@@ -15,7 +17,7 @@ describe("validation", () => {
             {
                 code: "textTruncated",
                 message: ".invoices[0].leistungserbringer.name: String will be truncated because it is longer than 30 characters.",
-                params: { maxLength: "30" },
+                params: { maxLength: "30", "truncatedValue": "Nachbarschaftspflege in Wilhel" },
                 path: ["invoices", 0, "leistungserbringer", "name"],
                 type: ValidationResultType.Warning,
             }
@@ -71,7 +73,7 @@ describe("validation", () => {
         {
             code: "textTooLong",
             message: ".billingData.rechnungsnummerprefix: String length must be at most 9 characters.",
-            params:  { "maxLength": "9" },
+            params: { "maxLength": "9", "truncatedValue": "-too-long" },
             path: ["billingData", "rechnungsnummerprefix"],
             type: ValidationResultType.Error,
         },
