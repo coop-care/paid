@@ -10,7 +10,7 @@ import {
     InstitutionList,
     PaperDataType
 } from "../../src/kostentraeger/types"
-import { base64ToArrayBuffer } from "../../src/kostentraeger/pki/utils"
+import { base64ToArrayBuffer } from "../../src/pki/utils"
 import { AsnParser } from "@peculiar/asn1-schema"
 import { Certificate, Time } from "@peculiar/asn1-x509"
 

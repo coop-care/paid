@@ -1,6 +1,6 @@
 import parse from "../../../src/kostentraeger/pki/parser"
 import { AsnSerializer } from "@peculiar/asn1-schema"
-import { base64ToArrayBuffer } from "../../../src/kostentraeger/pki/utils"
+import { base64ToArrayBuffer } from "../../../src/pki/utils"
 
 describe("certificates parser", () => {
 
