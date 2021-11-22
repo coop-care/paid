@@ -1,4 +1,7 @@
-import { isEncodableI8, encodeI8, decodeI8 } from "../../src/transcoding/din66003drv"
+import { transliterateRecursively } from "../../src/transcoding";
+import { isEncodableI8, encodeI8, decodeI8, transliterateI8 } from "../../src/transcoding/din66003drv"
+import { ValidationError, ValidationResultType } from "../../src/validation/index";
+import { payload3 } from "../samples/billingPayloads";
 
 
 describe("transcoding to I8", () => {
@@ -25,6 +28,49 @@ describe("transcoding to I8", () => {
     it("encode string to I8 and decode back to UTF-8", () => {
         expect(decodeI8(encodeI8("außergewöhnlich, spécial, særlig \r\n\t")))
             .toEqual("außergewöhnlich, spécial, særlig \r\n\t");
+    });
+
+    it("transliterate string for I8", () => {
+        expect(transliterateI8("Schöne Grüße an René François Lacôte, Małgorzata Dąbrowski, Nærøy, Борис Николаевич Ельцин, Δημήτρης Φωτόπουλος, אברהם הלוי פרנקל, Trần Hưng Đạo, สงขลา, கன்னியாகுமரி, महासमुंद, 深圳!\r\n\t"))
+            .toEqual("Schöne Grüße an René François Lacôte, Malgorzata Dabrowski, Nærøy, Boris Nikolaevich El'tsin, Dimitris Fotopoylos, 'vrhm hlvy frnkl, Tran Hung Dao, sngkhla, knniyakumri, mhasmumd, ShenZhen!\r\n\t");
+    });
+
+    it("recursively transliterate billing data and invoices for I8", () => {
+        const { transliterated, warnings } = transliterateRecursively(payload3, transliterateI8);
+
+        expect(transliterated).not.toEqual(payload3);
+        expect(transliterated).toEqual({
+            ...payload3,
+            invoices: [{
+                ...payload3.invoices[0],
+                faelle: [{
+                        ...payload3.invoices[0].faelle[0],
+                        versicherter: {
+                            ...payload3.invoices[0].faelle[0].versicherter,
+                            firstName: "Malgorzata",
+                            lastName: "Dabrowski"
+                        }
+                    },
+                    payload3.invoices[0].faelle[1],
+                    payload3.invoices[0].faelle[2]
+                ]
+            }, payload3.invoices[1]]
+        });
+        expect(warnings).toEqual([{
+            code: "textTransliterated",
+            type: ValidationResultType.Warning,
+            path: ["invoices", "0", "faelle", "0", "versicherter", "firstName"],
+            params: {
+                transliteratedValue: "Malgorzata"
+            }
+        }, {
+            code: "textTransliterated",
+            type: ValidationResultType.Warning,
+            path: ["invoices", "0", "faelle", "0", "versicherter", "lastName"],
+            params: {
+                transliteratedValue: "Dabrowski"
+            }
+        }] as ValidationError[]);
     });
 
 });

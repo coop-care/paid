@@ -1,3 +1,5 @@
+import anyAscii from "any-ascii";
+
 export const I7 = {
     "\u0000": 0x00,
     "\u0001": 0x01,
@@ -260,6 +262,15 @@ export const byteArrayToString = (bytes: Uint8Array, characterTable: Record<stri
         .join("");
 };
 
+export const transliterate = (text: string, characterTable: Record<string, number>) =>
+    [...text].map(char =>
+        characterTable[char] != undefined
+            ? char
+            : isConformingToCharacterSet(anyAscii(char), characterTable)
+                ? anyAscii(char)
+                : ""
+    ).join("");
+
 export const isConformingToCharacterSet = (text: string, characterTable: Record<string, number>) =>
     ![...text].some(char => characterTable[char] == undefined);
 
@@ -268,3 +279,5 @@ export const isEncodableI8 = (text: string) => isConformingToCharacterSet(text, 
 export const encodeI8 = (text: string) => stringToByteArray(text, I8);
 
 export const decodeI8 = (bytes: Uint8Array) => byteArrayToString(bytes, I8);
+
+export const transliterateI8 = (text: string) => transliterate(text, I8);
