@@ -17,4 +17,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 
+temp
 *.env
