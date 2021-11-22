@@ -30,14 +30,14 @@ export default async function fetchInstitutionLists(): Promise<InstitutionListFi
 }
 
 async function fetchCertificates(): Promise<Map<string, Certificate[]>> {
-    const pems = await (await fetch(certificatesUrl)).text()
+    const pems = await (await fetchSecure(certificatesUrl)).text()
     return parsePems(pems)
 }
 
 async function fetchKostentraegerUrls(kostentraegerRssUrls: string[]): Promise<string[]> {
     const urlsArray = await Promise.all(kostentraegerRssUrls.map(async (url) => {
         // The RSS text files are encoded in UTF-8, so we can call .text() here without worry
-        const responseText = await (await fetch(url)).text()
+        const responseText = await (await fetchSecure(url)).text()
         return parseKostentraegerUrls(responseText)
     }))
     return urlsArray.flat()
@@ -50,7 +50,7 @@ async function fetchKostentraegerFiles(kostentraegerFileUrls: string[]): Promise
 }
 
 async function fetchKostentraegerFile(url: string): Promise<[string, string]> {
-    const response = await fetch(url)
+    const response = await fetchSecure(url)
     /* Kostenträger files are encoded in iso-8859-1 and not in UTF-8, so we cannot
        just call response.text()! */
     const decoder = new TextDecoder("iso-8859-1")
@@ -58,7 +58,7 @@ async function fetchKostentraegerFile(url: string): Promise<[string, string]> {
     const fileName = url.substring(url.lastIndexOf("/")+1)
     try {
         return [fileName, text]
-    } catch(e) {
+    } catch(e: any) {
         e.message = fileName + ": " + e.message
         throw e
     }
@@ -71,4 +71,8 @@ function parseKostentraegerString(pkeyMap: Map<string, Certificate[]>, text: str
     // also merge the warnings from both parsing steps
     transformedResult.warnings = edifactParseResult.warnings.concat(transformedResult.warnings)
     return transformedResult
+}
+
+async function fetchSecure(url: string) {
+    return await fetch(url.replace(/^http:/, "https:"));
 }
