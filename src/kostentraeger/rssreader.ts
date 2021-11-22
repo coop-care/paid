@@ -24,7 +24,7 @@ function filterOnlyMostCurrentKostentraegerUrls(fileUrls: string[]): string[] {
     return fileUrls.filter((url, index) => {
         const name = getFileName(url)
         const version = getFileVersion(url)
-        return !fileUrls.some((url2, index2) => {
+        return /\.ke\d$/.test(url) && !fileUrls.some((url2, index2) => {
             if (index == index2) { return false }
             const name2 = getFileName(url2)
             if (name == name2) {
