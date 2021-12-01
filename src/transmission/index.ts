@@ -21,10 +21,14 @@ import { makeAnwendungsreferenz as makeAnwendungsreferenzSGBXI, makeDateiname as
 import { constraintsInvoice as constraintsInvoiceSGBXI } from "../sgb-xi/validation";
 
 /**
- * 
+ * Group a list of SGB XI invoices by corresponsing recipients. The recipients will be determined from institutionList.
+ * An institutionList can be either retrieved from calling `deserializeInstitutionLists` on the 
+ * string contents of the file `dist/kostentraeger.min.json` or by calling `await fetchInstitutionLists()`.
  * @param invoices 
  * @param institutionLists 
- * @returns 
+ * @returns an object with two properties:
+ * `invoicesWithRecipient`: a list of recipients together with the corresponding invoices
+ * `recipientNotFound`: a list of invoices for which an recipient could not be found. Hopefully an empty list.
  */
 export const groupInvoicesByRecipientSGBXI = (
     invoices: Invoice[],
@@ -102,10 +106,18 @@ type AnwendungsreferenzFactory = (
 ) => string;
 
 /**
- * 
- * @param invoices 
- * @param billingData 
- * @param institutionLists 
+ * Prepares the transmission of invoices to one recipient.
+ * Validates the invoices, generates a payload file (Nutzdatendatei) and an instruction file (Auftragsdatei), 
+ * encodes the files, encrypts and signs the payload file, generates the email parameters and returns
+ * them together with the files.
+ * @param invoicesWithRecipient one of the returned invoicesWithRecipient items from `groupInvoicesByRecipientSGBXI` which needs to be called first
+ * @param billingData addtional data about the sender and its transmission history
+ * @returns an object with either a `result` property, containing the `email` parameters, 
+ * the signed and encrypted `payloadFile`, a corresponding and readable `unencryptedPayloadFile` and
+ * the instructionFile, or with an `errors` property containing a list of errors. In both cases an
+ * additional and optional `warnings` property containing a list of warnings can be present in the
+ * return object. Errors should be handled, warnings should be presented to the user as they indicate
+ * an implicit modification of the data.
  */
 export const createTransmissionSGBXI = async (
     invoicesWithRecipient: InvoicesWithRecipient,
@@ -219,10 +231,13 @@ const cancelWith = (error: ValidationError): { errors: ValidationError[] } => ({
 
 
 /**
- * 
- * @param billingData 
- * @param invoicesWithRecipient 
- * @returns 
+ * Validates the data required for a transmission of invoices to one recipient.
+ * @param invoicesWithRecipient one of the returned invoicesWithRecipient items from `groupInvoicesByRecipientSGBXI` which needs to be called first
+ * @param billingData addtional data about the sender and its transmission history
+ * @returns an object with an `errors` property containing an array of errors and 
+ * a `warnings` property containing a list of warnings.
+ * Errors should be handled, warnings should be presented to the user as they indicate
+ * an implicit modification of the data to expect when preparing a transmission.
  */
 export const validateForTransmissionSGBXI = async (
     billingData: BillingData,
