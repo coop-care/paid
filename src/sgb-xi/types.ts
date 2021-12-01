@@ -6,9 +6,8 @@ import {
 import { 
     AbrechnungscodeSchluessel,
     LeistungsartSchluessel,
-    MehrwertsteuerSchluessel, 
-    NichtPauschaleWegegebuehrenSchluessel, 
-    PauschaleWegegebuehrenSchluessel, 
+    MehrwertsteuerSchluessel,
+    WegegebuehrenSchluessel,
     PflegehilfsmittelSchluessel,
     PflegesatzSchluessel,
     QualifikationsabhaengigeVerguetungSchluessel,
@@ -160,19 +159,11 @@ export type PflegehilfsmittelLeistung = BaseLeistung & {
     positionsnummer: string
 }
 
-export type WegegebuehrenLeistung = 
-    PauschaleWegegebuehrenLeistung |
-    WegegebuehrenNachKilometerLeistung
-
-export type PauschaleWegegebuehrenLeistung = BaseLeistung & {
+export type WegegebuehrenLeistung = BaseLeistung & {
     verguetungsart: "06"
-    wegegebuehren: PauschaleWegegebuehrenSchluessel
-}
-
-export type WegegebuehrenNachKilometerLeistung = BaseLeistung & {
-    verguetungsart: "06"
-    wegegebuehren: NichtPauschaleWegegebuehrenSchluessel
-    gefahreneKilometer: number
+    wegegebuehren: WegegebuehrenSchluessel
+    /** mandatory if wegegebuehren == "04"; omitted for all other values of wegegebuehren */
+    gefahreneKilometer?: number
 }
 
 export type PauschaleLeistung = BaseLeistung & {

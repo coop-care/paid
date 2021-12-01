@@ -5,15 +5,13 @@ import {
 import {
     BillingData,
     Invoice,
-    Leistung, 
     Leistungserbringer,
     LeistungskomplexverguetungLeistung,
     PauschaleLeistung,
-    PauschaleWegegebuehrenLeistung,
+    WegegebuehrenLeistung,
     PflegehilfsmittelLeistung,
     TeilstationaerLeistung,
     VollstationaerOderKurzzeitpflegeLeistung,
-    WegegebuehrenNachKilometerLeistung,
     ZeitverguetungLeistung, 
 } from "../../src/sgb-xi/types"
 
@@ -241,7 +239,7 @@ const zeitMitZuschlag: ZeitverguetungLeistung = {
         wert: 10,
     }],
 };
-const wegegebuehrenEinsatzpauschale: PauschaleWegegebuehrenLeistung = {
+const wegegebuehrenEinsatzpauschale: WegegebuehrenLeistung = {
     leistungsart: "01",
     verguetungsart: "06",
     qualifikationsabhaengigeVerguetung: "1",
@@ -250,7 +248,7 @@ const wegegebuehrenEinsatzpauschale: PauschaleWegegebuehrenLeistung = {
     anzahl: 1,
     zuschlaege: [],
 };
-const wegegebuehrenKilometer: WegegebuehrenNachKilometerLeistung = {
+const wegegebuehrenKilometer: WegegebuehrenLeistung = {
     leistungsart: "01",
     verguetungsart: "06",
     qualifikationsabhaengigeVerguetung: "1",
