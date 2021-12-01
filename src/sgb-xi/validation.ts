@@ -83,28 +83,29 @@ const constraintsLeistungByVerguetungsart = (leistung: Leistung) => {
     switch(leistung.verguetungsart) {
         case "01": return [
             isOptionalDate(leistung, "leistungsEnde"),
-            isChar(leistung, "leistung", 3), // leistung = Leistungskomplex
+            isChar(leistung, "leistungskomplex", 3)
         ]
         case "02": return [
             isDate(leistung, "leistungsEnde"),
-            isRequired(leistung, "leistung"), // leistung = ZeiteinheitSchluessel + ZeitartSchluessel
+            isRequired(leistung, "zeiteinheit"),
+            isRequired(leistung, "zeitart")
         ]
         case "03": return [
             isDate(leistung, "leistungsEnde"),
-            isRequired(leistung, "leistung"), // leistung = PflegesatzSchluessel
+            isRequired(leistung, "pflegesatz")
         ]
         case "04": return [
             isDate(leistung, "leistungsBeginn"),
             isDate(leistung, "leistungsEnde"),
-            isRequired(leistung, "leistung"), // leistung = PflegesatzSchluessel
+            isRequired(leistung, "pflegesatz")
         ]
         case "05": return [
             isRequired(leistung, "hilfsmittel"),
             ...valueConstraints(leistung, "hilfsmittel", constraintsPflegehilfsmittel),
-            isVarchar(leistung, "leistung", 10), // leistung = Positionsnummer
+            isVarchar(leistung, "positionsnummer", 10)
         ]
         case "06": 
-            if (leistung.leistung == "04") { // leistung = WegegebuehrenSchluessel
+            if (leistung.wegegebuehren == "04") { 
                 return [ isNumber(leistung, "gefahreneKilometer", 0, 1e4) ]
             } else {
                 return []

@@ -216,50 +216,75 @@ export const ESK = (
     leistungsBeginn ? time(leistungsBeginn) : ""
 );
 
-// ELS is insanely complex: leistung and several parameters depend on verguetungsart
-export const ELS = ({
-    leistungsart,
-    verguetungsart,
-    qualifikationsabhaengigeVerguetung,
-    leistung,
-    einzelpreis,
-    anzahl,
-    leistungsBeginn, // for verguetungsart 04
-    leistungsEnde, // for verguetungsart 01, 02, 03, 04
-    gefahreneKilometer, // for verguetungsart 06 with leistung 04
-    punktwert,
-    punktzahl,
-}: Leistung) => {
-    let details = "00";
+export const ELS = (leistung: Leistung) => segment(
+    "ELS",
+    [
+        leistung.leistungsart,
+        leistung.verguetungsart,
+        leistung.qualifikationsabhaengigeVerguetung,
+        getLeistungSchluessel(leistung)
+    ].join(":"),
+    price(leistung.einzelpreis),
+    number(leistung.punktwert, 5),
+    number(leistung.punktzahl, 0),
+    getLeistungDetails(leistung),
+    number(leistung.anzahl, 2)
+)
 
-    if (verguetungsart == "01") {
-        details = leistungsEnde ? time(leistungsEnde) : "00";
-    } else if (verguetungsart == "02" && leistungsEnde) {
-        details = time(leistungsEnde);
-    } else if (verguetungsart == "03" && leistungsEnde) {
-        details = time(leistungsEnde);
-    } else if (verguetungsart == "04" && leistungsBeginn && leistungsEnde) {
-        details = day(leistungsBeginn) + day(leistungsEnde);
-    } else if (verguetungsart == "06" && leistung == "04"
-            && gefahreneKilometer != undefined) {
-        details = number(gefahreneKilometer, 0)
+/** see codes.ts - 2.7 Schlüssel Leistung */
+const getLeistungSchluessel = (leistung: Leistung): string | undefined => {
+    switch(leistung.verguetungsart) {
+        case "01": 
+            return mask(leistung.leistungskomplex) // 3-character string
+        case "02":
+            return leistung.zeiteinheit + leistung.zeitart
+        case "03":
+        case "04":
+            return leistung.pflegesatz
+        case "05":
+            return mask(leistung.positionsnummer) // 10-character string
+        case "06":
+            return leistung.wegegebuehren
+        case "08":
+            return "1" // see codes.ts - 2.7.7
+        case "99":
+            return "99" // see codes.ts - 2.7.8
     }
+}
 
-    return segment(
-        "ELS",
-        [
-            leistungsart,
-            verguetungsart,
-            qualifikationsabhaengigeVerguetung,
-            leistung
-        ].join(":"),
-        price(einzelpreis),
-        number(punktwert, 5),
-        number(punktzahl, 0),
-        details,
-        number(anzahl, 2)
-    )
-};
+/** documentation reads:
+ * 
+ *  Einzutragen ist bei Vergütungsart s. Schlüsselverzeichnis Anlage 3, Abschnitt 2.5. 
+ * 
+ *  01 => 00 bzw. Uhrzeit der Beendigung der Leistungserbringung (Uhrzeit), in der Form: hhmm
+ *  02 => die Uhrzeit der Beendigung der Leistungserbringung (Uhrzeit), in der Form: hhmm
+ *  03 => der Bis-Zeitraum (Uhrzeit). In der Form: hhmm
+ *  04 => der Vom/Bis-Zeitraum (Von/Tag und Bis/Tag). In der Form: TTTT
+ *  05 => 00
+ *  06 => Wegegebühren-/Beförderungsentgeltart = 04 nach Schlüssel 2.7.5, die Anzahl der gefahrenen Kilometer, (es sind nur ganze Kilometer zu melden und kaufmännisch zu runden z. B. 3,40 Km, zu melden 3), sonst = 00 (bei SC 01-03),
+ *  07 => frei
+ *  08 => 00
+ *  99 => 00
+ */
+const getLeistungDetails = (leistung: Leistung): string | undefined => {
+    switch(leistung.verguetungsart) {
+        case "01": 
+            return leistung.leistungsEnde ? time(leistung.leistungsEnde) : "00"
+        case "02":
+        case "03":
+            return time(leistung.leistungsEnde!!)
+        case "04":
+            return day(leistung.leistungsBeginn!!) + day(leistung.leistungsEnde!!)
+        case "06":
+            if (leistung.wegegebuehren == "04") {
+                return Math.round(leistung.gefahreneKilometer).toString() // integer from 0-9999
+            } else {
+                return "00"
+            }
+        default:
+            return "00"
+    }
+}
 
 export const ZUS = (
     isLast: boolean,

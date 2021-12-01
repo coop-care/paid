@@ -258,10 +258,10 @@ const makePLAA = (
                         0 // todo: calculate ergebnis
                     )
                 ),
-                ...leistung.hilfsmittel 
+                ...leistung.verguetungsart == "05" 
                     ? [HIL(
                         leistung.hilfsmittel, 
-                        calculateHilfsmittel(leistung.einzelpreis, leistung.hilfsmittel)
+                        calculateHilfsmittelMehrwehrtsteuer(leistung.einzelpreis, leistung.hilfsmittel)
                     )] : []
             ])
         ]),
@@ -318,11 +318,11 @@ export const calculateInvoice = (invoice: Invoice) => invoice.faelle
 
 export const calculateFall = (fall: Abrechnungsfall) => fall.einsaetze
     .flatMap(einsatz => einsatz.leistungen)
-    .reduce((result, {einzelpreis, anzahl, hilfsmittel}) => {
-        const value = einzelpreis * anzahl;
-        const zuzahlungsbetrag = (hilfsmittel?.gesetzlicheZuzahlungBetrag || 0);
+    .reduce((result, leistung) => {
+        const value = leistung.einzelpreis * leistung.anzahl;
+        const zuzahlungsbetrag = calculateZuzahlungsbetrag(leistung);
         const beihilfebetrag = 0;
-        const mehrwertsteuer = calculateHilfsmittel(einzelpreis, hilfsmittel);
+        const mehrwertsteuer = calculateMehrwehrtsteuer(leistung);
         const gesamtbruttobetrag = value + mehrwertsteuer;
         result.gesamtbruttobetrag += gesamtbruttobetrag;
         result.rechnungsbetrag += gesamtbruttobetrag - zuzahlungsbetrag - beihilfebetrag;
@@ -332,7 +332,25 @@ export const calculateFall = (fall: Abrechnungsfall) => fall.einsaetze
         return result;
     }, makeAmounts());
 
-const calculateHilfsmittel = (
+const calculateZuzahlungsbetrag = (leistung: Leistung): number => {
+    if(leistung.verguetungsart == "05") {
+        return leistung.hilfsmittel.gesetzlicheZuzahlungBetrag || 0;
+    }
+    else {
+        return 0;
+    }
+}
+
+const calculateMehrwehrtsteuer = (leistung: Leistung): number => {
+    if(leistung.verguetungsart == "05") {
+        return calculateHilfsmittelMehrwehrtsteuer(leistung.einzelpreis, leistung.hilfsmittel);
+    }
+    else {
+        return 0;
+    }
+}
+
+const calculateHilfsmittelMehrwehrtsteuer = (
     einzelpreis: number,
     hilfsmittel?: Pflegehilfsmittel
 ) => einzelpreis * mehrwertsteuersaetze[hilfsmittel?.mehrwertsteuerart || ""];
