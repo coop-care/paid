@@ -5,8 +5,14 @@ import {
 } from "../../src/types"
 import {
     Invoice,
-    Leistung, 
-    Leistungserbringer, 
+    Leistungserbringer,
+    LeistungskomplexverguetungLeistung,
+    PauschaleLeistung,
+    WegegebuehrenLeistung,
+    PflegehilfsmittelLeistung,
+    TeilstationaerLeistung,
+    VollstationaerOderKurzzeitpflegeLeistung,
+    ZeitverguetungLeistung, 
 } from "../../src/sgb-xi/types"
 
 const leistungserbringer: Leistungserbringer[] = [{
@@ -201,11 +207,11 @@ const versicherte: Versicherter[] = [{
 
 // Leistungen
 
-const leistungskomplex: Leistung = {
+const leistungskomplex: LeistungskomplexverguetungLeistung = {
     leistungsart: "01",
     verguetungsart: "01",
     qualifikationsabhaengigeVerguetung: "1",
-    leistung: "001",
+    leistungskomplex: "001",
     einzelpreis: 28.37,
     anzahl: 1,
     leistungsBeginn: new Date("2021-04-02T11:00"),
@@ -214,22 +220,24 @@ const leistungskomplex: Leistung = {
     punktzahl: 464,
     zuschlaege: [],
 };
-const zeitverguetung: Leistung = {
+const zeitverguetung: ZeitverguetungLeistung = {
     leistungsart: "01",
     verguetungsart: "02",
     qualifikationsabhaengigeVerguetung: "1",
-    leistung: "13",
+    zeiteinheit: "1",
+    zeitart: "3",
     einzelpreis: 45.45,
     anzahl: 1,
     leistungsBeginn: new Date("2021-04-02T10:00"),
     leistungsEnde: new Date("2021-04-02T11:00"),
     zuschlaege: [],
 };
-const zeitMitZuschlag: Leistung = {
+const zeitMitZuschlag: ZeitverguetungLeistung = {
     leistungsart: "01",
     verguetungsart: "02",
     qualifikationsabhaengigeVerguetung: "1",
-    leistung: "13",
+    zeiteinheit: "1",
+    zeitart: "3",
     einzelpreis: 45.45,
     anzahl: 1,
     leistungsBeginn: new Date("2021-04-02T10:00"),
@@ -243,30 +251,30 @@ const zeitMitZuschlag: Leistung = {
         wert: 10,
     }],
 };
-const wegegebuehrenEinsatzpauschale: Leistung = {
+const wegegebuehrenEinsatzpauschale: WegegebuehrenLeistung = {
     leistungsart: "01",
     verguetungsart: "06",
     qualifikationsabhaengigeVerguetung: "1",
-    leistung: "03",
+    wegegebuehren: "03",
     einzelpreis: 2,
     anzahl: 1,
     zuschlaege: [],
 };
-const wegegebuehrenKilometer: Leistung = {
+const wegegebuehrenKilometer: WegegebuehrenLeistung = {
     leistungsart: "01",
     verguetungsart: "06",
     qualifikationsabhaengigeVerguetung: "1",
-    leistung: "04",
+    wegegebuehren: "04",
     einzelpreis: 0.4,
     anzahl: 1,
     gefahreneKilometer: 5,
     zuschlaege: [],
 };
-const pflegehilfsmittel: Leistung = {
+const pflegehilfsmittel: PflegehilfsmittelLeistung = {
     leistungsart: "06",
     verguetungsart: "05",
     qualifikationsabhaengigeVerguetung: "0",
-    leistung: "000000000",
+    positionsnummer: "000000000",
     einzelpreis: 123.45,
     anzahl: 1,
     zuschlaege: [],
@@ -279,33 +287,32 @@ const pflegehilfsmittel: Leistung = {
         bezeichnungPflegehilfsmittel: "Rollator",
     },
 };
-const beratungsbesuch: Leistung = {
+const beratungsbesuch: PauschaleLeistung = {
     leistungsart: "09",
     verguetungsart: "08",
     qualifikationsabhaengigeVerguetung: "1",
-    leistung: "1",
     einzelpreis: 32,
     anzahl: 1,
     leistungsBeginn: new Date("2021-04-03T13:00"),
     leistungsEnde: new Date("2021-04-03T13:30"),
     zuschlaege: [],
 };
-const teilstationaer: Leistung = {
+const teilstationaer: TeilstationaerLeistung = {
     leistungsart: "02",
     verguetungsart: "03",
     qualifikationsabhaengigeVerguetung: "1",
-    leistung: "01",
+    pflegesatz: "01",
     einzelpreis: 42.84,
     anzahl:1,
     leistungsBeginn: new Date("2021-04-02T10:00"),
     leistungsEnde: new Date("2021-04-02T18:00"),
     zuschlaege: [],
 };
-const kurzzeitpflege: Leistung = {
+const kurzzeitpflege: VollstationaerOderKurzzeitpflegeLeistung = {
     leistungsart: "04",
     verguetungsart: "04",
     qualifikationsabhaengigeVerguetung: "1",
-    leistung: "00",
+    pflegesatz: "00",
     einzelpreis: 234.56,
     anzahl: 8,
     leistungsBeginn: new Date("2021-04-03T12:00"),

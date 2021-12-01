@@ -59,7 +59,7 @@ export const makePLAA = (
                             0 // todo: calculate ergebnis
                         )
                     ),
-                    ...leistung.hilfsmittel
+                    ...leistung.verguetungsart == "05"
                         ? [HIL(
                             leistung.hilfsmittel,
                             calculateHilfsmittel(leistung.einzelpreis, leistung.hilfsmittel)

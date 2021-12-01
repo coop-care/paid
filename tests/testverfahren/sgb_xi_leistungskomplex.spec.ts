@@ -1,7 +1,7 @@
 import { createTransmissionSGBXI, groupInvoicesByRecipientSGBXI } from "../../src/transmission/index";
 import kostentreagerJson from "../../dist/kostentraeger.min.json";
 import { deserializeInstitutionLists } from "../../src/kostentraeger/json_serializer";
-import { Einsatz, Invoice, Leistung } from "../../src/sgb-xi/types";
+import { Einsatz, Invoice, LeistungskomplexverguetungLeistung } from "../../src/sgb-xi/types";
 import { CareProviderLocationSchluessel } from "../../src/kostentraeger/types";
 import { TarifbereichSchluessel, LeistungsartSchluessel } from "../../src/sgb-xi/codes";
 import { BillingData, Address } from "../../src/types";
@@ -285,12 +285,12 @@ const makeEinsatzList = (
 
     return einsatzDates.map(leistungsBeginn => ({
         leistungsBeginn,
-        leistungen: leistungen.map(({leistungsart, leistung, punktzahl, einzelpreis}) => ({
+        leistungen: leistungen.map(({leistungsart, leistung: leistungskomplex, punktzahl, einzelpreis}) => ({
             verguetungsart: "01",
             qualifikationsabhaengigeVerguetung: "1",
             leistungsart,
             leistungsBeginn,
-            leistung,
+            leistungskomplex,
             anzahl: 1,
             punktzahl,
             punktwert,
@@ -298,7 +298,7 @@ const makeEinsatzList = (
                 ? punktzahl * punktwert
                 : einzelpreis,
             zuschlaege: []
-        } as Leistung))
+        } as LeistungskomplexverguetungLeistung))
     } as Einsatz));
 }
 

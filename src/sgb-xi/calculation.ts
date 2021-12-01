@@ -5,7 +5,8 @@
 import {
     Invoice,
     Abrechnungsfall,
-    Pflegehilfsmittel
+    Pflegehilfsmittel,
+    Leistung
 } from "./types";
 import { MehrwertsteuerSchluessel } from "./codes";
 
@@ -28,11 +29,11 @@ export const calculateInvoice = (invoice: Invoice) => invoice.faelle
 
 export const calculateFall = (fall: Abrechnungsfall) => fall.einsaetze
     .flatMap(einsatz => einsatz.leistungen)
-    .reduce((result, { einzelpreis, anzahl, hilfsmittel }) => {
-        const value = einzelpreis * anzahl;
-        const zuzahlungsbetrag = (hilfsmittel?.gesetzlicheZuzahlungBetrag || 0);
+    .reduce((result, leistung) => {
+        const value = leistung.einzelpreis * leistung.anzahl;
+        const zuzahlungsbetrag = calculateZuzahlungsbetrag(leistung);
         const beihilfebetrag = 0;
-        const mehrwertsteuer = calculateHilfsmittel(einzelpreis, hilfsmittel);
+        const mehrwertsteuer = calculateMehrwehrtsteuer(leistung);
         const gesamtbruttobetrag = value + mehrwertsteuer;
         result.gesamtbruttobetrag += gesamtbruttobetrag;
         result.rechnungsbetrag += gesamtbruttobetrag - zuzahlungsbetrag - beihilfebetrag;
@@ -41,6 +42,22 @@ export const calculateFall = (fall: Abrechnungsfall) => fall.einsaetze
         result.mehrwertsteuerbetrag += mehrwertsteuer;
         return result;
     }, makeAmounts());
+
+const calculateZuzahlungsbetrag = (leistung: Leistung): number => {
+    if (leistung.verguetungsart == "05") {
+        return leistung.hilfsmittel.gesetzlicheZuzahlungBetrag || 0;
+    } else {
+        return 0;
+    }
+};
+
+const calculateMehrwehrtsteuer = (leistung: Leistung): number => {
+    if (leistung.verguetungsart == "05") {
+        return calculateHilfsmittel(leistung.einzelpreis, leistung.hilfsmittel);
+    } else {
+        return 0;
+    }
+};
 
 export const calculateHilfsmittel = (
     einzelpreis: number,
