@@ -1,3 +1,7 @@
+/** based on document: Gemeinsame Grundsätze Technik, Anlage 15: Zeichensätze
+  * see docs/documents.md for more info
+  */
+
 import anyAscii from "any-ascii";
 
 const I7 = {
