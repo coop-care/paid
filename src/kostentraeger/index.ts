@@ -27,6 +27,7 @@ export type KostentraegerForPaperFindResult = {
     kostentraeger: Institution,
     /** Information on the institution to which the receipt shall be sent */
     sendTo: Institution,
+    /** The statutory health insurance group the given pflegekasseIK belongs to */
     kassenart: KassenartSchluessel,
 }
 
