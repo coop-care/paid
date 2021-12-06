@@ -280,4 +280,5 @@ export const encodeI8 = (text: string) => stringToByteArray(text, I8);
 
 export const decodeI8 = (bytes: Uint8Array) => byteArrayToString(bytes, I8);
 
+/** Same as encodeI8, only that any character that cannot be transcoded to DIN 66003 is transliterated instead */
 export const transliterateI8 = (text: string) => transliterate(text, I8);
