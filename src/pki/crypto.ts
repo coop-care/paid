@@ -2,6 +2,9 @@ import { webcrypto } from "crypto";
 import { getCrypto, setEngine } from "pkijs/src/common";
 import CryptoEngine from "pkijs/src/CryptoEngine";
 
+/** Initializes the pkijs crypto engine and needs to be called in advance of any other
+ * pkijs cryptographic method call.
+ */
 export const initCrypto = (): CryptoEngine => {
     let cryptoEngine: CryptoEngine = getCrypto() as CryptoEngine;
 

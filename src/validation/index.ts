@@ -61,12 +61,12 @@ const messages = {
     "institutionskennzeichenIncorrect": "An IK must be a string that consists of exactly 9 digits.",
     "rechnungsnummerIncorrect": "An invoice number may only contain the characters a-z, A-Z, 0-9 and the separators '-' and '/', though it may not begin or end with a separator.",
 
-    "certificateVerificationFailed": "",
-    "certificateExpired": "",
-    "certificateBeforeValidity": "",
-    "certificateWillExpire": "",
+    "certificateVerificationFailed": "Certificate cannot be verified using the issuer's certificate.",
+    "certificateExpired": "Certificate validity has ended.",
+    "certificateBeforeValidity": "Certificate is not valid yet.",
+    "certificateWillExpire": "Certificate will expire in less than 30 days.",
 
-    "unexpectedType": "",
-    "invalidCharacters": "",
-    "throwsError": "",
+    "unexpectedType": "Property data type does not match the expected type.",
+    "invalidCharacters": "The payload contains invalid characters.",
+    "throwsError": "An unknown error occured.",
 }
