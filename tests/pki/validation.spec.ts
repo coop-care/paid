@@ -23,6 +23,10 @@ describe("validate certificate", () => {
             code: "certificateVerificationFailed",
             type: 1,
             path: ["certificate"],
+        }, {
+            code: "certificateWillExpire",
+            type: 0,
+            path: ["certificate"],
         }]);
     });
 
