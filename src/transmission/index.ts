@@ -98,7 +98,7 @@ type DateinameFactory = (
     transferNumber: number,
 ) => string;
 
-type AnwendungsreferenzFactory = (
+export type AnwendungsreferenzFactory = (
     billingData: BillingData,
     absenderIK: string,
     kassenart: KassenartSchluessel,

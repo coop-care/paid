@@ -1,6 +1,6 @@
 import anyAscii from "any-ascii";
 
-export const I7 = {
+const I7 = {
     "\u0000": 0x00,
     "\u0001": 0x01,
     "\u0002": 0x02,
@@ -138,7 +138,7 @@ export const I7 = {
     "\u007f": 0x7f,
 };
 
-export const I8 = {
+const I8 = {
     ...I7,
 
     " ": 0xa0,
@@ -250,10 +250,10 @@ const reverseCharacterTable = (characterTable: Record<string, number>) => Object
         return result;
     }, {} as Record<number, string>);
 
-export const stringToByteArray = (text: string, characterTable: Record<string, number>) => 
+const stringToByteArray = (text: string, characterTable: Record<string, number>) => 
     Uint8Array.from([...text].map(char => characterTable[char]));
 
-export const byteArrayToString = (bytes: Uint8Array, characterTable: Record<string, number>) => {
+const byteArrayToString = (bytes: Uint8Array, characterTable: Record<string, number>) => {
     const reversedCharacterTable = reverseCharacterTable(characterTable);
 
     return [...bytes]
@@ -262,16 +262,20 @@ export const byteArrayToString = (bytes: Uint8Array, characterTable: Record<stri
         .join("");
 };
 
-export const transliterate = (text: string, characterTable: Record<string, number>) =>
-    [...text].map(char =>
-        characterTable[char] != undefined
-            ? char
-            : isConformingToCharacterSet(anyAscii(char), characterTable)
-                ? anyAscii(char)
-                : ""
-    ).join("");
+const transliterate = (text: string, characterTable: Record<string, number>) =>
+    [...text].map(char => {
+        if (characterTable[char] != undefined) {
+            return char;
+        } else {
+            if (isConformingToCharacterSet(anyAscii(char), characterTable)) {
+                return anyAscii(char);
+            } else {
+                return "";
+            }
+        }
+    }).join("");
 
-export const isConformingToCharacterSet = (text: string, characterTable: Record<string, number>) =>
+const isConformingToCharacterSet = (text: string, characterTable: Record<string, number>) =>
     ![...text].some(char => characterTable[char] == undefined);
 
 export const isEncodableI8 = (text: string) => isConformingToCharacterSet(text, I8);

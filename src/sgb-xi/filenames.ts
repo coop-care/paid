@@ -4,15 +4,16 @@
 
 import { BillingData, TestIndicator } from "../types"
 import { KassenartSchluessel } from "../kostentraeger/filename/codes"
+import { AnwendungsreferenzFactory } from "../transmission"
 
 /** A.k.a. "logischer Dateiname" */
-export const makeAnwendungsreferenz = (
+export const makeAnwendungsreferenz: AnwendungsreferenzFactory = (
     {
         rechnungsart,
         abrechnungsmonat,
         korrekturlieferung = 0
     }: BillingData,
-    absenderIK: string,
+    _,
     kassenart: KassenartSchluessel,
     laufendeDatenannahmeImJahr: number,
 ) => [

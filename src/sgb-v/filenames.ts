@@ -3,18 +3,15 @@
   */
 
 import { BillingData, TestIndicator } from "../types"
-import { KassenartSchluessel } from "../kostentraeger/filename/codes"
+import { AnwendungsreferenzFactory } from "../transmission"
 
 /** A.k.a. "logischer Dateiname" */
-export const makeAnwendungsreferenz = (
+export const makeAnwendungsreferenz: AnwendungsreferenzFactory = (
     {
         rechnungsart,
-        abrechnungsmonat,
-        korrekturlieferung = 0
+        abrechnungsmonat
     }: BillingData,
     absenderIK: string,
-    kassenart: KassenartSchluessel,
-    laufendeDatenannahmeImJahr: number,
 ) => [
     // "Absenderklassifikation". "SL" stands for "Sonstige Leistungserbringer"
     "SL",
