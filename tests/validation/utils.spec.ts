@@ -42,7 +42,7 @@ describe("validation utils", () => {
     it("isVarchar", () => {
         expect(isVarchar({ a: 9 }, "a", 10)).toEqual(error("noString", "a"))
         expect(isVarchar({ a: "" }, "a", 10)).toEqual(error("textEmpty", "a"))
-        expect(isVarchar({ a: "abc" }, "a", 2)).toEqual(error("textTooLong", "a", { maxLength: "2" }))
+        expect(isVarchar({ a: "abc" }, "a", 2)).toEqual(error("textTooLong", "a", { maxLength: "2", truncatedValue: "ab" }))
         expect(isVarchar({ a: "abc" }, "a", 3)).toEqual(undefined)
     })
 
@@ -88,7 +88,7 @@ describe("validation utils", () => {
             code: "textTruncated",
             type: ValidationResultType.Warning,
             path: ["a"],
-            params: { maxLength: "2" }
+            params: { maxLength: "2", truncatedValue: "ab" }
         })
 
         expect(

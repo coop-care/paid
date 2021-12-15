@@ -12,21 +12,23 @@
 
 - Gemeinsame Grundsätze Technik, Anlage 2:  
 [Auftragsdatei](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_2_-_Auftragsdatei.pdf)  
-from 2019-10-23, to be applied from **2020-01-01**
+from **2019-10-23**, to be applied from **2020-01-01**
+
+- Gemeinsame Grundsätze Technik, Anlage 7:  
+[Electronic Mail (E-Mail)](https://www.gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_7_-_E-Mail.pdf)  
+from **2016-06-23**, to be applied from **2016-07-01**
 
 - Gemeinsame Grundsätze Technik, Anlage 15:  
 [Zeichensätze](https://www.gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_15_-_Zeichensaetze.pdf)  
 from 2020-07-01, to be applied from **2020-09-01**
 
-- Gemeinsames Rundschreiben, Anlage 08:  
-[Staatsangehörigkeit und Länderkennzeichen für Auslandsanschriften](https://www.gkv-datenaustausch.de/media/dokumente/arbeitgeber/deuev/rundschreiben_anlagen/GemRS_Anlage_8_5.01.pdf)  
-Version **5.01** from 2019-06-19
-
 - Gemeinsame Grundsätze Technik, Anlage 16:  
 [Security Schnittstelle (SECON)](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_16.pdf)  
 from **2020-09-10**, to be applied from **2021-01-01**
 
-
+- Gemeinsames Rundschreiben, Anlage 08:  
+[Staatsangehörigkeit und Länderkennzeichen für Auslandsanschriften](https://www.gkv-datenaustausch.de/media/dokumente/arbeitgeber/deuev/rundschreiben_anlagen/GemRS_Anlage_8_5.01.pdf)  
+Version **5.01** from 2019-06-19
 ### Pflege
 
 - Pflege, Broschüre:  

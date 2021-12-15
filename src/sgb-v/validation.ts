@@ -36,8 +36,8 @@ export const constraintsLeistungserbringer = (leistungserbringer: Leistungserbri
 ]
 
 export const constraintsBaseAbrechnungsfall = (fall: BaseAbrechnungsfall) => [
-    isRequired(fall, "versicherter"), 
-    ...valueConstraints<Versicherter>(fall, "versicherter", constraintsVersicherter),
+    isRequired(fall, "versicherter"),
+    ...valueConstraints<Versicherter>(fall, "versicherter", versicherter => constraintsVersicherter(versicherter, true)),
     isVarchar(fall, "belegnummer", 10),
     // beleginformation is optional
     isOptionalVarchar(fall, "besondereVersorgungsform", 25)

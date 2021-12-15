@@ -2,14 +2,14 @@
   * see docs/documents.md for more info
   */
 
-import { 
+import {
+    BillingData,
     Amounts, 
     Versicherter,
     Institution,
     TestIndicator
 } from "../types";
 import {
-    BillingData, 
     MessageIdentifiers, 
     messageIdentifierVersions, 
     Leistungserbringer, 
@@ -82,8 +82,8 @@ export const FKT = (
         rechnungssteller: Institution,
     },
     {
-        kostentraegerIK, // Institution die die Rechnung begleicht laut Kostenträgerdatei; PLAA == PLGA
         pflegekasseIK, // Pflegekasse des Leistungs- bzw. Bewilligungsbescheids; falls angegeben gilt: PLAA == PLGA
+        kostentraegerIK, // Institution die die Rechnung begleicht laut Kostenträgerdatei; PLAA == PLGA
     }: Versicherter,
     isSammelrechnungPLGA?: boolean, // only for PLGA, undefined for PLAA
 ) => segment(
@@ -95,7 +95,7 @@ export const FKT = (
         ? "J"
         : "",
     rechnungssteller.ik,
-    kostentraegerIK,
+    kostentraegerIK || "",
     isSammelrechnungPLGA !== true ? pflegekasseIK : "",
     isSammelrechnungPLGA !== undefined ? absender.ik : rechnungssteller.ik
 );
@@ -128,11 +128,11 @@ export const SRD = (
     {
         versicherter,
         einsaetze,
-    }: Abrechnungsfall
+    }: Abrechnungsfall,
 ) => segment(
     "SRD",
     abrechnungscode + ":" + tarifbereich 
-        + (sondertarifJeKostentraegerIK[versicherter.kostentraegerIK] || "000"),
+        + (sondertarifJeKostentraegerIK[versicherter.kostentraegerIK || ""] || "000"),
     einsaetze[0].leistungen[0].leistungsart
 );
 
@@ -235,7 +235,7 @@ export const ELS = (leistung: Leistung) => segment(
 const getLeistungSchluessel = (leistung: Leistung): string | undefined => {
     switch(leistung.verguetungsart) {
         case "01": 
-            return mask(leistung.leistungskomplex) // 3-character string
+            return mask(leistung.leistungskomplex.padStart(3, "0")) // 3-character string
         case "02":
             return leistung.zeiteinheit + leistung.zeitart
         case "03":
@@ -276,7 +276,7 @@ const getLeistungDetails = (leistung: Leistung): string | undefined => {
         case "04":
             return day(leistung.leistungsBeginn!!) + day(leistung.leistungsEnde!!)
         case "06":
-            if (leistung.wegegebuehren == "04") {
+            if (leistung.wegegebuehren == "04" && leistung.gefahreneKilometer) {
                 return Math.round(leistung.gefahreneKilometer).toString() // integer from 0-9999
             } else {
                 return "00"

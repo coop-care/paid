@@ -3,7 +3,7 @@
  */
 import { AsnParser } from "@peculiar/asn1-schema"
 import { Certificate } from "@peculiar/asn1-x509"
-import { base64ToArrayBuffer } from "./utils"
+import { base64ToArrayBuffer } from "../../pki/utils"
 
 /** Parses a string that consists of number of PEM-encoded certificates (of Datenannahmestellen)
  *  separated by newlines into a map of IK -> Certificate[].

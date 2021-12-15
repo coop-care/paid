@@ -1,5 +1,5 @@
 import { deserializeInstitutionLists, serializeInstitutionLists } from "../../src/kostentraeger/json_serializer"
-import { base64ToArrayBuffer } from "../../src/kostentraeger/pki/utils"
+import { base64ToArrayBuffer } from "../../src/pki/utils"
 import { InstitutionList } from "../../src/kostentraeger/types"
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema"
 import { Certificate } from "@peculiar/asn1-x509"

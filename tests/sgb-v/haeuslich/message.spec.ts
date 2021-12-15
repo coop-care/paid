@@ -18,12 +18,15 @@ describe("Häusliche Krankenpflege message", () => {
                 abrechnungscode: "16",
                 location: "HH",
                 tarifbereich: "24",
-                sondertarifJeKostentraegerIK: {"000000003": "XXX"}
+                sondertarifJeKostentraegerIK: {"000000003": "XXX"},
+                umsatzsteuerBefreiung: "01",
+                email: "test@example.com",
             },
             rechnungssteller: {
                 name: "RS",
                 ik: "000000002",
-                ansprechpartner: []
+                ansprechpartner: [],
+                email: "test@example.com",
             },
             sammelRechnungsnummer: "123",
             einzelRechnungsnummer: "321",

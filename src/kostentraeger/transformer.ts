@@ -79,7 +79,7 @@ export default function transform(pkeys: Map<string, Certificate[]>, interchange
     const institutions = interchange.institutions.map((msg) => {
         try {
             return transformMessage(pkeys, msg, validityStartDate)
-        } catch(e) {
+        } catch(e: any) {
             warnings.push(e.message)
         }
     }).filter((msg): msg is Institution => !!msg)

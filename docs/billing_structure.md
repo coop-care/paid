@@ -86,8 +86,9 @@ Using quotes here to denote what needs to be repeated. Think of it as a giant ne
 > > > 
 > > > There is **billing data for one Datenannahmestelle**, to be sent to one email address.
 > > > 
-> > > This data consists of a number of pairs of billing-files attached to that email. Each pair 
-> > > consists of a 
+> > > This data consists of a single pair of billing-files per email. 
+> > > In some cases the billing process might result in multiple emails for one email address, each with a single pair of billing-files.
+> > > Each pair consists of a  
 > > > - *Auftragsdatei*, which contains metadata of the bill, like f.e. to whom the Nutzdatendatei  
 > > >   is encrypted to
 > > > - and a *Nutzdatendatei*, which is the actual encrypted billing data.
@@ -98,7 +99,7 @@ Using quotes here to denote what needs to be repeated. Think of it as a giant ne
 > > > > **accounting month**
 > > > > > **and area of activity of the Leistungserbringer:**
 > > > > > > 
-> > > > > > There is **a pair of billing-files** in the email.
+> > > > > > There is **one pair of billing-files** in one email.
 > > > > > > 
 > > > > > > Note that the exact definition of and which areas of acticity exist differ for each sub  
 > > > > > > project *and may be different to the definition in the section about Kostenträger* 

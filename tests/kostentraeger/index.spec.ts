@@ -10,7 +10,7 @@ import {
     InstitutionList,
     PaperDataType
 } from "../../src/kostentraeger/types"
-import { base64ToArrayBuffer } from "../../src/kostentraeger/pki/utils"
+import { base64ToArrayBuffer } from "../../src/pki/utils"
 import { AsnParser } from "@peculiar/asn1-schema"
 import { Certificate, Time } from "@peculiar/asn1-x509"
 
@@ -29,7 +29,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kasse,
             encryptTo: kasse,
             certificate: defaultCertificate,
-            sendTo: kasse 
+            sendTo: kasse,
+            kassenart: "AO"
         })
     })
 
@@ -47,7 +48,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kasse,
             encryptTo: kasse,
             certificate: defaultCertificate,
-            sendTo: kasse 
+            sendTo: kasse,
+            kassenart: "AO"
         })
     })
 
@@ -76,7 +78,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kasse3,
             encryptTo: kasse3,
             certificate: defaultCertificate,
-            sendTo: kasse3 
+            sendTo: kasse3,
+            kassenart: "AO"
         })
     })
 
@@ -100,7 +103,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kasse2,
             encryptTo: kasse2,
             certificate: defaultCertificate,
-            sendTo: kasse2 
+            sendTo: kasse2,
+            kassenart: "AO"
         })
     })
 
@@ -131,7 +135,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger,
             encryptTo: datenannahmestelle,
             certificate: defaultCertificate,
-            sendTo: datenannahmestelle 
+            sendTo: datenannahmestelle,
+            kassenart: "AO"
         })
     })
 
@@ -174,7 +179,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger,
             encryptTo: trustedDatenannahmestelle,
             certificate: defaultCertificate,
-            sendTo: untrustedDatenannahmestelle 
+            sendTo: untrustedDatenannahmestelle,
+            kassenart: "AO"
         })
     })
 
@@ -308,7 +314,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
             certificate: defaultCertificate,
-            sendTo: kostentraeger2
+            sendTo: kostentraeger2,
+            kassenart: "AO"
         })
 
         expect(findForData(institutionLists, "00000001",{ location: "SH" })).toEqual({
@@ -316,7 +323,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger3,
             encryptTo: kostentraeger3,
             certificate: defaultCertificate,
-            sendTo: kostentraeger3
+            sendTo: kostentraeger3,
+            kassenart: "AO"
         })
     })
 
@@ -346,7 +354,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
             certificate: defaultCertificate,
-            sendTo: kostentraeger
+            sendTo: kostentraeger,
+            kassenart: "AO"
         })
     })
 
@@ -384,7 +393,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
             certificate: defaultCertificate,
-            sendTo: kostentraeger2
+            sendTo: kostentraeger2,
+            kassenart: "AO"
         })
 
         expect(findForData(institutionLists, "00000001",{ leistungsart: { sgbxiLeistungsart: "08" } })).toEqual({
@@ -392,7 +402,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger3,
             encryptTo: kostentraeger3,
             certificate: defaultCertificate,
-            sendTo: kostentraeger3
+            sendTo: kostentraeger3,
+            kassenart: "AO"
         })
     })
 
@@ -433,7 +444,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
             certificate: defaultCertificate,
-            sendTo: kostentraeger2
+            sendTo: kostentraeger2,
+            kassenart: "AO"
         })
 
         expect(findForData(institutionLists, "00000001",{ leistungsart: { sgbvAbrechnungscode: "60" } })).toEqual({
@@ -441,7 +453,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger3,
             encryptTo: kostentraeger3,
             certificate: defaultCertificate,
-            sendTo: kostentraeger3
+            sendTo: kostentraeger3,
+            kassenart: "AO"
         })
     })
 
@@ -472,14 +485,16 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
             certificate: defaultCertificate,
-            sendTo: kostentraeger
+            sendTo: kostentraeger,
+            kassenart: "AO"
         })
         expect(findForData(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "32" }})).toEqual({
             pflegekasse: kasse,
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
             certificate: defaultCertificate,
-            sendTo: kostentraeger
+            sendTo: kostentraeger,
+            kassenart: "AO"
         })
         expect(findForData(institutionLists, "00000001", { leistungsart: { sgbvAbrechnungscode: "41" }})).toEqual(undefined)
     })
@@ -525,7 +540,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger,
             encryptTo: kostentraeger,
             certificate: defaultCertificate,
-            sendTo: kostentraeger
+            sendTo: kostentraeger,
+            kassenart: "AO"
         })
     })
 
@@ -566,7 +582,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
             certificate: defaultCertificate,
-            sendTo: kostentraeger2
+            sendTo: kostentraeger2,
+            kassenart: "AO"
         })
 
         // make sure that the previous test didn't just succeed because of the order
@@ -579,7 +596,8 @@ describe("Kostenträger index", () => {
             kostentraeger: kostentraeger2,
             encryptTo: kostentraeger2,
             certificate: defaultCertificate,
-            sendTo: kostentraeger2
+            sendTo: kostentraeger2,
+            kassenart: "AO"
         })
     })
 
@@ -600,12 +618,14 @@ describe("Kostenträger index", () => {
         expect(findForPaper(institutionList, "00000001", { paperDataType: PaperDataType.MachineReadableReceipt })).toEqual({
             pflegekasse: kasse,
             kostentraeger: kasse,
-            sendTo: kasse 
+            sendTo: kasse,
+                  kassenart: "AO"
         })
         expect(findForPaper(institutionList, "00000001", { paperDataType: PaperDataType.Prescription })).toEqual({
             pflegekasse: kasse,
             kostentraeger: kasse,
-            sendTo: kasse 
+            sendTo: kasse,
+                  kassenart: "AO"
         })
 
         const kasse2 = { 
@@ -625,12 +645,14 @@ describe("Kostenträger index", () => {
         expect(findForPaper(institutionList2, "00000001", { paperDataType: PaperDataType.Receipt })).toEqual({
             pflegekasse: kasse2,
             kostentraeger: kasse2,
-            sendTo: kasse2 
+            sendTo: kasse2,
+                  kassenart: "AO"
         })
         expect(findForPaper(institutionList2, "00000001", { paperDataType: PaperDataType.CostEstimate })).toEqual({
             pflegekasse: kasse2,
             kostentraeger: kasse2,
-            sendTo: kasse2 
+            sendTo: kasse2,
+                  kassenart: "AO"
         })
     })
 
@@ -681,15 +703,17 @@ describe("Kostenträger index", () => {
             ik: "00000001"
         } as Institution
 
-        expect(findForData([institutionListOf([kasse])], "00000001", {
-            date: new Date("2011-01-01"),
-        })).toEqual({
-            pflegekasse: kasse,
-            kostentraeger: kasse,
-            encryptTo: kasse,
-            certificate: newCertificate,
-            sendTo: kasse 
-        })
+        expect(
+            AsnParser.parse(
+                findForData(
+                    [institutionListOf([kasse])], 
+                    "00000001", {
+                        date: new Date("2011-01-01"),
+                    }
+                )!.certificate,
+                Certificate
+            )
+        ).toEqual(newCertificate)
     })
 })
 
@@ -716,7 +740,8 @@ xAITd32OHKn7H/rEl220hwCPuGFUUvvoEtXn2i77dequl7BG3ceikkmjsdueqUxv
 3Ggt+TSxF2vu3ZXzDT1AjV7TFTLX7ClDQMXdUIn/nBF14g==`
 
 const defaultIK: string = "00000000"
-const defaultCertificate = parseCertificate(certificatePEM)
+const defaultCertificate = base64ToArrayBuffer(certificatePEM)
+const parsedDefaultCertificate = parseCertificate(certificatePEM)
 
 const institutionListOf = (institutions: Institution[]): InstitutionList => ({
     issuerIK: "00000000",
@@ -754,7 +779,7 @@ const linksPapierAndDatenannahmeTo = (ik: string) => ({
 })
 
 const usesDefaultCertificate = {
-    certificates: [defaultCertificate]
+    certificates: [parsedDefaultCertificate]
 }
 
 const acceptsData = {

@@ -17,6 +17,9 @@
     "type": "git",
     "url": "git+https://github.com/coop-care/paid.git"
   },
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "keywords": [
     "Pflege",
     "Abrechnung",
@@ -39,27 +42,41 @@
     "url": "https://github.com/coop-care/paid/issues"
   },
   "homepage": "https://github.com/coop-care/paid#readme",
+  "dependencies": {
+    "@peculiar/asn1-schema": "^2.0.32",
+    "@peculiar/asn1-x509": "^2.0.32",
+    "@xmldom/xmldom": "^0.7.5",
+    "any-ascii": "^0.3.0",
+    "asn1js": "^2.1.1",
+    "cross-fetch": "^3.1.4",
+    "pkijs": "^2.1.97"
+  },
   "devDependencies": {
-    "@types/jest": "^26.0.20",
-    "jest": "^26.6.3",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.10.2",
+    "@types/pkijs": "^0.0.12",
+    "jest": "^27.2.1",
     "mockdate": "^3.0.5",
-    "ts-jest": "^26.5.3",
-    "typescript": "^4.2.3"
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.3"
   },
   "jest": {
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.tsx?$": "ts-jest",
+      "^.+node_modules/pkijs/.+\\.js$": "ts-jest",
+      "^.+node_modules/any-ascii/.+\\.js$": "ts-jest"
     },
+    "transformIgnorePatterns": [
+      "/node_modules/(?!pkijs|any-ascii)",
+      "\\.pnp\\.[^\\/]+$"
+    ],
     "moduleFileExtensions": [
       "ts",
       "js"
     ],
     "testRegex": "tests/.+\\.spec\\.ts$",
-    "collectCoverageFrom": ["src/**"]
-  },
-  "dependencies": {
-    "@peculiar/asn1-schema": "^2.0.32",
-    "@peculiar/asn1-x509": "^2.0.32",
-    "cross-fetch": "^3.1.4"
+    "collectCoverageFrom": [
+      "src/**"
+    ]
   }
 }

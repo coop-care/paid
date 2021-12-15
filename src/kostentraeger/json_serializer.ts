@@ -1,4 +1,4 @@
-import { arrayBufferToBase64, base64ToArrayBuffer } from "./pki/utils";
+import { arrayBufferToBase64, base64ToArrayBuffer } from "../pki/utils";
 import { InstitutionList } from "./types";
 import { AsnSerializer, AsnParser } from "@peculiar/asn1-schema"
 import { Certificate } from "@peculiar/asn1-x509"

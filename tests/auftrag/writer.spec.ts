@@ -39,7 +39,7 @@ describe("Auftragsdatei writer", () => {
             "0"+
             "000000999666"+ //unencryptedNutzdatenSizeBytes
             "000001333222"+ //encryptedNutzdatenSizeBytes
-            "I1"+
+            "I8"+
             "00"+
             "03"+
             "03"+

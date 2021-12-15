@@ -35,7 +35,8 @@ describe("SGB V messages", () => {
             rechnungssteller: {
                 name: "RS",
                 ik: "000000002",
-                ansprechpartner: []
+                ansprechpartner: [],
+                email: "test@example.com",
             },
             skontos: [
                 { skontoPercent: 12.311, zahlungsziel: 3 },

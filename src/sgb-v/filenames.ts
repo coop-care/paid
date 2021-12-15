@@ -2,14 +2,16 @@
   * see docs/documents.md for more info
   */
 
-import { RechnungsartSchluessel } from "./codes"
-import { TestIndicator } from "../types"
+import { BillingData, TestIndicator } from "../types"
+import { AnwendungsreferenzFactory } from "../transmission"
 
 /** A.k.a. "logischer Dateiname" */
-export const makeAnwendungsreferenz = (
+export const makeAnwendungsreferenz: AnwendungsreferenzFactory = (
+    {
+        rechnungsart,
+        abrechnungsmonat
+    }: BillingData,
     absenderIK: string,
-    rechnungsart: RechnungsartSchluessel,
-    abrechnungsmonat: Date
 ) => [
     // "Absenderklassifikation". "SL" stands for "Sonstige Leistungserbringer"
     "SL",

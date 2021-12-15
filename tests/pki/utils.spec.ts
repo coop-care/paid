@@ -1,4 +1,5 @@
-import { arrayBufferToBase64, base64ToArrayBuffer } from "../../../src/kostentraeger/pki/utils"
+import { arrayBufferToBase64, base64ToArrayBuffer, keyToPEM } from "../../src/pki/utils"
+import { exampleSelfSignedCertificate } from "../samples/certificates"
 
 describe("pki utils", () => {
 
@@ -6,6 +7,11 @@ describe("pki utils", () => {
         const cert2 = arrayBufferToBase64(base64ToArrayBuffer(cert))
         // deliberately ignoring newlines as those are ignored when converting to ArrayBuffer
         expect(cert2).toEqual(cert.replace(RegExp("\r?\n", "g"),""))
+    })
+
+    it("convert to PEM", async () => {
+        const pem = await keyToPEM(base64ToArrayBuffer(cert));
+        expect(pem.startsWith("-----BEGIN PRIVATE KEY-----")).toEqual(true);
     })
 
 })
