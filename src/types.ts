@@ -80,7 +80,7 @@ export type BillingData = {
     /** An ascending number indicating a correction of an earlier version of this same bill.
      *  0 or undefined if this is not a correction. */
     korrekturlieferung?: number
-    /** Mandatory if rechnungsart != "1" */
+    /** Mandatory if rechnungsart is "2" or "3" as it becomes the sender, but not for rechnungsart == "1" */
     abrechnungsstelle?: Institution
     laufendeDatenannahmeImJahrJeEmpfaengerIK: Record<string, number>
 }
@@ -146,6 +146,7 @@ export type Amounts = {
     mehrwertsteuerbetrag: number
 }
 
+/** A method signature implemented by several functions that group invoices by recipient in different ways. */
 export type GroupInvoiceByRecipientMethod = (
     invoice: Invoice,
     findRecipient: (

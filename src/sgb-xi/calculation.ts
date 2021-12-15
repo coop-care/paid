@@ -53,13 +53,13 @@ const calculateZuzahlungsbetrag = (leistung: Leistung): number => {
 
 const calculateMehrwehrtsteuer = (leistung: Leistung): number => {
     if (leistung.verguetungsart == "05") {
-        return calculateHilfsmittel(leistung.einzelpreis, leistung.hilfsmittel);
+        return calculateHilfsmittelMehrwertsteuer(leistung.einzelpreis, leistung.hilfsmittel);
     } else {
         return 0;
     }
 };
 
-export const calculateHilfsmittel = (
+export const calculateHilfsmittelMehrwertsteuer = (
     einzelpreis: number,
     hilfsmittel?: Pflegehilfsmittel
 ) => einzelpreis * mehrwertsteuersaetze[hilfsmittel?.mehrwertsteuerart || ""];

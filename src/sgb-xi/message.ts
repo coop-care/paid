@@ -11,7 +11,7 @@ import {
 import { ELS, ESK, FKT, GES, HIL, IAF, INV, MAN, NAD, NAM, REC, SRD, UNH, UNT, UST, ZUS } from "./segments";
 import { absenderAndRechnungssteller } from "../transmission/utils";
 import { valuesGroupedBy } from "../utils";
-import { calculateFall, calculateHilfsmittel, calculateInvoice } from "./calculation";
+import { calculateFall, calculateHilfsmittelMehrwertsteuer, calculateInvoice } from "./calculation";
 
 // see 4.4.1 Nachrichtentyp Gesamtaufstellung der Abrechnung (PLGA)
 export const makePLGA = (
@@ -62,7 +62,7 @@ export const makePLAA = (
                     ...leistung.verguetungsart == "05"
                         ? [HIL(
                             leistung.hilfsmittel,
-                            calculateHilfsmittel(leistung.einzelpreis, leistung.hilfsmittel)
+                            calculateHilfsmittelMehrwertsteuer(leistung.einzelpreis, leistung.hilfsmittel)
                         )] : []
                 ])
             ]),
