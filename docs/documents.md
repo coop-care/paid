@@ -114,6 +114,9 @@ from **07/2021**
 - Verordnungsformular für häusliche Krankenpflege:  
 [Muster 12](https://www.kbv.de/html/28888.php)
 
+- Vordruckerläuterungen zu Muster 13:  
+[Muster 13](https://www.kbv.de/media/sp/Muster_13_Vordruckerlaeuterungen.pdf)
+
 - Verordnungsformular für Krankenhauseinweisung:  
 [Muster 2](https://www.kbv.de/html/23012.php)
 

@@ -1,5 +1,6 @@
 /** based on documents: 
  *  - Informationen zu Heilmittel-Verordnungen
+ *  - Vordruckerläuterungen zu Muster 13
  * 
   * see docs/documents.md for more info
   */
@@ -17,15 +18,15 @@ export type HeilmittelVerordnung = Verordnung & {
      *  Max 4 characters.
      */
     diagnosegruppe?: string,
-    /** ASK: Heilmittel-Verordnungsart 
-     *  Documentation claims that this information can be taken from the prescription (Muster 13), 
-     *  if specified, but it is not obvious where this information should be
+    /** Heilmittel-Verordnungsart 
+     * 
+     *  ASK: Documentation claims that this information can be taken from the prescription 
+     *  (Muster 13), if specified, but it is not obvious where on the prescription this information 
+     *  should be. So, we asked GKV-spitzenverband, but the department responsible for SGB V 
+     *  documentation was also not able to answer this question so they passed the question on for 
+     *  the department specific for "Heilmittel". Answer pending.
      */
     verordnungsart?: HeilmittelVerordnungsartSchluessel,
-    /** ASK: UnfallSchluessel
-     *  Unclear where exactly this information could be found on the prescription (Muster 13)
-     */
-    // for unfall: UnfallSchluessel | undefined
     /** Whether the field "Therapiebericht" is checked on the prescription */
     therapiebericht: boolean,
     /** Whether the field "Hausbesuch" is checked on the prescription */

@@ -158,7 +158,14 @@ export const BES = (
     gesetzlicheZuzahlungBetrag?: number | undefined,
     /** = sum of all ZUH.eigenanteilBetrag */
     eigenanteilBetrag?: number | undefined,
-    /** = sum of all MEH.mehrkostenBetrag */
+    /** = sum of all MEH.mehrkostenBetrag. This field is not used for any sum for the total account 
+     *  (segment GES), it is purely informative in nature. 
+     * 
+     *  We were not sure if this was an omission in the documentation, so we asked 
+     *  GKV-spitzenverband to confirm it. Answer:
+     * 
+     *  > Dies ist korrekt. Der Gesamtbetrag Mehrkosten ist nur informativ. 
+     * */
     mehrkostenBetrag?: number | undefined
 ) => segment(
     "BES",

@@ -99,10 +99,16 @@ export type Leistungserbringer = Institution & {
 
 export type BaseAbrechnungsfall = {
     versicherter: Versicherter
-    /** Unique number within the whole bill. 
+    /** Unique number within the whole bill, allocated by the party that does the invoicing, i.e. 
+     *  the creator of the bill.
+     *  
+     *  The docs are not so clear on that, so we asked the GKV-spitzenverband to confirm it. Their
+     *  answer: 
      * 
-     *  ASK Belegnummer: Docs mention "siehe § 4 des Richtlinientextes". Neither §4 of 
-     *  Heilmittelrichtlinie nor §4 Hilfsmittelrichtlinie seem to be related here.
+     *  > Bei der Belegnummer handelt es sich um eine eindeutige Nummer je Abrechnungsfall innerhalb 
+     *  > einer Gesamtrechnung, die von der abrechnenden Stelle (Leistungserbringer oder 
+     *  > Dienstleister) vergeben wird.
+     *  > Der Verweis [auf §4] bezieht sich auf die Abrechnungsrichtlinie nach § 302 SGB V"
      */
     belegnummer: string
     beleginformation?: BeleginformationSchluessel
@@ -135,7 +141,25 @@ export type Verordnung = {
     vertragsarztnummer?: string
     /** Content of the field "Datum" from the prescription */
     verordnungsDatum: Date
-    /** Content of the field(s) "Unfall" / "Arbeitsunfall" / "Sonstige" on the prescription, if specified*/
+    /** Content of the field(s) "Unfall" / "Arbeitsunfall" / "Sonstige" on the prescription, if 
+     *  specified. 
+     * 
+     * Certain prescription forms only have one field for "Unfall"/"Unfallfolgen" but none for 
+     * "Arbeitsunfall", such as Muster 13 (Heilmittelverordnung). For such forms, if that field is
+     * checked, "2" (sonstige Unfallfolgen) should be specified. This was not clear from the 
+     * documentation, so we asked GKV-spitzenverband about it. Answer:
+     * 
+     * > Vordruckerläuterungen; Losgelöst von einem bestimmten Vordruck steht im einleitenden Teil
+     * > folgendes:
+     * > „ 8. Bei Arbeitsunfällen, Berufskrankheiten und Schülerunfällen können nur die Muster 1 
+     * > (Arbeitsunfähigkeitsbescheinigung), 4 (Verordnung einer Krankenbeförderung) und 16 
+     * > (Arzneiverordnungsblatt) verwendet werden.
+     * > Das Ankreuzfeld „Unfall/Unfallfolgen“ ist nicht bei Arbeitsunfällen, Berufskrankheiten usw.
+     * > zu verwenden, sondern nur bei sonstigen Unfällen (z. B. Haus-, Sport-, Verkehrsunfällen).“
+     * > [...]
+     * > Wenn bei der Heilmittelverordnung Unfall/Unfallfolgen angekreuzt ist, muss in den Daten 
+     * > immer eine „2“ für sonstige Unfallfolgen (8.1.2) übermittelt werden.
+     * */
     unfall?: UnfallSchluessel
     /** Whether "BVG" is checked on the prescription */
     sonstigeEntschaedigung?: SonstigeEntschaedigungSchluessel
@@ -178,6 +202,24 @@ export type Skonto = {
 }
 
 export type Gesamtsummen = {
+    /** Total gross amount of all Abrechnungsfälle, i.e. sum of all(BES.gesamtbruttobetrag) (if 
+     *  applicable).
+     * 
+     *  We were not sure whether the sum of zuzahlungUndEigenanteilBetrag should be added to this
+     *  sum too. The answer by GKV-Spitzenverband was no: 
+     *  the gross amount of all the Abrechnungsfälle already implicitly contain all that, and VAT 
+     *  (and thus implicitly the price on the Abrechnungspositions do as well). Makes sense, it is 
+     *  called the gross amount after all. 
+     * 
+     *  The precise answer was:
+     * > Die [von Ihnen] beschriebene Regel [
+     * >> "Summe über alle (BES.Gesamtbetrag Brutto + BES.Gesamtbetrag gesetzliche Zuzahlung +
+     * >>                  BES.Gesamtbetrag Eigenanteil + BES.Pauschale Korrekturabzug)"
+     * > ] ist nicht zutreffend. Der Bruttobetrag enthält bereits die gesetzlicher Zuzahlungsbeträge
+     * > oder Eigenanteil und/oder Pauschale Korrekturbetrag sowie ggf. Mehrwertsteuer.
+    */
     gesamtbruttobetrag: number,
+    /** Total amount of all zuzahlungUndEigenanteilBetrag, i.e. 
+     *  sum of all(BES.gesetzlicheZuzahlungBetrag + BES.eigenanteilBetrag) etc. (if applicable) */
     zuzahlungUndEigenanteilBetrag: number
 }
