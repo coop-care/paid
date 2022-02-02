@@ -38,22 +38,31 @@ export const haeuslicheKrankenpflegePositionsnummerCode = (n: HaeuslicheKrankenp
     n.gesetzlicheLebensgrundlage + n.versorgungsArt + n.verguetungsArt
 
 /** Stelle 1-2 der Positionsnummer */
-export const gesetzlicheLebensgrundlageSchluessel = {
+export type GesetzlicheLebensgrundlageSchluessel = 
+    HaeuslicheKrankenpflegeGesetzlicheLebensgrundlageSchluessel | 
+    HaushaltshilfeGesetzlicheLebensgrundlageSchluessel
+
+export const haueslicheKrankenpflegeGesetzlicheLebensgrundlageSchluessel = {
     "01": "Häusliche Krankenpflege nach § 37 Abs. 1 Satz 1 SGB V",
     "02": "Häusliche Krankenpflege nach § 37 Abs. 1 Satz 5 SGB V",
     "03": "Häusliche Krankenpflege nach § 37 Abs. 2 Satz 1 SGB V",
     "04": "Häusliche Krankenpflege nach § 37 Abs. 2 Satz 4 SGB V",
-    "05": "Haushaltshilfe nach § 38 Abs. 1 SGB V",
-    "06": "Haushaltshilfe nach § 38 Abs. 2 SGB V",
     "07": "Häusliche Pflege nach § 24g SGB V (neu durch PNG)",
-    "08": "Haushaltshilfe nach § 24h SGB V (neu durch PNG)",
     "09": "Häusliche Krankenpflege nach § 37 Abs. 2 Satz 3 SGB V",
     "10": "Häusliche Krankenpflege nach § 37 Abs. 1a SGB V (Regelleistung) bis zu 4 Wochen",
     "11": "Häusliche Krankenpflege nach § 37 Abs. 1a SGB V (Ermessensleistung) über 4 Wochen",
     "13": "Häusliche Krankenpflege nach § 37 Abs. 2 Satz 8 SGB V (gültig)",
     "14": "Ergänzender HKP-Anspruch § 37 Abs. 2 Satz 3 SGB V / Finanzierungsbestandteile aus SGBXI"
 }
-export type GesetzlicheLebensgrundlageSchluessel = keyof typeof gesetzlicheLebensgrundlageSchluessel
+export type HaeuslicheKrankenpflegeGesetzlicheLebensgrundlageSchluessel = keyof typeof haueslicheKrankenpflegeGesetzlicheLebensgrundlageSchluessel
+
+export const haushaltshilfeGesetzlicheLebensgrundlageSchluessel = {
+    "05": "Haushaltshilfe nach § 38 Abs. 1 SGB V",
+    "06": "Haushaltshilfe nach § 38 Abs. 2 SGB V",
+    "08": "Haushaltshilfe nach § 24h SGB V (neu durch PNG)",
+}
+export type HaushaltshilfeGesetzlicheLebensgrundlageSchluessel = keyof typeof haushaltshilfeGesetzlicheLebensgrundlageSchluessel
+
 
 /** Stelle 3 der Positionsnummer */
 export const versorgungsArtSchluessel = {
