@@ -24,8 +24,8 @@ describe("validate certificate", () => {
             type: 1,
             path: ["certificate"],
         }, {
-            code: "certificateWillExpire",
-            type: 0,
+            code: "certificateExpired",
+            type: 1,
             path: ["certificate"],
         }]);
     });
