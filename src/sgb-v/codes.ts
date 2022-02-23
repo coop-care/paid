@@ -435,12 +435,24 @@ export type VerordnungsbesonderheitenSchluessel = keyof typeof verordnungsbesond
 
 /** Verordnungsart bei Heilmitteln
  *  
- *  type of therapy prescription
- * 
  *  documented in (a) 8.1.12
+ * 
+ *  Type of therapy prescription. Documentation claims that this information can be taken from the 
+ *  prescription (Muster 13), if specified, but it is not obvious where on the prescription this 
+ *  information should be, so we asked gkv-Spitzenverband. Answer: 
+ * 
+ *  > Entweder habe ich eine „normale“ Verordnung, dann ist Verordnungsart „03“ zu nutzen oder ich 
+ *  > habe eine BVB/L-Verordnung vorliegen, dann ist Verordnungsart „04“ zu nutzen. BVB/L 
+ *  > Verordnungen kann der Therapeut anhand der Kombination aus ICD und Diagnosegruppe erkennen. 
+ *  > Die verordnete Behandlungsmenge hat keinen Einfluss auf die Klassifikation als „normal“ oder 
+ *  > BVB/L."
  */
 export const heilmittelVerordnungsartSchluessel = {
+    /** "Normal" prescription */
     "03": "Verordnung nach § 7 Abs. 1 bis 5 HeilM-RL bzw. § 6 Abs. 1 bis 4 HeilM-RL Zahnärzte (orientierender Behandlungsmenge gemäß Heilmittelkatalog)",
+    /** BVB/L-prescription. Can be told apart from a normal prescription by looking at the 
+     *  combination of ICD (see Diagnose.diagnoseschluessel) 
+     *  and Diagnosegruppe (see HeilmittelVerordnung.diagnosegruppe) */
     "04": "Verordnung nach § 7 Abs. 6 HeilM-RL bzw. § 6 Abs. 5 HeilM-RL Zahnärzte (besonderer Verordnungsbedarf oder langfristiger Heilmittelbedarf bis zu 12 Wochen)",
     "05": "Verordnung nach § 13a HeilM-RL bzw. § 12 HeilM-RL Zahnärzte (Blankoverordnung)"
 }

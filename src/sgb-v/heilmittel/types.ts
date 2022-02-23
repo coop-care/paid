@@ -18,14 +18,7 @@ export type HeilmittelVerordnung = Verordnung & {
      *  Max 4 characters.
      */
     diagnosegruppe?: string,
-    /** Heilmittel-Verordnungsart 
-     * 
-     *  ASK: Documentation claims that this information can be taken from the prescription 
-     *  (Muster 13), if specified, but it is not obvious where on the prescription this information 
-     *  should be. So, we asked GKV-spitzenverband, but the department responsible for SGB V 
-     *  documentation was also not able to answer this question so they passed the question on for 
-     *  the department specific for "Heilmittel". Answer pending.
-     */
+    /** Heilmittel-Verordnungsart */
     verordnungsart?: HeilmittelVerordnungsartSchluessel,
     /** Whether the field "Therapiebericht" is checked on the prescription */
     therapiebericht: boolean,
