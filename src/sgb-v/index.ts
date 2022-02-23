@@ -10,6 +10,8 @@ import {
 import {
     Institution as KostentraegerInstitution
 } from "../kostentraeger/types"
+import { Abrechnungsfall } from "./haeuslich/types"
+import { groupBySammelgruppe as groupBySammelgruppeHaueslich } from "./haeuslich/message"
 
 /** 
  * # Structure
@@ -106,6 +108,21 @@ const groupBySendTo = <T extends BaseAbrechnungsfall>(
         fall => getKostentraeger(institutionsIndex, leistungserbringer, fall)!.sendTo,
         institution => institution.ik
     )
+
+/** Returns a map with SammelgruppenSchluessel as key and an array of associated Abrechnungsfällen as values  */
+const groupBySammelgruppe = <T extends BaseAbrechnungsfall>(faelle: T[]) =>
+    faelle.flatMap((unknownFall: unknown) => {
+        if ((unknownFall as Abrechnungsfall).einsaetze && (unknownFall as Abrechnungsfall).verordnungen) {
+            return groupBySammelgruppeHaueslich(unknownFall as Abrechnungsfall)
+        } else {
+            // TODO: adding support for other Sammelgruppen
+            return [];
+        }
+    }).reduce((result, item) => {
+        const list = result[item.sammelgruppe] || [];
+        result[item.sammelgruppe] = list.concat([item.fall as unknown as T]);
+        return result;
+    }, {} as Record<string, T[]>);
 
 const getKostentraeger = (
     institutionsIndex: InstitutionListsIndex,

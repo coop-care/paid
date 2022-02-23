@@ -29,6 +29,7 @@ import {
     Abrechnungsfall,
     PauschaleAbrechnungsposition
 } from "./types"
+import { haueslicheKrankenpflegeGesetzlicheLebensgrundlageSchluessel, haushaltshilfeGesetzlicheLebensgrundlageSchluessel } from "./codes"
 
 /**
  * Make one SLLA C (häusliche Krankenpflege) or D (Haushaltshilfe) message.
@@ -102,3 +103,33 @@ export const calculateGesamtsummen = (abrechnungsfaelle: Abrechnungsfall[]) => {
         zuzahlungUndEigenanteilBetrag: 0 // no Zuzahlung, Eigenanteil etc. for häusliche Krankenpflege
     }
 }
+
+
+const sammelgruppeC = Object.keys(haueslicheKrankenpflegeGesetzlicheLebensgrundlageSchluessel);
+const sammelgruppeD = Object.keys(haushaltshilfeGesetzlicheLebensgrundlageSchluessel);
+
+const filterEinsaetzeAndAbrechnungspositionen = (fall: Abrechnungsfall, sammelgruppeKeys: string[]): Abrechnungsfall => ({
+    ...fall,
+    einsaetze: fall.einsaetze.map(einsatz => ({
+        ...einsatz,
+        abrechnungspositionen: einsatz.abrechnungspositionen.filter(position =>
+            sammelgruppeKeys.includes(position.positionsnummer.gesetzlicheLebensgrundlage)
+        )
+    })).filter(einsatz => einsatz.abrechnungspositionen.length)
+});
+
+/** 
+ * Split Einsätze, Abrechnungspositionen und Verordnungen of an Abrechnungsfall for
+ * Häusliche Krankenpflege (Sammelgruppe C) and Haushaltshilfe (Sammelgruppe D).
+ */
+export const groupBySammelgruppe = (fall: Abrechnungsfall) =>
+    [{
+        sammelgruppe: "C",
+        fall: filterEinsaetzeAndAbrechnungspositionen(fall, sammelgruppeC)
+    }, {
+        sammelgruppe: "D",
+        fall: {
+            ...filterEinsaetzeAndAbrechnungspositionen(fall, sammelgruppeD),
+            verordnungen: []
+        }
+    }].filter(item => item.fall.einsaetze.length);

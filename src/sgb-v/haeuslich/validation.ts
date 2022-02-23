@@ -11,7 +11,8 @@ import {
 } from "../validation"
 import { 
     HaeuslicheKrankenpflegeEinzelPositionsnummer as EinzelPositionsnummer, 
-    HaeuslicheKrankenpflegePauschalePositionsnummer as PauschalePositionsnummer
+    HaeuslicheKrankenpflegePauschalePositionsnummer as PauschalePositionsnummer,
+    haueslicheKrankenpflegeGesetzlicheLebensgrundlageSchluessel
 } from "./codes"
 import { 
     Abrechnungsfall, 
@@ -24,7 +25,16 @@ export const constraintsAbrechnungsfall = (fall: Abrechnungsfall) => [
     ...constraintsBaseAbrechnungsfall(fall),
     isArray(fall, "einsaetze", 1),
     ...arrayConstraints<Einsatz>(fall, "einsaetze", constraintsEinsatz),
-    isArray(fall, "verordnungen", 1),
+    /* in case this Abrechnungsfall contains care services of type Häusliche Krankenpflege,
+    there needs to be at least one Verordnung, otherwise Verordnung is an empty array: */
+    fall.einsaetze
+        .flatMap(einsatz => einsatz.abrechnungspositionen)
+        .some(item =>
+            Object.keys(haueslicheKrankenpflegeGesetzlicheLebensgrundlageSchluessel)
+                .includes(item.positionsnummer.gesetzlicheLebensgrundlage)
+        )
+        ? isArray(fall, "verordnungen", 1)
+        : isArray(fall, "verordnungen", 0, 0),
     ...arrayConstraints<Verordnung>(fall, "verordnungen", constraintsVerordnung),
 ]
 
