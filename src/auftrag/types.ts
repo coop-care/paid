@@ -10,33 +10,33 @@ import { VerfahrenKennung } from "./codes";
 /** Data necessary to write the Auftragsdatei that is to be included for every Nutzdatendatei */
 export type Auftrag = {
     /** Leistungserbringer-group */
-    verfahrenKennung: VerfahrenKennung,
+    verfahrenKennung: VerfahrenKennung
     /** Anwendungsreferenz (aka "logischer Dateiname"), a string concat of different things, 
     *  depending on the health care provider group */
     anwendungsreferenz: string
 
     /** 9-digit IK of the sender (creator) of this file */
-    senderIK: string,
+    senderIK: string
     /** 9-digit IK of the designated recipient of this file */
-    encryptedForIK: string,
+    encryptedForIK: string
     /** 9-digit IK of the intermediate recipient of this file */
-    sendToIK: string,
+    sendToIK: string
 
     /** date at which this file has been created */
-    dateCreated: Date,
+    dateCreated: Date
     /** date at which this file has been sent */
-    dateSent: Date,
+    dateSent: Date
 
     /** unencrypted file size of the Nutzdaten. Max length: 12 digits */
-    unencryptedNutzdatenSizeBytes: number,
+    unencryptedNutzdatenSizeBytes: number
     /** encrypted file size of the Nutzdaten. Max length: 12 digits */
-    encryptedNutzdatenSizeBytes: number,
+    encryptedNutzdatenSizeBytes: number
 
     /** whether this is test data. Should also be true during the "Erprobungsverfahren" */
-    isTest: boolean,
+    isTest: boolean
 
     /** serial number that should globally increased by one for each Auftragsdatei. A value from
      *  0-999. It should loop back to 0 when 1000 is reached.
      */
-    transferNumber: number,
+    transferNumber: number
 }

@@ -5,7 +5,7 @@ import parsePems from "./pki/parser"
 import parseKostentraegerUrls from './rssreader'
 import transform from "./transformer"
 import { InstitutionListFileParseResult, InstitutionListParseResult } from "./types"
-import { PublicKeyInfo } from './pki/types'
+import { Certificate } from '@peculiar/asn1-x509'
 
 const getTextDecoder = async () => (typeof window !== 'undefined') && window.TextDecoder
     ? window.TextDecoder
@@ -16,6 +16,8 @@ const kostentraegerRssUrls = [
     "https://gkv-datenaustausch.de/leistungserbringer/sonstige_leistungserbringer/kostentraegerdateien_sle/rss_kostentraegerdateien_sonstige_leistungserbringer.xml"
 ]
 
+type FetchMethodType = (input: RequestInfo, init?: RequestInit | undefined) => Promise<Response>;
+
 /* Currently (2021-05), there are two lists, the other being
    https://trustcenter-data.itsg.de/dale/annahme-sha256.key 
    Those are the old certificates with 2048bit keys. However, all Datenannahmestellen already got
@@ -24,37 +26,37 @@ const kostentraegerRssUrls = [
 const certificatesUrl = "https://trustcenter-data.itsg.de/dale/annahme-rsa4096.key"
 
 export default async function fetchInstitutionLists(proxyFetch = fetch): Promise<InstitutionListFileParseResult[]> {
-    const publicKeyInfos = await fetchPublicKeyInfos(proxyFetch)
+    const certificatesByIK = await fetchCertificates(proxyFetch)
     const fileUrls = await fetchKostentraegerUrls(kostentraegerRssUrls, proxyFetch)
     const kostentraegerFiles = await fetchKostentraegerFiles(fileUrls, proxyFetch)
     return kostentraegerFiles.map(([fileName, text]) => {
-        return { fileName: fileName, ...parseKostentraegerString(publicKeyInfos, text) }
+        return { fileName: fileName, ...parseKostentraegerString(certificatesByIK, text) }
     })
 }
 
-async function fetchPublicKeyInfos(proxyFetch = fetch): Promise<Map<string,PublicKeyInfo[]>> {
-    const pems = await (await proxyFetch(certificatesUrl)).text()
+async function fetchCertificates(fetch: FetchMethodType): Promise<Map<string, Certificate[]>> {
+    const pems = await (await fetchSecure(certificatesUrl, fetch)).text()
     return parsePems(pems)
 }
 
-async function fetchKostentraegerUrls(kostentraegerRssUrls: string[], proxyFetch = fetch): Promise<string[]> {
+async function fetchKostentraegerUrls(kostentraegerRssUrls: string[], fetch: FetchMethodType): Promise<string[]> {
     const urlsArray = await Promise.all(kostentraegerRssUrls.map(async (url) => {
         // The RSS text files are encoded in UTF-8, so we can call .text() here without worry
-        const responseText = await (await proxyFetch(url)).text()
+        const responseText = await (await fetchSecure(url, fetch)).text()
         return parseKostentraegerUrls(responseText)
     }))
     return urlsArray.flat()
 }
 
-async function fetchKostentraegerFiles(kostentraegerFileUrls: string[], proxyFetch = fetch): Promise<[string, string][]> {
+async function fetchKostentraegerFiles(kostentraegerFileUrls: string[], fetch: FetchMethodType): Promise<[string, string][]> {
     return await Promise.all(
-        kostentraegerFileUrls.map(async url => await fetchKostentraegerFile(url, proxyFetch))
+        kostentraegerFileUrls.map(async url => await fetchKostentraegerFile(url, fetch))
     )
 }
 
-async function fetchKostentraegerFile(url: string, proxyFetch = fetch): Promise<[string, string]> {
-    const TextDecoder = await getTextDecoder()
-    const response = await proxyFetch(url)
+async function fetchKostentraegerFile(url: string, fetch: FetchMethodType): Promise<[string, string]> {
+  const TextDecoder = await getTextDecoder()
+    const response = await fetchSecure(url, fetch)
     /* Kostenträger files are encoded in iso-8859-1 and not in UTF-8, so we cannot
        just call response.text()! */
     const decoder = new TextDecoder("iso-8859-1")
@@ -62,17 +64,21 @@ async function fetchKostentraegerFile(url: string, proxyFetch = fetch): Promise<
     const fileName = url.substring(url.lastIndexOf("/")+1)
     try {
         return [fileName, text]
-    } catch(e) {
+    } catch(e: any) {
         e.message = fileName + ": " + e.message
         throw e
     }
 }
 
-function parseKostentraegerString(pkeyMap: Map<string, PublicKeyInfo[]>, text: string): InstitutionListParseResult {
+function parseKostentraegerString(pkeyMap: Map<string, Certificate[]>, text: string): InstitutionListParseResult {
     const tokenizedEdifact = tokenize(text)
     const edifactParseResult = parse(tokenizedEdifact)
     const transformedResult = transform(pkeyMap, edifactParseResult.interchange)
     // also merge the warnings from both parsing steps
     transformedResult.warnings = edifactParseResult.warnings.concat(transformedResult.warnings)
     return transformedResult
+}
+
+async function fetchSecure(url: string, fetch: FetchMethodType) {
+    return await fetch(url.replace(/^http:/, "https:"));
 }

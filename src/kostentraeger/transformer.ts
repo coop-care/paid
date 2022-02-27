@@ -8,7 +8,6 @@ import {
 } from "./edifact/codes"
 import { KOTRInterchange, KOTRMessage, ANS, ASP, DFU, UEM, VKG } from "./edifact/segments"
 import { VerfahrenSchluessel } from "./filename/codes"
-import { PublicKeyInfo } from "./pki/types"
 import { 
     Address, 
     Contact, 
@@ -17,9 +16,9 @@ import {
     InstitutionListParseResult,
     KVLocationSchluessel,
     PaperDataType,
-    PapierannahmestelleLink,
-    ReceiptTransmission
+    PapierannahmestelleLink
 } from "./types"
+import { Certificate } from '@peculiar/asn1-x509'
 
 
 const datenlieferungsartSchluesselToPaperType = 
@@ -72,7 +71,7 @@ const kvBezirkSchluesselToKVLocation =
     ])
 
 
-export default function transform(pkeys: Map<string, PublicKeyInfo[]>, interchange: KOTRInterchange): InstitutionListParseResult {
+export default function transform(pkeys: Map<string, Certificate[]>, interchange: KOTRInterchange): InstitutionListParseResult {
 
     const validityStartDate = interchange.filename.validityStartDate
 
@@ -80,7 +79,7 @@ export default function transform(pkeys: Map<string, PublicKeyInfo[]>, interchan
     const institutions = interchange.institutions.map((msg) => {
         try {
             return transformMessage(pkeys, msg, validityStartDate)
-        } catch(e) {
+        } catch(e: any) {
             warnings.push(e.message)
         }
     }).filter((msg): msg is Institution => !!msg)
@@ -100,7 +99,7 @@ export default function transform(pkeys: Map<string, PublicKeyInfo[]>, interchan
 }
 
 function validateLinks(institutions: Institution[]): string[] {
-    const errors: string[] = []
+    const warnings: string[] = []
     const institutionsByIK = new Map<string, Institution>()
     institutions.forEach((institution) => {
         institutionsByIK.set(institution.ik, institution)
@@ -112,22 +111,22 @@ function validateLinks(institutions: Institution[]): string[] {
             either accept email themselves or lead to one that does in one link-step */
         institution.datenannahmestelleLinks?.forEach((link) => {
             const da = institutionsByIK.get(link.ik)
-            if (!da?.transmission) {
+            if (!da?.transmissionEmail) {
                 const butALinkAcceptsData = da?.untrustedDatenannahmestelleLinks?.some((link2) => {
                     const uda = institutionsByIK.get(link2.ik)
-                    return !!(uda?.transmission)
+                    return !!(uda?.transmissionEmail)
                 })
                 if (!butALinkAcceptsData) {
-                    errors.push(`${errMsg} links to IK ${link.ik} for data but neither that IK nor an IK it links to accepts SMTP (email)`)
+                    warnings.push(`${errMsg} links to IK ${link.ik} for data but neither that IK nor an IK it links to accepts SMTP (email)`)
                 }
             }
-            /** each Datenannahme with capacity to decrypt must have a public key */
-            if (!da?.publicKeys) {
-                errors.push(`${errMsg} links to IK ${link.ik} for data but there is not any public key for encryption`)
+            /** each Datenannahme with capacity to decrypt must have a certificate */
+            if (!da?.certificates) {
+                warnings.push(`${errMsg} links to IK ${link.ik} for data but there is not any certificate for encryption`)
             }
         })
     })
-    return errors
+    return warnings
 }
 
 
@@ -140,7 +139,11 @@ function verfahrenToLeistungserbringergruppeSchluessel(verfahren: VerfahrenSchlu
 }
 
 
-function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage, interchangeValidityStartDate: Date): Institution | null {
+function transformMessage(
+    certificatesByIK: Map<string, Certificate[]>,
+    msg: KOTRMessage, 
+    interchangeValidityStartDate: Date
+): Institution | null {
     /* Since the use of this field was unclear to us, we asked GKV-Spitzenverband.
        
        They answered that this field marks whether an entry was added, changed, not changed or 
@@ -215,6 +218,14 @@ function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage,
         }
     })
 
+    const transmissionZeichensatz = msg.uemList
+        .find((uem) => uem.uebermittlungsmediumSchluessel == "1")
+        ?.uebermittlungszeichensatzSchluessel
+
+    if (transmissionZeichensatz && transmissionZeichensatz != "I8" && transmissionZeichensatz != "99") {
+        throw new Error(`${messageTxt} Unsupported transmission zeichensatz "${transmissionZeichensatz}"`)
+    }
+
     const kostentraegerLinks = msg.vkgList
         .filter((vkg) => vkg.ikVerknuepfungsartSchluessel == "01")
         .map((vkg) => createInstitutionLink(vkg))
@@ -230,9 +241,10 @@ function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage,
     const papierannahmestelleLinks = createPapierannahmestelleLinks(msg.vkgList)
 
     const contacts = msg.aspList.map((asp) => createContact(asp))
+    
+    const certificates = certificatesByIK.get(msg.idk.ik)
 
-    const publicKeys = pkeys.get(msg.idk.ik)
-
+    const transmissionEmail = msg.dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
     return {
         ik: msg.idk.ik,
         name: msg.nam.names.join(" "),
@@ -245,8 +257,8 @@ function transformMessage(pkeys: Map<string, PublicKeyInfo[]>, msg: KOTRMessage,
 
         contacts: contacts.length > 0 ? contacts : undefined,
         addresses: msg.ansList.map((ans) => createAddress(ans)),
-        transmission: createReceiptTransmission(msg.uemList, msg.dfuList),
-        publicKeys: publicKeys,
+        transmissionEmail: transmissionEmail,
+        certificates: certificates,
         kostentraegerLinks: kostentraegerLinks.length > 0 ? kostentraegerLinks : undefined,
         datenannahmestelleLinks: datenannahmestelleLinks.length > 0 ? datenannahmestelleLinks : undefined,
         untrustedDatenannahmestelleLinks: untrustedDatenannahmestelleLinks.length > 0 ? untrustedDatenannahmestelleLinks : undefined,
@@ -326,20 +338,6 @@ function createInstitutionLink(vkg: VKG): InstitutionLink {
         location: kvLocationSchluessel,
         sgbvAbrechnungscode: sgbvAbrechnungscode,
         sgbxiLeistungsart: sgbxiLeistungsart
-    }
-}
-
-function createReceiptTransmission(uemList: UEM[], dfuList: DFU[]): ReceiptTransmission | undefined {
-    if (uemList.length == 0 || dfuList.length == 0) return undefined
-
-    const zeichensatzSchluessel = uemList.find((uem) => uem.uebermittlungsmediumSchluessel == "1")?.uebermittlungszeichensatzSchluessel
-    const email = dfuList.find((dfu) => dfu.dfuProtokollSchluessel == "070")?.address
-
-    if (!email) return undefined
-
-    return {
-        email: email,
-        zeichensatz: zeichensatzSchluessel!
     }
 }
 

@@ -12,12 +12,23 @@
 
 - Gemeinsame Grundsätze Technik, Anlage 2:  
 [Auftragsdatei](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_2_-_Auftragsdatei.pdf)  
-from 2019-10-23, to be applied from **2020-01-01**
+from **2019-10-23**, to be applied from **2020-01-01**
+
+- Gemeinsame Grundsätze Technik, Anlage 7:  
+[Electronic Mail (E-Mail)](https://www.gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_7_-_E-Mail.pdf)  
+from **2016-06-23**, to be applied from **2016-07-01**
 
 - Gemeinsame Grundsätze Technik, Anlage 15:  
 [Zeichensätze](https://www.gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_15_-_Zeichensaetze.pdf)  
 from 2020-07-01, to be applied from **2020-09-01**
 
+- Gemeinsame Grundsätze Technik, Anlage 16:  
+[Security Schnittstelle (SECON)](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_16.pdf)  
+from **2020-09-10**, to be applied from **2021-01-01**
+
+- Gemeinsames Rundschreiben, Anlage 08:  
+[Staatsangehörigkeit und Länderkennzeichen für Auslandsanschriften](https://www.gkv-datenaustausch.de/media/dokumente/arbeitgeber/deuev/rundschreiben_anlagen/GemRS_Anlage_8_5.01.pdf)  
+Version **5.01** from 2019-06-19
 ### Pflege
 
 - Pflege, Broschüre:  
@@ -72,6 +83,10 @@ Version **1.0** from 2020-11-26, to be applied from: **10/2003**
 
 #### zu den Richtlinien der Spitzenverbände der Krankenkassen nach § 302 Abs. 2 SGB V über Form und Inhalt des Abrechnungsverfahrens mit "Sonstigen Leistungserbringern" sowie mit Hebammen und Entbindungspflegern (§ 301a SGB V)
 
+- Sonstige Leistungserbringer, Anlage 1:  
+[Technische Anlage für die maschinelle Abrechnung (elektronische Datenübermittlung)](https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anlage_1_TP5_V16_20210407.pdf)  
+Version **16** from 2021-04-07, to be applied from **01/2022** 
+
 - Sonstige Leistungserbringer, Anlage 1, Anhang 1, Kapitel 4:  
 [Datenübermittlung](https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anhang_1_Anlage_1_TP5_20170831.pdf)  
 from 2017-08-31, to be applied from **09/2017** 
@@ -80,12 +95,33 @@ from 2017-08-31, to be applied from **09/2017**
 [Kostenträgerdatei](https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anhang_03_Anlage_1_TP5_20200616.pdf)  
 Version **07** from 2020-06-16, to be applied from **10/2021** 
 
-### Gemeinsame Grundsätze Technik
+- Sonstige Leistungserbringer, Anlage 3:  
+[Schlüsselverzeichnisse](https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/technische_anlagen_aktuell_4/Anlage_3_TP5_V16_20210331.pdf)  
+Version **16** from 2021-03-31, to be applied from **01/2022** 
 
-- Gemeinsame Grundsätze Technik, Anlage 16:  
-[Security Schnittstelle (SECON)](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_16.pdf)  
-from **2020-09-10**, to be applied from **2021-01-01**
+#### Bundeseinheitliches Positionsnummernverzeichnis für Leistungen
 
+-  [häusliche Krankenpflege und Haushaltshilfe](https://gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/sonstige_leistungserbringer/positionsnummernverzeichnisse/Haeusliche-Krankenpflege_20210701.pdf)  
+from **07/2021**
+
+#### Muster von Verordnungen 
+
+- [Informationen zu Heilmittel-Verordnungen](https://www.kbv.de/html/heilmittel.php)
+
+- Verordnungsformulare für Hilfsmittel:  
+[Muster 8, 8A, 15, 16](https://www.kbv.de/html/hilfsmittel_muster.php)
+
+- Verordnungsformular für häusliche Krankenpflege:  
+[Muster 12](https://www.kbv.de/html/28888.php)
+
+- Vordruckerläuterungen zu Muster 13:  
+[Muster 13](https://www.kbv.de/media/sp/Muster_13_Vordruckerlaeuterungen.pdf)
+
+- Verordnungsformular für Krankenhauseinweisung:  
+[Muster 2](https://www.kbv.de/html/23012.php)
+
+- Verordnungsformular für SAPV:  
+[Muster 63](https://www.palliativ-portal.de/SAPV-Formulare)
 
 ## RSS feeds for notifications about new document publications
 

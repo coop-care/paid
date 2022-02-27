@@ -1,10 +1,18 @@
-import { arrayBufferToBase64, base64ToArrayBuffer } from "./pki/utils";
+import { arrayBufferToBase64, base64ToArrayBuffer } from "../pki/utils";
 import { InstitutionList } from "./types";
+import { AsnSerializer, AsnParser } from "@peculiar/asn1-schema"
+import { Certificate } from "@peculiar/asn1-x509"
 
 export function serializeInstitutionLists(data: InstitutionList[], space?: string|number|undefined): string {
     return JSON.stringify(data, (key: string, value: any): any => {
         switch(key) {
-            case "publicKey": return arrayBufferToBase64(value as ArrayBuffer)
+            case "certificates": 
+                if (value) {
+                    const certificates = value as Array<Certificate>
+                    return certificates.map(certificate => 
+                        arrayBufferToBase64(AsnSerializer.serialize(certificate))
+                    )
+                }
         }
         return value
     }, space)
@@ -13,10 +21,15 @@ export function serializeInstitutionLists(data: InstitutionList[], space?: strin
 export function deserializeInstitutionLists(text: string): InstitutionList[] {
     return JSON.parse(text, (key: string, value: any): any => {
         switch(key) {
-            case "publicKey":         return base64ToArrayBuffer(value as string)
-            case "validityStartDate": return new Date(value as string)
-            case "validityFrom":      return new Date(value as string)
-            case "validityTo":        return new Date(value as string)
+            case "certificates":
+                if (value) {
+                    const certificatePEMs = value as Array<string>
+                    return certificatePEMs.map(pem =>
+                        AsnParser.parse(base64ToArrayBuffer(pem), Certificate)
+                    )
+                }
+            case "validityStartDate": 
+                return new Date(value as string)
         }
         return value
     })

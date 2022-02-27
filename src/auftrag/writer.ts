@@ -1,5 +1,4 @@
-import { VerfahrenKennung } from "./codes";
-import { Auftrag } from "./types";
+import { Auftrag } from "./types"
 
 /** based on documents: 
  *  - Pflege, Technische Anlage 1, Anhang 1: Struktur Auftragsdatei
@@ -59,8 +58,8 @@ export default function write(auftragsdatei: Auftrag): string {
         auftragsdatei.unencryptedNutzdatenSizeBytes.toString().padStart(12, "0"), 
         // encrypted size of the referenced Nutzdatendatei in bytes (12 digits)
         auftragsdatei.encryptedNutzdatenSizeBytes.toString().padStart(12, "0"), 
-        // charset (2 chars). I1 = ISO-8859-1
-        "I1",
+        // charset (2 chars). I1 = ISO-8859-1, I8: ISO 8-Bit according to DIN 66303 DRV 8
+        "I8",
         // compression (2 digits).
         // 00 = none, 02 = gzip, 03 = zip (one file), 07 = bzip2, 13 = zip (several files)
         "00",

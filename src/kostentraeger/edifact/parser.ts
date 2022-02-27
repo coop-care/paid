@@ -55,7 +55,7 @@ export default function parse(interchange: Interchange): KOTRInterchangeParseRes
                 const parseResult = parseMessage(message)
                 warnings.push(...parseResult.warnings)
                 return parseResult.message
-            } catch(e) {
+            } catch(e: any) {
                 warnings.push("skipped invalid " + e.message)
             }
          })
@@ -197,7 +197,7 @@ function parseMessage(message: Message): KOTRMessageParseResult {
                     try {
                         ++vkgCount
                         vkgList.push(readVKG(elements))
-                    } catch(e) {
+                    } catch(e: any) {
                         warnings.push(messageTxt + " skipped invalid VKG " + vkgCount + ": " + e.message)
                     }
                     break
@@ -208,7 +208,7 @@ function parseMessage(message: Message): KOTRMessageParseResult {
                     try {
                         ++ansCount
                         ansList.push(readANS(elements))
-                    } catch(e) {
+                    } catch(e: any) {
                         warnings.push(messageTxt + " skipped invalid ANS " + ansCount + ": " + e.message)
                     }
                     break
@@ -219,20 +219,20 @@ function parseMessage(message: Message): KOTRMessageParseResult {
                     try {
                         ++uemCount
                         uemList.push(readUEM(elements))
-                    } catch(e) {
+                    } catch(e: any) {
                         warnings.push(messageTxt + " skipped invalid UEM " + uemCount + ": " + e.message)
                     }
                     break
                 case "DFU": // Datenfernübertragung
                     try {
                         dfuList.push(readDFU(elements))
-                    } catch(e) {
+                    } catch(e: any) {
                         const index = parseInt(elements[0])
                         warnings.push(messageTxt + " skipped invalid DFU " + index + ": " + e.message)
                     }
                     break
             }
-        } catch (error) {
+        } catch (error: any) {
             error.message = messageTxt + " " + error.message
             throw error
         }

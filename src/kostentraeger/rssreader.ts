@@ -1,3 +1,4 @@
+import { DOMParser } from "@xmldom/xmldom"
 
 /** Parses all the URLs that lead to the Kostenträger files from the RSS feed. An RSS feed like this
  *  "https://gkv-datenaustausch.de/leistungserbringer/pflege/kostentraegerdateien_pflege/rss_kostentraegerdateien_pflege.xml"
@@ -23,8 +24,8 @@ function filterOnlyMostCurrentKostentraegerUrls(fileUrls: string[]): string[] {
     return fileUrls.filter((url, index) => {
         const name = getFileName(url)
         const version = getFileVersion(url)
-        return !fileUrls.some((url2, index2) => {
-            if (index == index2) return false
+        return /\.ke\d$/.test(url) && !fileUrls.some((url2, index2) => {
+            if (index == index2) { return false }
             const name2 = getFileName(url2)
             if (name == name2) {
                 const version2 = getFileVersion(url2)

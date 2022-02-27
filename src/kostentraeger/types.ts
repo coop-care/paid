@@ -1,11 +1,10 @@
 import { 
     KostentraegerSGBVAbrechnungscodeSchluessel,
     KostentraegerSGBXILeistungsartSchluessel,
-    LeistungserbringergruppeSchluessel, 
-    UebermittlungszeichensatzSchluessel 
+    LeistungserbringergruppeSchluessel
 } from "./edifact/codes"
 import { KassenartSchluessel } from "./filename/codes"
-import { PublicKeyInfo } from "./pki/types"
+import { Certificate } from '@peculiar/asn1-x509'
 
 /**
  * These types represent the data from Kostentraeger file(s) cast into a (more) accessible data model
@@ -62,13 +61,13 @@ export type Institution = {
     contacts?: Contact[],
     /** Address(es). Contains one to three addresses, (max) one for each type */
     addresses: Address[],
-    /** Details on where to send receipts. Undefined if this institution does not accept any 
+    /** Email where to send receipts. Undefined if this institution does not accept any 
      *  receipts directly */
-    transmission?: ReceiptTransmission,
-    /** Public key(s) to use for encrypting to this IK, if any. One institution may have several
-     *  public keys, with overlapping validity dates
+    transmissionEmail?: string,
+    /** Certificate(s) to use for encrypting to this IK, if any. One institution may have several
+     *  certificates, with overlapping validity dates
      */
-    publicKeys?: PublicKeyInfo[],
+    certificates?: Certificate[],
     /** Link(s) to Kostenträger (=institutions that pays the receipts). 
      *  The institution with the IK as printed on the health-insurance card is not necessarily the
      *  institution that manages paying the receipts. Usually such things are done by a central 
@@ -169,14 +168,6 @@ export const careProviderLocationSchluessel = {
 }
 export type CareProviderLocationSchluessel = 
     FederalStateSchluesselWithoutNRWSchluessel | NRWSubdivisionSchluessel
-
-/** Simplified data model of UEM+DFU from the Kostenträger file with legacy stuff removed */
-export type ReceiptTransmission = {
-    /** Email address to use to send receipts. */
-    email: string,
-    /** Charset in which the data must be transmitted */
-    zeichensatz: UebermittlungszeichensatzSchluessel
-}
 
 export type Contact = {
     /** Phone number. The dialing code and phone number usually separated with "/" or "-" */

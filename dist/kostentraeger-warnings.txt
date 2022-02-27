@@ -1,13 +1,10 @@
-AO06Q321.ke0
+AO06Q122.ke1
   message 185 - skipped invalid UEM 1: Refers to a non-existing DFU
   message 186 - skipped invalid UEM 1: Refers to a non-existing DFU
   IK 103411401 (AOK Westfalen-Lippe) links to IK 102114819 for data but that IK does not accept data
 
-BN06Q318.ke0
-  message 29 - skipped invalid DFU 1: Unknown DFUProtokollSchluessel "002"
-  message 29 - skipped invalid DFU 2: Unknown DFUProtokollSchluessel "011"
-  message 29 - skipped invalid DFU 3: Unknown DFUProtokollSchluessel "030"
-  message 29 - skipped invalid DFU 4: Unknown DFUProtokollSchluessel "050"
+IK06Q122.ke0
+  Message 37 - Unsupported transmission zeichensatz "I7"
 
 LK06Q321.ke0
   message 18 - skipped invalid VKG 3: Unknown LeistungserbringergruppeSchluessel "3"
@@ -15,15 +12,16 @@ LK06Q321.ke0
   message 18 - skipped invalid VKG 5: Unknown LeistungserbringergruppeSchluessel "3"
   message 18 - skipped invalid VKG 6: Unknown LeistungserbringergruppeSchluessel "3"
 
-EK06Q221.ke3
-  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
-  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
-  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
-  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
-  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
-  IK 183170002 (hkk) links to IK 183170002 for data but there is not any public key for encryption
+EK06Q122.ke0
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any certificate for encryption
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any certificate for encryption
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any certificate for encryption
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any certificate for encryption
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any certificate for encryption
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any certificate for encryption
+  IK 183170002 (hkk) links to IK 183170002 for data but there is not any certificate for encryption
 
-AO05Q321.ke0
+AO05Q122.ke1
   message 106 - skipped invalid DFU 1: Unknown DFUProtokollSchluessel "011"
   message 106 - skipped invalid DFU 2: Unknown DFUProtokollSchluessel "011"
   message 106 - skipped invalid DFU 3: Unknown DFUProtokollSchluessel "011"
@@ -33,32 +31,9 @@ AO05Q321.ke0
   message 153 - skipped invalid DFU 3: Unknown DFUProtokollSchluessel "011"
   message 202 - skipped invalid UEM 1: Refers to a non-existing DFU
 
-BK05Q321.ke1
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts data
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts data
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts data
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts data
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts data
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts data
-  IK 103524394 (VIACTIV Krankenkasse Ost) links to IK 102193234 for data but neither that IK nor an IK it links to accepts data
-  IK 103524407 (VIACTIV Krankenkasse) links to IK 102193234 for data but neither that IK nor an IK it links to accepts data
+BK05Q122.ke6
   IK 104526376 (VIACTIV Krankenkasse) links to IK 102193234 for data but neither that IK nor an IK it links to accepts data
   IK 104529255 (VIACTIV Krankenkasse Ost) links to IK 102193234 for data but neither that IK nor an IK it links to accepts data
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts SMTP (email)
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts SMTP (email)
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts SMTP (email)
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts SMTP (email)
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts SMTP (email)
-  IK 101520078 (Mobil Krankenkasse) links to IK 101520078 for data but neither that IK nor an IK it links to accepts SMTP (email)
-  IK 103524394 (VIACTIV Krankenkasse Ost) links to IK 102193234 for data but neither that IK nor an IK it links to accepts SMTP (email)
-  IK 103524407 (VIACTIV Krankenkasse) links to IK 102193234 for data but neither that IK nor an IK it links to accepts SMTP (email)
   IK 104526376 (VIACTIV Krankenkasse) links to IK 102193234 for data but neither that IK nor an IK it links to accepts SMTP (email)
   IK 104529255 (VIACTIV Krankenkasse Ost) links to IK 102193234 for data but neither that IK nor an IK it links to accepts SMTP (email)
-  IK 108891619 (energie-BKK NETZ-PNWÜ) links to IK 590311426 for data but there is not any public key for encryption
-
-BN050321.ke0
-  message 28 - skipped invalid DFU 1: Unknown DFUProtokollSchluessel "002"
-  message 28 - skipped invalid DFU 2: Unknown DFUProtokollSchluessel "011"
-  message 28 - skipped invalid DFU 3: Unknown DFUProtokollSchluessel "030"
-  message 28 - skipped invalid DFU 4: Unknown DFUProtokollSchluessel "050"
 

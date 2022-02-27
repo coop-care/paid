@@ -1,15 +1,16 @@
 export type {
     BillingData,
-    BillingFile,
+    Versicherter,
+} from "./types";
+export type {
     Invoice,
     Leistungserbringer,
     Abrechnungsfall,
-    Versicherter,
     Einsatz,
     Leistung,
-    Hilfsmittel,
+    Pflegehilfsmittel,
     Zuschlag
-} from "./types";
+} from "./sgb-xi/types";
 
 export type {
     RechnungsartSchluessel,
@@ -23,7 +24,7 @@ export type {
     ZeitartSchluessel,
     PflegesatzSchluessel,
     WegegebuehrenSchluessel,
-    PauschaleLeistungSchluessel,
+    BeratungsbesuchPauschaleLeistungSchluessel,
     SonstigeLeistungSchluessel,
     PflegehilfsmittelSchluessel,
     MehrwertsteuerSchluessel,
@@ -46,7 +47,7 @@ export {
     zeitartSchluessel,
     pflegesatzSchluessel,
     wegegebuehrenSchluessel,
-    pauschaleLeistungSchluessel,
+    beratungsbesuchPauschaleLeistungSchluessel,
     sonstigeLeistungSchluessel,
     pflegehilfsmittelSchluessel,
     mehrwertsteuerSchluessel,
@@ -65,8 +66,6 @@ export type {
     TarifbereichSchluessel as TarifbereichSchluesselSGBV,
 } from "./sgb-v/codes";
 export {
-    abrechnungscodeEinzelschluessel as abrechnungscodeEinzelschluesselSGBV,
-    abrechnungscodeGruppenschluessel as abrechnungscodeGruppenschluesselSGBV,
     abrechnungscodeSchluessel as abrechnungscodeSchluesselSGBV,
     getAbrechnungscodeEinzelschluessel,
     getAbrechnungscodeGruppenschluessel,
@@ -74,7 +73,6 @@ export {
 } from "./sgb-v/codes";
 
 export type { KassenartSchluessel } from "./kostentraeger/filename/codes";
-export type { PublicKeyInfo } from "./kostentraeger/pki/types";
 export type {
     LeistungserbringergruppeSchluessel,
     UebermittlungszeichensatzSchluessel,
@@ -85,7 +83,6 @@ export type {
     Institution,
     Contact,
     Address,
-    ReceiptTransmission,
     InstitutionLink,
     PapierannahmestelleLink,
     PaperDataType,

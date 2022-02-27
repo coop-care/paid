@@ -8,7 +8,6 @@ import {
 } from "../sgb-xi/codes";
 import { LeistungserbringergruppeSchluessel } from "./edifact/codes";
 import { KassenartSchluessel } from "./filename/codes";
-import { PublicKeyInfo } from "./pki/types";
 import { 
     CareProviderLocationSchluessel,
     Institution,
@@ -16,6 +15,8 @@ import {
     InstitutionList,
     PaperDataType
 } from "./types";
+import { Certificate } from '@peculiar/asn1-x509'
+import { AsnSerializer } from "@peculiar/asn1-schema";
 
 
 /** Result of a InstitutionListsIndex::findForPaper query */
@@ -25,15 +26,17 @@ export type KostentraegerForPaperFindResult = {
     /** Information on the instutition which shall be the Kostenträger of this receipt */
     kostentraeger: Institution,
     /** Information on the institution to which the receipt shall be sent */
-    sendTo: Institution 
+    sendTo: Institution,
+    /** The statutory health insurance group the given pflegekasseIK belongs to */
+    kassenart: KassenartSchluessel,
 }
 
 /** Result of a InstitutionListsIndex::findForData query */
 export type KostentraegerForDataFindResult = KostentraegerForPaperFindResult & {
     /** Information on the institution for which the receipt shall be encrypted */
     encryptTo: Institution,
-    /** array buffer containing the public key to use for encryption */
-    publicKey: ArrayBuffer
+    /** certificate to be used for encryption */
+    certificate: ArrayBuffer
 }
 
 export type Leistungsart = SGBXILeistungsart | SGBVAbrechnungscode
@@ -106,7 +109,8 @@ export class InstitutionListsIndex {
         return this.find(pflegekasseIK, leistungsart, location, date, (
                 pflegekasse: Institution,
                 kostentraeger: Institution,
-                institutionsIndex: Map<string, Institution>
+                institutionsIndex: Map<string, Institution>,
+                kassenart: KassenartSchluessel,
             ) => {
                 const sendTo = findPapierannahmestelle(kostentraeger, institutionsIndex, paperDataType, leistungsart, location)
                 if (!sendTo) {
@@ -116,7 +120,8 @@ export class InstitutionListsIndex {
                 return {
                     pflegekasse: pflegekasse,
                     kostentraeger: kostentraeger,
-                    sendTo: sendTo
+                    sendTo: sendTo,
+                    kassenart
                 }
             }
         )
@@ -145,20 +150,21 @@ export class InstitutionListsIndex {
         return this.find(pflegekasseIK, leistungsart, location, date, (
                 pflegekasse: Institution,
                 kostentraeger: Institution,
-                institutionsIndex: Map<string, Institution>
+                institutionsIndex: Map<string, Institution>,
+                kassenart: KassenartSchluessel,
             ) => {
                 const datenannahmestelle = findDatenannahmestelle(kostentraeger, institutionsIndex, leistungsart, location)
                 if (!datenannahmestelle) {
                     return
                 }
 
-                const pkeyInfos = datenannahmestelle.encryptTo.publicKeys
-                if (!pkeyInfos) {
+                const certificates = datenannahmestelle.encryptTo.certificates
+                if (!certificates) {
                     return
                 }
 
-                const pkey = findMostCurrentValidKey(pkeyInfos, date)?.publicKey
-                if (!pkey) {
+                const certificate = findMostCurrentValidCertificate(certificates, date)
+                if (!certificate) {
                     return
                 }
                 
@@ -167,7 +173,8 @@ export class InstitutionListsIndex {
                     kostentraeger: kostentraeger,
                     encryptTo: datenannahmestelle.encryptTo,
                     sendTo: datenannahmestelle.sendTo,
-                    publicKey: pkey
+                    certificate: AsnSerializer.serialize(certificate),
+                    kassenart
                 }
             }
         )
@@ -181,7 +188,8 @@ export class InstitutionListsIndex {
         block: (
             pflegekasse: Institution,
             kostentraeger: Institution,
-            institutionsIndex: Map<string, Institution>
+            institutionsIndex: Map<string, Institution>,
+            kassenart: KassenartSchluessel,
         ) => T | undefined
     ): T | undefined {
         /* only comb through those which are for the right Leistungserbringergruppe */
@@ -209,7 +217,7 @@ export class InstitutionListsIndex {
 
             const kostentraeger = findKostentraeger(pflegekasse, institutionsIndex, leistungsart, location)
             
-            const result = block(pflegekasse, kostentraeger, institutionsIndex)
+            const result = block(pflegekasse, kostentraeger, institutionsIndex, kassenart)
             if (result) {
                 return result
             }
@@ -217,14 +225,17 @@ export class InstitutionListsIndex {
     }
 }
 
-function findMostCurrentValidKey(pkeys: PublicKeyInfo[], date: Date): PublicKeyInfo | undefined {
-    let result: PublicKeyInfo | undefined = undefined
+function findMostCurrentValidCertificate(certificates: Certificate[], date: Date): Certificate | undefined {
+    let result: Certificate | undefined = undefined
     let mostCurrentValidityToDate = new Date(0) // 1970
-    pkeys.forEach(pkey => {
-        if (pkey.validityFrom < date && pkey.validityTo > date) {
-            if (mostCurrentValidityToDate < pkey.validityTo ) {
-                mostCurrentValidityToDate = pkey.validityTo
-                result = pkey
+    certificates.forEach(certificate => {
+        const cert = certificate.tbsCertificate
+        const validityFrom = cert.validity.notBefore.getTime()
+        const validityTo = cert.validity.notAfter.getTime()
+        if (validityFrom < date && validityTo > date) {
+            if (mostCurrentValidityToDate < validityTo) {
+                mostCurrentValidityToDate = validityTo
+                result = certificate
             }
         }
     })
@@ -339,7 +350,7 @@ function findKostentraeger(
 
     // Step 3: Find if Datenannahmestelle has decryption authority and handle it if not
     let sendTo: Institution | undefined
-    if (encryptTo.transmission?.email) {
+    if (encryptTo.transmissionEmail) {
         /* if it accepts data itself, that's great! 
            The documentation is making it
            sound that even if this institution accepts data directly, one should look
@@ -392,7 +403,7 @@ function findApplicableInstitutionLinks<L extends InstitutionLink>(
     location: CareProviderLocationSchluessel
 ): L[] {
     const result: L[] = []
-    if (!links) return result
+    if (!links) { return result }
 
     for (const link of links) {
         if (isInstitutionLinkApplicable(link, leistungsart, location, false)) {
