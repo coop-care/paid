@@ -11,7 +11,7 @@ export default function parseKostentraegerUrls(rssText: string): string[] {
         const item = items.item(i)
         const kostentraegerFileUrl = item?.getElementsByTagName("link")?.item(0)?.childNodes[0]?.nodeValue
         if (kostentraegerFileUrl) {
-            urls.push(kostentraegerFileUrl)
+            urls.push(kostentraegerFileUrl.replace(/^http:/, "https:"))
         }
     }
     

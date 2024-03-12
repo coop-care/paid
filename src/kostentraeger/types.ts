@@ -141,7 +141,7 @@ export const federalStateSchluesselWithoutNRWSchluessel = {
     "TH": "Thüringen",
 }
 
-type FederalStateSchluesselWithoutNRWSchluessel = keyof typeof federalStateSchluesselWithoutNRWSchluessel
+export type FederalStateSchluesselWithoutNRWSchluessel = keyof typeof federalStateSchluesselWithoutNRWSchluessel
 
 export const nrwSubdivisionSchluessel = {
     "Nordrhein": "Nordrhein (Düsseldorf, Köln)",
@@ -162,6 +162,10 @@ export type KVLocationSchluessel =
  *  The AOK currently (2021-05) distinguishes between the western or eastern part of 
  *  Nordrhein-Westfalen
  */
+export const careProviderLocationSchluessel = {
+    ...federalStateSchluesselWithoutNRWSchluessel,
+    ...nrwSubdivisionSchluessel,
+}
 export type CareProviderLocationSchluessel = 
     FederalStateSchluesselWithoutNRWSchluessel | NRWSubdivisionSchluessel
 

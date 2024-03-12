@@ -299,7 +299,7 @@ function findKostentraeger(
         but this is how some Kostenträger are de-facto linked. At time of writing (2021-05), 
         the Kostenträgerdatei for BKK contains these kind of redirecting links. */
     while( true ) {
-        const currentKostentraeger = kostentraegerList[kostentraegerList.length - 1]!
+        const currentKostentraeger = kostentraegerList.at(-1)!
         const firstApplicableKostentraegerLink = findApplicableInstitutionLinks(
             currentKostentraeger.kostentraegerLinks, leistungsart, location
         )[0]
@@ -324,7 +324,7 @@ function findKostentraeger(
         }
         kostentraegerList.push(kostentraeger)
     }
-    return kostentraegerList[kostentraegerList.length - 1]!
+    return kostentraegerList.at(-1)!
 }
 
 /** Given a kostenträger, finds to which institution the data should be sent and to which 

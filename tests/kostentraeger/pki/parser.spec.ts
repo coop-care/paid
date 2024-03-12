@@ -1,11 +1,14 @@
 import parse from "../../../src/kostentraeger/pki/parser"
 import { AsnSerializer } from "@peculiar/asn1-schema"
 import { base64ToArrayBuffer } from "../../../src/pki/utils"
+import { multipleExampleCertificatesPEM } from "../../samples/certificates"
 
 describe("certificates parser", () => {
 
     it("parse two certificates", () => {
-        const certificatesByIK = parse(twoCertificatesInPEM)
+        const certificatesPEM = multipleExampleCertificatesPEM()
+        const [certificate1PEM, certificate2PEM] = certificatesPEM
+        const certificatesByIK = parse(certificatesPEM.join("\n\n"))
         
         const info1 = certificatesByIK.get("109979978")!
         expect(info1).toHaveLength(1)
@@ -16,64 +19,3 @@ describe("certificates parser", () => {
         expect(AsnSerializer.serialize(info2[0])!).toEqual(base64ToArrayBuffer(certificate2PEM))
     })
 })
-
-const certificate1PEM = 
-`MIIDTjCCAjagAwIBAgIDAnxUMA0GCSqGSIb3DQEBCwUAMEkxCzAJBgNVBAYTAkRF
-MTowOAYDVQQKEzFJVFNHIFRydXN0Q2VudGVyIGZ1ZXIgc29uc3RpZ2UgTGVpc3R1
-bmdzZXJicmluZ2VyMB4XDTIwMTEyNDAwMDAwMFoXDTIzMDEwODIzNTk1OVowgYkx
-CzAJBgNVBAYTAkRFMTowOAYDVQQKEzFJVFNHIFRydXN0Q2VudGVyIGZ1ZXIgc29u
-c3RpZ2UgTGVpc3R1bmdzZXJicmluZ2VyMQ0wCwYDVQQLEwR2ZGVrMRQwEgYDVQQL
-EwtJSzEwOTk3OTk3ODEZMBcGA1UEAxMQRHIuIEhlaWtvIFN0YW1lcjCCASIwDQYJ
-KoZIhvcNAQEBBQADggEPADCCAQoCggEBAIAI9oynbhMHVe16zbUXGfdtNfC7a8WJ
-60nLaOXWnSvzCU81/gTz59jhi5i3y8lxR63hVeJuHl5/fY4z28tlMDQwX/V5z4iZ
-y8m75bo/SWu5kjmSETW0a0St5bq56kPTOJhxPvONF5nQfGuZGPw3Y6jsu2osCIVB
-ZQYWGihfL1hadbNQaalO0ZKYRu6FlUA6GfHtmzLnnQLVuAAUA6LMnaj0s9oBgwUQ
-oLuPrqe9pFdBKl+iEyg0/FC2fY7jy+dAgXsGQMDtY5sk0l0b7t7NFOzOwwPaeZrk
-u6oRKV9VSILMgSIHy7gLcBa8n4fuYM+4Bzf9oItMQQr+VuMjxe+UAWMCAwEAATAN
-BgkqhkiG9w0BAQsFAAOCAQEAOz8znqhmVw7g6RsENcOqu7UtjbdEitRd9aAW4hiz
-WJbbPv1rCU6+cFA8vCiQYdZagl8xrZrYyCpx+JUqQFkDUuq2kdQRgeAnQTggNV+K
-Xs702G+AMB3GmulPdlIPTN7YXQXoCiIJgsxn/CKveQYyYXuMdRJw/9GJJR9FatkJ
-xkG7EX7PaWOpimA/+U40PRyJ4etxclFNVuBbefQ/cWCHQhupY7hewdaK2yIXyXvd
-xAITd32OHKn7H/rEl220hwCPuGFUUvvoEtXn2i77dequl7BG3ceikkmjsdueqUxv
-3Ggt+TSxF2vu3ZXzDT1AjV7TFTLX7ClDQMXdUIn/nBF14g==`
-
-const certificate2PEM = 
-`MIIF1TCCA42gAwIBAgIDAw14MD0GCSqGSIb3DQEBCjAwoA0wCwYJYIZIAWUDBAIB
-oRowGAYJKoZIhvcNAQEIMAsGCWCGSAFlAwQCAaIDAgEgMEkxCzAJBgNVBAYTAkRF
-MTowOAYDVQQKEzFJVFNHIFRydXN0Q2VudGVyIGZ1ZXIgc29uc3RpZ2UgTGVpc3R1
-bmdzZXJicmluZ2VyMB4XDTE4MTExNDAwMDAwMFoXDTIxMTIzMTIzNTk1OVowgbAx
-CzAJBgNVBAYTAkRFMTowOAYDVQQKEzFJVFNHIFRydXN0Q2VudGVyIGZ1ZXIgc29u
-c3RpZ2UgTGVpc3R1bmdzZXJicmluZ2VyMTkwNwYDVQQLEzBEZXV0c2NoZSBSZW50
-ZW52ZXJzaWNoZXJ1bmcgS25hcHBzY2hhZnQtQmFobi1TZWUxFDASBgNVBAsTC0lL
-MTA5OTA1MDAzMRQwEgYDVQQDEwtNYXJjbyBMb25nbzCCAiIwDQYJKoZIhvcNAQEB
-BQADggIPADCCAgoCggIBAIAkL03AX9q0ns8n3L/EnhjmllPQi9xl5VtvrgnOkJjy
-1IEwf6dun+HutZmFpOKLMXGamg5O6HmkUdRfjTUG1+NRnczc20YP8KZSMG5nuF9i
-azjIAzynUxk3g5joV8HmmpZUlXHONeJe3rYWhB2yODiOB5vWiUo9TVf2uk3DjFIS
-bcTya2c7wvTRYHUmKyNEGe/AHnfQPlvu/VsiiefQDGwls8A0TXgdbWo1qMXG7jG3
-f0s3crHZcaLeFRJpIurOxLOQnxCTis1+4gqUJbUMzLpPmOlA28if5Kb0cXFG89DK
-UccabAXSf1fT+/1G9oFVcaioIyCrVTntxSGrdTWankJmm5b438h2eyoyxXZduC+g
-WnUhVjDNww2d3Z2K6BPol0Vi66ff2Flhjg/m8wkE2OIt7GtewfHKnHidbWpB6VUq
-cURBCfZUsE6ENj7BrknRbV5tV0K+iUou6odBHkYk+ikkYjKsabEr+LXirdPUcUbM
-2ExIojGMV3tbih6hYJ9aEPl9XkNz0iEcx2f/SujL6fh5Q+o8xRw5qL5eUE2ww/wJ
-fJg0mlNZYUTBpP/a3nclHxMfxtwfuLKDHaXCsi5C80EtcZCfwYqXahc5ddRjujjc
-fBkesvIehJiVnEpFcqejB0H//m6NvYY/eOGQXJkEjUjezaM2Q3jlSBXKEGPc6cB5
-AgMBAAEwPQYJKoZIhvcNAQEKMDCgDTALBglghkgBZQMEAgGhGjAYBgkqhkiG9w0B
-AQgwCwYJYIZIAWUDBAIBogMCASADggIBAFip1KcLylK0xVBPcRVMjydCOJckB47j
-rhyaznSwEntPvCAGxzlyxnoLIDhw5uh/K94hf2BMFMGkmNf9uX7qK7bxoMRV+IYx
-78ZKvf9ARQfCQSc7qlOP1Dpiu+QmP6MVyKutrhilTxO5dNnIa2MvaPlTPhgUFAle
-+8NfJkk8M0iJFGrD3+aUZpyXOlDUspz+aYs9GPvhHe0PjdoPmffPwk06PJrAOBJQ
-NQzTmJZlhadV6EbxebJTyL6y3Dgu5HmWTdLsyGWZI2jQ9sWxmEqpAJ1QdCLuPP87
-maBwAjjHuAqDCp9nLiMnjKNe9ZLVKgfjIuxvwkupFZN78px5MHg/Il08PT58wO6a
-t9Nxx6ZhvdzazPLLs3WbnH/kUCjbhHYNeWvSAPQ0mrOh/EuFP5NiXqucxnvQx/Kq
-6195+C35wds/xZJI2R4R5nvV015H9VyhFfJOfhEsPA1pw03ggRRpcF+Hkzyu0Dex
-mIUG8Egca5ztCjr0F+XYTvrXM4L/RWaQQ3LslPLWTW8oHwTUytgcGGQHiDlv6vjq
-vHCs7GJuxjLcjRRYkf8Ck+hpRK+9JaT7BbxAPILEaRJN/K3rTyKDtakAWFjWhdMJ
-lv9V4Ip794XGRzPNZDeh/F4qg/NUCRI/YimhOa4vF+x10FP7hOITBIAncb3fCO5A
-qF7l6fgFaTTV`
-
-const twoCertificatesInPEM = 
-`${certificate1PEM}
-
-${certificate2PEM}
-
-`
