@@ -7,10 +7,6 @@ import transform from "./transformer"
 import { InstitutionListFileParseResult, InstitutionListParseResult } from "./types"
 import { Certificate } from '@peculiar/asn1-x509'
 
-const getTextDecoder = async () => (typeof window !== 'undefined') && window.TextDecoder
-    ? window.TextDecoder
-    : (await import("util"))?.default?.TextDecoder
-
 const kostentraegerRssUrls = [
     "https://gkv-datenaustausch.de/leistungserbringer/pflege/kostentraegerdateien_pflege/rss_kostentraegerdateien_pflege.xml",
     "https://gkv-datenaustausch.de/leistungserbringer/sonstige_leistungserbringer/kostentraegerdateien_sle/rss_kostentraegerdateien_sonstige_leistungserbringer.xml"
@@ -55,7 +51,6 @@ async function fetchKostentraegerFiles(kostentraegerFileUrls: string[], fetch: F
 }
 
 async function fetchKostentraegerFile(url: string, fetch: FetchMethodType): Promise<[string, string]> {
-  const TextDecoder = await getTextDecoder()
     const response = await fetchSecure(url, fetch)
     /* Kostenträger files are encoded in iso-8859-1 and not in UTF-8, so we cannot
        just call response.text()! */
