@@ -1,15 +1,19 @@
-import SignedData from "pkijs/src/SignedData";
-import AlgorithmIdentifier from "pkijs/src/AlgorithmIdentifier";
-import RSASSAPSSParams from "pkijs/src/RSASSAPSSParams";
-import EnvelopedData from "pkijs/src/EnvelopedData";
-import Certificate from "pkijs/src/Certificate";
-import ContentInfo from "pkijs/src/ContentInfo";
-import RSAESOAEPParams from "pkijs/src/RSAESOAEPParams";
+import {
+    SignedData,
+    AlgorithmIdentifier,
+    RSASSAPSSParams,
+    EnvelopedData,
+    ContentInfo,
+    CertificationRequest,
+    Certificate,
+    RSAESOAEPParams,
+    KeyTransRecipientInfo,
+    IssuerAndSerialNumber
+} from "pkijs";
 import { OctetString, fromBER } from "asn1js";
 import { initCrypto } from "../../src/pki/crypto";
 import { signAndEncryptMessage, signMessage, encryptMessage, createCertificationRequest, getNewCertificateFromP7C, decryptMessage } from "../../src/pki/pkcs";
 import { exampleSelfSignedCertificate, exampleRecipientCertificate } from "../samples/certificates";
-import CertificationRequest from "pkijs/src/CertificationRequest";
 import { bufferToHex } from "../../src/pki/utils";
 import { ValidationError, ValidationResultType } from "../../src/validation/index";
 
@@ -47,7 +51,7 @@ describe("PKI PKCS#7 signing and encrypting cryptographic messages", () => {
         expect(decryptedDataForRecipient).toBeDefined();
         const signedContentInfoForRecipient = new ContentInfo({ schema: fromBER(decryptedDataForRecipient || emptyBuffer).result });
         const signedDataForRecipient = new SignedData({ schema: signedContentInfoForRecipient.content });
-        const resultMessageBufferForRecipient = (signedDataForRecipient.encapContentInfo.eContent.valueBlock.value[0] as OctetString)?.valueBlock.valueHex;
+        const resultMessageBufferForRecipient = (signedDataForRecipient.encapContentInfo.eContent?.valueBlock.value[0] as OctetString)?.valueBlock.valueHex;
         const resultMessageForRecipient = (new TextDecoder()).decode(resultMessageBufferForRecipient);
         expect(await signedDataForRecipient.verify({ signer: 0 })).toEqual(true);
         expect(resultMessageForRecipient).toEqual(message);
@@ -60,7 +64,7 @@ describe("PKI PKCS#7 signing and encrypting cryptographic messages", () => {
         expect(decryptedDataForSender).toBeDefined();
         const signedContentInfoForSender = new ContentInfo({ schema: fromBER(decryptedDataForSender || emptyBuffer).result });
         const signedDataForSender = new SignedData({ schema: signedContentInfoForSender.content });
-        const resultMessageBufferForSender = (signedDataForSender.encapContentInfo.eContent.valueBlock.value[0] as OctetString)?.valueBlock.valueHex;
+        const resultMessageBufferForSender = (signedDataForSender.encapContentInfo.eContent?.valueBlock.value[0] as OctetString)?.valueBlock.valueHex;
         const resultMessageForSender = (new TextDecoder()).decode(resultMessageBufferForSender);
         expect(await signedDataForSender.verify({ signer: 0 })).toEqual(true);
         expect(resultMessageForSender).toEqual(message);
@@ -86,7 +90,7 @@ describe("PKI PKCS#7 signing and encrypting cryptographic messages", () => {
         expect(signedData.digestAlgorithms[0].algorithmId).toEqual("2.16.840.1.101.3.4.2.1");
         expect(signedData.encapContentInfo.eContentType).toEqual("1.2.840.113549.1.7.1");
 
-        const resultMessageBuffer = (signedData.encapContentInfo.eContent.valueBlock.value[0] as OctetString)?.valueBlock.valueHex;
+        const resultMessageBuffer = (signedData.encapContentInfo.eContent?.valueBlock.value[0] as OctetString)?.valueBlock.valueHex;
         const resultMessage = (new TextDecoder()).decode(resultMessageBuffer);
         expect(resultMessage).toEqual(message);
 
@@ -128,22 +132,24 @@ describe("PKI PKCS#7 signing and encrypting cryptographic messages", () => {
         expect(envelopedData.version).toEqual(0);
         expect(envelopedData.originatorInfo).toBeUndefined();
         expect(envelopedData.recipientInfos).toHaveLength(1);
-        expect(envelopedData.recipientInfos[0].value.version).toEqual(0);
-        expect(envelopedData.recipientInfos[0].value.rid.issuer.typesAndValues.map(mapTypesAndValues))
+        const recipientInfoValue = envelopedData.recipientInfos[0].value as KeyTransRecipientInfo
+        const rid = recipientInfoValue.rid as IssuerAndSerialNumber
+        expect(recipientInfoValue.version).toEqual(0);
+        expect(rid.issuer.typesAndValues.map(mapTypesAndValues))
             .toEqual(recipient.certificate.issuer.typesAndValues.map(mapTypesAndValues));
-        expect(envelopedData.recipientInfos[0].value.rid.serialNumber.valueBlock.valueDec)
+        expect(rid.serialNumber.valueBlock.valueDec)
             .toEqual(recipient.certificate.serialNumber.valueBlock.valueDec);
         expect(recipient.certificate.serialNumber.valueBlock.valueDec).toBeGreaterThan(0);
-        expect(envelopedData.recipientInfos[0].value.keyEncryptionAlgorithm.algorithmId).toEqual("1.2.840.113549.1.1.7");
+        expect(recipientInfoValue.keyEncryptionAlgorithm.algorithmId).toEqual("1.2.840.113549.1.1.7");
 
-        const keyEncryptionAlgorithmParams = new RSAESOAEPParams({ schema: envelopedData.recipientInfos[0].value.keyEncryptionAlgorithm.algorithmParams });
+        const keyEncryptionAlgorithmParams = new RSAESOAEPParams({ schema: recipientInfoValue.keyEncryptionAlgorithm.algorithmParams });
         expect(keyEncryptionAlgorithmParams.hashAlgorithm.algorithmId).toEqual("2.16.840.1.101.3.4.2.1"); // SHA-256
         expect(keyEncryptionAlgorithmParams.maskGenAlgorithm.algorithmId).toEqual("1.2.840.113549.1.1.8"); // MGF1
         expect(new AlgorithmIdentifier({ schema: keyEncryptionAlgorithmParams.maskGenAlgorithm.algorithmParams }).algorithmId).toEqual("2.16.840.1.101.3.4.2.1"); // SHA-256
         expect(keyEncryptionAlgorithmParams.pSourceAlgorithm.algorithmId).toEqual("1.2.840.113549.1.1.9"); // pSpecified
 
-        expect(envelopedData.recipientInfos[0].value.encryptedKey).toBeDefined();
-        expect(envelopedData.recipientInfos[0].value.encryptedKey.valueBlock.blockLength).toEqual(512);
+        expect(recipientInfoValue.encryptedKey).toBeDefined();
+        expect(recipientInfoValue.encryptedKey.valueBlock.blockLength).toEqual(512);
 
         expect((envelopedData.encryptedContentInfo as any).contentType).toEqual("1.2.840.113549.1.7.1");
         expect(envelopedData.encryptedContentInfo.contentEncryptionAlgorithm.algorithmId).toEqual("2.16.840.1.101.3.4.1.42");

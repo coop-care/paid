@@ -2,17 +2,20 @@
  * (see /docs/documents.md for more info)
  */
 
-import EncapsulatedContentInfo from "pkijs/src/EncapsulatedContentInfo";
-import SignedData from "pkijs/src/SignedData";
-import SignerInfo from "pkijs/src/SignerInfo";
-import AlgorithmIdentifier from "pkijs/src/AlgorithmIdentifier";
-import IssuerAndSerialNumber from "pkijs/src/IssuerAndSerialNumber";
-import RSASSAPSSParams from "pkijs/src/RSASSAPSSParams";
-import EnvelopedData from "pkijs/src/EnvelopedData";
-import ContentInfo from "pkijs/src/ContentInfo";
-import CertificationRequest from "pkijs/src/CertificationRequest";
-import AttributeTypeAndValue from "pkijs/src/AttributeTypeAndValue";
-import Certificate from "pkijs/src/Certificate";
+import {
+    EncapsulatedContentInfo,
+    SignedData,
+    SignerInfo,
+    AlgorithmIdentifier,
+    IssuerAndSerialNumber,
+    RSASSAPSSParams,
+    EnvelopedData,
+    ContentInfo,
+    CertificationRequest,
+    AttributeTypeAndValue,
+    Certificate,
+    KeyTransRecipientInfo
+} from "pkijs";
 import { OctetString, PrintableString, fromBER } from "asn1js";
 import { initCrypto } from "./crypto";
 import { bufferToCertificate, importPKCS8, exportPKCS8, bufferToHex } from "./utils";
@@ -110,7 +113,8 @@ export const decryptMessage = async (
     const envelopedData = new EnvelopedData({ schema: envelopedContentInfo.content });
     const recipientCertificate = bufferToCertificate(certificateBuffer);
     const recipientIndex = envelopedData.recipientInfos.findIndex(recipient => 
-        recipient.value.rid.serialNumber.valueBlock.valueDec == recipientCertificate.serialNumber.valueBlock.valueDec
+        ((recipient.value as KeyTransRecipientInfo)?.rid as IssuerAndSerialNumber).serialNumber.valueBlock.valueDec 
+          == recipientCertificate.serialNumber.valueBlock.valueDec
     );
 
     if (recipientIndex < 0) {

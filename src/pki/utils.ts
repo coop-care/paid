@@ -1,5 +1,5 @@
 import { fromBER } from "asn1js";
-import Certificate from "pkijs/src/Certificate";
+import { Certificate } from "pkijs";
 import { initCrypto } from "./crypto";
 
 export function base64ToArrayBuffer(base64: string): ArrayBuffer {
@@ -26,7 +26,7 @@ export const importPKCS8 = async (key: ArrayBuffer): Promise<CryptoKey> =>
             hash: {
                 name: "SHA-256"
             }
-        },
+        } as RsaHashedImportParams,
         true, 
         ["sign", "verify"]
     );

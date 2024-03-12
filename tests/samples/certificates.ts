@@ -2,9 +2,7 @@
  * (see /docs/documents.md for more info)
  */
 
-import Certificate from "pkijs/src/Certificate";
-import BasicConstraints from "pkijs/src/BasicConstraints";
-import Extension from "pkijs/src/Extension";
+import { Certificate, BasicConstraints, Extension } from "pkijs";
 import { Integer, fromBER } from "asn1js";
 import { initCrypto } from "../../src/pki/crypto";
 import { getSignatureAlgorithm, makeDistinguishedNames } from "../../src/pki/pkcs";

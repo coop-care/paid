@@ -9,8 +9,7 @@ import { exampleSelfSignedCertificate } from "../samples/certificates";
 import { decryptMessage } from "../../src/pki/pkcs";
 import { writeFileSync, existsSync, mkdirSync, readFileSync } from "fs";
 import { OctetString, fromBER } from "asn1js";
-import ContentInfo from "pkijs/src/ContentInfo";
-import SignedData from "pkijs/src/SignedData";
+import { ContentInfo, SignedData } from "pkijs";
 
 type Leistungskomplex = {
     leistungsart: LeistungsartSchluessel,
@@ -122,7 +121,7 @@ describe("Testverfahren", () => {
             expect(decryptedDataForSender).toBeDefined();
             const signedContentInfoForSender = new ContentInfo({ schema: fromBER(decryptedDataForSender || new ArrayBuffer(0)).result });
             const signedDataForSender = new SignedData({ schema: signedContentInfoForSender.content });
-            const resultMessageBufferForSender = (signedDataForSender.encapContentInfo.eContent.valueBlock.value[0] as OctetString)?.valueBlock.valueHex;
+            const resultMessageBufferForSender = (signedDataForSender.encapContentInfo.eContent?.valueBlock.value[0] as OctetString)?.valueBlock.valueHex;
             const textDecoder = new TextDecoder();
             const resultMessageForSender = textDecoder.decode(resultMessageBufferForSender);
             expect(await signedDataForSender.verify({ signer: 0 })).toEqual(true);

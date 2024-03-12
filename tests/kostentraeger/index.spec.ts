@@ -796,7 +796,7 @@ function findForPaper(
     institutionLists: InstitutionList[],
     pflegekasseIK: string,
     {
-        paperDataType = 0,
+        paperDataType = 1,
         leistungsart = { sgbxiLeistungsart: "01" },
         location = "HH",
         date = new Date()
