@@ -3,16 +3,23 @@ import { Certificate } from "pkijs";
 import { initCrypto } from "./crypto";
 
 export function base64ToArrayBuffer(base64: string): ArrayBuffer {
-    const str = Buffer.from(base64, "base64").toString("binary")
-    const buffer = new ArrayBuffer(str.length)
-    const bytes = new Uint8Array(buffer)
-    bytes.forEach((_, i) => bytes[i] = str.charCodeAt(i))
-    return buffer
+    const binaryString = atob(base64);
+    const bytes = new Uint8Array(binaryString.length);
+    const length = binaryString.length;
+    for (let i = 0; i < length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
+    return bytes.buffer;
 }
 
 export function arrayBufferToBase64(buffer: ArrayBuffer): string {
-    const bytes = new Uint8Array(buffer)
-    return Buffer.from(String.fromCharCode(...bytes), "binary").toString("base64")
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+    const length = bytes.byteLength;
+    for (let i = 0; i < length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
 }
 
 export const bufferToCertificate = (certificate: ArrayBuffer): Certificate => 
