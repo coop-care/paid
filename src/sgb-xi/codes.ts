@@ -105,6 +105,7 @@ export const leistungsartSchluessel = {
     "12": "Wohngruppenzuschlag nach § 38a SGB XI", 
     "13": "Pflegekurse nach § 45 SGB XI (z. B. Schulung in der Häuslichkeit)",
     "14": "Leistungen nach § 43b SGB XI (Vergütungszuschlag für zusätzliche Betreuung und Aktivierung)",
+    "15": "Ergänzende Unterstützungsleistung für digitale Pflegeanwendungen",
 }
 export type LeistungsartSchluessel = keyof typeof leistungsartSchluessel
 
@@ -116,6 +117,7 @@ export const verguetungsartSchluessel = {
     "04": "vollstationär / Kurzzeitpflege",
     "05": "Pflegehilfsmittel",
     "06": "Wegegebühren (sofern nicht Leistungskomplex)",
+    "07": "Entlastungsleistung",
     "08": "Pauschale (Beratungsbesuch) (sofern nicht Leistungskomplex)",
     "99": "keine Vetragspreisregelung",
 }
@@ -145,16 +147,18 @@ export type QualifikationsabhaengigeVerguetungSchluessel = keyof typeof qualifik
  *  02:    2.7.2 Schlüsselkennzeichen Zeitvergütung
  *         2-character code, see 2.7.2.1 and 2.7.2.2
  * 
- *  03:    2.7.3 Schlüssel Kennzeichen Pflegesatz
+ *  03:    2.7.3 Schlüssel Kennzeichen Pflegesatz teilstationär
  * 
- *  04:    2.7.3 Schlüssel Kennzeichen Pflegesatz
+ *  04:    2.7.3 Schlüssel Kennzeichen Pflegesatz vollstationär / Kurzzeitpflege
  * 
  *  05:    2.7.4 Schlüssel Pflegehilfsmittelpositionsnummer
  *         see /hilfsmittelverzeichnis/*.ts
  * 
  *  06:    2.7.5 Schlüssel Wegegebühren/Beförderungsentgelt-Art
  * 
- *  08:    2.7.7 Schlüssel Pauschale (Beratungsbesuch nach § 37 Abs. 3) 
+ *  07:    2.7.6 Schlüssel Entlastungsleistung
+ * 
+ *  08:    2.7.7 Schlüssel Beratungsbesuch nach § 37 Abs. 3
  *
  *  99:    2.7.8 Sonstige (Keine Vertragspreisregelung)
  */
@@ -180,6 +184,9 @@ export const zeitartSchluessel = {
     "7": "Erstbesuch",
     "8": "Folgebesuch",
     "9": "Kombination unterschiedlicher Leistungsinhalte (nur bei landesspezifischer Regelung)",
+    "0": "Ergänzende Unterstützungsleistungen für DiPA",
+    "A": "Beratungsbesuch vor Ort",
+    "B": "Beratungsbesuch Videokonferenz",
 }
 export type ZeitartSchluessel = keyof typeof zeitartSchluessel
 
@@ -200,9 +207,20 @@ export const wegegebuehrenSchluessel = {
 }
 export type WegegebuehrenSchluessel = keyof typeof wegegebuehrenSchluessel
 
+/** 2.7.6 Schlüssel Kennzeichen Entlastungsleistung */
+export const entlastungsleistungSchluessel = {
+    "10": "Leistungen der Tages- oder Nachtpflege",
+    "20": "Leistungen der Kurzzeitpflege",
+    "30": "Leistungen amb. Pflegedienste ohne Leistungsbereich Selbstversorgung",
+    "31": "Leistungen amb. Pflegedienste Leistungsbereich Selbstversorgung",
+    "40": "Leistungen der nach Landesrecht anerkannten Angebote nach § 45a SGB XI",
+}
+export type EntlastungsleistungSchluessel = keyof typeof entlastungsleistungSchluessel
+
 /** 2.7.7 Schlüssel Leistung: Pauschale (Beratungsbesuch nach § 37 Abs. 3) */
 export const beratungsbesuchPauschaleLeistungSchluessel = {
-    "1": "Einsatzpauschale"
+    "1": "Einsatzpauschale (Beratung vor Ort)",
+    "2": "Videokonferenz",
 }
 export type BeratungsbesuchPauschaleLeistungSchluessel = keyof typeof beratungsbesuchPauschaleLeistungSchluessel
 
@@ -340,3 +358,85 @@ export const zuschlagsberechnungSchluessel = {
     "17": "Basiswert + Prozentsatz absolut bzw. Ersatzwert",
 }
 export type ZuschlagsberechnungSchluessel = keyof typeof zuschlagsberechnungSchluessel
+
+/** 2.17 Schlüssel Ersatz-Beschäftigtennummer */
+export const ersatzbeschaeftigtennummerSchluessel = {
+    "999999999": "Leiharbeitnehmer(in) ohne Beschäftigtennummer nach § 293 Abs. 8 Satz 2 SGB V",
+    "999999998": "neuer Beschäftigte(r), die/der noch nicht über eine Beschäftigtennummer nach § 293 Abs. 8 Satz 2 SGB V verfügt",
+    "999999997": "Beschäftigtennummer nach § 293 Abs. 8 Satz 2 SGB V fehlt aus sonstigem Grund",
+    "999999996": "Auszubildende(r) ohne Beschäftigtennummer nach § 293 Abs. 8 Satz 2 SGB V",
+}
+export type ErsatzbeschaeftigtennummerSchluessel = keyof typeof ersatzbeschaeftigtennummerSchluessel
+
+
+/** Schlüssel für die vollelektronische Abrechnung innerhalb der Telematik Infrastruktur */
+
+/** 3.1 Schlüssel Fehlercodes */
+export const fehlercodesSchluessel = {
+    "01000": "Ungültige Versionsnummer logische Version",
+    "01001": "XML-Schemavalidierung fehlgeschlagen",
+    "01004": "Erstellungsdatum größer Verarbeitungsdatum unzulässig",
+    "01007": "Nutzdatendatei nicht lesbar",
+    "01008": "Falscher Zeichensatz",
+    "01009": "Möglicher Virenbefall",
+    "01201": "Die Signatur der Abrechnungsdaten ist nicht gültig, da ein fehlerhaftes Zertifikat verwendet wurde.",
+    "01202": "Die Signatur der Abrechnungsdaten ist nicht gültig, da die übermittelten Daten nicht den signierten Daten entsprechen.",
+    "01203": "Die Signatur des Leitungsnachweises ist nicht gültig, da ein fehlerhaftes Zertifikat verwendet wurde.",
+    "01204": "Die Signatur des Leitungsnachweises ist nicht gültig, da die übermittelten Daten nicht den signierten Daten entsprechen.",
+    "01307": "Die KIM-Nachricht ist in einem falschen Format verschlüsselt.",
+    "01309": "KIM-Nachricht besitzt keine Signatur.",
+    "01310": "Die Signatur für die KIM-Nachricht hat das falsche Format.",
+    "01311": "Die Signaturprüfung der KIM-Nachricht hat ergeben, dass der Nachrichteninhalt nicht mit der Signatur übereinstimmt.",
+    "01313": "Die KIM-Nachricht konnte aufgrund eines nicht verfügbaren Schlüssels nicht entschlüsselt werden.",
+    "01314": "Nachrichtentyp unbekannt",
+    "01315": "IK Pflege-Leistungserbinger unbekannt",
+    "01316": "IK Pflege-/Krankenkasse unbekannt",
+    "01317": "Empfänger KIM-Postfach und Empfänger Nutzdatendatei nicht identisch",
+    "02001": "Datenelement unzulässig leer",
+    "02002": "Format Datei-ID nicht korrekt",
+    "02003": "Datei-ID bereits vorhanden",
+    "02004": "Format Leistungsnachweis-ID nicht korrekt",
+    "02005": "Leistungsnachweis-ID bereits vorhanden",
+    "02006": "Unbekannter Schlüsselwert",
+    "02007": "Datumsangabe größer Verarbeitungsdatum unzulässig",
+    "02008": "Falscher Nachrichtentyp",
+    "02009": "Leistungsnachweis-IDs zwischen Element „Abrechnungsbegründende Unterlage“ und entsprechendem Leistungsnachweis nicht identisch",
+    "03002": "anderer technischer Fehler (Erläuterung siehe Fehlertext)",
+}
+export type FehlercodesSchluessel = keyof typeof fehlercodesSchluessel
+
+/** 3.2 Schlüssel Art der Unterschrift */
+export const unterschriftSchluessel = {
+    "1": "Bildunterschrift des Versicherten oder seines Vertreters",
+    "2": "Bildunterschrift eines Vertreters aus Angehörigen-Apps",
+    "3": "gescannter Papier - LNW mit der Unterschrift eines abwesenden Betreuers / Bevollmächtigten",
+    "4": "alternative Bestätigungsmethode (nur nach bilateraler Abstimmung mit der Pflegekasse möglich)",
+    "5": "begründetes Fehlen der Unterschrift",
+}
+export type UnterschriftSchluessel = keyof typeof unterschriftSchluessel
+
+/** 3.3 Schlüssel Grund des Fehlens der Unterschrift */
+export const fehlendeUnterschriftSchluessel = {
+    "1": "Versicherter verstorben",
+    "2": "stationäre Versorgung",
+    "3": "körperliche / kognitive Einschränkung (z.B. Schreibschwäche)",
+    "4": "Sonstiges",
+}
+export type FehlendeUnterschriftSchluessel = keyof typeof fehlendeUnterschriftSchluessel
+
+/** 3.5 Schlüssel Inhaltstyp (fachlicher Inhalt der Datei) */
+export const inhaltstypSchluessel = {
+    "1": "Leistungsnachweis",
+    "2": "Abtretungserklärung",
+}
+export type InhaltstypSchluessel = keyof typeof inhaltstypSchluessel
+
+/** 3.6 Schlüssel Dateityp (MIME Type der Datei) */
+export const dateitypSchluessel = {
+    "1": "text / xml",
+    "2": "application / pdf",
+    "3": "image / png",
+    "4": "image / jpeg",
+    "5": "Sonstiges",
+}
+export type DateitypSchluessel = keyof typeof dateitypSchluessel

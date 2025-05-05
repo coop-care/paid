@@ -100,14 +100,10 @@ Version **1.0**, to be applied from **10/2003**
 [Anmeldeverfahren](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/20030131_TA1_ANH7.pdf) *für Pflegeeinrichtungen*  
 Version **1.0** from 2020-11-26, to be applied from **10/2003** 
 
-- **obsolete** Pflege, Technische Anlage 3:  
-[Schlüsselverzeichnisse](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA3_5.2_20201126_oA.pdf)  
-Version **5.2** from 2020-11-26, to be applied from: **10/2021**  
-Implemented in `src/sgb-xi/codes.ts`
-- **NEW** Pflege, Technische Anlage 3:  
+- Pflege, Technische Anlage 3:  
 [Schlüsselverzeichnisse](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA3_6.2.1_20240717_oA.pdf)  
 Version **6.2.1** from 2024-07-17, to be applied from: **09/2024**  
-To be implemented in `src/sgb-xi/codes.ts`
+Implemented in `src/sgb-xi/codes.ts`
 - **NEW** Pflege, Technische Anlage 3:  
 [Schlüsselverzeichnisse](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA3_6.3.0_20241205_oA.pdf)  
 Version **6.3.0** from 2024-12-05, to be applied from: **09/2025**  
