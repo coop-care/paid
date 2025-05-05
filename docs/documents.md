@@ -17,7 +17,7 @@
 from **2019-10-23**, to be applied from **2020-01-01**
 - **NEW** Gemeinsame Grundsätze Technik, Anlage 2:  
 [Auftragsdatei](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_2_-_Auftragsdatei.pdf)  
-from **2023-06-21**, to be applied from **2023-10-01**
+from **2024-10-10**, to be applied from **2025-01-01**
 
 - Gemeinsame Grundsätze Technik, Anlage 7:  
 [Electronic Mail (E-Mail)](https://www.gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_7_-_E-Mail.pdf)  
@@ -32,7 +32,7 @@ from 2020-07-01, to be applied from **2020-09-01**
 from **2020-09-10**, to be applied from **2021-01-01**
 - **NEW** Gemeinsame Grundsätze Technik, Anlage 16:  
 [Security Schnittstelle (SECON)](https://gkv-datenaustausch.de/media/dokumente/standards_und_normen/technische_spezifikationen/Anlage_16_-_Security_Schnittstelle.pdf)  
-from **2021-12-01**, to be applied from **2021-10-05**
+from **2024-10-10**, to be applied from **2025-01-01**
 
 - **obsolete** Gemeinsames Rundschreiben, Anlage 08:  
 [Staatsangehörigkeit und Länderkennzeichen für Auslandsanschriften](https://www.gkv-datenaustausch.de/media/dokumente/arbeitgeber/deuev/rundschreiben_anlagen/GemRS_Anlage_8_5.01.pdf)  
@@ -47,8 +47,8 @@ Version **8.00** from 2022-03-30
 [Information zum elektronischen Abrechnungsverfahren mit den gesetzlichen Pflegekassen](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/20210406_Broschuere_TP6_oA.pdf)  
 Status from **2021-04-06**
 - **NEW** Pflege, Broschüre:  
-[Information zum elektronischen Abrechnungsverfahren mit den gesetzlichen Pflegekassen](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/20240216_Broschuere_TP6_oA.pdf)  
-Status from **2024-02-06**
+[Information zum elektronischen Abrechnungsverfahren mit den gesetzlichen Pflegekassen](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/20250401_Broschuere_TP6_oA.pdf)  
+Status from **2025-04-01**
 
 #### Regelung der Datenübermittlung nach § 105 Abs. 2 SGB XI Technische Anlage 1
 
@@ -56,8 +56,11 @@ Status from **2024-02-06**
 [Technische Anlage für Abrechnung auf maschinell verwertbaren Datenträgern zur Regelung der Datenübermittlung nach § 105 Abs. 2 SGB XI](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_3.3_20201126_oA.pdf)  
 Version **3.3** from 2020-11-26, to be applied from **10/2021** 
 - **NEW** Pflege, Technische Anlage 1:  
-[Technische Anlage für Abrechnung auf maschinell verwertbaren Datenträgern zur Regelung der Datenübermittlung nach § 105 Abs. 2 SGB XI](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_6.1.0_20240111_oAe.pdf)  
-Version **6.1** from 2024-01-11, to be applied from **09/2024** 
+[Technische Anlage für Abrechnung auf maschinell verwertbaren Datenträgern zur Regelung der Datenübermittlung nach § 105 Abs. 2 SGB XI](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_6.2.1_20241119_oA.pdf)    
+Version **6.2.1** from 2024-10-30, to be applied from **12/2024** 
+- **NEW** Pflege, Technische Anlage 1:  
+[Technische Anlage für Abrechnung auf maschinell verwertbaren Datenträgern zur Regelung der Datenübermittlung nach § 105 Abs. 2 SGB XI](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_6.3.0_20241114_oA.pdf)  
+Version **6.3.0** from 2024-11-14, to be applied from **09/2025** 
 
 - Pflege, Technische Anlage 1, Anhang 1:  
 [Struktur Auftragsdatei](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/20070125_TA1_ANH1.pdf)  
@@ -67,17 +70,17 @@ Version **2.0**, to be applied from **07/2007**
 [Testverfahren](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/20030131_TA1_ANH2.pdf)  
 Version **1.0**, to be applied from **10/2003** 
 - **NEW** Pflege, Technische Anlage 1, Anhang 2:  
-[Erprobungs- und Testverfahren](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_ANH2_20240115.pdf)  
-Version **2.0**, to be applied from **09/2024** 
+[Erprobungs- und Testverfahren](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_ANH2_2.1_20250206_oA.pdf)  
+Version **2.1**, to be applied from **12/2024** 
 
 - **obsolete** Pflege, Technische Anlage 1, Anhang 3:  
 [Datenübermittlungsarten](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_Anhang_3_20170907_oA.pdf)  
 Version **1.1**, to be applied from **01/2018** 
 - **NEW** Pflege, Technische Anlage 1, Anhang 3:  
-[Datenübermittlungsarten](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_Anhang_3_2.0.0_20230829_oA.pdf)  
-Version **2.0**, to be applied from **09/2024** 
+[Datenübermittlungsarten](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_ANH3_2.1.1_20241021_oA.pdf)  
+Version **2.1.1**, to be applied from **12/2024** 
  
-- Pflege, Technische Anlage 1, Anhang 4:  
+- **obsolete (no replacement?)** Pflege, Technische Anlage 1, Anhang 4:  
 [Erprobungsverfahren](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/20030131_TA1_ANH4.pdf)  
 Version **1.0**, to be applied from **10/2003** 
 
@@ -85,8 +88,8 @@ Version **1.0**, to be applied from **10/2003**
 [Kostenträgerdatei](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_ANH5_20170907_105_oA.pdf)  
 Version **02** from 2017-09-07, to be applied from **01/2018** 
 - **NEW** Pflege, Technische Anlage 1, Anhang 5:  
-[Kostenträgerdatei](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_ANH5_20240115.pdf)  
-Version **5.0** from 2024-01-15, to be applied from **09/2024** 
+[Kostenträgerdatei](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA1_ANH5_5.1_20240403_oAe.pdf)  
+Version **5.1** from 2024-04-03, to be applied from **09/2024** 
 
 - Pflege, Technische Anlage 1, Anhang 6:  
 [Fehlermeldeverfahren](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/20030131_TA1_ANH6.pdf)  
@@ -102,8 +105,12 @@ Version **1.0** from 2020-11-26, to be applied from **10/2003**
 Version **5.2** from 2020-11-26, to be applied from: **10/2021**  
 Implemented in `src/sgb-xi/codes.ts`
 - **NEW** Pflege, Technische Anlage 3:  
-[Schlüsselverzeichnisse](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA3_6.1.0_20240115_oAe.pdf)  
-Version **6.1** from 2024-01-11, to be applied from: **09/2024**  
+[Schlüsselverzeichnisse](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA3_6.2.1_20240717_oA.pdf)  
+Version **6.2.1** from 2024-07-17, to be applied from: **09/2024**  
+To be implemented in `src/sgb-xi/codes.ts`
+- **NEW** Pflege, Technische Anlage 3:  
+[Schlüsselverzeichnisse](https://www.gkv-datenaustausch.de/media/dokumente/leistungserbringer_1/pflege/technische_anlagen_aktuell_2/TA3_6.3.0_20241205_oA.pdf)  
+Version **6.3.0** from 2024-12-05, to be applied from: **09/2025**  
 To be implemented in `src/sgb-xi/codes.ts`
 
 - Pflege, Technische Anlage 4:  
