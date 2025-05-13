@@ -14,9 +14,12 @@ import {
     CertificationRequest,
     AttributeTypeAndValue,
     Certificate,
-    KeyTransRecipientInfo
+    KeyTransRecipientInfo,
+    PublicKeyInfo,
+    BasicConstraints,
+    Extension
 } from "pkijs";
-import { OctetString, PrintableString, fromBER } from "asn1js";
+import { Integer, OctetString, PrintableString, fromBER } from "asn1js";
 import { initCrypto } from "./crypto";
 import { bufferToCertificate, importPKCS8, exportPKCS8, bufferToHex } from "./utils";
 import { File, ResultOrErrors } from "../types";
@@ -278,3 +281,90 @@ export const getSignatureAlgorithm = () =>
             trailerField: 1
         })
     });
+
+
+// - tests and debugging
+
+export const createSelfSignedCertificate = async (
+    serialNumber = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER),
+    institutionName: string,
+    ik: string,
+    institutionContactPersonName: string,
+    subjectPublicKeyInfo?: PublicKeyInfo,
+) => {
+    const crypto = initCrypto();
+    const distinguishedName = makeDistinguishedNames(institutionName, ik, institutionContactPersonName);
+
+    const certificate = new Certificate();
+    certificate.version = 2; // X.509v3
+    certificate.serialNumber = new Integer({ value: serialNumber });
+    certificate.signature = getSignatureAlgorithm();
+    certificate.issuer.typesAndValues = distinguishedName.slice(0, 2);
+    certificate.subject.typesAndValues = distinguishedName;
+    certificate.notBefore.value = new Date(Date.now() - 86400000);
+    certificate.notAfter.value = new Date(Date.now() + 86400000);
+    certificate.extensions = [];
+
+    const basicConstraints = new BasicConstraints({
+        cA: false
+    });
+    certificate.extensions?.push(new Extension({
+        extnID: "2.5.29.19",
+        critical: true,
+        extnValue: basicConstraints.toSchema().toBER(),
+        parsedValue: basicConstraints
+    }));
+
+    const { publicKey, privateKey } = await crypto.generateKey(
+        {
+            name: "RSA-PSS", // OID 1.2.840.113549.1.1.10
+            modulusLength: 4096,
+            publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+            hash: "SHA-256",
+        },
+        true,
+        ["sign", "verify"]
+    );
+
+    if (!publicKey || !privateKey) {
+        throw new Error("key pair could not be generated")
+    }
+
+    if (!subjectPublicKeyInfo) {
+        // importKey() sets certificate.subjectPublicKeyInfo.algorithm with algorithmId == 1.2.840.113549.1.1.1 (RSAES-PKCS1-v1_5)
+        await certificate.subjectPublicKeyInfo.importKey(publicKey);
+    } else {
+        certificate.subjectPublicKeyInfo = subjectPublicKeyInfo;
+    }
+
+    // Self-signing the certificate which is not allowed.
+    // Actually the certificate may only be signed by a CA with their private key.
+    // sign() sets certificate.signatureAlgorithm with algorithmId == 1.2.840.113549.1.1.10 (RSAES-PSS).
+    await certificate.sign(privateKey, "SHA-256");
+
+    return {
+        certificate,
+        certificateAsDER: certificate.toSchema().toBER() as ArrayBuffer,
+        privateKey: await exportPKCS8(privateKey),
+    }
+}
+
+export const createSelfSignedP7C = async (
+    institutionName: string,
+    ik: string,
+    institutionContactPersonName: string,
+    subjectPublicKeyInfo: PublicKeyInfo,
+) => {
+    const result = await createSelfSignedCertificate(
+        undefined, 
+        institutionName,
+        ik,
+        institutionContactPersonName,
+        subjectPublicKeyInfo,
+    );
+    return await signMessage(
+        new ArrayBuffer(0),
+        result.certificateAsDER,
+        result.privateKey
+    );
+}

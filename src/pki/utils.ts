@@ -1,5 +1,5 @@
 import { fromBER } from "asn1js";
-import { Certificate } from "pkijs";
+import { Certificate, CertificationRequest } from "pkijs";
 import { initCrypto } from "./crypto";
 
 export function base64ToArrayBuffer(base64: string): ArrayBuffer {
@@ -24,6 +24,9 @@ export function arrayBufferToBase64(buffer: ArrayBuffer): string {
 
 export const bufferToCertificate = (certificate: ArrayBuffer): Certificate => 
     new Certificate({ schema: fromBER(certificate).result });
+
+export const bufferToCertificationRequest = (certificate: ArrayBuffer) =>
+    CertificationRequest.fromBER(certificate);
 
 export const importPKCS8 = async (key: ArrayBuffer): Promise<CryptoKey> =>
     await initCrypto().importKey(

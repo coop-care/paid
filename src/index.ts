@@ -1,6 +1,7 @@
 export type {
     BillingData,
     Versicherter,
+    File as PaidFile,
 } from "./types";
 export type {
     Invoice,
@@ -94,6 +95,16 @@ import fetchInstitutionLists from "./kostentraeger/fetcher";
 export { fetchInstitutionLists };
 export * from "./kostentraeger/json_serializer";
 export { InstitutionListsIndex } from "./kostentraeger";
+
+export { 
+    createCertificationRequest, 
+    getNewCertificateFromP7C, 
+    createSelfSignedP7C
+} from "./pki/pkcs";
+export { bufferToCertificate, bufferToCertificationRequest } from "./pki/utils";
+export { isValidCertificate } from "./pki/validation";
+export { transliterateCertificateName } from "./transcoding";
+
 
 export type {
     Hilfsmittelverzeichnis

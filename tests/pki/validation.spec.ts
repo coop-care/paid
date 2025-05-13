@@ -71,7 +71,7 @@ describe("validate certificate", () => {
         expect(results).toHaveLength(0);
     });
 
-    it("certificate with unsupported type fot the validity dates", async () => {
+    it("certificate with unsupported type for the validity dates", async () => {
         const { certificate, privateKey } = await exampleSelfSignedCertificate();
         certificate.notAfter.type = 1;
         certificate.notBefore.type = 1;
