@@ -1,4 +1,3 @@
-import fetch from 'cross-fetch'
 import tokenize from "../edifact/tokenizer"
 import parse from "./edifact/parser"
 import parsePems from "./pki/parser"
