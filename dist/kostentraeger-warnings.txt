@@ -1,6 +1,5 @@
-AO06Q126.ke1
-  IK 661200139 – message 184 - skipped invalid UEM 1: Refers to a non-existing DFU
-  IK 661400051 – message 185 - skipped invalid UEM 1: Refers to a non-existing DFU
+AO06Q326.ke4
+  IK 661400051 – message 182 - skipped invalid UEM 1: Refers to a non-existing DFU
   IK 180295017 (AOK Nordost Region MVP) has no Papierannahmestelle for Datenlieferungsart "28" (Urbelege zu einer digitalen Abrechnung)
   IK 180696012 (Pflegekasse AOK Nordost) has no Papierannahmestelle for Datenlieferungsart "28" (Urbelege zu einer digitalen Abrechnung)
   IK 184212505 (Pflegek. AOK Rheinland/Hamburg) has no Papierannahmestelle for Datenlieferungsart "28" (Urbelege zu einer digitalen Abrechnung)
@@ -9,13 +8,13 @@ AO06Q126.ke1
   IK 186710503 (AOK Baden-Württemberg Pflegeka) has no Papierannahmestelle
   IK 189319309 (Pflegekasse AOK LD Saarland) has no Papierannahmestelle for Datenlieferungsart "28" (Urbelege zu einer digitalen Abrechnung)
 
-BK06Q126.ke1
+BK06Q326.ke0
   IK 101520078 – message 5 - unexpected encoding "I8" for DFÜ-Protokoll "080"
   IK 661430035 – message 207 - unexpected encoding "I8" for DFÜ-Protokoll "080"
   IK 186928388 (Südzucker BKK / Ost) links to IK 186936311 for data but there is no KIM address
   IK 186331593 (BKK evm Pflegekasse) has no links with Datenlieferungsart "07" (DTA), but with "30" (KIM)
 
-IK06Q126.ke0
+IK06Q326.ke0
   IK 661200093 – message 37 - unexpected encoding "I7" for DFÜ-Protokoll "070"
   IK 661430035 – message 39 - unexpected encoding "I8" for DFÜ-Protokoll "080"
 
@@ -26,24 +25,27 @@ LK06Q425.ke0
   IK 189008837 – message 18 - skipped invalid VKG 7: Unknown LeistungserbringergruppeSchluessel "3"
   IK 189008837 (LKK N.bayern/Oberpf. u. Schwa.) has no Papierannahmestelle
 
-EK06Q126.ke0
+EK06Q326.ke1
   IK 660510336 – message 181 - unexpected encoding "I8" for DFÜ-Protokoll "080"
   IK 661430035 – message 182 - unexpected encoding "I8" for DFÜ-Protokoll "080"
 
-AO05Q126.ke0
-  IK 106198626 – message 106 - skipped invalid DFU 1: Unknown DFUProtokollSchluessel "011"
-  IK 106198626 – message 106 - skipped invalid DFU 2: Unknown DFUProtokollSchluessel "011"
-  IK 106198626 – message 106 - skipped invalid DFU 3: Unknown DFUProtokollSchluessel "011"
-  IK 107299005 – message 136 - skipped invalid DFU 1: Unknown DFUProtokollSchluessel "011"
-  IK 108310400 – message 153 - skipped invalid DFU 1: Unknown DFUProtokollSchluessel "011"
-  IK 108310400 – message 153 - skipped invalid DFU 2: Unknown DFUProtokollSchluessel "004"
-  IK 108310400 – message 153 - skipped invalid DFU 3: Unknown DFUProtokollSchluessel "011"
-  IK 661400051 – message 201 - skipped invalid UEM 1: Refers to a non-existing DFU
+AO05Q326.ke3
+  IK 106198626 – message 86 - skipped invalid DFU 1: Unknown DFUProtokollSchluessel "011"
+  IK 106198626 – message 86 - skipped invalid DFU 2: Unknown DFUProtokollSchluessel "011"
+  IK 106198626 – message 86 - skipped invalid DFU 3: Unknown DFUProtokollSchluessel "011"
+  IK 107299005 – message 116 - skipped invalid DFU 1: Unknown DFUProtokollSchluessel "011"
+  IK 108310400 – message 133 - skipped invalid DFU 1: Unknown DFUProtokollSchluessel "011"
+  IK 108310400 – message 133 - skipped invalid DFU 2: Unknown DFUProtokollSchluessel "004"
+  IK 108310400 – message 133 - skipped invalid DFU 3: Unknown DFUProtokollSchluessel "011"
+  IK 661400051 – message 181 - skipped invalid UEM 1: Refers to a non-existing DFU
 
-BK05Q126.ke1
+BK05Q326.ke1
   IK 103724238 – message 77 - skipped invalid VKG 3: Links to data acceptance office that does not accept data
   IK 103724238 – message 77 - skipped invalid VKG 4: Links to data acceptance office that does not accept data
   IK 103724249 – message 78 - skipped invalid VKG 17: Links to paper acceptance office that does not accept paper
   IK 103724249 – message 78 - skipped invalid VKG 22: Links to paper acceptance office that does not accept paper
   IK 103724249 – message 78 - skipped invalid VKG 26: Links to paper acceptance office that does not accept paper
+
+EK05Q426.ke0
+  Expected that tarifkennzeichen is never set, but was "HHH"
 
