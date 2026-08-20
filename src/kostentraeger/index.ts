@@ -98,7 +98,7 @@ export class InstitutionListsIndex {
         ik: string, 
         leGruppe: LeistungserbringergruppeSchluessel, 
         date: Date = new Date()
-    ) {
+    ): Institution & { kassenart: KassenartSchluessel } | undefined {
         const forLEGruppe = this.index.get(leGruppe)
 
         if (!forLEGruppe) {
@@ -120,7 +120,7 @@ export class InstitutionListsIndex {
             const krankenkasse = institutionsIndex.get(ik)
 
             if (krankenkasse) {
-                return krankenkasse;
+                return { ...krankenkasse, kassenart };
             }
         }
     }
