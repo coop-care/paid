@@ -60,6 +60,9 @@
     "typescript": "^5.4.2"
   },
   "jest": {
+    "moduleNameMapper": {
+      "^any-ascii$": "<rootDir>/tests/mocks/any-ascii.ts"
+    },
     "transform": {
       "^.+\\.tsx?$": "ts-jest",
       "^.+node_modules/pkijs/.+\\.js$": "ts-jest",
